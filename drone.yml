@@ -1,0 +1,25 @@
+kind: pipeline
+type: ssh
+name: sfocs-p1
+server:
+  host: 111.186.58.48:22151
+  user: elf
+  ssh_key:
+    from_secret: sfocs-key
+steps:
+- name: ci-install
+  commands:
+  - /usr/local/bin/ci-install
+- name: repo-checks
+  commands:
+  - ci/runner.sh repo_checks
+- name: compilation
+  commands:
+  - ci/runner.sh compile
+- name: code-quality
+  commands:
+  - ci/runner.sh code_quality
+- name: send-report
+  commands:
+  - ci/runner.sh open_issue
+

@@ -9,19 +9,19 @@ All notable changes to this project are documented in this file.
 
 - [feature 1] 
 
-- [feature 2] Initialize the bricks to hang on the top
+- [feature 2] 
 
-- [feature 3] Initialize the paddle to occur on the bottom
+- [feature 3] 
 
   Removed
 
-- [feature 1] Rewrite Svg patterns to be canvas elements
+- [feature 1] 
   Changed
 
-- [feature 1] Divide the view to show the bricks and paddle respectively
+- [feature 1] 
   Fixed
 
-- [bug 1] Fix the messy positions on the website
+- [bug 1] 
 
 #[milestone2] -- {2024.7.??} 
 

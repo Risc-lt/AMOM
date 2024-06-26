@@ -1,9 +1,8 @@
-[???]:???
 
 # Changelog
 All notable changes to this project are documented in this file.
 
-#[milestone1] -- {2024.6.??}
+#[Alpha] -- {2024.6.??}
 
   Added
 
@@ -23,7 +22,7 @@ All notable changes to this project are documented in this file.
 
 - [bug 1] 
 
-#[milestone2] -- {2024.7.??} 
+#[Beta] -- {2024.7.??} 
 
   Added
 

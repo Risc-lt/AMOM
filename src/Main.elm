@@ -52,4 +52,3 @@ userConfig =
 main : Output UserData SceneMsg
 main =
     genMain { config = userConfig, scenes = allScenes, resources = resources, globalComponents = allGlobalComopnents }
-

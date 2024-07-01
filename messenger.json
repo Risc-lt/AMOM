@@ -1,6 +1,10 @@
 {
     "version": "1.0.0",
     "template_repo": "https://github.com/linsyking/messenger-templates",
-    "scenes": {},
+    "scenes": {
+        "Game": {
+            "layers": []
+        }
+    },
     "sceneprotos": {}
 }

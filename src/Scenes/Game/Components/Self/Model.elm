@@ -9,7 +9,9 @@ module Scenes.Game.Components.Self.Model exposing (component)
 import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Self.Init exposing (Self)
@@ -27,17 +29,37 @@ init env initMsg =
             ( initData, () )
 
         _ ->
-            ( { x = 100, y = 100, hp = 100, id = 1 }, () )
+            ( { x = 800, y = 100, hp = 100, id = 1 }, () )
+
+
+handleKeyDown : Int -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleKeyDown key env evnt data basedata =
+    case key of
+        13 ->
+            -- ( ( { data | x = data.x - 400 }, () ), [ Other ( "Enemy", PhysicalAttack 1 ), Other ( "Self", ReturnPlace ) ], ( env, False ) )
+            ( ( { data | x = data.x - 400 }, () ), [], ( env, False ) )
+
+        _ ->
+            ( ( { x = 800, y = 100, hp = 100, id = 1 }, () ), [], ( env, False ) )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        KeyDown key ->
+            handleKeyDown key env evnt data basedata
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
-    ( ( data, basedata ), [], env )
+    case msg of
+        -- ReturnPlace ->
+        --     ( ( { data | x = 800 }, basedata ), [], env )
+        _ ->
+            ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

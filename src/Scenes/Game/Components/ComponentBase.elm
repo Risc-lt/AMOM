@@ -17,6 +17,9 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 type ComponentMsg
     = EnemyInit Enemy
     | SelfInit Self
+    | PhysicalAttack Int
+    | PhysicalHurt Int
+    | ReturnPlace
     | NullComponentMsg
 
 

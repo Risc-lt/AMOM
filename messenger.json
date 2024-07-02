@@ -1,6 +1,11 @@
 {
     "version": "1.0.0",
     "template_repo": "https://github.com/linsyking/messenger-templates",
+    "assets": {
+        "character": [
+            "assets/character/character.png"
+        ]
+    },
     "scenes": {
         "Game": {
             "components": {

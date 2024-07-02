@@ -61,7 +61,7 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, basedata ), [], env )
+            ( ( { data | hp = data.hp - 10 }, { basedata | state = EnemyMove } ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

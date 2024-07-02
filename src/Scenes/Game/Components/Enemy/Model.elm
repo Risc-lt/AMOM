@@ -10,10 +10,10 @@ import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
-import Messenger.Render.Sprite exposing (renderSprite)
 
 
 type alias Data =
@@ -42,8 +42,8 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    ( ( renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "uglyman" )
-    , 0
+    ( renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "uglyman"
+    , 1
     )
 
 

@@ -10,17 +10,24 @@ import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
+import Messenger.Render.Sprite exposing (renderSprite)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import Scenes.Game.Components.Self.Init exposing (Self)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    {}
+    Self
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( {}, () )
+    case initMsg of
+        SelfInit initData ->
+            ( initData, () )
+
+        _ ->
+            ( { x = 100, y = 100, hp = 100, id = 1 }, () )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -35,7 +42,9 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    ( Canvas.empty, 0 )
+    ( renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "magician"
+    , 1
+    )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget

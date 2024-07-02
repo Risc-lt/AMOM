@@ -47,7 +47,7 @@ handleKeyDown key env evnt data basedata =
 
         32 ->
             if basedata.state == PlayerTurn then
-                ( ( data, { basedata | state = EnemyMove } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerReturn } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -67,7 +67,7 @@ handleMove env evnt data basedata =
                 else
                     data.x
 
-            else if basedata.state /= PlayerTurn then
+            else if basedata.state == PlayerReturn then
                 if data.x < 800 then
                     data.x + 2
 
@@ -76,8 +76,15 @@ handleMove env evnt data basedata =
 
             else
                 data.x
+
+        ( newBaseData, msg ) =
+            if basedata.state == PlayerReturn && newX >= 800 then
+                ( { basedata | state = EnemyMove }, [ Other ( "Enemy", SwitchTurn ) ] )
+
+            else
+                ( basedata, [] )
     in
-    ( ( { data | x = newX }, basedata ), [], ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -101,7 +108,10 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, { basedata | state = PlayerTurn, selfHP = basedata.selfHP - 10 } ), [], env )
+            ( ( { data | hp = data.hp - 10 }, { basedata | selfHP = basedata.selfHP - 10 } ), [], env )
+
+        SwitchTurn ->
+            ( ( data, { basedata | state = PlayerTurn } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

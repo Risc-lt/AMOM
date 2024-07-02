@@ -20,7 +20,7 @@ commonDataInit _ _ =
     { gameover = False }
 
 
-init : LayeredSceneInit SceneCommonData UserData LayerTarget LayerMsg SceneMsg
+init : LayeredSceneInit SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
 init env msg =
     let
         cd =
@@ -37,7 +37,7 @@ init env msg =
     }
 
 
-settings : LayeredSceneSettingsFunc SceneCommonData UserData LayerTarget LayerMsg SceneMsg
+settings : LayeredSceneSettingsFunc SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
 settings _ _ _ =
     []
 

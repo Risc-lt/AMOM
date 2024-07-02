@@ -20,6 +20,7 @@ type ComponentMsg
     | SelfInit Self
     | PhysicalAttack Int
     | ReturnPlace
+    | GameOver
     | NullComponentMsg
 
 
@@ -33,7 +34,6 @@ type Gamestate
     | EnemyMove
     | EnemyAttack
     | EnemyReturn
-    | GameOver
 
 
 type alias BaseData =

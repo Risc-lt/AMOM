@@ -11,10 +11,9 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Component.Component exposing (viewComponents)
-import Messenger.GeneralModel exposing (Matcher)
-import Messenger.Layer.Layer exposing (ConcreteLayer, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer)
-import Messenger.Render.Text exposing (renderText)
+import Messenger.Component.Component exposing (updateComponents, viewComponents)
+import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
+import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
@@ -36,9 +35,26 @@ init env initMsg =
         ]
 
 
+handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget LayerMsg SceneMsg ComponentMsg
+handleComponentMsg env compmsg data =
+    case compmsg of
+        SOMMsg som ->
+            ( data, [ Parent <| SOMMsg som ], env )
+
+        OtherMsg msg ->
+            ( data, [], env )
+
+
 update : LayerUpdate SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data
 update env evt data =
-    ( data, [], ( env, False ) )
+    let
+        ( comps1, msgs1, ( env1, block1 ) ) =
+            updateComponents env evt data.components
+
+        ( data1, msgs2, env2 ) =
+            handleComponentMsgs env1 msgs1 { data | components = comps1 } [] handleComponentMsg
+    in
+    ( data1, msgs2, ( env2, block1 ) )
 
 
 updaterec : LayerUpdateRec SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data

@@ -40,19 +40,48 @@ attackPlayer env evnt data basedata =
     ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Self", PhysicalAttack 1 ) ], ( env, False ) )
 
 
+handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMove env evnt data basedata =
+    let
+        newX =
+            if basedata.state == EnemyMove then
+                if data.x < 400 then
+                    data.x + 2
+
+                else
+                    data.x
+
+            else if basedata.state == PlayerTurn then
+                if data.x > 100 then
+                    data.x - 2
+
+                else
+                    data.x
+
+            else
+                data.x
+
+        newBaseData =
+            if basedata.state == EnemyMove then
+                if newX >= 400 then
+                    { basedata | state = EnemyAttack }
+
+                else
+                    basedata
+
+            else
+                basedata
+    in
+    ( ( { data | x = newX }, newBaseData ), [], ( env, False ) )
+
+
 handlePlayerTurn : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handlePlayerTurn env evnt data basedata =
-    if basedata.state == EnemyMove then
-        ( ( { data | x = 400 }, { basedata | state = EnemyAttack } ), [], ( env, False ) )
-
-    else if basedata.state == EnemyAttack then
+    if basedata.state == EnemyAttack then
         attackPlayer env evnt data basedata
 
-    else if basedata.state == PlayerTurn then
-        ( ( { data | x = 100 }, basedata ), [], ( env, False ) )
-
     else
-        ( ( data, basedata ), [], ( env, False ) )
+        handleMove env evnt data basedata
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

@@ -56,18 +56,38 @@ handleKeyDown key env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
+handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMove env evnt data basedata =
+    let
+        newX =
+            if basedata.state == PlayerTurn then
+                if data.x > 400 then
+                    data.x - 2
+
+                else
+                    data.x
+
+            else if basedata.state /= PlayerTurn then
+                if data.x < 800 then
+                    data.x + 2
+
+                else
+                    data.x
+
+            else
+                data.x
+    in
+    ( ( { data | x = newX }, basedata ), [], ( env, False ) )
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
         Tick _ ->
-            if basedata.state == PlayerTurn then
-                ( ( { data | x = 400 }, basedata ), [], ( env, False ) )
-
-            else
-                ( ( { data | x = 800 }, basedata ), [], ( env, False ) )
+            handleMove env evnt data basedata
 
         KeyDown key ->
-            if basedata.state == PlayerTurn || basedata.state == GameBegin then
+            if (basedata.state == PlayerTurn && data.x <= 400) || basedata.state == GameBegin then
                 handleKeyDown key env evnt data basedata
 
             else

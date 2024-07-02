@@ -11,9 +11,9 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
-import Messenger.GeneralModel exposing (Msg(..))
+import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -26,10 +26,10 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         SelfInit initData ->
-            ( initData, { state = GameBegin } )
+            ( initData, initBaseData )
 
         _ ->
-            ( { x = 800, y = 100, hp = 100, id = 1 }, { state = GameBegin } )
+            ( { x = 800, y = 100, hp = 100, id = 1 }, initBaseData )
 
 
 handleKeyDown : Int -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -81,7 +81,10 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, { basedata | state = PlayerTurn } ), [], env )
+            ( ( { data | hp = data.hp - 10 }, { basedata | state = PlayerTurn, selfHP = basedata.selfHP - 10 } ), [], env )
+
+        Defeated ->
+            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
 
         _ ->
             ( ( data, basedata ), [], env )

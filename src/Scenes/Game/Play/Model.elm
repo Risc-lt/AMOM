@@ -9,17 +9,22 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 -}
 
 import Canvas
+import Canvas.Settings exposing (fill)
+import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
+import Messenger.Render.Shape exposing (rect)
+import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
 import Scenes.Game.Components.Self.Init as SelfMsg
 import Scenes.Game.Components.Self.Model as Self
+import Scenes.Game.Play.Attack exposing (judgeAttack)
 import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)
 
@@ -66,8 +71,7 @@ updateBasic env evt data =
 
 attackDistributor : Distributor Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg (List ( ComponentTarget, ComponentMsg ))
 attackDistributor env evt data =
-    -- ( data, ( [], judgeAttack data.components ), env )
-    ( data, ( [], [] ), env )
+    ( data, ( [], judgeAttack data.components ), env )
 
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
@@ -102,7 +106,29 @@ updaterec env msg data =
 
 view : LayerView SceneCommonData UserData Data
 view env data =
-    viewComponents env data.components
+    let
+        result =
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1200, 400 ) ]
+            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 550, 150 )
+            ]
+
+        basicView =
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1200, 400 ) ]
+            , viewComponents env data.components
+            ]
+
+        outComeView =
+            if env.commonData.gameover then
+                Canvas.group
+                    []
+                    (basicView ++ result)
+
+            else
+                Canvas.group
+                    []
+                    basicView
+    in
+    outComeView
 
 
 matcher : Matcher Data LayerTarget

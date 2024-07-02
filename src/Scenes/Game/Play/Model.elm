@@ -18,6 +18,8 @@ import Messenger.Render.Text exposing (renderText)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
+import Scenes.Game.Components.Self.Init as SelfMsg
+import Scenes.Game.Components.Self.Model as Self
 import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)
 
@@ -28,7 +30,10 @@ type alias Data =
 
 init : LayerInit SceneCommonData UserData LayerMsg Data
 init env initMsg =
-    InitData [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env ]
+    InitData
+        [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
+        , Self.component (SelfInit <| SelfMsg.emptyInitData) env
+        ]
 
 
 update : LayerUpdate SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data

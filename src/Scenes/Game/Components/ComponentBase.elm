@@ -1,6 +1,7 @@
 module Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.Self.Init exposing (Self)
 
 
 {-|
@@ -15,6 +16,7 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 -}
 type ComponentMsg
     = EnemyInit Enemy
+    | SelfInit Self
     | NullComponentMsg
 
 

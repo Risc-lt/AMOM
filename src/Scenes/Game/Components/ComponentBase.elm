@@ -1,5 +1,7 @@
 module Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..), ComponentTarget, BaseData)
 
+import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+
 {-|
 
 
@@ -13,7 +15,8 @@ module Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..), Componen
 {-| Component message
 -}
 type ComponentMsg
-    = NullComponentMsg
+    = EnemyInit Enemy
+    | NullComponentMsg
 
 
 {-| Component target

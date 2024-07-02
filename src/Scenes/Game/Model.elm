@@ -11,12 +11,13 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (Env, addCommonData)
 import Messenger.Scene.LayeredScene exposing (LayeredSceneInit, LayeredSceneSettingsFunc, genLayeredScene)
 import Messenger.Scene.Scene exposing (SceneStorage)
+import Scenes.Game.Play.Model as Play
 import Scenes.Game.SceneBase exposing (..)
 
 
 commonDataInit : Env () UserData -> Maybe SceneMsg -> SceneCommonData
 commonDataInit _ _ =
-    {}
+    { gameover = False }
 
 
 init : LayeredSceneInit SceneCommonData UserData LayerTarget LayerMsg SceneMsg
@@ -31,7 +32,8 @@ init env msg =
     { renderSettings = []
     , commonData = cd
     , layers =
-        []
+        [ Play.layer NullLayerMsg envcd
+        ]
     }
 
 

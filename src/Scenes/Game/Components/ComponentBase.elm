@@ -1,31 +1,26 @@
-module Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..), ComponentTarget, BaseData)
+module Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+
 
 {-|
 
 
 # Component base
 
-@docs ComponentMsg, ComponentTarget, BaseData
+@docs ComponentMsg: Component message
+@docs ComponentTarget: Component target
+@docs BaseData: Component base data
 
--}
-
-
-{-| Component message
 -}
 type ComponentMsg
     = EnemyInit Enemy
     | NullComponentMsg
 
 
-{-| Component target
--}
 type alias ComponentTarget =
     String
 
 
-{-| Component base data
--}
 type alias BaseData =
     ()

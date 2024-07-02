@@ -11,18 +11,24 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Component.Component exposing (viewComponents)
 import Messenger.GeneralModel exposing (Matcher)
 import Messenger.Layer.Layer exposing (ConcreteLayer, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer)
+import Messenger.Render.Text exposing (renderText)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import Scenes.Game.Components.Enemy.Init as EneMsg
+import Scenes.Game.Components.Enemy.Model as Enemy
+import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)
 
 
 type alias Data =
-    {}
+    InitData
 
 
 init : LayerInit SceneCommonData UserData LayerMsg Data
 init env initMsg =
-    {}
+    InitData [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env ]
 
 
 update : LayerUpdate SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data
@@ -37,7 +43,7 @@ updaterec env msg data =
 
 view : LayerView SceneCommonData UserData Data
 view env data =
-    Canvas.empty
+    viewComponents env data.components
 
 
 matcher : Matcher Data LayerTarget

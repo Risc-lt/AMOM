@@ -1,7 +1,7 @@
 module Scenes.Game.SceneBase exposing
-    ( LayerTarget
+    ( LayerMsg(..)
+    , LayerTarget
     , SceneCommonData
-    , LayerMsg(..)
     )
 
 {-|
@@ -11,26 +11,20 @@ module Scenes.Game.SceneBase exposing
 
 Basic data for the scene.
 
-@docs LayerTarget
-@docs SceneCommonData
-@docs LayerMsg
+@docs LayerTarget: Layer target type
+@docs SceneCommonData: Common data
+@docs LayerMsg: General message for layers
 
 -}
 
 
-{-| Layer target type
--}
 type alias LayerTarget =
     String
 
 
-{-| Common data
--}
 type alias SceneCommonData =
-    {}
+    { gameover : Bool }
 
 
-{-| General message for layers
--}
 type LayerMsg
     = NullLayerMsg

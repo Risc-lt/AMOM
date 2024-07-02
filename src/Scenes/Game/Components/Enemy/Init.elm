@@ -1,7 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy
-    , emptyInitData
+    , Enemy, emptyInitData
     )
 
 {-|

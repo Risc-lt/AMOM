@@ -7,11 +7,14 @@ module Scenes.Game.Components.Self.Model exposing (component)
 -}
 
 import Canvas
+import Canvas.Settings exposing (fill)
+import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
+import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self)
@@ -89,7 +92,16 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    ( renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "magician"
+    let
+        hpBar =
+            Canvas.shapes
+                [ fill Color.red ]
+                [ rect env.globalData.internalData ( data.x, data.y ) ( 100 * (data.hp / 100), 5 ) ]
+    in
+    ( Canvas.group []
+        [ renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "magician"
+        , hpBar
+        ]
     , 1
     )
 

@@ -3,6 +3,12 @@
     "template_repo": "https://github.com/linsyking/messenger-templates",
     "scenes": {
         "Game": {
+            "components": {
+                "Components": [
+                    "Enemy",
+                    "Self"
+                ]
+            },
             "layers": [
                 "Play"
             ]

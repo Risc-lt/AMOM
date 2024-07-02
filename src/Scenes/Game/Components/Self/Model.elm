@@ -60,11 +60,8 @@ update env evnt data basedata =
             if basedata.state == PlayerTurn then
                 ( ( { data | x = 400 }, basedata ), [], ( env, False ) )
 
-            else if basedata.state == EnemyMove then
-                ( ( { data | x = 800 }, basedata ), [], ( env, False ) )
-
             else
-                ( ( data, basedata ), [], ( env, False ) )
+                ( ( { data | x = 800 }, basedata ), [], ( env, False ) )
 
         KeyDown key ->
             if basedata.state == PlayerTurn || basedata.state == GameBegin then

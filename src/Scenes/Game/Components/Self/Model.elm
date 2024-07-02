@@ -26,17 +26,28 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         SelfInit initData ->
-            ( initData, { state = PlayerTurn } )
+            ( initData, { state = GameBegin } )
 
         _ ->
-            ( { x = 800, y = 100, hp = 100, id = 1 }, { state = PlayerTurn } )
+            ( { x = 800, y = 100, hp = 100, id = 1 }, { state = GameBegin } )
 
 
 handleKeyDown : Int -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleKeyDown key env evnt data basedata =
     case key of
         13 ->
-            ( ( data, { basedata | state = EnemyMove } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
+            if basedata.state == GameBegin then
+                ( ( data, { basedata | state = PlayerTurn } ), [], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
+
+        32 ->
+            if basedata.state == PlayerTurn then
+                ( ( data, { basedata | state = EnemyMove } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -56,7 +67,7 @@ update env evnt data basedata =
                 ( ( data, basedata ), [], ( env, False ) )
 
         KeyDown key ->
-            if basedata.state == PlayerTurn then
+            if basedata.state == PlayerTurn || basedata.state == GameBegin then
                 handleKeyDown key env evnt data basedata
 
             else
@@ -70,7 +81,7 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, basedata ), [], env )
+            ( ( { data | hp = data.hp - 10 }, { basedata | state = PlayerTurn } ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

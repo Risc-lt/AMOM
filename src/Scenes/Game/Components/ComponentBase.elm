@@ -26,7 +26,7 @@ type ComponentMsg
     = EnemyInit Enemy
     | SelfInit Self
     | PhysicalAttack Int
-    | ReturnPlace
+    | SwitchTurn
     | GameOver
     | Defeated
     | NullComponentMsg
@@ -39,6 +39,7 @@ type alias ComponentTarget =
 type Gamestate
     = GameBegin
     | PlayerTurn
+    | PlayerReturn
     | EnemyMove
     | EnemyAttack
     | EnemyReturn

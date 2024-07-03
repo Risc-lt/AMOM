@@ -37,22 +37,50 @@ init env initMsg =
 
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 attackPlayer env evnt data basedata =
-    ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Self", PhysicalAttack 1 ) ], ( env, False ) )
+    ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", PhysicalAttack 1 ) ], ( env, False ) )
+
+
+handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMove env evnt data basedata =
+    let
+        newX =
+            if basedata.state == EnemyMove then
+                if data.x < 400 then
+                    data.x + 2
+
+                else
+                    data.x
+
+            else if basedata.state == EnemyReturn then
+                if data.x > 100 then
+                    data.x - 2
+
+                else
+                    data.x
+
+            else
+                data.x
+
+        ( newBaseData, msg ) =
+            if basedata.state == EnemyMove && newX >= 400 then
+                ( { basedata | state = EnemyAttack }, [] )
+
+            else if basedata.state == EnemyReturn && newX <= 100 then
+                ( { basedata | state = PlayerTurn }, [ Other ( "Self", SwitchTurn ) ] )
+
+            else
+                ( basedata, [] )
+    in
+    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
 handlePlayerTurn : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handlePlayerTurn env evnt data basedata =
-    if basedata.state == EnemyMove then
-        ( ( { data | x = 400 }, { basedata | state = EnemyAttack } ), [], ( env, False ) )
-
-    else if basedata.state == EnemyAttack then
+    if basedata.state == EnemyAttack then
         attackPlayer env evnt data basedata
 
-    else if basedata.state == PlayerTurn then
-        ( ( { data | x = 100 }, basedata ), [], ( env, False ) )
-
     else
-        ( ( data, basedata ), [], ( env, False ) )
+        handleMove env evnt data basedata
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -69,7 +97,10 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, { basedata | state = EnemyMove, enemyHP = basedata.enemyHP - 10 } ), [], env )
+            ( ( { data | hp = data.hp - 10 }, { basedata | enemyHP = basedata.enemyHP - 10 } ), [], env )
+
+        SwitchTurn ->
+            ( ( data, { basedata | state = EnemyMove } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

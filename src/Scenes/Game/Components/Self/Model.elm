@@ -17,7 +17,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -32,7 +32,7 @@ init env initMsg =
             ( initData, initBaseData )
 
         _ ->
-            ( { x = 800, y = 100, hp = 100, id = 1 }, initBaseData )
+            ( { x = 800, y = 100, hp = 100, id = 1, state = Alive, career = "magician" }, initBaseData )
 
 
 handleKeyDown : Int -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

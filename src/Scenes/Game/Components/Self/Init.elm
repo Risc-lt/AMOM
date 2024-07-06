@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Self.Init exposing
     ( InitData
-    , Self, emptyInitData
+    , Self, State(..), emptyInitData
     )
 
 {-|
@@ -13,6 +13,13 @@ module Scenes.Game.Components.Self.Init exposing
 -}
 
 
+{-| Character state
+-}
+type State
+    = Alive
+    | Dead
+
+
 {-| Core data structure for the enemy
 -}
 type alias Self =
@@ -20,6 +27,8 @@ type alias Self =
     , y : Float
     , hp : Float
     , id : Int
+    , state : State
+    , career : String
     }
 
 
@@ -37,4 +46,6 @@ emptyInitData =
     , y = 100
     , hp = 100
     , id = 1
+    , state = Alive
+    , career = "magician"
     }

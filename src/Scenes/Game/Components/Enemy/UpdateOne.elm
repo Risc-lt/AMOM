@@ -45,7 +45,11 @@ handleMove env evnt data basedata =
                 ( { basedata | state = EnemyAttack }, [] )
 
             else if basedata.state == EnemyReturn && newX <= 100 then
-                ( { basedata | state = PlayerTurn }, [ Other ( "Self", SwitchTurn ) ] )
+                if basedata.curEnemy == 2 then
+                    ( { basedata | state = PlayerTurn, curEnemy = 1 }, [ Other ( "Self", SwitchTurn ) ] )
+
+                else
+                    ( { basedata | state = EnemyMove, curEnemy = basedata.curEnemy + 1 }, [] )
 
             else
                 ( basedata, [] )

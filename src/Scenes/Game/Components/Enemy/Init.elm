@@ -38,6 +38,11 @@ emptyInitData =
       , hp = 100
       , id = 1
       }
+    , { x = 100
+      , y = 200
+      , hp = 100
+      , id = 2
+      }
     ]
 
 

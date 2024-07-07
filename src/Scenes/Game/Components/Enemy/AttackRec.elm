@@ -47,6 +47,15 @@ attackRec allEnemy id =
     newData
 
 
+findMin : Data -> Int
+findMin data =
+    data
+        |> List.map (\x -> x.id)
+        |> List.sort
+        |> List.head
+        |> Maybe.withDefault 100
+
+
 handleAttack : Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleAttack id env msg data basedata =
     let
@@ -61,11 +70,7 @@ handleAttack id env msg data basedata =
                 basedata.curEnemy
 
             else
-                newData
-                    |> List.map (\x -> x.id)
-                    |> List.sort
-                    |> List.head
-                    |> Maybe.withDefault 100
+                findMin newData
 
         newMsg =
             if remainNum == basedata.enemyNum then

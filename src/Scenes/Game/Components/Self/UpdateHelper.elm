@@ -7,6 +7,7 @@ import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
+import Scenes.Game.Components.Self.Reaction exposing (findMin)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -43,8 +44,8 @@ handleKeyDown key env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleMove env evnt data basedata =
+handleMove : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMove list env evnt data basedata =
     let
         newX =
             if basedata.state == PlayerTurn then
@@ -67,7 +68,7 @@ handleMove env evnt data basedata =
         ( newBaseData, msg ) =
             if basedata.state == PlayerReturn && newX >= 800 then
                 if basedata.curChar == 2 then
-                    ( { basedata | state = EnemyMove, curChar = 1 }, [ Other ( "Enemy", SwitchTurn ) ] )
+                    ( { basedata | state = EnemyMove, curChar = findMin list }, [ Other ( "Enemy", SwitchTurn ) ] )
 
                 else
                     ( { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }, [] )
@@ -78,11 +79,11 @@ handleMove env evnt data basedata =
     ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
-updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-updateOne env evnt data basedata =
+updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+updateOne list env evnt data basedata =
     case evnt of
         Tick _ ->
-            handleMove env evnt data basedata
+            handleMove list env evnt data basedata
 
         KeyDown key ->
             if (basedata.state == PlayerTurn && data.x <= 400) || basedata.state == GameBegin then

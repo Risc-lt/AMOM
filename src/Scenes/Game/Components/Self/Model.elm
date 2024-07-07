@@ -46,7 +46,7 @@ update env evnt data basedata =
                     List.filter (\x -> x.id == basedata.curChar) data
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne env evnt curChar basedata
+            updateOne data env evnt curChar basedata
 
         newData =
             List.map

@@ -50,6 +50,13 @@ emptyInitData =
       , state = Waiting
       , career = "magician"
       }
+    , { x = 800
+      , y = 200
+      , hp = 100
+      , id = 2
+      , state = Waiting
+      , career = "archer"
+      }
     ]
 
 

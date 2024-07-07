@@ -81,7 +81,7 @@ handleAttack attackType id env msg data basedata =
             List.length <| newData
 
         newChar =
-            if remainCharNum == basedata.selfNum then
+            if Debug.log "remainSelf" remainCharNum == Debug.log "pre" basedata.selfNum then
                 basedata.curChar
 
             else
@@ -92,6 +92,6 @@ handleAttack attackType id env msg data basedata =
                 []
 
             else
-                [ Other ( "Enemy", ChangeTarget newChar ) ]
+                [ Other ( "Enemy", ChangeTarget (Debug.log "newChar" newChar) ) ]
     in
     ( ( newData, { basedata | selfNum = remainCharNum, curChar = newChar } ), newMsg, env )

@@ -30,10 +30,10 @@ handleKeyDown key env evnt data basedata =
                 let
                     attackMsg =
                         if data.career == "archer" then
-                            [ Other ( "Enemy", Attack Physical 1 ) ]
+                            [ Other ( "Enemy", Attack Physical basedata.curEnemy ) ]
 
                         else
-                            [ Other ( "Enemy", Attack Magical 1 ) ]
+                            [ Other ( "Enemy", Attack Magical basedata.curEnemy ) ]
                 in
                 ( ( data, { basedata | state = PlayerReturn } ), attackMsg, ( env, False ) )
 

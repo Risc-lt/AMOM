@@ -19,10 +19,10 @@ attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 attackPlayer env evnt data basedata =
     case data.race of
         "Physical" ->
-            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Physical 1 ) ], ( env, False ) )
+            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Physical basedata.curChar ) ], ( env, False ) )
 
         "Magical" ->
-            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Magical 1 ) ], ( env, False ) )
+            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Magical basedata.curChar ) ], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

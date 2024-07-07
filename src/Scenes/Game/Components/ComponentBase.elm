@@ -24,7 +24,7 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 -}
 type ComponentMsg
     = EnemyInit Enemy
-    | SelfInit Self
+    | SelfInit (List Self)
     | PhysicalAttack Int
     | SwitchTurn
     | GameOver
@@ -49,6 +49,8 @@ type alias BaseData =
     { state : Gamestate
     , enemyHP : Float
     , selfHP : Float
+    , curChar : Int
+    , curEnemy : Int
     }
 
 
@@ -57,4 +59,6 @@ initBaseData =
     { state = GameBegin
     , enemyHP = 100
     , selfHP = 100
+    , curChar = 1
+    , curEnemy = 1
     }

@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Self.Init exposing
     ( InitData
-    , Self, State(..), emptyInitData
+    , Self, State(..), defaultSelf, emptyInitData
     )
 
 {-|
@@ -16,11 +16,12 @@ module Scenes.Game.Components.Self.Init exposing
 {-| Character state
 -}
 type State
-    = Alive
+    = Working
+    | Waiting
     | Dead
 
 
-{-| Core data structure for the enemy
+{-| Core data structure for the self
 -}
 type alias Self =
     { x : Float
@@ -35,17 +36,31 @@ type alias Self =
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    Self
+    List Self
 
 
-{-| Empty init data for enemy
+{-| Empty init data for self
 -}
 emptyInitData : InitData
 emptyInitData =
+    [ { x = 800
+      , y = 100
+      , hp = 100
+      , id = 1
+      , state = Waiting
+      , career = "magician"
+      }
+    ]
+
+
+{-| The default data for the self
+-}
+defaultSelf : Self
+defaultSelf =
     { x = 800
     , y = 100
     , hp = 100
     , id = 1
-    , state = Alive
+    , state = Waiting
     , career = "magician"
     }

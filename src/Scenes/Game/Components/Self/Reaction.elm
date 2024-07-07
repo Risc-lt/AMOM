@@ -17,7 +17,7 @@ type alias Data =
 checkHealth : Self -> Self
 checkHealth char =
     if char.hp <= 0 then
-        { char | state = Dead }
+        { char | hp = 0, state = Dead }
 
     else
         char

@@ -24,11 +24,11 @@ attackRec allEnemy id =
                     List.filter (\x -> x.id == id) allEnemy
 
         newEnemy =
-            if targetEnemy.hp >= 10 then
-                { targetEnemy | hp = targetEnemy.hp - 10 }
+            if targetEnemy.hp >= 30 then
+                { targetEnemy | hp = targetEnemy.hp - 30 }
 
             else
-                targetEnemy
+                { targetEnemy | hp = 0 }
 
         newData =
             List.filter

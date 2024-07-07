@@ -1,9 +1,17 @@
 module Scenes.Game.Components.Self.Reaction exposing (..)
 
+import Lib.Base exposing (SceneMsg)
+import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
+import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), ComponentMsg(..), Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import Scenes.Game.SceneBase exposing (SceneCommonData)
+
+
+type alias Data =
+    List Self
 
 
 checkHealth : Self -> Self
@@ -57,3 +65,33 @@ findMin data =
         |> List.sort
         |> List.head
         |> Maybe.withDefault 100
+
+
+handleAttack : AttackType -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack attackType id env msg data basedata =
+    let
+        targetChar =
+            getHurt attackType <|
+                getTargetChar data id
+
+        newData =
+            getNewData data targetChar
+
+        remainCharNum =
+            List.length <| newData
+
+        newChar =
+            if remainCharNum == basedata.selfNum then
+                basedata.curChar
+
+            else
+                findMin newData
+
+        newMsg =
+            if remainCharNum == basedata.selfNum then
+                []
+
+            else
+                [ Other ( "Enemy", ChangeTarget newChar ) ]
+    in
+    ( ( newData, { basedata | selfNum = remainCharNum, curChar = newChar } ), newMsg, env )

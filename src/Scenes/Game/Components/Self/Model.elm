@@ -6,7 +6,6 @@ module Scenes.Game.Components.Self.Model exposing (component)
 
 -}
 
-import Array exposing (get)
 import Canvas
 import Canvas.Settings exposing (fill)
 import Color
@@ -19,7 +18,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar)
+import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
 import Scenes.Game.Components.Self.UpdateHelper exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -67,25 +66,10 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         Attack attackType id ->
-            let
-                targetChar =
-                    getHurt attackType <|
-                        getTargetChar data id
+            handleAttack attackType id env msg data basedata
 
-                newData =
-                    getNewData data targetChar
-
-                remainCharNum =
-                    List.length <| newData
-
-                newChar =
-                    if remainCharNum == basedata.selfNum then
-                        basedata.curChar
-
-                    else
-                        findMin newData
-            in
-            ( ( newData, { basedata | selfNum = remainCharNum, curChar = newChar } ), [], env )
+        ChangeTarget id ->
+            ( ( data, { basedata | curEnemy = id } ), [], env )
 
         SwitchTurn ->
             ( ( data, { basedata | state = PlayerTurn } ), [], env )

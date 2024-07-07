@@ -27,6 +27,7 @@ type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | Attack AttackType Int
+    | ChangeTarget Int
     | SwitchTurn
     | GameOver
     | Defeated

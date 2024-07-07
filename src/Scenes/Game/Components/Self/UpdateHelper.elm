@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -26,7 +26,15 @@ handleKeyDown key env evnt data basedata =
 
         32 ->
             if basedata.state == PlayerTurn then
-                ( ( data, { basedata | state = PlayerReturn } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
+                let
+                    attackMsg =
+                        if data.career == "archer" then
+                            [ Other ( "Enemy", Attack Physical 1 ) ]
+
+                        else
+                            [ Other ( "Enemy", Attack Magical 1 ) ]
+                in
+                ( ( data, { basedata | state = PlayerReturn } ), attackMsg, ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

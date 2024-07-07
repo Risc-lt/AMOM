@@ -20,6 +20,7 @@ type alias Enemy =
     , y : Float
     , hp : Float
     , id : Int
+    , race : String
     }
 
 
@@ -37,20 +38,24 @@ emptyInitData =
       , y = 100
       , hp = 100
       , id = 1
+      , race = "Physical"
       }
     , { x = 100
       , y = 200
       , hp = 100
       , id = 2
+      , race = "Magical"
       }
     ]
 
 
-{-| -}
+{-| Default enemy
+-}
 defaultEnemy : Enemy
 defaultEnemy =
     { x = 100
     , y = 100
     , hp = 100
     , id = 1
+    , race = "Physical"
     }

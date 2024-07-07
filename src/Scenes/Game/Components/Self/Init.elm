@@ -30,6 +30,8 @@ type alias Self =
     , id : Int
     , state : State
     , career : String
+    , phyDefence : Float
+    , magDefence : Float
     }
 
 
@@ -49,6 +51,8 @@ emptyInitData =
       , id = 1
       , state = Waiting
       , career = "magician"
+      , phyDefence = 0
+      , magDefence = 50
       }
     , { x = 800
       , y = 200
@@ -56,6 +60,8 @@ emptyInitData =
       , id = 2
       , state = Waiting
       , career = "archer"
+      , phyDefence = 50
+      , magDefence = 0
       }
     ]
 
@@ -70,4 +76,6 @@ defaultSelf =
     , id = 1
     , state = Waiting
     , career = "magician"
+    , phyDefence = 0
+    , magDefence = 50
     }

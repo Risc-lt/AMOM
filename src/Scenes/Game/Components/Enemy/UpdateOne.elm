@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -16,7 +16,15 @@ type alias Data =
 
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 attackPlayer env evnt data basedata =
-    ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", PhysicalAttack 1 ) ], ( env, False ) )
+    case data.race of
+        "Physical" ->
+            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Physical 1 ) ], ( env, False ) )
+
+        "Magical" ->
+            ( ( data, { basedata | state = EnemyReturn } ), [ Other ( "Self", Attack Magical 1 ) ], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

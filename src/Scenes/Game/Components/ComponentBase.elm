@@ -1,5 +1,6 @@
 module Scenes.Game.Components.ComponentBase exposing
-    ( BaseData
+    ( AttackType(..)
+    , BaseData
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
@@ -25,11 +26,16 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
-    | PhysicalAttack Int
+    | Attack AttackType Int
     | SwitchTurn
     | GameOver
     | Defeated
     | NullComponentMsg
+
+
+type AttackType
+    = Physical
+    | Magical
 
 
 type alias ComponentTarget =

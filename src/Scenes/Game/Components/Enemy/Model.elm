@@ -64,7 +64,7 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        PhysicalAttack id ->
+        Attack _ id ->
             let
                 curEnemy =
                     Maybe.withDefault { defaultEnemy | id = 0 } <|

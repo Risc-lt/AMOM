@@ -6,6 +6,7 @@ module Scenes.Game.Components.Self.Model exposing (component)
 
 -}
 
+import Array exposing (get)
 import Canvas
 import Canvas.Settings exposing (fill)
 import Color
@@ -18,6 +19,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import Scenes.Game.Components.Self.Reaction exposing (getHurt, getNewData, getTargetChar)
 import Scenes.Game.Components.Self.UpdateHelper exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -64,25 +66,16 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        PhysicalAttack id ->
+        Attack attackType id ->
             let
-                curChar =
-                    Maybe.withDefault { defaultSelf | id = 0 } <|
-                        List.head <|
-                            List.filter (\x -> x.id == id) data
+                newChar =
+                    getHurt attackType <|
+                        getTargetChar data id
 
                 newData =
-                    List.map
-                        (\x ->
-                            if x.id == id then
-                                { x | hp = x.hp - 10 }
-
-                            else
-                                x
-                        )
-                        data
+                    getNewData data newChar
             in
-            ( ( newData, { basedata | selfHP = curChar.hp } ), [], env )
+            ( ( newData, basedata ), [], env )
 
         SwitchTurn ->
             ( ( data, { basedata | state = PlayerTurn } ), [], env )

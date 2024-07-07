@@ -53,8 +53,8 @@ type Gamestate
 
 type alias BaseData =
     { state : Gamestate
-    , enemyHP : Float
-    , selfHP : Float
+    , enemyNum : Int
+    , selfNum : Int
     , curChar : Int
     , curEnemy : Int
     }
@@ -63,8 +63,8 @@ type alias BaseData =
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyHP = 100
-    , selfHP = 100
+    , enemyNum = 2
+    , selfNum = 2
     , curChar = 1
     , curEnemy = 1
     }

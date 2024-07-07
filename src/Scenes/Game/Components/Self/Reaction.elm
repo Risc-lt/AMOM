@@ -6,14 +6,25 @@ import Scenes.Game.Components.ComponentBase exposing (AttackType(..), ComponentM
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 
 
+checkHealth : Self -> Self
+checkHealth char =
+    if char.hp <= 0 then
+        { char | state = Dead }
+
+    else
+        char
+
+
 getHurt : AttackType -> Self -> Self
 getHurt attackType char =
     case attackType of
         Physical ->
-            { char | hp = char.hp - 50 * (100 - char.phyDefence) / 100 }
+            checkHealth <|
+                { char | hp = char.hp - 50 * (100 - char.phyDefence) / 100 }
 
         Magical ->
-            { char | hp = char.hp - 50 * (100 - char.magDefence) / 100 }
+            checkHealth <|
+                { char | hp = char.hp - 50 * (100 - char.magDefence) / 100 }
 
 
 getTargetChar : List Self -> Int -> Self
@@ -25,12 +36,24 @@ getTargetChar data id =
 
 getNewData : List Self -> Self -> List Self
 getNewData data newChar =
-    List.map
-        (\x ->
-            if x.id == newChar.id then
-                newChar
+    List.filter
+        (\x -> x.state /= Dead)
+    <|
+        List.map
+            (\x ->
+                if x.id == newChar.id then
+                    newChar
 
-            else
-                x
-        )
-        data
+                else
+                    x
+            )
+            data
+
+
+findMin : List Self -> Int
+findMin data =
+    data
+        |> List.map (\x -> x.id)
+        |> List.sort
+        |> List.head
+        |> Maybe.withDefault 100

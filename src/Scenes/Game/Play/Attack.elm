@@ -25,16 +25,16 @@ judgeAttack xs =
 judgeHelper : GameComponent -> GameComponent -> List ( ComponentTarget, ComponentMsg )
 judgeHelper enemy self =
     let
-        realEnemyHP =
-            (unroll enemy).baseData.enemyHP
+        realEnemyNum =
+            (unroll enemy).baseData.enemyNum
 
-        realSelfData =
-            (unroll self).baseData.selfHP
+        realSelfNum =
+            (unroll self).baseData.selfNum
     in
-    if realEnemyHP <= 0 then
+    if realEnemyNum <= 0 then
         [ ( "Enemy", Defeated ) ]
 
-    else if realSelfData <= 0 then
+    else if realSelfNum <= 0 then
         [ ( "Self", Defeated ) ]
 
     else

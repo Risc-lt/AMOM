@@ -19,6 +19,8 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
+import Scenes.Game.Components.Self.Init exposing (State(..))
+import Scenes.Game.Components.Self.Reaction exposing (findMin)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -61,28 +63,61 @@ update env evnt data basedata =
     ( ( newData, newBasedata ), msg, ( newEnv, flag ) )
 
 
+attackRec : Data -> Int -> Data
+attackRec allEnemy id =
+    let
+        targetEnemy =
+            Maybe.withDefault { defaultEnemy | id = 0 } <|
+                List.head <|
+                    List.filter (\x -> x.id == id) allEnemy
+
+        newEnemy =
+            if targetEnemy.hp >= 10 then
+                { targetEnemy | hp = targetEnemy.hp - 10 }
+
+            else
+                targetEnemy
+
+        newData =
+            List.filter
+                (\x -> x.hp /= 0)
+            <|
+                List.map
+                    (\x ->
+                        if x.id == id then
+                            newEnemy
+
+                        else
+                            x
+                    )
+                    allEnemy
+    in
+    newData
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Attack _ id ->
             let
-                curEnemy =
-                    Maybe.withDefault { defaultEnemy | id = 0 } <|
-                        List.head <|
-                            List.filter (\x -> x.id == id) data
-
                 newData =
-                    List.map
-                        (\x ->
-                            if x.id == id then
-                                { x | hp = x.hp - 10 }
+                    attackRec data id
 
-                            else
-                                x
-                        )
-                        data
+                remainNum =
+                    List.length newData
+
+                newEnemy =
+                    if remainNum == basedata.enemyNum then
+                        basedata.curEnemy
+
+                    else
+                        newData
+                            |> List.map (\x -> x.id)
+                            |> List.sort
+                            |> List.head
+                            |> Maybe.withDefault 100
             in
-            ( ( newData, { basedata | enemyHP = curEnemy.hp } ), [], env )
+            ( ( newData, { basedata | enemyNum = remainNum, curEnemy = newEnemy } ), [], env )
 
         SwitchTurn ->
             ( ( data, { basedata | state = EnemyMove } ), [], env )

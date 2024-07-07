@@ -23,7 +23,7 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 
 -}
 type ComponentMsg
-    = EnemyInit Enemy
+    = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | PhysicalAttack Int
     | SwitchTurn

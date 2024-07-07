@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, emptyInitData
+    , Enemy, defaultEnemy, emptyInitData
     )
 
 {-|
@@ -26,13 +26,24 @@ type alias Enemy =
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    Enemy
+    List Enemy
 
 
 {-| Empty init data for enemy
 -}
 emptyInitData : InitData
 emptyInitData =
+    [ { x = 100
+      , y = 100
+      , hp = 100
+      , id = 1
+      }
+    ]
+
+
+{-| -}
+defaultEnemy : Enemy
+defaultEnemy =
     { x = 100
     , y = 100
     , hp = 100

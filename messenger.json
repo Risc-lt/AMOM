@@ -19,5 +19,10 @@
             ]
         }
     },
-    "sceneprotos": {}
+    "sceneprotos": {
+        "Story": {
+            "raw": false,
+            "layers": []
+        }
+    }
 }

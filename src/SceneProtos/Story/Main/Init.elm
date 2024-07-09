@@ -1,7 +1,10 @@
 module SceneProtos.Story.Main.Init exposing (InitData)
+
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
+
+
 {-|
 
 
@@ -10,8 +13,6 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 @docs InitData
 
 -}
-
-
 type alias InitData cdata scenemsg =
-    {components : List (AbstractComponent cdata UserData ComponentTarget ComponentMsg BaseData scenemsg)
+    { components : List (AbstractComponent cdata UserData ComponentTarget ComponentMsg BaseData scenemsg)
     }

@@ -8,14 +8,16 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 
 -}
 
+import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, viewComponents)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
-import SceneProtos.Story.SceneBase exposing (..)
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
-
+import Messenger.Layer.LayerExtra exposing (Distributor)
+import Messenger.Render.Sprite exposing (renderSprite)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import SceneProtos.Story.SceneBase exposing (..)
 
 
 type alias Data =
@@ -57,7 +59,11 @@ updaterec env msg data =
 
 view : LayerView SceneCommonData UserData Data
 view env data =
-    viewComponents env data.components
+    Canvas.group
+        []
+        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "background"
+        , viewComponents env data.components
+        ]
 
 
 matcher : Matcher Data LayerTarget

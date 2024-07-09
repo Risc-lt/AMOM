@@ -12,8 +12,9 @@ import Messenger.Base exposing (Env, addCommonData)
 import Messenger.Scene.LayeredScene exposing (LayeredSceneLevelInit, LayeredSceneProtoInit, LayeredSceneSettingsFunc, genLayeredScene, initCompose)
 import Messenger.Scene.Scene exposing (SceneStorage)
 import SceneProtos.Story.Init exposing (InitData)
-import SceneProtos.Story.SceneBase exposing (..)
 import SceneProtos.Story.Main.Model as Main
+import SceneProtos.Story.SceneBase exposing (..)
+
 
 commonDataInit : Env () UserData -> Maybe (InitData SceneMsg) -> SceneCommonData
 commonDataInit _ _ =
@@ -32,7 +33,7 @@ init env data =
     { renderSettings = []
     , commonData = cd
     , layers =
-        [Main.layer NullLayerMsg envcd
+        [ Main.layer NullLayerMsg envcd
         ]
     }
 

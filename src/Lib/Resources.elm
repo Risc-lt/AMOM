@@ -43,7 +43,10 @@ allTexture =
     Dict.fromList
         [ ( "uglyman", "assets/character/monster.png" )
         , ( "magician", "assets/character/magic.png" )
-        , ( "archer", "assets/character/archer.png" )
+        , ( "archerfan", "assets/character/archer.png" )
+        , ( "fan", "assets/character/fan.png" )
+        , ( "assasin", "assets/character/assasin.png" )
+        , ( "background1 ", "assets/background/background1.jpg" )
         ]
 
 

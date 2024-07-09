@@ -16,12 +16,12 @@ type alias Data =
 
 
 attackRec : Data -> Int -> Data
-attackRec allEnemy id =
+attackRec allEnemy position =
     let
         targetEnemy =
-            Maybe.withDefault { defaultEnemy | id = 0 } <|
+            Maybe.withDefault { defaultEnemy | position = 0 } <|
                 List.head <|
-                    List.filter (\x -> x.id == id) allEnemy
+                    List.filter (\x -> x.position == position) allEnemy
 
         newEnemy =
             if targetEnemy.hp >= 30 then
@@ -36,7 +36,7 @@ attackRec allEnemy id =
             <|
                 List.map
                     (\x ->
-                        if x.id == id then
+                        if x.position == position then
                             newEnemy
 
                         else
@@ -50,20 +50,22 @@ attackRec allEnemy id =
 findMin : Data -> Int
 findMin data =
     data
-        |> List.map (\x -> x.id)
+        |> List.map (\x -> x.position)
         |> List.sort
         |> List.head
         |> Maybe.withDefault 100
 
 
 handleAttack : Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack id env msg data basedata =
+handleAttack position env msg data basedata =
     let
         newData =
-            attackRec data id
+            attackRec data position
 
         remainNum =
-            List.length newData
+            ( List.length <| List.filter (\x -> x.position <= 3) newData
+            , List.length <| List.filter (\x -> x.position > 3) newData
+            )
 
         newEnemy =
             if remainNum == basedata.enemyNum then
@@ -77,6 +79,6 @@ handleAttack id env msg data basedata =
                 []
 
             else
-                [ Other ( "Self", ChangeTarget newEnemy ) ]
+                [ Other ( "Self", ChangeTarget ( newEnemy, 0 ) ) ]
     in
-    ( ( newData, { basedata | enemyNum = remainNum, curEnemy = newEnemy } ), newMsg, env )
+    ( ( newData, { basedata | enemyNum = remainNum } ), newMsg, env )

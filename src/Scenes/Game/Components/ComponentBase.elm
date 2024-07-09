@@ -27,7 +27,7 @@ type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | Attack AttackType Int
-    | ChangeTarget Int
+    | ChangeTarget ( Int, Int )
     | SwitchTurn
     | GameOver
     | Defeated
@@ -54,8 +54,8 @@ type Gamestate
 
 type alias BaseData =
     { state : Gamestate
-    , enemyNum : Int
-    , selfNum : Int
+    , enemyNum : ( Int, Int )
+    , selfNum : ( Int, Int )
     , curChar : Int
     , curEnemy : Int
     }
@@ -64,8 +64,8 @@ type alias BaseData =
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyNum = 2
-    , selfNum = 2
+    , enemyNum = ( 3, 3 )
+    , selfNum = ( 2, 2 )
     , curChar = 1
     , curEnemy = 1
     }

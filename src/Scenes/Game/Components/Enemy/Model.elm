@@ -17,7 +17,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Enemy.AttackRec exposing (handleAttack)
+import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import Scenes.Game.Components.Self.Init exposing (State(..))
@@ -42,17 +42,28 @@ update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget 
 update env evnt data basedata =
     let
         curEnemy =
-            Maybe.withDefault { defaultEnemy | id = 0 } <|
-                List.head <|
-                    List.filter (\x -> x.id == basedata.curEnemy) data
+            if basedata.curEnemy <= 6 then
+                Maybe.withDefault { defaultEnemy | position = 0 } <|
+                    List.head <|
+                        List.filter (\x -> x.position == basedata.curEnemy) data
+
+            else
+                { defaultEnemy | position = -1 }
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne data env evnt curEnemy basedata
+            if curEnemy.position == 0 then
+                ( ( curEnemy, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], ( env, False ) )
+
+            else if curEnemy.position == -1 && basedata.state == EnemyMove then
+                ( ( curEnemy, { basedata | state = PlayerTurn } ), [ Other ( "Self", SwitchTurn ) ], ( env, False ) )
+
+            else
+                updateOne data env evnt curEnemy basedata
 
         newData =
             List.map
                 (\x ->
-                    if x.id == basedata.curEnemy then
+                    if x.position == basedata.curEnemy then
                         newEnemy
 
                     else
@@ -66,14 +77,14 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Attack _ id ->
-            handleAttack id env msg data basedata
+        Attack _ position ->
+            handleAttack position env msg data basedata
 
-        ChangeTarget id ->
-            ( ( data, { basedata | curChar = id } ), [], env )
+        ChangeTarget length ->
+            ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn ->
-            ( ( data, { basedata | state = EnemyMove } ), [], env )
+            ( ( data, { basedata | state = EnemyMove, curEnemy = findMin data } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

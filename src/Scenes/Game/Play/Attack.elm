@@ -26,10 +26,10 @@ judgeHelper : GameComponent -> GameComponent -> List ( ComponentTarget, Componen
 judgeHelper enemy self =
     let
         realEnemyNum =
-            (unroll enemy).baseData.enemyNum
+            Tuple.first (unroll enemy).baseData.enemyNum + Tuple.second (unroll enemy).baseData.enemyNum
 
         realSelfNum =
-            (unroll self).baseData.selfNum
+            Tuple.first (unroll self).baseData.selfNum + Tuple.second (unroll self).baseData.selfNum
     in
     if realEnemyNum <= 0 then
         [ ( "Enemy", Defeated ) ]

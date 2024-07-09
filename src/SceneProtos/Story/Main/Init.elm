@@ -1,5 +1,7 @@
 module SceneProtos.Story.Main.Init exposing (InitData)
-
+import Lib.UserData exposing (UserData)
+import Messenger.Component.Component exposing (AbstractComponent)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
 {-|
 
 
@@ -10,7 +12,6 @@ module SceneProtos.Story.Main.Init exposing (InitData)
 -}
 
 
-{-| The data used to initialize the scene
--}
-type alias InitData =
-    {}
+type alias InitData cdata scenemsg =
+    {components : List (AbstractComponent cdata UserData ComponentTarget ComponentMsg BaseData scenemsg)
+    }

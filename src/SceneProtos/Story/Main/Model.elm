@@ -12,9 +12,10 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, viewComponents)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
+import SceneProtos.Story.SceneBase exposing (..)
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
-import SceneProtos.Story.SceneBase exposing (..)
+
 
 
 type alias Data =
@@ -22,12 +23,12 @@ type alias Data =
     }
 
 
-init : LayerInit SceneCommonData UserData LayerMsg Data
+init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
     Data []
 
 
-handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget LayerMsg SceneMsg ComponentMsg
+handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg ComponentMsg
 handleComponentMsg env compmsg data =
     case compmsg of
         SOMMsg som ->
@@ -37,7 +38,7 @@ handleComponentMsg env compmsg data =
             ( data, [], env )
 
 
-update : LayerUpdate SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data
+update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
     let
         ( comps1, msgs1, ( env1, block1 ) ) =
@@ -49,7 +50,7 @@ update env evt data =
     ( data1, msgs2, ( env2, block1 ) )
 
 
-updaterec : LayerUpdateRec SceneCommonData UserData LayerTarget LayerMsg SceneMsg Data
+updaterec : LayerUpdateRec SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 updaterec env msg data =
     ( data, [], env )
 
@@ -64,7 +65,7 @@ matcher data tar =
     tar == "Main"
 
 
-layercon : ConcreteLayer Data SceneCommonData UserData LayerTarget LayerMsg SceneMsg
+layercon : ConcreteLayer Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
 layercon =
     { init = init
     , update = update
@@ -76,6 +77,6 @@ layercon =
 
 {-| Layer generator
 -}
-layer : LayerStorage SceneCommonData UserData LayerTarget LayerMsg SceneMsg
+layer : LayerStorage SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
 layer =
     genLayer layercon

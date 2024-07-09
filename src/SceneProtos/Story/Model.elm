@@ -13,14 +13,14 @@ import Messenger.Scene.LayeredScene exposing (LayeredSceneLevelInit, LayeredScen
 import Messenger.Scene.Scene exposing (SceneStorage)
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.SceneBase exposing (..)
+import SceneProtos.Story.Main.Model as Main
 
-
-commonDataInit : Env () UserData -> Maybe InitData -> SceneCommonData
+commonDataInit : Env () UserData -> Maybe (InitData SceneMsg) -> SceneCommonData
 commonDataInit _ _ =
     {}
 
 
-init : LayeredSceneProtoInit SceneCommonData UserData LayerTarget LayerMsg SceneMsg InitData
+init : LayeredSceneProtoInit SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg (InitData SceneMsg)
 init env data =
     let
         cd =
@@ -32,17 +32,18 @@ init env data =
     { renderSettings = []
     , commonData = cd
     , layers =
-        []
+        [Main.layer NullLayerMsg envcd
+        ]
     }
 
 
-settings : LayeredSceneSettingsFunc SceneCommonData UserData LayerTarget LayerMsg SceneMsg
+settings : LayeredSceneSettingsFunc SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
 settings _ _ _ =
     []
 
 
 {-| Scene generator
 -}
-genScene : LayeredSceneLevelInit UserData SceneMsg InitData -> SceneStorage UserData SceneMsg
+genScene : LayeredSceneLevelInit UserData SceneMsg (InitData SceneMsg) -> SceneStorage UserData SceneMsg
 genScene initd =
     genLayeredScene (initCompose init initd) settings

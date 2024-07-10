@@ -45,8 +45,10 @@ allTexture =
         , ( "magician", "assets/character/magic.png" )
         , ( "archer", "assets/character/archer.png" )
         , ( "fan", "assets/character/fan.png" )
-        , ( "assasin", "assets/character/assasin.png" )
-        , ( "background ", "assets/background/background1.jpg" )
+        , ( "assasin", "assets/character/assassin.png" )
+        , ( "background ", "assets/character/background.png" )
+        , ("head_archer", "assets/character/head_archer.png")
+        , ("head_magic", "assets/character/head_magic.png")
         ]
 
 

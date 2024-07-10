@@ -27,7 +27,12 @@ type alias Data =
 
 init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
-    Data []
+    case initMsg of
+        MainInitData data ->
+            Data data.components
+
+        _ ->
+            Data []
 
 
 handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg ComponentMsg
@@ -62,7 +67,6 @@ view env data =
     Canvas.group
         []
         [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "background"
-        , viewComponents env data.components
         ]
 
 

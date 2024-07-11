@@ -153,12 +153,7 @@ updaterec env msg data basedata =
 
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
-    Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
-        , Canvas.shapes
-            [ fill Color.red ]
-            [ rect env.globalData.internalData ( char.x, char.y ) ( 100 * (char.hp / 100), 5 ) ]
-        ]
+    renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
 
 
 renderRegion : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable

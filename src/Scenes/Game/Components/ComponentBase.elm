@@ -4,10 +4,12 @@ module Scenes.Game.Components.ComponentBase exposing
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
+    , StatusChange(..)
     , initBaseData
     )
 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
 
 
@@ -26,9 +28,11 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
+    | UIInit InitData
     | Attack AttackType Int
     | ChangeTarget ( Int, Int )
     | SwitchTurn
+    | ChangeStatus ( Int, StatusChange )
     | GameOver
     | Defeated
     | NullComponentMsg
@@ -37,6 +41,11 @@ type ComponentMsg
 type AttackType
     = Physical
     | Magical
+
+
+type StatusChange
+    = Hp Float
+    | Nothing
 
 
 type alias ComponentTarget =

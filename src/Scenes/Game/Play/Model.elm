@@ -22,6 +22,8 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
+import Scenes.Game.Components.Interface.Init as UIMsg
+import Scenes.Game.Components.Interface.Model as UI
 import Scenes.Game.Components.Self.Init as SelfMsg
 import Scenes.Game.Components.Self.Model as Self
 import Scenes.Game.Play.Attack exposing (judgeAttack)
@@ -42,6 +44,7 @@ init env initMsg =
     InitData
         [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
         , Self.component (SelfInit <| SelfMsg.emptyInitData) env
+        , UI.component (UIInit <| UIMsg.emptyInitData) env
         ]
 
 
@@ -113,7 +116,7 @@ view env data =
             ]
 
         basicView =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
             , viewComponents env data.components
             ]
 

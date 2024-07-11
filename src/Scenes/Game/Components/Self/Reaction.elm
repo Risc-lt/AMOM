@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusChange(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -76,6 +76,9 @@ handleAttack attackType num env msg data basedata =
             getHurt attackType <|
                 getTargetChar data num
 
+        newHp =
+            Other ( "Interface", ChangeStatus ( targetChar.position, Hp targetChar.hp ) )
+
         newData =
             getNewData data targetChar
 
@@ -84,18 +87,11 @@ handleAttack attackType num env msg data basedata =
             , List.length <| List.filter (\x -> x.position > 3) newData
             )
 
-        newChar =
-            if Debug.log "remainSelf" remainCharNum == Debug.log "pre" basedata.selfNum then
-                basedata.curChar
-
-            else
-                findMin newData
-
-        newMsg =
+        newRemain =
             if remainCharNum == basedata.selfNum then
                 []
 
             else
                 [ Other ( "Enemy", ChangeTarget (Debug.log "newNum" remainCharNum) ) ]
     in
-    ( ( newData, { basedata | selfNum = remainCharNum } ), newMsg, env )
+    ( ( newData, { basedata | selfNum = remainCharNum } ), newHp :: newRemain, env )

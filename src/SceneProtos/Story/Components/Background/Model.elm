@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Dialogue.Model exposing (component)
+module SceneProtos.Story.Components.Background.Model exposing (component)
 
 {-| Component model
 
@@ -15,24 +15,12 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    { headPosition : ( Float, Float )
-    , frame : String
-    , framePos : ( Float, Float )
-    , speaker : String
-    , font : String
-    }
+    {}
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( { headPosition = ( 720, 0 )
-      , frame = "Frame"
-      , framePos = ( 720, 495 )
-      , speaker = "Speaker"
-      , font = "Comic Sans MS"
-      }
-    , ()
-    )
+    ( {}, () )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -52,7 +40,7 @@ view env data basedata =
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "Dialogue"
+    tar == "Background"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

@@ -13,4 +13,8 @@ module SceneProtos.Story.Components.Bithif.Init exposing (InitData)
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    {}
+    { spriteSheet : String
+    , currentFrame : Int
+    , frameCount : Int
+    , position : ( Float, Float )
+    }

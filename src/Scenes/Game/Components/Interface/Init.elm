@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Interface.Init exposing
     ( InitData
-    , Chars, Type(..), defaultChars, defaultUI, emptyInitData
+    , Chars, defaultUI, emptyInitData
     )
 
 {-|
@@ -12,100 +12,47 @@ module Scenes.Game.Components.Interface.Init exposing
 
 -}
 
-
-{-| Character types
--}
-type Type
-    = Enemy
-    | Self
+import Scenes.Game.Components.Enemy.Init as EnemyMsg exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.Self.Init as SelfMsg exposing (Self, defaultSelf)
 
 
 {-| Core data structure for the characters
 -}
-type alias Chars =
-    { hp : Float
-    , side : Type
-    , position : Int
-    , name : String
-    }
+type Chars
+    = Self Self
+    | Enemy Enemy
 
 
 {-| The data used to initialize the interface
 -}
 type alias InitData =
-    { chars : List Chars
+    { selfs : List Self
+    , enemies : List Enemy
+    , curChar : Chars
     }
 
 
 {-| Empty init data for allies
 -}
-emptyInitAlly : List Chars
-emptyInitAlly =
-    [ { hp = 100
-      , side = Self
-      , position = 1
-      , name = "Wenderd"
-      }
-    , { hp = 100
-      , side = Self
-      , position = 2
-      , name = "Bruce"
-      }
-    , { hp = 100
-      , side = Self
-      , position = 4
-      , name = "Bulingze"
-      }
-    , { hp = 100
-      , side = Self
-      , position = 5
-      , name = "Bithif"
-      }
-    ]
+emptyInitSelf : List Self
+emptyInitSelf =
+    SelfMsg.emptyInitData
 
 
 {-| Empty init data for enemies
 -}
-emptyInitEnemy : List Chars
+emptyInitEnemy : List Enemy
 emptyInitEnemy =
-    [ { hp = 100
-      , side = Enemy
-      , position = 1
-      , name = "Monster"
-      }
-    , { hp = 100
-      , side = Enemy
-      , position = 2
-      , name = "Monster"
-      }
-    , { hp = 100
-      , side = Enemy
-      , position = 4
-      , name = "Monster"
-      }
-    , { hp = 100
-      , side = Enemy
-      , position = 5
-      , name = "Monster"
-      }
-    ]
+    EnemyMsg.emptyInitData
 
 
 {-| Empty init data for interface
 -}
 emptyInitData : InitData
 emptyInitData =
-    { chars = emptyInitAlly ++ emptyInitEnemy }
-
-
-{-| Default character
--}
-defaultChars : Chars
-defaultChars =
-    { hp = 0
-    , side = Self
-    , position = 1
-    , name = ""
+    { selfs = emptyInitSelf
+    , enemies = emptyInitEnemy
+    , curChar = Self { defaultSelf | position = 0 }
     }
 
 
@@ -113,5 +60,7 @@ defaultChars =
 -}
 defaultUI : InitData
 defaultUI =
-    { chars = [ defaultChars ]
+    { selfs = [ defaultSelf ]
+    , enemies = [ defaultEnemy ]
+    , curChar = Self { defaultSelf | position = 0 }
     }

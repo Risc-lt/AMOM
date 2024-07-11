@@ -19,7 +19,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
-import Scenes.Game.Components.Self.UpdateHelper exposing (handleMouseDown, updateOne)
+import Scenes.Game.Components.Self.UpdateOne exposing (handleMouseDown, updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -129,7 +129,7 @@ update env evnt data basedata =
             else
                 posChanged
     in
-    ( ( newData, newBasedata ), msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), Other ( "Interface", ChangeSelfs newData ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

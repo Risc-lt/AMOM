@@ -4,7 +4,6 @@ module Scenes.Game.Components.ComponentBase exposing
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
-    , StatusChange(..)
     , initBaseData
     )
 
@@ -32,7 +31,8 @@ type ComponentMsg
     | Attack AttackType Int
     | ChangeTarget ( Int, Int )
     | SwitchTurn
-    | ChangeStatus ( Int, StatusChange )
+    | ChangeSelfs (List Self)
+    | ChangeEnemies (List Enemy)
     | GameOver
     | Defeated
     | NullComponentMsg
@@ -41,11 +41,6 @@ type ComponentMsg
 type AttackType
     = Physical
     | Magical
-
-
-type StatusChange
-    = Hp Float
-    | Nothing
 
 
 type alias ComponentTarget =

@@ -145,7 +145,7 @@ updaterec env msg data basedata =
             ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
 
         Defeated ->
-            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
+            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -153,13 +153,25 @@ updaterec env msg data basedata =
 
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
-    renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+    if char.hp /= 0 then
+        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+
+    else
+        empty
 
 
 renderRegion : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderRegion char env =
+    let
+        color =
+            if char.state == Waiting then
+                Color.black
+
+            else
+                Color.green
+    in
     Canvas.shapes
-        [ stroke Color.black ]
+        [ stroke color ]
         [ rect env.globalData.internalData ( char.x - 5, char.y - 5 ) ( 110, 110 ) ]
 
 

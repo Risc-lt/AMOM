@@ -17,10 +17,10 @@ import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorStyle)
+import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (Chars, InitData, defaultUI)
-import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -52,29 +52,54 @@ updaterec env msg data basedata =
         ChangeEnemies list ->
             ( ( { data | enemies = list }, basedata ), [], env )
 
+        SwitchTurn ->
+            ( ( data, { basedata | state = PlayerTurn } ), [], env )
+
         _ ->
             ( ( data, basedata ), [], env )
+
+
+getName : String -> String
+getName career =
+    case career of
+        "swordsman" ->
+            "Wenderd"
+
+        "archer" ->
+            "Bruce"
+
+        "magician" ->
+            "Bulingze"
+
+        "pharmacist" ->
+            "Bithif"
+
+        _ ->
+            ""
 
 
 renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderStatus self env =
     let
-        ( name, y ) =
+        name =
+            getName self.career
+
+        y =
             case self.career of
                 "swordsman" ->
-                    ( "Wenderd", 40 )
+                    40
 
                 "archer" ->
-                    ( "Bruce", 250 )
+                    250
 
                 "magician" ->
-                    ( "Bulingze", 460 )
+                    460
 
                 "pharmacist" ->
-                    ( "Bithif", 670 )
+                    670
 
                 _ ->
-                    ( "", 0 )
+                    0
 
         color =
             if self.hp == 0 then
@@ -99,25 +124,48 @@ renderStatus self env =
         empty
 
 
+renderChangePosition : Env cdata userdata -> Data -> BaseData -> Renderable
+renderChangePosition env data basedata =
+    if basedata.state == GameBegin then
+        let
+            working =
+                List.filter
+                    (\x ->
+                        x.state == Working
+                    )
+                    data.selfs
 
-{- renderChangePosition : Env cdata userdata -> data -> bdata -> Renderable
-   renderChangePosition env data basedata =
-       if basedata.state == GameBegin then
-           let
+            target =
+                if List.length working == 1 then
+                    Maybe.withDefault defaultSelf (List.head working)
 
-           in
+                else
+                    defaultSelf
 
-       else
-           empty
--}
+            name =
+                if target.career /= "" then
+                    getName target.career ++ " chosen"
+
+                else
+                    "Nobody chosen"
+        in
+        Canvas.group []
+            [ renderTextWithColorCenter env.globalData.internalData 60 "Positon" "Arial" Color.black ( 160, 830 )
+            , renderTextWithColorCenter env.globalData.internalData 60 "Changing" "Arial" Color.black ( 160, 950 )
+            , renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 870, 880 )
+            ]
+
+    else
+        empty
 
 
-renderAction : Env cdata userdata -> data -> bdata -> Renderable
+renderAction : Env cdata userdata -> Data -> BaseData -> Renderable
 renderAction env data basedata =
     Canvas.group []
         [ Canvas.shapes
             [ stroke Color.black ]
             [ path (posToReal env.globalData.internalData ( 320, 680 )) [ lineTo (posToReal env.globalData.internalData ( 320, 1080 )) ] ]
+        , renderChangePosition env data basedata
         ]
 
 

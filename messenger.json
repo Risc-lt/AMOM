@@ -18,15 +18,7 @@
                 "Play"
             ]
         },
-<<<<<<< HEAD
         "SampleStory": []
-=======
-        "Level1": [],
-        "Background": [],
-        "Dialogue": [],
-        "Charactermoving": [],
-        "Viewangle": []
->>>>>>> ced148d41f7c484d229f875c49c4e036ce813d26
     },
     "sceneprotos": {
         "Story": {

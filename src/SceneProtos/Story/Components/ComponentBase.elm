@@ -1,7 +1,8 @@
-module SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..), ComponentTarget, BaseData)
+module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.Dialogue.Init as Dialogue
+
 
 {-|
 
@@ -11,12 +12,9 @@ import SceneProtos.Story.Components.Dialogue.Init as Dialogue
 @docs ComponentMsg, ComponentTarget, BaseData
 
 -}
-
-
-
 type ComponentMsg
-    = NewCharacter 
-    | CameraMsg 
+    = NewCharacter
+    | CameraMsg
     | NullComponentMsg
 
 

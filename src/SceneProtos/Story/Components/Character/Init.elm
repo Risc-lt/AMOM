@@ -8,18 +8,23 @@ module SceneProtos.Story.Components.Character.Init exposing (InitData)
 @docs InitData
 
 -}
+
+import Current exposing (Current)
+import Messenger.Render.SpriteSheet exposing (SpriteSheet)
+
+
 type Direction
     = Up
     | Down
     | Right
     | Left
 
+
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    { name : String
-    , velocity : Float
-    , x : Float
-    , y : Float
-    , direction : Direction
+    { spriteSheet : String
+    , currentFrame : Int
+    , frameCount : Int
+    , position : ( Float, Float )
     }

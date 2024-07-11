@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Character.Model exposing (component)
+module SceneProtos.Story.Components.Bruce.Model exposing (component)
 
 {-| Component model
 
@@ -10,7 +10,6 @@ import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
-import Messenger.Render.SpriteSheet exposing (spriteSheetSize)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
@@ -41,7 +40,7 @@ view env data basedata =
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "Character"
+    tar == "Bruce"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

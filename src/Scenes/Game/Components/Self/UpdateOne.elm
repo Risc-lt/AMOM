@@ -25,39 +25,68 @@ handleKeyDown key list env evnt data basedata =
             else
                 ( ( data, basedata ), [], ( env, False ) )
 
-        32 ->
-            if basedata.state == PlayerTurn then
-                let
-                    attackMsg =
-                        if data.career == "archer" then
-                            [ Other ( "Enemy", Attack Physical basedata.curEnemy ) ]
-
-                        else
-                            [ Other ( "Enemy", Attack Magical basedata.curEnemy ) ]
-                in
-                ( ( data, { basedata | state = PlayerReturn } ), attackMsg, ( env, False ) )
-
-            else
-                ( ( data, basedata ), [], ( env, False ) )
-
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
 
 
-handleMouseDown : Float -> Float -> Data -> Data
-handleMouseDown x y data =
-    if x > data.x - 5 && x < data.x + 105 && y > data.y - 5 && y < data.y + 105 then
-        if data.state /= Working then
-            { data | state = Working }
+handleMouseDown : Float -> Float -> Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMouseDown x y self env evnt data basedata =
+    case basedata.state of
+        PlayerTurn ->
+            if x > 320 && x < 540 && y > 680 && y < 1080 then
+                ( ( data, { basedata | state = TargetSelection } ), [], ( env, False ) )
 
-        else if data.state == Working then
-            { data | state = Waiting }
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
-        else
-            data
+        TargetSelection ->
+            let
+                position =
+                    if x > 640 && x < 1030 && y > 680 && y < 813.3 then
+                        4
 
-    else
-        data
+                    else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
+                        5
+
+                    else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
+                        6
+
+                    else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
+                        1
+
+                    else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
+                        2
+
+                    else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
+                        3
+
+                    else
+                        0
+
+                melee =
+                    self.career == "swordsman" || self.career == "pharmacist"
+
+                front =
+                    List.any (\p -> p <= 3) basedata.enemyNum
+
+                effective =
+                    if melee && front && position > 3 then
+                        False
+
+                    else
+                        True
+
+                newState =
+                    if List.member position basedata.enemyNum && effective then
+                        PlayerAttack
+
+                    else
+                        TargetSelection
+            in
+            ( ( data, { basedata | curEnemy = position, state = newState } ), [], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 handleMove : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -71,7 +100,7 @@ handleMove list env evnt data basedata =
                 1220
 
         newX =
-            if basedata.state == PlayerTurn then
+            if basedata.state == PlayerAttack then
                 if data.x > 670 then
                     data.x - 5
 
@@ -88,12 +117,26 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        ( newBaseData, msg ) =
+        newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                ( { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }, [] )
+                { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }
+
+            else if basedata.state == PlayerAttack && newX <= 670 then
+                { basedata | state = PlayerReturn }
 
             else
-                ( basedata, [] )
+                basedata
+
+        msg =
+            if basedata.state == PlayerAttack && newX <= 670 then
+                if data.career == "archer" then
+                    [ Other ( "Enemy", Attack Physical basedata.curEnemy ) ]
+
+                else
+                    [ Other ( "Enemy", Attack Magical basedata.curEnemy ) ]
+
+            else
+                []
     in
     ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
 
@@ -107,6 +150,13 @@ updateOne list env evnt data basedata =
         KeyDown key ->
             if (basedata.state == PlayerTurn && data.x <= 670) || basedata.state == GameBegin then
                 handleKeyDown key list env evnt data basedata
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
+
+        MouseUp key ( x, y ) ->
+            if key == 0 then
+                handleMouseDown x y data env evnt data basedata
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

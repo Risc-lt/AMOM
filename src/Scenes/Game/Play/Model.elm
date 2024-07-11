@@ -8,7 +8,7 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 
 -}
 
-import Canvas exposing (lineTo, path)
+import Canvas exposing (lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)
 import Color
 import Lib.Base exposing (SceneMsg)
@@ -120,8 +120,11 @@ view env data =
             [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
             , Canvas.shapes [ stroke Color.black ]
                 [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
-                , path (posToReal env.globalData.internalData ( 0, 680 )) [ lineTo (posToReal env.globalData.internalData ( 1420, 680 )) ]
-                , path (posToReal env.globalData.internalData ( 1420, 0 )) [ lineTo (posToReal env.globalData.internalData ( 1420, 1080 )) ]
+                , path (posToReal env.globalData.internalData ( 0, 680 ))
+                    [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
+                    , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
+                    , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
+                    ]
                 ]
             , viewComponents env data.components
             ]

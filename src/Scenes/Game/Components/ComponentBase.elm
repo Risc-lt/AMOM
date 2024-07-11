@@ -30,9 +30,11 @@ type ComponentMsg
     | UIInit InitData
     | Attack AttackType Int
     | ChangeTarget ( Int, Int )
+    | EnemyDie (List Int)
     | SwitchTurn
     | ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
+    | ChangeBase BaseData
     | GameOver
     | Defeated
     | NullComponentMsg
@@ -50,6 +52,8 @@ type alias ComponentTarget =
 type Gamestate
     = GameBegin
     | PlayerTurn
+    | PlayerAttack
+    | TargetSelection
     | PlayerReturn
     | EnemyMove
     | EnemyAttack
@@ -58,7 +62,7 @@ type Gamestate
 
 type alias BaseData =
     { state : Gamestate
-    , enemyNum : ( Int, Int )
+    , enemyNum : List Int
     , selfNum : ( Int, Int )
     , curChar : Int
     , curEnemy : Int
@@ -68,7 +72,7 @@ type alias BaseData =
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyNum = ( 3, 3 )
+    , enemyNum = [ 1, 2, 3, 4, 5, 6 ]
     , selfNum = ( 2, 2 )
     , curChar = 1
     , curEnemy = 1

@@ -17,7 +17,8 @@
             "layers": [
                 "Play"
             ]
-        }
+        },
+        "SampleStory": []
     },
     "sceneprotos": {
         "Story": {

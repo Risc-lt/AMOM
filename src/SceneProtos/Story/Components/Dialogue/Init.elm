@@ -24,5 +24,5 @@ type alias InitData =
 
 type alias CreateInitData =
     { speaker : String
-    , content : ( Float, Float )
+    , content : String
     }

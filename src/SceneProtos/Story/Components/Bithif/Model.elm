@@ -15,12 +15,22 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    {}
+    { standingFigure : String
+    , movingSheet : String
+    , currentFrame : Int
+    , position : ( Float, Float )
+    , dx : Int
+    , dy : Int
+    }
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( {}, () )
+    ( { standingFigure = "archer"
+        , movingSheet = "archer"
+        , currentFrame = 1
+        , position = (0,0), dx = 0, dy = 0
+    }, () )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

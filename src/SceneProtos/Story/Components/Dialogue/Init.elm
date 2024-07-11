@@ -13,4 +13,8 @@ module SceneProtos.Story.Components.Dialogue.Init exposing (InitData)
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    {}
+    { name : String
+    , velocity : Float
+    , x : Float
+    , y : Float
+    }

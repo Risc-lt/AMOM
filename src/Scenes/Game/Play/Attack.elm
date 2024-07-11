@@ -26,7 +26,7 @@ judgeHelper : GameComponent -> GameComponent -> List ( ComponentTarget, Componen
 judgeHelper enemy self =
     let
         realEnemyNum =
-            Tuple.first (unroll enemy).baseData.enemyNum + Tuple.second (unroll enemy).baseData.enemyNum
+            List.length (unroll enemy).baseData.enemyNum
 
         realSelfNum =
             Tuple.first (unroll self).baseData.selfNum + Tuple.second (unroll self).baseData.selfNum

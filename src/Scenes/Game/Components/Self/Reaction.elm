@@ -45,18 +45,15 @@ getTargetChar data num =
 
 getNewData : List Self -> Self -> List Self
 getNewData data newChar =
-    List.filter
-        (\x -> x.hp /= 0)
-    <|
-        List.map
-            (\x ->
-                if x.position == newChar.position then
-                    newChar
+    List.map
+        (\x ->
+            if x.position == newChar.position then
+                newChar
 
-                else
-                    x
-            )
-            data
+            else
+                x
+        )
+        data
 
 
 findMin : List Self -> Int
@@ -80,22 +77,11 @@ handleAttack attackType num env msg data basedata =
             getNewData data targetChar
 
         remainCharNum =
-            ( List.length <| List.filter (\x -> x.position <= 3) newData
-            , List.length <| List.filter (\x -> x.position > 3) newData
+            ( List.length <| List.filter (\x -> x.position <= 3 && x.hp /= 0) newData
+            , List.length <| List.filter (\x -> x.position > 3 && x.hp /= 0) newData
             )
 
-        newChar =
-            if Debug.log "remainSelf" remainCharNum == Debug.log "pre" basedata.selfNum then
-                basedata.curChar
-
-            else
-                findMin newData
-
-        newMsg =
-            if remainCharNum == basedata.selfNum then
-                []
-
-            else
-                [ Other ( "Enemy", ChangeTarget (Debug.log "newNum" remainCharNum) ) ]
+        newRemain =
+            [ Other ( "Enemy", ChangeTarget (Debug.log "newNum" remainCharNum) ) ]
     in
-    ( ( newData, { basedata | selfNum = remainCharNum } ), newMsg, env )
+    ( ( newData, { basedata | selfNum = remainCharNum } ), newRemain, env )

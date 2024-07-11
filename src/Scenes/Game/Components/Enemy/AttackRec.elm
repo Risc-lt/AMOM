@@ -63,22 +63,15 @@ handleAttack position env msg data basedata =
             attackRec data position
 
         remainNum =
-            ( List.length <| List.filter (\x -> x.position <= 3) newData
-            , List.length <| List.filter (\x -> x.position > 3) newData
-            )
-
-        newEnemy =
-            if remainNum == basedata.enemyNum then
-                basedata.curEnemy
-
-            else
-                findMin newData
+            List.map (\x -> x.position) <|
+                List.filter (\x -> x.hp /= 0) <|
+                    newData
 
         newMsg =
             if remainNum == basedata.enemyNum then
                 []
 
             else
-                [ Other ( "Self", ChangeTarget ( newEnemy, 0 ) ) ]
+                [ Other ( "Self", EnemyDie remainNum ) ]
     in
     ( ( newData, { basedata | enemyNum = remainNum } ), newMsg, env )

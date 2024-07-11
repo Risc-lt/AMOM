@@ -10,6 +10,7 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 
 import Canvas
 import Lib.Base exposing (SceneMsg)
+import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, viewComponents)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))

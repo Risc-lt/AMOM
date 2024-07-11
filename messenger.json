@@ -17,7 +17,12 @@
             "layers": [
                 "Play"
             ]
-        }
+        },
+        "Level1": [],
+        "Background": [],
+        "Dialogue": [],
+        "Charactermoving": [],
+        "Viewangle": []
     },
     "sceneprotos": {
         "Story": {

@@ -44,6 +44,8 @@ allTexture =
         [ ( "uglyman", "assets/character/monster.png" )
         , ( "magician", "assets/character/magic.png" )
         , ( "archer", "assets/character/archer.png" )
+        , ( "swordsman", "assets/character/assassin.png" )
+        , ( "pharmacist", "assets/character/fan.png" )
         ]
 
 

@@ -19,7 +19,7 @@ type alias Enemy =
     { x : Float
     , y : Float
     , hp : Float
-    , id : Int
+    , position : Int
     , race : String
     }
 
@@ -34,19 +34,26 @@ type alias InitData =
 -}
 emptyInitData : InitData
 emptyInitData =
-    [ { x = 100
-      , y = 100
-      , hp = 100
-      , id = 1
-      , race = "Physical"
-      }
-    , { x = 100
-      , y = 200
-      , hp = 100
-      , id = 2
-      , race = "Magical"
-      }
-    ]
+    List.map
+        (\p ->
+            { x = 230
+            , y = toFloat (160 + 130 * (p - 1))
+            , hp = 100
+            , position = p
+            , race = "Physical"
+            }
+        )
+        [ 1, 2, 3 ]
+        ++ List.map
+            (\p ->
+                { x = 100
+                , y = toFloat (160 + 130 * (p - 4))
+                , hp = 100
+                , position = p
+                , race = "Magical"
+                }
+            )
+            [ 4, 5, 6 ]
 
 
 {-| Default enemy
@@ -56,6 +63,6 @@ defaultEnemy =
     { x = 100
     , y = 100
     , hp = 100
-    , id = 1
+    , position = 1
     , race = "Physical"
     }

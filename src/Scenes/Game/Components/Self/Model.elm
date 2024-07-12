@@ -6,8 +6,8 @@ module Scenes.Game.Components.Self.Model exposing (component)
 
 -}
 
-import Canvas
-import Canvas.Settings exposing (fill)
+import Canvas exposing (empty)
+import Canvas.Settings exposing (fill, stroke)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -19,7 +19,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
-import Scenes.Game.Components.Self.UpdateHelper exposing (updateOne)
+import Scenes.Game.Components.Self.UpdateHelper exposing (handleMouseDown, updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -37,27 +37,97 @@ init env initMsg =
             ( [], initBaseData )
 
 
+posExchange : UserEvent -> Data -> BaseData -> Data
+posExchange evnt data basedata =
+    if basedata.state == GameBegin then
+        case evnt of
+            MouseDown key ( x, y ) ->
+                let
+                    newData =
+                        if key == 0 then
+                            List.map
+                                (\s ->
+                                    handleMouseDown x y s
+                                )
+                                data
+
+                        else
+                            data
+
+                    targets =
+                        List.filter (\s -> s.state == Working) newData
+
+                    rest =
+                        List.filter (\s -> s.state /= Working) newData
+
+                    reTargets =
+                        List.reverse targets
+
+                    newTargets =
+                        if List.length targets == 2 then
+                            List.map2
+                                (\o ->
+                                    \n ->
+                                        { n | x = o.x, y = o.y, position = o.position, state = Waiting }
+                                )
+                                targets
+                                reTargets
+
+                        else
+                            targets
+                in
+                newTargets ++ rest
+
+            _ ->
+                data
+
+    else
+        data
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     let
+        posChanged =
+            posExchange evnt data basedata
+
         curChar =
-            Maybe.withDefault { defaultSelf | id = 0 } <|
-                List.head <|
-                    List.filter (\x -> x.id == basedata.curChar) data
+            if basedata.state /= GameBegin then
+                if basedata.curChar <= 6 then
+                    Maybe.withDefault { defaultSelf | position = 0 } <|
+                        List.head <|
+                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
+
+                else
+                    { defaultSelf | position = -1 }
+
+            else
+                defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne data env evnt curChar basedata
+            if curChar.position == 0 then
+                ( ( curChar, { basedata | curChar = basedata.curChar + 1 } ), [], ( env, False ) )
+
+            else if curChar.position == -1 && basedata.state == PlayerTurn then
+                ( ( curChar, { basedata | state = EnemyMove } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
+
+            else
+                updateOne posChanged env evnt curChar basedata
 
         newData =
-            List.map
-                (\x ->
-                    if x.id == basedata.curChar then
-                        newChar
+            if basedata.state /= GameBegin then
+                List.map
+                    (\x ->
+                        if x.position == basedata.curChar && x.hp /= 0 then
+                            newChar
 
-                    else
-                        x
-                )
-                data
+                        else
+                            x
+                    )
+                    posChanged
+
+            else
+                posChanged
     in
     ( ( newData, newBasedata ), msg, ( newEnv, flag ) )
 
@@ -65,14 +135,14 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Attack attackType id ->
-            handleAttack attackType id env msg data basedata
+        Attack attackType num ->
+            handleAttack attackType num env msg data basedata
 
-        ChangeTarget id ->
-            ( ( data, { basedata | curEnemy = id } ), [], env )
+        ChangeTarget ( position, _ ) ->
+            ( ( data, { basedata | curEnemy = position } ), [], env )
 
         SwitchTurn ->
-            ( ( data, { basedata | state = PlayerTurn } ), [], env )
+            ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
@@ -91,6 +161,13 @@ renderChar char env =
         ]
 
 
+renderRegion : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderRegion char env =
+    Canvas.shapes
+        [ stroke Color.black ]
+        [ rect env.globalData.internalData ( char.x - 5, char.y - 5 ) ( 110, 110 ) ]
+
+
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     let
@@ -98,9 +175,18 @@ view env data basedata =
             List.map
                 (\x -> renderChar x env)
                 data
+
+        regionView =
+            if basedata.state == GameBegin then
+                List.map
+                    (\x -> renderRegion x env)
+                    data
+
+            else
+                [ empty ]
     in
     ( Canvas.group []
-        basicView
+        (regionView ++ basicView)
     , 1
     )
 

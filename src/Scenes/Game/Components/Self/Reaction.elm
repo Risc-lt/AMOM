@@ -16,8 +16,8 @@ type alias Data =
 
 checkHealth : Self -> Self
 checkHealth char =
-    if char.hp <= 0 then
-        { char | hp = 0, state = Dead }
+    if char.hp < 0 then
+        { char | hp = 0 }
 
     else
         char
@@ -36,20 +36,21 @@ getHurt attackType char =
 
 
 getTargetChar : List Self -> Int -> Self
-getTargetChar data id =
-    Maybe.withDefault { defaultSelf | id = 0 } <|
+getTargetChar data num =
+    Maybe.withDefault { defaultSelf | position = 0 } <|
         List.head <|
-            List.filter (\x -> x.id == id) data
+            List.drop (num - 1) <|
+                List.filter (\x -> x.hp /= 0) data
 
 
 getNewData : List Self -> Self -> List Self
 getNewData data newChar =
     List.filter
-        (\x -> x.state /= Dead)
+        (\x -> x.hp /= 0)
     <|
         List.map
             (\x ->
-                if x.id == newChar.id then
+                if x.position == newChar.position then
                     newChar
 
                 else
@@ -61,24 +62,27 @@ getNewData data newChar =
 findMin : List Self -> Int
 findMin data =
     data
-        |> List.map (\x -> x.id)
+        |> List.filter (\x -> x.hp /= 0)
+        |> List.map (\x -> x.position)
         |> List.sort
         |> List.head
         |> Maybe.withDefault 100
 
 
 handleAttack : AttackType -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack attackType id env msg data basedata =
+handleAttack attackType num env msg data basedata =
     let
         targetChar =
             getHurt attackType <|
-                getTargetChar data id
+                getTargetChar data num
 
         newData =
             getNewData data targetChar
 
         remainCharNum =
-            List.length <| newData
+            ( List.length <| List.filter (\x -> x.position <= 3) newData
+            , List.length <| List.filter (\x -> x.position > 3) newData
+            )
 
         newChar =
             if Debug.log "remainSelf" remainCharNum == Debug.log "pre" basedata.selfNum then
@@ -92,6 +96,6 @@ handleAttack attackType id env msg data basedata =
                 []
 
             else
-                [ Other ( "Enemy", ChangeTarget (Debug.log "newChar" newChar) ) ]
+                [ Other ( "Enemy", ChangeTarget (Debug.log "newNum" remainCharNum) ) ]
     in
-    ( ( newData, { basedata | selfNum = remainCharNum, curChar = newChar } ), newMsg, env )
+    ( ( newData, { basedata | selfNum = remainCharNum } ), newMsg, env )

@@ -32,8 +32,8 @@ type alias Data =
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( { standingFigure = "archer"
-        , movingSheet = "archer"
+    ( { standingFigure = "swordsman"
+        , movingSheet = "swordsman"
         , currentFrame = 1
         , position = (0,0), move = False, visible = False, dx = 0, dy = 0, destination = (0,0)
     }, () )

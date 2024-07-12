@@ -109,12 +109,12 @@ view : LayerView SceneCommonData UserData Data
 view env data =
     let
         result =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1200, 400 ) ]
-            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 550, 150 )
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
+            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
             ]
 
         basicView =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1200, 400 ) ]
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
             , viewComponents env data.components
             ]
 

@@ -23,8 +23,18 @@
     "sceneprotos": {
         "Story": {
             "raw": false,
+            "components": {
+                "Components": [
+                    "Background",
+                    "Bithif",
+                    "Bruce",
+                    "Bulingze",
+                    "Character",
+                    "Dialogue",
+                    "Self"
+                ]
+            },
             "layers": [
-                "Background",
                 "Main"
             ]
         },

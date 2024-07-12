@@ -13,6 +13,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Base exposing (UserEvent(..))
 
 
 type alias Data =
@@ -41,8 +42,14 @@ update env evnt data basedata =
         newPos =
             Tuple.mapFirst ((+) (toFloat data.dx)) data.position
                 |> Tuple.mapSecond ((+) (toFloat data.dy))
+        newCurrentFrame =
+            (modBy 4 (data.currentFrame + 1)) + 1
     in
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        Tick dt ->  
+            ( ( { data | position = newPos, currentFrame = newCurrentFrame }, basedata ), [], ( env, False ) )
+        _ ->
+            ( (  data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -56,7 +63,7 @@ view env data basedata =
         let
             newSprite = 
                 if data.dx /= 0 || data.dy /= 0 then
-                    data.movingSheet ++ String.fromInt data.currentFrame
+                    data.movingSheet ++ "." ++ String.fromInt data.currentFrame
                 else
                     data.standingFigure
         in

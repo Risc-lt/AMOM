@@ -41,8 +41,15 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "uglyman", "assets/character/uglyman.png" )
-        , ( "magician", "assets/character/magician.png" )
+        [ ( "monster", "assets/character/monster.png" )
+        , ( "magician", "assets/character/magic.png" )
+        , ( "archer", "assets/character/archer.png" )
+        , ( "pharmacist", "assets/character/pharmacist.png" )
+        , ( "swordsman", "assets/character/swordsman.png" )
+        , ( "background ", "assets/character/background.png" )
+        , ( "head_archer", "assets/character/newhead2.png" )
+        , ( "head_magic", "assets/character/newhead.png" )
+        , ( "dialogue_frame", "assets/character/dialogue_frame.png" )
         ]
 
 
@@ -70,7 +77,36 @@ Example:
 -}
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
-    Dict.empty
+    Dict.fromList
+        [{- ( "archer"
+            , [ ( "1"
+                , { realStartPoint = ( 0, 0 )
+                  , realSize = ( 160, 160 )
+                  }
+                )
+              , ( "2"
+                , { realStartPoint = ( 160, 0 )
+                  , realSize = ( 160, 160 )
+                  }
+                )
+              , ( "3"
+                , { realStartPoint = ( 0, 160 )
+                  , realSize = ( 160, 160 )
+                  }
+                )
+              , ( "4"
+                , { realStartPoint = ( 160, 160 )
+                  , realSize = ( 160, 160 )
+                  }
+                )
+              ]
+            ) as reference
+         -}
+        ]
+
+
+
+--Dict.empty
 
 
 {-| All audio assets.

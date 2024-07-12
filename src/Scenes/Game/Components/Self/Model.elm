@@ -6,8 +6,8 @@ module Scenes.Game.Components.Self.Model exposing (component)
 
 -}
 
-import Canvas
-import Canvas.Settings exposing (fill)
+import Canvas exposing (empty)
+import Canvas.Settings exposing (fill, stroke)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -17,12 +17,14 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
+import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    Self
+    List Self
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
@@ -32,106 +34,187 @@ init env initMsg =
             ( initData, initBaseData )
 
         _ ->
-            ( { x = 800, y = 100, hp = 100, id = 1 }, initBaseData )
+            ( [], initBaseData )
 
 
-handleKeyDown : Int -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleKeyDown key env evnt data basedata =
-    case key of
-        13 ->
-            if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn } ), [], ( env, False ) )
+selection : Float -> Float -> Self -> Self
+selection x y data =
+    if x > data.x - 5 && x < data.x + 105 && y > data.y - 5 && y < data.y + 105 then
+        if data.state /= Working then
+            { data | state = Working }
 
-            else
-                ( ( data, basedata ), [], ( env, False ) )
+        else if data.state == Working then
+            { data | state = Waiting }
 
-        32 ->
-            if basedata.state == PlayerTurn then
-                ( ( data, { basedata | state = PlayerReturn } ), [ Other ( "Enemy", PhysicalAttack 1 ) ], ( env, False ) )
+        else
+            data
 
-            else
-                ( ( data, basedata ), [], ( env, False ) )
-
-        _ ->
-            ( ( data, basedata ), [], ( env, False ) )
+    else
+        data
 
 
-handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleMove env evnt data basedata =
-    let
-        newX =
-            if basedata.state == PlayerTurn then
-                if data.x > 400 then
-                    data.x - 2
+posExchange : UserEvent -> Data -> BaseData -> Data
+posExchange evnt data basedata =
+    if basedata.state == GameBegin then
+        case evnt of
+            MouseUp key ( x, y ) ->
+                let
+                    newData =
+                        if key == 0 then
+                            List.map
+                                (\s ->
+                                    selection x y s
+                                )
+                                data
 
-                else
-                    data.x
+                        else
+                            data
 
-            else if basedata.state == PlayerReturn then
-                if data.x < 800 then
-                    data.x + 2
+                    targets =
+                        List.filter (\s -> s.state == Working) newData
 
-                else
-                    data.x
+                    rest =
+                        List.filter (\s -> s.state /= Working) newData
 
-            else
-                data.x
+                    reTargets =
+                        List.reverse targets
 
-        ( newBaseData, msg ) =
-            if basedata.state == PlayerReturn && newX >= 800 then
-                ( { basedata | state = EnemyMove }, [ Other ( "Enemy", SwitchTurn ) ] )
+                    newTargets =
+                        if List.length targets == 2 then
+                            List.map2
+                                (\o ->
+                                    \n ->
+                                        { n | x = o.x, y = o.y, position = o.position, state = Waiting }
+                                )
+                                targets
+                                reTargets
 
-            else
-                ( basedata, [] )
-    in
-    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
+                        else
+                            targets
+                in
+                newTargets ++ rest
+
+            _ ->
+                data
+
+    else
+        data
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    case evnt of
-        Tick _ ->
-            handleMove env evnt data basedata
+    let
+        posChanged =
+            posExchange evnt data basedata
 
-        KeyDown key ->
-            if (basedata.state == PlayerTurn && data.x <= 400) || basedata.state == GameBegin then
-                handleKeyDown key env evnt data basedata
+        curChar =
+            if basedata.state /= GameBegin then
+                if basedata.curChar <= 6 then
+                    Maybe.withDefault { defaultSelf | position = 0 } <|
+                        List.head <|
+                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
+
+                else
+                    { defaultSelf | position = -1 }
 
             else
-                ( ( data, basedata ), [], ( env, False ) )
+                defaultSelf
 
-        _ ->
-            ( ( data, basedata ), [], ( env, False ) )
+        ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
+            if curChar.position == 0 then
+                ( ( curChar, { basedata | curChar = basedata.curChar + 1 } ), [], ( env, False ) )
+
+            else if curChar.position == -1 && basedata.state == PlayerTurn then
+                ( ( curChar, { basedata | state = EnemyMove } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
+
+            else
+                updateOne posChanged env evnt curChar basedata
+
+        newData =
+            if basedata.state /= GameBegin then
+                List.map
+                    (\x ->
+                        if x.position == basedata.curChar && x.hp /= 0 then
+                            newChar
+
+                        else
+                            x
+                    )
+                    posChanged
+
+            else
+                posChanged
+
+        interfaceMsg =
+            [ Other ( "Interface", ChangeSelfs newData )
+            , Other ( "Interface", ChangeBase newBasedata )
+            ]
+    in
+    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        PhysicalAttack id ->
-            ( ( { data | hp = data.hp - 10 }, { basedata | selfHP = basedata.selfHP - 10 } ), [], env )
+        Attack attackType num ->
+            handleAttack attackType num env msg data basedata
+
+        EnemyDie length ->
+            ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn ->
-            ( ( data, { basedata | state = PlayerTurn } ), [], env )
+            ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
 
         Defeated ->
-            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
+            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
 
         _ ->
             ( ( data, basedata ), [], env )
 
 
+renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderChar char env =
+    if char.hp /= 0 then
+        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+
+    else
+        empty
+
+
+renderRegion : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderRegion char env =
+    let
+        color =
+            if char.state == Waiting then
+                Color.black
+
+            else
+                Color.green
+    in
+    Canvas.shapes
+        [ stroke color ]
+        [ rect env.globalData.internalData ( char.x - 5, char.y - 5 ) ( 110, 110 ) ]
+
+
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     let
-        hpBar =
-            Canvas.shapes
-                [ fill Color.red ]
-                [ rect env.globalData.internalData ( data.x, data.y ) ( 100 * (data.hp / 100), 5 ) ]
+        basicView =
+            List.map
+                (\x -> renderChar x env)
+                data
+
+        regionView =
+            if basedata.state == GameBegin then
+                List.map
+                    (\x -> renderRegion x env)
+                    data
+
+            else
+                [ empty ]
     in
     ( Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( data.x, data.y ) ( 100, 100 ) "magician"
-        , hpBar
-        ]
+        (regionView ++ basicView)
     , 1
     )
 

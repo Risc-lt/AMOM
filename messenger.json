@@ -11,13 +11,37 @@
             "components": {
                 "Components": [
                     "Enemy",
-                    "Self"
+                    "Self",
+                    "Interface"
                 ]
             },
             "layers": [
                 "Play"
             ]
-        }
+        },
+        "SampleStory": []
     },
-    "sceneprotos": {}
+    "sceneprotos": {
+        "Story": {
+            "raw": false,
+            "components": {
+                "Components": [
+                    "Background",
+                    "Bithif",
+                    "Bruce",
+                    "Bulingze",
+                    "Character",
+                    "Dialogue",
+                    "Wenderd"
+                ]
+            },
+            "layers": [
+                "Main"
+            ]
+        },
+        "Game": {
+            "raw": false,
+            "layers": []
+        }
+    }
 }

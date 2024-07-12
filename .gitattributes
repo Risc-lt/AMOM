@@ -38,3 +38,5 @@ assets/character/head_magic.png filter=lfs diff=lfs merge=lfs -text
 assets/character/dialogue_frame.png filter=lfs diff=lfs merge=lfs -text
 assets/character/newhead.png filter=lfs diff=lfs merge=lfs -text
 assets/character/newhead2.png filter=lfs diff=lfs merge=lfs -text
+assets/character/pharmacist.png filter=lfs diff=lfs merge=lfs -text
+assets/character/swordsman.png filter=lfs diff=lfs merge=lfs -text

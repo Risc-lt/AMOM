@@ -19,6 +19,7 @@ import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
+import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
@@ -129,6 +130,11 @@ view env data =
             , viewComponents env data.components
             ]
 
+        background =
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1200, 400 ) ]
+            , renderSprite env.globalData.internalData [] ( 10, 10 ) ( 960, 0 ) "background"
+            ]
+
         outComeView =
             if env.commonData.gameover then
                 Canvas.group
@@ -138,7 +144,7 @@ view env data =
             else
                 Canvas.group
                     []
-                    basicView
+                    (background ++ basicView)
     in
     outComeView
 

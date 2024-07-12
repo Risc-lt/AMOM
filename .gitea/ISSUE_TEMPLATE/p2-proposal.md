@@ -1,0 +1,52 @@
+Fill in the following template. Once ready, contact SIM (Joe and Long) for review. Assign the issue
+to them and tag them using `@joe` and `@long`. SIM will tick features once approved. 
+
+A total of 5 to 8 features must be proposed. List them in decreasing order of importance. Delete any unused record.
+
+- [ ] 1. Name
+  - description: 
+  - time estimate: 
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 2. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - assigned to: 
+- [ ] 3. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 4. Name
+  - description:
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 5. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 6. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 7. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 
+- [ ] 8. Name
+  - description: 
+  - time estimate:
+  - current status: implemented/partial/none
+  - backup plan:
+  - assigned to: 

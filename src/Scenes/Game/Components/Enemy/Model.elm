@@ -96,7 +96,7 @@ updaterec env msg data basedata =
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) "uglyman"
+        [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) "monster"
         , Canvas.shapes
             [ fill Color.red ]
             [ rect env.globalData.internalData ( enemy.x, enemy.y ) ( 100 * (enemy.hp / 100), 5 ) ]

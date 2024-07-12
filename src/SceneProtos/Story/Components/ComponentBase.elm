@@ -21,8 +21,8 @@ type ComponentMsg
     | NextDialogue Dialogue.CreateInitData
     | CloseDialogue
     | CameraMsg (Float,Float)
-    | NewWenderedMsg (Float,Float)
-    | VanishWenderedMsg 
+    | NewWenderdMsg (Float,Float)
+    | VanishWenderdMsg 
     | NewBithifMsg (Float,Float)
     | VanishBithifMsg 
     | NewBruceMsg (Float,Float)

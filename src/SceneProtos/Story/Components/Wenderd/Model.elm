@@ -74,12 +74,12 @@ isReached (originX,originY) (newX,newY) (desX,desY) =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        NewWenderedMsg (x,y) ->
+        NewWenderdMsg (x,y) ->
             let
                 initPosition = (x,y)
             in
             ( ( { data | position = initPosition, visible = True }, basedata ), [], env )
-        VanishWenderedMsg -> 
+        VanishWenderdMsg -> 
             ( ( { data | visible = False }, basedata ), [], env )
         MoveTo (x,y) -> 
             let

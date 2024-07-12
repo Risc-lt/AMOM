@@ -71,7 +71,7 @@ update env evnt data basedata =
                 )
                 data
     in
-    ( ( newData, newBasedata ), msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), Other ( "Interface", ChangeEnemies newData ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

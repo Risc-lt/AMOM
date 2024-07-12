@@ -19,7 +19,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
-import Scenes.Game.Components.Self.UpdateHelper exposing (handleMouseDown, updateOne)
+import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -37,17 +37,33 @@ init env initMsg =
             ( [], initBaseData )
 
 
+selection : Float -> Float -> Self -> Self
+selection x y data =
+    if x > data.x - 5 && x < data.x + 105 && y > data.y - 5 && y < data.y + 105 then
+        if data.state /= Working then
+            { data | state = Working }
+
+        else if data.state == Working then
+            { data | state = Waiting }
+
+        else
+            data
+
+    else
+        data
+
+
 posExchange : UserEvent -> Data -> BaseData -> Data
 posExchange evnt data basedata =
     if basedata.state == GameBegin then
         case evnt of
-            MouseDown key ( x, y ) ->
+            MouseUp key ( x, y ) ->
                 let
                     newData =
                         if key == 0 then
                             List.map
                                 (\s ->
-                                    handleMouseDown x y s
+                                    selection x y s
                                 )
                                 data
 
@@ -128,8 +144,13 @@ update env evnt data basedata =
 
             else
                 posChanged
+
+        interfaceMsg =
+            [ Other ( "Interface", ChangeSelfs newData )
+            , Other ( "Interface", ChangeBase newBasedata )
+            ]
     in
-    ( ( newData, newBasedata ), msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -138,14 +159,14 @@ updaterec env msg data basedata =
         Attack attackType num ->
             handleAttack attackType num env msg data basedata
 
-        ChangeTarget ( position, _ ) ->
-            ( ( data, { basedata | curEnemy = position } ), [], env )
+        EnemyDie length ->
+            ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn ->
             ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
 
         Defeated ->
-            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
+            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -153,18 +174,25 @@ updaterec env msg data basedata =
 
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
-    Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
-        , Canvas.shapes
-            [ fill Color.red ]
-            [ rect env.globalData.internalData ( char.x, char.y ) ( 100 * (char.hp / 100), 5 ) ]
-        ]
+    if char.hp /= 0 then
+        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+
+    else
+        empty
 
 
 renderRegion : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderRegion char env =
+    let
+        color =
+            if char.state == Waiting then
+                Color.black
+
+            else
+                Color.green
+    in
     Canvas.shapes
-        [ stroke Color.black ]
+        [ stroke color ]
         [ rect env.globalData.internalData ( char.x - 5, char.y - 5 ) ( 110, 110 ) ]
 
 

@@ -8,12 +8,13 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 
 -}
 
-import Canvas
-import Canvas.Settings exposing (fill)
+import Canvas exposing (lineTo, moveTo, path)
+import Canvas.Settings exposing (fill, stroke)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
+import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
@@ -23,6 +24,8 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
+import Scenes.Game.Components.Interface.Init as UIMsg
+import Scenes.Game.Components.Interface.Model as UI
 import Scenes.Game.Components.Self.Init as SelfMsg
 import Scenes.Game.Components.Self.Model as Self
 import Scenes.Game.Play.Attack exposing (judgeAttack)
@@ -43,6 +46,7 @@ init env initMsg =
     InitData
         [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
         , Self.component (SelfInit <| SelfMsg.emptyInitData) env
+        , UI.component (UIInit <| UIMsg.emptyInitData) env
         ]
 
 
@@ -114,7 +118,15 @@ view env data =
             ]
 
         basicView =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
+            , Canvas.shapes [ stroke Color.black ]
+                [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
+                , path (posToReal env.globalData.internalData ( 0, 680 ))
+                    [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
+                    , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
+                    , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
+                    ]
+                ]
             , viewComponents env data.components
             ]
 

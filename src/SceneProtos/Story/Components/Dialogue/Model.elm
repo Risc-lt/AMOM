@@ -16,6 +16,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Color
 import Messenger.Base exposing (GlobalData)
+import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 
 
 type alias Data =
@@ -52,7 +53,25 @@ update env evnt data basedata =
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
-    ( ( data, basedata ), [], env )
+    case msg of
+        NewDialogueMsg newDialogue -> 
+            let
+                newSpeaker = newDialogue.speaker
+                newContent = newDialogue.content
+                state = True
+            in
+            ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+        NextDialogue newDialogue ->
+            let
+                newSpeaker = newDialogue.speaker
+                newContent = newDialogue.content
+                state = True
+            in
+            ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+        CloseDialogue ->
+            ( ( { data | isSpeaking = False }, basedata ), [], env )
+        _ ->
+            ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

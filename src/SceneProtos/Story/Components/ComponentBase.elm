@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Camera)
+module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 
 import SceneProtos.Story.Components.Bithif.Init as Bithif
 import SceneProtos.Story.Components.Bruce.Init as Bruce
@@ -18,17 +18,20 @@ import SceneProtos.Story.Components.Wendered.Init as Wendered
 -}
 type ComponentMsg
     = NewDialogueMsg Dialogue.CreateInitData
-    | CameraMsg Camera
-    | NewWenderedMsg 
-    | NewBithifMsg 
-    | NewBruceMsg 
-    | NewBulingzeMsg 
+    | NextDialogue Dialogue.CreateInitData
+    | CloseDialogue
+    | CameraMsg (Float,Float)
+    | NewWenderedMsg (Float,Float)
+    | VanishWenderedMsg 
+    | NewBithifMsg (Float,Float)
+    | VanishBithifMsg 
+    | NewBruceMsg (Float,Float)
+    | VanishBruceMsg 
+    | NewBulingzeMsg (Float,Float)
+    | VanishBulingzeMsg 
+    | MoveTo (Float,Float)
+    | SetBackgroundMsg (Float,Float)
     | NullComponentMsg
-
-type alias Camera =
-    { dx : Int
-    , dy : Int
-    }
 
 {-| Component target
 -}

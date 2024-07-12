@@ -5,7 +5,7 @@ import SceneProtos.Story.Components.Bruce.Init as Bruce
 import SceneProtos.Story.Components.Bulingze.Init as Bulingze
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.Dialogue.Init as Dialogue
-import SceneProtos.Story.Components.Wendered.Init as Wendered
+import SceneProtos.Story.Components.Wenderd.Init as Wendered
 
 
 {-|

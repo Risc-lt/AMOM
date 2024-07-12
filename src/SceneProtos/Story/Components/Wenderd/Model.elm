@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Wendered.Model exposing (component)
+module SceneProtos.Story.Components.Wenderd.Model exposing (component)
 
 {-| Component model
 

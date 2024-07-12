@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Wendered.Init exposing (InitData)
+module SceneProtos.Story.Components.Wenderd.Init exposing (InitData)
 
 {-|
 

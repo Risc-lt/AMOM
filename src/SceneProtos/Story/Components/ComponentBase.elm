@@ -20,18 +20,19 @@ type ComponentMsg
     = NewDialogueMsg Dialogue.CreateInitData
     | NextDialogue Dialogue.CreateInitData
     | CloseDialogue
-    | CameraMsg (Float,Float)
-    | NewWenderdMsg (Float,Float)
-    | VanishWenderdMsg 
-    | NewBithifMsg (Float,Float)
-    | VanishBithifMsg 
-    | NewBruceMsg (Float,Float)
-    | VanishBruceMsg 
-    | NewBulingzeMsg (Float,Float)
-    | VanishBulingzeMsg 
-    | MoveTo (Float,Float)
-    | SetBackgroundMsg (Float,Float)
+    | CameraMsg ( Float, Float )
+    | NewWenderdMsg ( Float, Float )
+    | VanishWenderdMsg
+    | NewBithifMsg ( Float, Float )
+    | VanishBithifMsg
+    | NewBruceMsg ( Float, Float )
+    | VanishBruceMsg
+    | NewBulingzeMsg ( Float, Float )
+    | VanishBulingzeMsg
+    | MoveTo ( Float, Float )
+    | SetBackgroundMsg ( Float, Float )
     | NullComponentMsg
+
 
 {-| Component target
 -}

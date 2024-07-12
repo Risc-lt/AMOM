@@ -1,4 +1,4 @@
-module SceneProtos.Story.Init exposing (InitData,Dialogue,Character,CameraSettings)
+module SceneProtos.Story.Init exposing (CameraSettings, Character, Dialogue, InitData)
 
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (LevelComponentStorage)
@@ -15,9 +15,10 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 -}
 type alias InitData scenemsg =
-    { objects : List (LevelComponentStorage SceneCommonData UserData ComponentTarget ComponentMsg BaseData scenemsg) 
+    { objects : List (LevelComponentStorage SceneCommonData UserData ComponentTarget ComponentMsg BaseData scenemsg)
     , order : String
     }
+
 
 type alias Dialogue =
     { speaker : String
@@ -25,13 +26,15 @@ type alias Dialogue =
     , imageId : String
     }
 
+
 type alias Character =
     { id : Int
     , name : String
     , imageId : String
     }
 
+
 type alias CameraSettings =
-    { position : (Int,Int)
-    , movement : (Int,Int)
+    { position : ( Int, Int )
+    , movement : ( Int, Int )
     }

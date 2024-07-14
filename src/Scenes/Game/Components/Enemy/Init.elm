@@ -21,6 +21,7 @@ type alias Enemy =
     , hp : Float
     , position : Int
     , race : String
+    , attributes : Attribute
     }
 
 
@@ -28,6 +29,34 @@ type alias Enemy =
 -}
 type alias InitData =
     List Enemy
+
+{-| Additional attributes of the enemy
+-}
+type alias Attribute =
+    { strength : Float
+    , agility : Float
+    , stamina : Float
+    , spirit : Float
+    , waterResistance : Float
+    , fireResistance : Float
+    , windResistance : Float
+    , earthResistance : Float
+    }
+
+
+{-| Base attributes for the self
+-}
+baseAttributes : Attribute
+baseAttributes =
+    { strength = 10
+    , agility = 10
+    , stamina = 10
+    , spirit = 10
+    , waterResistance = 0.1
+    , fireResistance = 0.1
+    , windResistance = 0.1
+    , earthResistance = 0.1
+    }
 
 
 {-| Empty init data for enemy
@@ -41,6 +70,7 @@ emptyInitData =
             , hp = 100
             , position = p
             , race = "Physical"
+            , attributes = baseAttributes
             }
         )
         [ 1, 2, 3 ]
@@ -51,6 +81,7 @@ emptyInitData =
                 , hp = 100
                 , position = p
                 , race = "Magical"
+                , attributes = baseAttributes
                 }
             )
             [ 4, 5, 6 ]
@@ -65,4 +96,5 @@ defaultEnemy =
     , hp = 100
     , position = 1
     , race = "Physical"
+    , attributes = baseAttributes
     }

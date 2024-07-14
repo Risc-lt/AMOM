@@ -2,6 +2,7 @@ module Scenes.Game.SceneBase exposing
     ( LayerMsg(..)
     , LayerTarget
     , SceneCommonData
+    , Element(..)
     )
 
 import Scenes.Game.Play.Init as PlayInit
@@ -30,3 +31,10 @@ type alias SceneCommonData =
 type LayerMsg scenemsg
     = PlayInitData (PlayInit.InitData SceneCommonData scenemsg)
     | NullLayerMsg
+
+
+type Element 
+    = Water
+    | Fire
+    | Wind
+    | Earth

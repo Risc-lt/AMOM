@@ -22,11 +22,12 @@ genRandomNum lowerBound upperBound env =
 
 genActionPoints : Self -> Messenger.Base.Env SceneCommonData UserData -> Float
 genActionPoints char env =
-    let
-        upperBound =
-            char.attributes.agility
-    in
-    genRandomNum 1 upperBound env
+    -- let
+    --     upperBound =
+    --         char.attributes.agility
+    -- in
+    -- genRandomNum 1 upperBound env
+    char.attributes.agility
 
 
 genAvoidRate : Self -> Float
@@ -106,7 +107,7 @@ checkRate env rate =
         randomNum =
             genRandomNum 0 1 env
     in
-    if randomNum <= rate then
+    if randomNum < rate then
         True
 
     else

@@ -136,7 +136,7 @@ update env evnt data basedata =
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            if Debug.log "pos" curChar.position == 0 then
+            if curChar.position == 0 then
                 ( ( curChar, { basedata | curChar = nextChar basedata.queue basedata.curChar } ), [], ( env, False ) )
 
             else if curChar.position == -1 && basedata.state == PlayerTurn then
@@ -144,6 +144,13 @@ update env evnt data basedata =
 
             else
                 updateOne posChanged env evnt curChar basedata
+
+        newBasedata2 =
+            if newBasedata.state == GameBegin then
+                { newBasedata | queue = newQueue, curChar = Debug.log "char" (getFirstChar newQueue) }
+
+            else
+                { newBasedata | queue = newQueue }
 
         newData =
             if basedata.state /= GameBegin then
@@ -165,7 +172,7 @@ update env evnt data basedata =
             , Other ( "Interface", ChangeBase newBasedata )
             ]
     in
-    ( ( newData, { newBasedata | queue = newQueue } ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata2 ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

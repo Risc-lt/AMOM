@@ -14,6 +14,8 @@ getSequence : List Self -> Messenger.Base.Env SceneCommonData UserData -> List S
 getSequence data env =
     data
         |> List.filter (\x -> x.hp /= 0)
+        |> List.sortBy .position
+        |> List.reverse
         |> List.sortBy (\x -> genActionPoints x env)
         |> List.reverse
 

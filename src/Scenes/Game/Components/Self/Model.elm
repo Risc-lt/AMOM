@@ -17,8 +17,10 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.Self.GetBasicValue exposing (initSelf)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
+import Scenes.Game.Components.Self.Sequence exposing (getFirstChar, getQueue, getSequence, nextChar, renderQueue)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -31,7 +33,17 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         SelfInit initData ->
-            ( initData, initBaseData )
+            let
+                data =
+                    List.map initSelf initData
+
+                initQueue =
+                    getQueue data env
+
+                firstChar =
+                    getFirstChar initQueue
+            in
+            ( data, { initBaseData | curChar = firstChar, queue = initQueue } )
 
         _ ->
             ( [], initBaseData )
@@ -104,6 +116,9 @@ posExchange evnt data basedata =
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     let
+        newQueue =
+            getQueue data env
+
         posChanged =
             posExchange evnt data basedata
 
@@ -122,7 +137,7 @@ update env evnt data basedata =
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
             if curChar.position == 0 then
-                ( ( curChar, { basedata | curChar = basedata.curChar + 1 } ), [], ( env, False ) )
+                ( ( curChar, { basedata | curChar = nextChar basedata.queue curChar.position } ), [], ( env, False ) )
 
             else if curChar.position == -1 && basedata.state == PlayerTurn then
                 ( ( curChar, { basedata | state = EnemyMove } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
@@ -150,7 +165,7 @@ update env evnt data basedata =
             , Other ( "Interface", ChangeBase newBasedata )
             ]
     in
-    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, { newBasedata | queue = newQueue } ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -163,7 +178,11 @@ updaterec env msg data basedata =
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn ->
-            ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
+            let
+                newQueue =
+                    getQueue data env
+            in
+            ( ( data, { basedata | state = PlayerTurn, queue = newQueue, curChar = getFirstChar newQueue } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
@@ -212,9 +231,12 @@ view env data basedata =
 
             else
                 [ empty ]
+
+        queueView =
+            renderQueue env data basedata.queue
     in
     ( Canvas.group []
-        (regionView ++ basicView)
+        (regionView ++ basicView ++ queueView)
     , 1
     )
 

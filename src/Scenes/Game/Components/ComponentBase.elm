@@ -68,6 +68,7 @@ type alias BaseData =
     , selfNum : ( Int, Int )
     , curChar : Int
     , curEnemy : Int
+    , queue : List Int
     }
 
 
@@ -78,4 +79,5 @@ initBaseData =
     , selfNum = ( 2, 2 )
     , curChar = 1
     , curEnemy = 1
+    , queue = []
     }

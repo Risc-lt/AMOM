@@ -24,7 +24,7 @@ attackPlayer env evnt data basedata =
             ( ( data, { basedata | state = EnemyReturn } )
             , [ Other
                     ( "Self"
-                    , Attack NormalAttack <|
+                    , AttackPlayer NormalAttack data <|
                         Tuple.first <|
                             Random.step
                                 (Random.int 1
@@ -47,7 +47,7 @@ attackPlayer env evnt data basedata =
             ( ( data, { basedata | state = EnemyReturn } )
             , [ Other
                     ( "Self"
-                    , Attack Magic <|
+                    , AttackPlayer Magic data <|
                         Tuple.first <|
                             Random.step (Random.int 1 (Tuple.first basedata.selfNum + Tuple.second basedata.selfNum)) <|
                                 Random.initialSeed <|

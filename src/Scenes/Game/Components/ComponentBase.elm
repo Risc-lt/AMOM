@@ -28,7 +28,8 @@ type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
-    | Attack AttackType Int
+    | AttackEnemy AttackType Self Int
+    | AttackPlayer AttackType Enemy Int
     | ChangeTarget ( Int, Int )
     | EnemyDie (List Int)
     | SwitchTurn

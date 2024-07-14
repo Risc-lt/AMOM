@@ -130,10 +130,10 @@ handleMove list env evnt data basedata =
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
                 if data.career == "archer" then
-                    [ Other ( "Enemy", Attack NormalAttack basedata.curEnemy ) ]
+                    [ Other ( "Enemy", AttackEnemy NormalAttack data basedata.curEnemy ) ]
 
                 else
-                    [ Other ( "Enemy", Attack Magic basedata.curEnemy ) ]
+                    [ Other ( "Enemy", AttackEnemy Magic data basedata.curEnemy ) ]
 
             else
                 []

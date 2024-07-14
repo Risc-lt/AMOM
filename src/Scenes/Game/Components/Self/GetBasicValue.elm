@@ -9,18 +9,24 @@ import Scenes.Game.SceneBase exposing (Element(..), SceneCommonData)
 import Time
 
 
-genActionPoints : Self -> Messenger.Base.Env SceneCommonData UserData -> Float
-genActionPoints char env =
+genRandomNum : Float -> Float -> Messenger.Base.Env SceneCommonData UserData -> Float
+genRandomNum lowerBound upperBound env =
     let
-        seed =
-            Basics.round char.attributes.agility
-
         ( value, newSeed ) =
-            Random.step (Random.int 1 seed) <|
+            Random.step (Random.float lowerBound upperBound) <|
                 Random.initialSeed <|
                     Time.posixToMillis env.globalData.currentTimeStamp
     in
-    Basics.toFloat value
+    value
+
+
+genActionPoints : Self -> Messenger.Base.Env SceneCommonData UserData -> Float
+genActionPoints char env =
+    let
+        upperBound =
+            char.attributes.agility
+    in
+    genRandomNum 1 upperBound env
 
 
 genAvoidRate : Self -> Float
@@ -68,11 +74,11 @@ getSpecificResistance char elm =
     baseResistance + char.attributes.spirit
 
 
-getSpecificNormalAttack : Self -> Enemy -> Float
-getSpecificNormalAttack char enemy =
+getSpecificNormalAttack : Self -> Enemy -> Bool -> Float
+getSpecificNormalAttack char enemy isCritical =
     let
         criticalHitRate =
-            if genMagicalHitRate char enemy > 10 then
+            if isCritical then
                 1.5
 
             else
@@ -92,3 +98,16 @@ initSelf char =
         | hpMax = char.attributes.stamina * 4
         , mpMax = char.attributes.spirit
     }
+
+
+checkRate : Messenger.Base.Env SceneCommonData UserData -> Float -> Bool
+checkRate env rate =
+    let
+        randomNum =
+            genRandomNum 0 1 env
+    in
+    if randomNum <= rate then
+        True
+
+    else
+        False

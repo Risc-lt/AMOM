@@ -8,6 +8,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Self.Reaction exposing (findMin)
+import Scenes.Game.Components.Self.Sequence exposing (getFirstChar, nextChar)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -20,7 +21,7 @@ handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
             if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn, curChar = findMin list } ), [ Other ( "Interface", SwitchTurn ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -119,7 +120,7 @@ handleMove list env evnt data basedata =
 
         newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }
+                { basedata | state = PlayerTurn, curChar = nextChar basedata.queue basedata.curChar }
 
             else if basedata.state == PlayerAttack && newX <= 670 then
                 { basedata | state = PlayerReturn }

@@ -124,7 +124,7 @@ update env evnt data basedata =
 
         curChar =
             if basedata.state /= GameBegin then
-                if basedata.curChar <= 6 then
+                if 0 < basedata.curChar && basedata.curChar <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
                             List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
@@ -136,11 +136,11 @@ update env evnt data basedata =
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curChar.position == 0 then
-                ( ( curChar, { basedata | curChar = nextChar basedata.queue curChar.position } ), [], ( env, False ) )
+            if Debug.log "pos" curChar.position == 0 then
+                ( ( curChar, { basedata | curChar = nextChar basedata.queue basedata.curChar } ), [], ( env, False ) )
 
             else if curChar.position == -1 && basedata.state == PlayerTurn then
-                ( ( curChar, { basedata | state = EnemyMove } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
+                ( ( curChar, { basedata | state = EnemyMove, curChar = getFirstChar newQueue } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
 
             else
                 updateOne posChanged env evnt curChar basedata

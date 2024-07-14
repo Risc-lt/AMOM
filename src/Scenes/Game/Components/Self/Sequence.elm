@@ -98,7 +98,6 @@ sortCharByQueue data queue =
         |> List.sortBy Tuple.first
         |> List.map Tuple.second
         |> List.filter (\x -> x.hp /= 0)
-        |> List.reverse
 
 
 renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Int -> List Canvas.Renderable

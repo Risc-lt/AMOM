@@ -30,6 +30,7 @@ type alias Enemy =
 type alias InitData =
     List Enemy
 
+
 {-| Additional attributes of the enemy
 -}
 type alias Attribute =

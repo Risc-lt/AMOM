@@ -26,13 +26,23 @@ checkHealth char =
 getHurt : AttackType -> Self -> Self
 getHurt attackType char =
     case attackType of
-        Physical ->
+        NormalAttack ->
             checkHealth <|
-                { char | hp = char.hp - 50 * (100 - char.phyDefence) / 100 }
+                { char | hp = char.hp - 50 }
 
-        Magical ->
+        --* (100 - char.phyDefence) / 100 }
+        SpecialSkill ->
             checkHealth <|
-                { char | hp = char.hp - 50 * (100 - char.magDefence) / 100 }
+                { char | hp = char.hp - 50 }
+
+        --* (100 - char.magDefence) / 100 }
+        Magic ->
+            checkHealth <|
+                { char | hp = char.hp - 50 }
+
+
+
+--* (100 - char.magDefence) / 100 }
 
 
 getTargetChar : List Self -> Int -> Self

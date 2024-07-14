@@ -32,9 +32,11 @@ type alias Self =
     , mpMax : Float
     , state : State
     , career : String
-    , phyDefence : Float
-    , magDefence : Float
+
+    -- , phyDefence : Float
+    -- , magDefence : Float
     , attributes : Attribute
+
     -- , ratio : RatioValue
     }
 
@@ -51,7 +53,7 @@ type alias Attribute =
     , fireResistance : Float
     , windResistance : Float
     , earthResistance : Float
-    } 
+    }
 
 
 {-| The ratio value of the self
@@ -114,9 +116,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = "swordsman"
-      , phyDefence = 50
-      , magDefence = 0
+
+      -- , phyDefence = 50
+      -- , magDefence = 0
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     , { x = 1100
@@ -128,9 +132,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = "archer"
-      , phyDefence = 50
-      , magDefence = 0
+
+      -- , phyDefence = 50
+      -- , magDefence = 0
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     , { x = 1100
@@ -142,9 +148,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = ""
-      , phyDefence = 0
-      , magDefence = 0
+
+      -- , phyDefence = 0
+      -- , magDefence = 0
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     , { x = 1220
@@ -156,9 +164,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = "magician"
-      , phyDefence = 0
-      , magDefence = 50
+
+      -- , phyDefence = 0
+      -- , magDefence = 50
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     , { x = 1220
@@ -170,9 +180,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = "pharmacist"
-      , phyDefence = 0
-      , magDefence = 50
+
+      -- , phyDefence = 0
+      -- , magDefence = 50
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     , { x = 1220
@@ -184,9 +196,11 @@ emptyInitData =
       , mpMax = 3
       , state = Waiting
       , career = ""
-      , phyDefence = 0
-      , magDefence = 0
+
+      -- , phyDefence = 0
+      -- , magDefence = 0
       , attributes = baseAttributes
+
       -- , ratio = baseRatio
       }
     ]
@@ -205,8 +219,10 @@ defaultSelf =
     , mpMax = 3
     , state = Waiting
     , career = ""
-    , phyDefence = 0
-    , magDefence = 0
+
+    -- , phyDefence = 0
+    -- , magDefence = 0
     , attributes = baseAttributes
+
     -- , ratio = baseRatio
     }

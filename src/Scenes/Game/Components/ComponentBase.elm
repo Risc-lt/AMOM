@@ -41,8 +41,9 @@ type ComponentMsg
 
 
 type AttackType
-    = Physical
-    | Magical
+    = NormalAttack
+    | SpecialSkill
+    | Magic
 
 
 type alias ComponentTarget =

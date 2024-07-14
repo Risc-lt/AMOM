@@ -1,8 +1,8 @@
 module Scenes.Game.SceneBase exposing
-    ( LayerMsg(..)
+    ( Element(..)
+    , LayerMsg(..)
     , LayerTarget
     , SceneCommonData
-    , Element(..)
     )
 
 import Scenes.Game.Play.Init as PlayInit
@@ -33,7 +33,7 @@ type LayerMsg scenemsg
     | NullLayerMsg
 
 
-type Element 
+type Element
     = Water
     | Fire
     | Wind

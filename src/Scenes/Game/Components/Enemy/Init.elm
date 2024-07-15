@@ -67,25 +67,25 @@ emptyInitData =
     List.map
         (\p ->
             { x = 230
-            , y = toFloat (160 + 130 * (p - 1))
+            , y = toFloat (160 + 130 * (p - 7))
             , hp = 100
             , position = p
             , race = "Physical"
             , attributes = baseAttributes
             }
         )
-        [ 1, 2, 3 ]
+        [ 7, 8, 9 ]
         ++ List.map
             (\p ->
                 { x = 100
-                , y = toFloat (160 + 130 * (p - 4))
+                , y = toFloat (160 + 130 * (p - 10))
                 , hp = 100
                 , position = p
                 , race = "Magical"
                 , attributes = baseAttributes
                 }
             )
-            [ 4, 5, 6 ]
+            [ 10, 11, 12 ]
 
 
 {-| Default enemy
@@ -95,7 +95,7 @@ defaultEnemy =
     { x = 100
     , y = 100
     , hp = 100
-    , position = 1
+    , position = 7
     , race = "Physical"
     , attributes = baseAttributes
     }

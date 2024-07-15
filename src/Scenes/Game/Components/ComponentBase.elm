@@ -75,9 +75,9 @@ type alias BaseData =
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyNum = [ 1, 2, 3, 4, 5, 6 ]
+    , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
     , selfNum = ( 2, 2 )
     , curChar = 1
-    , curEnemy = 1
+    , curEnemy = 7
     , queue = []
     }

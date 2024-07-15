@@ -147,7 +147,7 @@ update env evnt data basedata =
 
         newBasedata2 =
             if newBasedata.state == GameBegin then
-                { newBasedata | queue = newQueue, curChar = Debug.log "char" (getFirstChar newQueue) }
+                { newBasedata | queue = newQueue, curChar = getFirstChar newQueue }
 
             else
                 { newBasedata | queue = newQueue }

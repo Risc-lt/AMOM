@@ -42,7 +42,7 @@ update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget 
 update env evnt data basedata =
     let
         curEnemy =
-            if basedata.curEnemy <= 6 then
+            if 7 <= basedata.curEnemy && basedata.curEnemy <= 12 then
                 Maybe.withDefault { defaultEnemy | position = 0 } <|
                     List.head <|
                         List.filter (\x -> x.position == basedata.curEnemy) data

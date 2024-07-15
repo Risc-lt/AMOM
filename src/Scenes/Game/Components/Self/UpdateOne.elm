@@ -44,22 +44,22 @@ handleMouseDown x y self env evnt data basedata =
             let
                 position =
                     if x > 640 && x < 1030 && y > 680 && y < 813.3 then
-                        4
+                        10
 
                     else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
-                        5
+                        11
 
                     else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
-                        6
+                        12
 
                     else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
-                        1
+                        7
 
                     else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
-                        2
+                        8
 
                     else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
-                        3
+                        9
 
                     else
                         0
@@ -68,10 +68,10 @@ handleMouseDown x y self env evnt data basedata =
                     self.career == "swordsman" || self.career == "pharmacist"
 
                 front =
-                    List.any (\p -> p <= 3) basedata.enemyNum
+                    List.any (\p -> p <= 9) basedata.enemyNum
 
                 effective =
-                    if melee && front && position > 3 then
+                    if melee && front && position > 9 then
                         False
 
                     else

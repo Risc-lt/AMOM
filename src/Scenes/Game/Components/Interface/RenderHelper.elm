@@ -193,7 +193,7 @@ renderTargetSelection env data basedata =
                     ""
 
             remainEnemy =
-                List.map (\x -> x.position) <|
+                List.map (\x -> x.position - 6) <|
                     List.filter (\x -> x.hp /= 0) <|
                         data.enemies
         in

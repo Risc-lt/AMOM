@@ -65,7 +65,7 @@ handleMove : List Enemy -> ComponentUpdate SceneCommonData Data UserData SceneMs
 handleMove list env evnt data basedata =
     let
         returnX =
-            if data.position <= 3 then
+            if data.position <= 9 then
                 230
 
             else

@@ -60,7 +60,7 @@ emptyInitData =
 -}
 defaultUI : InitData
 defaultUI =
-    { selfs = [ defaultSelf ]
-    , enemies = [ defaultEnemy ]
+    { selfs = emptyInitSelf
+    , enemies = emptyInitEnemy
     , curChar = Self { defaultSelf | position = 0 }
     }

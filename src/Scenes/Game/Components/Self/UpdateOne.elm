@@ -8,7 +8,6 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Self.Reaction exposing (findMin)
-import Scenes.Game.Components.Self.Sequence exposing (getFirstChar, nextChar)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -21,7 +20,7 @@ handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
             if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn 0 ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -118,15 +117,15 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        newBaseData =
+        ( newBaseData, msg0 ) =
             if basedata.state == PlayerReturn && newX >= returnX then
-                { basedata | state = PlayerTurn, curChar = nextChar basedata.queue basedata.curChar }
+                ( { basedata | state = EnemyMove }, [ Other ( "Interface", SwitchTurn 0 ) ] )
 
             else if basedata.state == PlayerAttack && newX <= 670 then
-                { basedata | state = PlayerReturn }
+                ( { basedata | state = PlayerReturn }, [] )
 
             else
-                basedata
+                ( basedata, [] )
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
@@ -135,7 +134,7 @@ handleMove list env evnt data basedata =
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), msg ++ msg0, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

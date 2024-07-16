@@ -6,15 +6,17 @@ module Scenes.Game.Components.Interface.Model exposing (component)
 
 -}
 
+import Array exposing (get)
 import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
+import Scenes.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, nextSelf)
 import Scenes.Game.Components.Self.Init exposing (State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -27,7 +29,11 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         UIInit initData ->
-            ( initData, initBaseData )
+            let
+                ( firstdata, firstBaseData ) =
+                    initUI env initData initBaseData
+            in
+            ( firstdata, firstBaseData )
 
         _ ->
             ( defaultUI, initBaseData )
@@ -35,7 +41,55 @@ init env initMsg =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        Tick _ ->
+            let
+                newQueue =
+                    getQueue data.selfs data.enemies env
+            in
+            ( ( data, { basedata | queue = newQueue } ), [], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
+
+
+updateBaseData : Bool -> List Int -> BaseData -> BaseData
+updateBaseData flag queue basedata =
+    let
+        nextOne =
+            if flag then
+                nextChar queue basedata.curChar
+
+            else
+                nextChar queue basedata.curEnemy
+
+        newside =
+            checkSide nextOne
+    in
+    case newside of
+        PlayerSide ->
+            { basedata | side = newside, curChar = nextOne }
+
+        EnemySide ->
+            { basedata | side = newside, curEnemy = nextOne }
+
+        _ ->
+            basedata
+
+
+updatePointer : Int -> List Int -> BaseData -> BaseData
+updatePointer sideNum queue basedata =
+    case sideNum of
+        -- From Self side
+        0 ->
+            updateBaseData True queue basedata
+
+        -- From Enemy side
+        1 ->
+            updateBaseData False queue basedata
+
+        _ ->
+            basedata
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -50,8 +104,26 @@ updaterec env msg data basedata =
         ChangeBase newBaseData ->
             ( ( data, newBaseData ), [], env )
 
-        SwitchTurn ->
-            ( ( data, { basedata | state = PlayerTurn } ), [], env )
+        SwitchTurn sideNum ->
+            let
+                newQueue =
+                    getQueue data.selfs data.enemies env
+
+                newBaseData =
+                    updatePointer sideNum newQueue basedata
+
+                ( newState, newMsg ) =
+                    case newBaseData.side of
+                        PlayerSide ->
+                            ( PlayerTurn, [ Other ( "Self", SwitchTurn newBaseData.curChar ) ] )
+
+                        EnemySide ->
+                            ( EnemyMove, [ Other ( "Enemy", SwitchTurn newBaseData.curEnemy ) ] )
+
+                        _ ->
+                            ( basedata.state, [] )
+            in
+            ( ( data, { basedata | state = newState } ), newMsg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

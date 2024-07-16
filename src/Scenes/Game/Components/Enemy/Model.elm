@@ -18,6 +18,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
+import Scenes.Game.Components.Enemy.GenRatio exposing (initEnemy)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import Scenes.Game.Components.Self.Init exposing (State(..))
@@ -32,7 +33,13 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         EnemyInit initData ->
-            ( initData, initBaseData )
+            let
+                firstData =
+                    List.map
+                        initEnemy
+                        initData
+            in
+            ( firstData, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -51,14 +58,12 @@ update env evnt data basedata =
                 { defaultEnemy | position = -1 }
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curEnemy.position == 0 then
-                ( ( curEnemy, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], ( env, False ) )
-
-            else if curEnemy.position == -1 && basedata.state == EnemyMove then
-                ( ( curEnemy, { basedata | state = PlayerTurn } ), [ Other ( "Self", SwitchTurn ) ], ( env, False ) )
-
-            else
-                updateOne data env evnt curEnemy basedata
+            -- if curEnemy.position == 0 then
+            --     ( ( curEnemy, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], ( env, False ) )
+            -- else if curEnemy.position == -1 && basedata.state == EnemyMove then
+            --     ( ( curEnemy, { basedata | state = PlayerTurn } ), [ Other ( "Self", SwitchTurn ) ], ( env, False ) )
+            -- else
+            updateOne data env evnt curEnemy basedata
 
         newData =
             List.map
@@ -83,8 +88,8 @@ updaterec env msg data basedata =
         ChangeTarget length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
 
-        SwitchTurn ->
-            ( ( data, { basedata | state = EnemyMove, curEnemy = findMin data } ), [], env )
+        SwitchTurn pos ->
+            ( ( data, { basedata | state = EnemyMove, curEnemy = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

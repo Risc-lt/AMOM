@@ -20,7 +20,6 @@ import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..)
 import Scenes.Game.Components.Self.GetBasicValue exposing (initSelf)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
-import Scenes.Game.Components.Self.Sequence exposing (getFirstChar, getQueue, getSequence, nextChar, renderQueue)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -36,14 +35,8 @@ init env initMsg =
             let
                 data =
                     List.map initSelf initData
-
-                initQueue =
-                    getQueue data env
-
-                firstChar =
-                    getFirstChar initQueue
             in
-            ( data, { initBaseData | curChar = firstChar, queue = initQueue } )
+            ( data, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -116,9 +109,6 @@ posExchange evnt data basedata =
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     let
-        newQueue =
-            getQueue data env
-
         posChanged =
             posExchange evnt data basedata
 
@@ -136,22 +126,18 @@ update env evnt data basedata =
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curChar.position == 0 then
-                ( ( curChar, { basedata | curChar = nextChar basedata.queue basedata.curChar } ), [], ( env, False ) )
+            -- if curChar.position == 0 then
+            --     ( ( curChar, { basedata | curChar = nextChar basedata.queue basedata.curChar } ), [], ( env, False ) )
+            -- else if curChar.position == -1 && basedata.state == PlayerTurn then
+            --     ( ( curChar, { basedata | state = EnemyMove, curChar = getFirstChar newQueue } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
+            -- else
+            updateOne posChanged env evnt curChar basedata
 
-            else if curChar.position == -1 && basedata.state == PlayerTurn then
-                ( ( curChar, { basedata | state = EnemyMove, curChar = getFirstChar newQueue } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
-
-            else
-                updateOne posChanged env evnt curChar basedata
-
-        newBasedata2 =
-            if newBasedata.state == GameBegin then
-                { newBasedata | queue = newQueue, curChar = getFirstChar newQueue }
-
-            else
-                { newBasedata | queue = newQueue }
-
+        -- newBasedata2 =
+        --     if newBasedata.state == GameBegin then
+        --         { newBasedata | queue = newQueue, curChar = getFirstChar newQueue }
+        --     else
+        --         { newBasedata | queue = newQueue }
         newData =
             if basedata.state /= GameBegin then
                 List.map
@@ -172,7 +158,7 @@ update env evnt data basedata =
             , Other ( "Interface", ChangeBase newBasedata )
             ]
     in
-    ( ( newData, newBasedata2 ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -184,12 +170,8 @@ updaterec env msg data basedata =
         EnemyDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
-        SwitchTurn ->
-            let
-                newQueue =
-                    getQueue data env
-            in
-            ( ( data, { basedata | state = PlayerTurn, queue = newQueue, curChar = getFirstChar newQueue } ), [], env )
+        SwitchTurn pos ->
+            ( ( data, { basedata | state = PlayerTurn, curChar = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
@@ -238,12 +220,9 @@ view env data basedata =
 
             else
                 [ empty ]
-
-        queueView =
-            renderQueue env data basedata.queue
     in
     ( Canvas.group []
-        (regionView ++ basicView ++ queueView)
+        (regionView ++ basicView)
     , 1
     )
 

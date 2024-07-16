@@ -81,9 +81,11 @@ getSpecificMagicalAttack enemy char =
     1 + enemy.attributes.spirit * 0.025
 
 
-initSelf : Enemy -> Enemy
-initSelf enemy =
-    enemy
+initEnemy : Enemy -> Enemy
+initEnemy enemy =
+    { enemy
+        | hp = enemy.attributes.stamina * 10
+    }
 
 
 checkRate : Messenger.Base.Env SceneCommonData UserData -> Float -> Bool

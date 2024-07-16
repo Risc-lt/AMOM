@@ -94,7 +94,7 @@ handleMove list env evnt data basedata =
                 ( { basedata | state = EnemyAttack }, [] )
 
             else if basedata.state == EnemyReturn && newX <= returnX then
-                ( { basedata | state = EnemyMove, curEnemy = basedata.curEnemy + 1 }, [] )
+                ( { basedata | state = PlayerTurn }, [ Other ( "Interface", SwitchTurn 1 ) ] )
 
             else
                 ( basedata, [] )

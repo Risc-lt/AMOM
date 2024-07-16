@@ -20,7 +20,7 @@ handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
             if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn 0 ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", StartGame ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

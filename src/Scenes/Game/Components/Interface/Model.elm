@@ -13,6 +13,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
+import Messenger.Scene.Scene exposing (SceneOutputMsg)
 import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
@@ -92,6 +93,19 @@ updatePointer sideNum queue basedata =
             basedata
 
 
+sendMsg : BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
+sendMsg basedata =
+    case basedata.side of
+        PlayerSide ->
+            ( PlayerTurn, [ Other ( "Self", SwitchTurn basedata.curChar ) ] )
+
+        EnemySide ->
+            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curEnemy ) ] )
+
+        _ ->
+            ( basedata.state, [] )
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
@@ -113,17 +127,16 @@ updaterec env msg data basedata =
                     updatePointer sideNum newQueue basedata
 
                 ( newState, newMsg ) =
-                    case newBaseData.side of
-                        PlayerSide ->
-                            ( PlayerTurn, [ Other ( "Self", SwitchTurn newBaseData.curChar ) ] )
-
-                        EnemySide ->
-                            ( EnemyMove, [ Other ( "Enemy", SwitchTurn newBaseData.curEnemy ) ] )
-
-                        _ ->
-                            ( basedata.state, [] )
+                    sendMsg newBaseData
             in
             ( ( data, { basedata | state = newState } ), newMsg, env )
+
+        StartGame ->
+            let
+                ( firstState, newMsg ) =
+                    sendMsg basedata
+            in
+            ( ( data, { basedata | state = firstState } ), newMsg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

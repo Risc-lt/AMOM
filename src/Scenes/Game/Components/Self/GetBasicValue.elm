@@ -32,7 +32,7 @@ genActionPoints char env =
 
 genAvoidRate : Self -> Float
 genAvoidRate char =
-    char.attributes.agility
+    char.attributes.agility / 100
 
 
 genNormalHitRate : Self -> Enemy -> Float

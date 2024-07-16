@@ -77,8 +77,8 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        AttackEnemy _ _ position ->
-            handleAttack position env msg data basedata
+        AttackEnemy attackType char position ->
+            handleAttack attackType char position env msg data basedata
 
         ChangeTarget length ->
             ( ( data, { basedata | selfNum = length } ), [], env )

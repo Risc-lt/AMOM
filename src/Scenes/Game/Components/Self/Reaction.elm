@@ -45,6 +45,12 @@ getHurt attackType enemy env char =
         isAvoid =
             checkRate env <|
                 genAvoidRate char
+
+        oldAttributes =
+            char.attributes
+
+        newAttributes =
+            { oldAttributes | energy = oldAttributes.energy + 0.3 }
     in
     if isAvoid then
         char
@@ -56,11 +62,11 @@ getHurt attackType enemy env char =
 
             SpecialSkill ->
                 checkHealth <|
-                    { char | hp = char.hp - 50 }
+                    { char | hp = char.hp - 50, attributes = newAttributes }
 
             Magic ->
                 checkHealth <|
-                    { char | hp = char.hp - 50 }
+                    { char | hp = char.hp - 50, attributes = newAttributes }
 
 
 getTargetChar : List Self -> Int -> Self

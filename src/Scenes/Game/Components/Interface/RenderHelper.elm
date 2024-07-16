@@ -89,19 +89,9 @@ renderStatus self env =
     if self.career /= "" then
         Canvas.group []
             [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.career
-
-            -- , Canvas.shapes
-            --     [ fill Color.red ]
-            --     [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150 * (self.hp / 100), 15 ) ]
-            -- , Canvas.shapes
-            --     [ stroke Color.black ]
-            --     [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
             , renderOneBar y self.hp self.hpMax "HP" env
             , renderOneBar (y + 20) self.mp self.mpMax "MP" env
-            , renderOneBar (y + 40) self.attributes.energy 3 "En" env
-
-            -- , renderTextWithColorCenter env.globalData.internalData 20 "Hp" "Arial" Color.black ( 1650, y + 65 )
-            -- , renderTextWithColorCenter env.globalData.internalData 20 (toString <| floor self.hp) "Arial" Color.black ( 1850, y + 65 )
+            , renderOneBar (y + 40) self.attributes.energy 10 "En" env
             , renderTextWithColorStyle env.globalData.internalData 20 name "Arial" color "" ( 1675, y + 27.5 )
             ]
 

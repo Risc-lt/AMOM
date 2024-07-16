@@ -90,16 +90,19 @@ baseAttributes =
     }
 
 
-{-| Base ratio for the self
+{-| Empty attributes for the self
 -}
-baseRatio : RatioValue
-baseRatio =
-    { actionPoints = 1
-    , avoidRate = 1
-    , normalHitRate = 1
-    , magicalHitRate = 1
-    , criticalHitRate = 1
-    , counterRate = 1
+emptyAttributes : Attribute
+emptyAttributes =
+    { strength = 0
+    , agility = 0
+    , stamina = 0
+    , spirit = 0
+    , energy = 0
+    , waterResistance = 1
+    , fireResistance = 1
+    , windResistance = 1
+    , earthResistance = 1
     }
 
 
@@ -111,97 +114,67 @@ emptyInitData =
       , y = 160
       , position = 1
       , hp = 100
-      , mp = 3
+      , mp = 30
       , hpMax = 100
       , mpMax = 3
       , state = Waiting
       , career = "swordsman"
-
-      -- , phyDefence = 50
-      -- , magDefence = 0
       , attributes = baseAttributes
-
-      -- , ratio = baseRatio
       }
     , { x = 1100
       , y = 290
       , position = 2
       , hp = 100
-      , mp = 3
+      , mp = 30
       , hpMax = 100
       , mpMax = 3
       , state = Waiting
       , career = "archer"
-
-      -- , phyDefence = 50
-      -- , magDefence = 0
       , attributes = baseAttributes
-
-      -- , ratio = baseRatio
       }
     , { x = 1100
       , y = 420
       , position = 3
       , hp = 0
-      , mp = 3
-      , hpMax = 100
-      , mpMax = 3
+      , mp = 0
+      , hpMax = 0
+      , mpMax = 0
       , state = Waiting
       , career = ""
-
-      -- , phyDefence = 0
-      -- , magDefence = 0
-      , attributes = baseAttributes
-
-      -- , ratio = baseRatio
+      , attributes = emptyAttributes
       }
     , { x = 1220
       , y = 160
       , position = 4
       , hp = 100
-      , mp = 3
+      , mp = 30
       , hpMax = 100
       , mpMax = 3
       , state = Waiting
       , career = "magician"
-
-      -- , phyDefence = 0
-      -- , magDefence = 50
       , attributes = baseAttributes
-
-      -- , ratio = baseRatio
       }
     , { x = 1220
       , y = 290
       , position = 5
       , hp = 100
-      , mp = 3
+      , mp = 30
       , hpMax = 100
       , mpMax = 3
       , state = Waiting
       , career = "pharmacist"
-
-      -- , phyDefence = 0
-      -- , magDefence = 50
       , attributes = baseAttributes
-
-      -- , ratio = baseRatio
       }
     , { x = 1220
       , y = 420
       , position = 6
       , hp = 0
-      , mp = 3
+      , mp = 0
       , hpMax = 100
       , mpMax = 3
       , state = Waiting
       , career = ""
-
-      -- , phyDefence = 0
-      -- , magDefence = 0
-      , attributes = baseAttributes
-
-      -- , ratio = baseRatio
+      , attributes = emptyAttributes
       }
     ]
 

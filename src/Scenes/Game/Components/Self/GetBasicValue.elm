@@ -98,6 +98,8 @@ initSelf char =
     { char
         | hpMax = char.attributes.stamina * 4
         , mpMax = char.attributes.spirit
+        , mp = char.attributes.spirit
+        , hp = char.attributes.stamina * 4
     }
 
 

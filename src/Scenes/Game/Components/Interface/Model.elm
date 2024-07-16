@@ -138,6 +138,13 @@ updaterec env msg data basedata =
             in
             ( ( data, { basedata | state = firstState } ), newMsg, env )
 
+        UpdateChangingPos selfs ->
+            let
+                newQueue =
+                    getQueue selfs data.enemies env
+            in
+            ( ( { data | selfs = selfs }, { basedata | queue = newQueue } ), [], env )
+
         _ ->
             ( ( data, basedata ), [], env )
 
@@ -156,7 +163,7 @@ view env data basedata =
             renderAction env data basedata
 
         actionBar =
-            renderQueue env data.selfs data.enemies basedata.queue
+            renderQueue env data.selfs data.enemies
     in
     ( Canvas.group []
         [ actionView

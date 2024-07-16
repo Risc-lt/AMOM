@@ -112,12 +112,15 @@ update env evnt data basedata =
         posChanged =
             posExchange evnt data basedata
 
+        msgPos =
+            [ Other ( "Interface", UpdateChangingPos posChanged ) ]
+
         curChar =
             if basedata.state /= GameBegin then
                 if 0 < basedata.curChar && basedata.curChar <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
+                            List.filter (\x -> x.position == Debug.log "" basedata.curChar && x.hp /= 0) posChanged
 
                 else
                     { defaultSelf | position = -1 }
@@ -126,18 +129,8 @@ update env evnt data basedata =
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            -- if curChar.position == 0 then
-            --     ( ( curChar, { basedata | curChar = nextChar basedata.queue basedata.curChar } ), [], ( env, False ) )
-            -- else if curChar.position == -1 && basedata.state == PlayerTurn then
-            --     ( ( curChar, { basedata | state = EnemyMove, curChar = getFirstChar newQueue } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
-            -- else
             updateOne posChanged env evnt curChar basedata
 
-        -- newBasedata2 =
-        --     if newBasedata.state == GameBegin then
-        --         { newBasedata | queue = newQueue, curChar = getFirstChar newQueue }
-        --     else
-        --         { newBasedata | queue = newQueue }
         newData =
             if basedata.state /= GameBegin then
                 List.map
@@ -158,7 +151,7 @@ update env evnt data basedata =
             , Other ( "Interface", ChangeBase newBasedata )
             ]
     in
-    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

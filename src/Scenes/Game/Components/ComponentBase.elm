@@ -37,6 +37,7 @@ type ComponentMsg
     | ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
     | ChangeBase BaseData
+    | UpdateChangingPos (List Self)
     | StartGame
     | GameOver
     | Defeated

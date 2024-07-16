@@ -180,11 +180,14 @@ sortCharByQueue data queue =
         |> List.map Tuple.second
 
 
-renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Enemy -> List Int -> List Canvas.Renderable
-renderQueue env selfs enemies queue =
+renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Enemy -> List Canvas.Renderable
+renderQueue env selfs enemies =
     let
         allChars =
             concatSelfEnemy selfs enemies
+
+        queue =
+            getQueue selfs enemies env
 
         sortedData =
             sortCharByQueue allChars queue

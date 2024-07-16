@@ -16,7 +16,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
-import Scenes.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, nextSelf)
+import Scenes.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, nextSelf, renderQueue)
 import Scenes.Game.Components.Self.Init exposing (State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -141,9 +141,15 @@ view env data basedata =
 
         actionView =
             renderAction env data basedata
+
+        actionBar =
+            renderQueue env data.selfs data.enemies basedata.queue
     in
     ( Canvas.group []
-        (actionView :: statusView)
+        [ actionView
+        , Canvas.group [] statusView
+        , Canvas.group [] actionBar
+        ]
     , 2
     )
 

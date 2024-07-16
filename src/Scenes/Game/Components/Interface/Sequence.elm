@@ -190,7 +190,7 @@ renderQueue env selfs enemies queue =
             sortCharByQueue allChars queue
     in
     List.map2
-        (\x index -> renderSprite env.globalData.internalData [] ( 1470 + index * 100, 900 ) ( 100, 100 ) x.name)
+        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x.name)
         sortedData
     <|
         List.map toFloat

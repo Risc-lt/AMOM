@@ -1,30 +1,73 @@
-module Scenes.Game.Components.Self.Sequence exposing (..)
+module Scenes.Game.Components.Interface.Sequence exposing (..)
 
 import Canvas
 import Lib.UserData exposing (UserData)
 import Messenger.Base
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.Interface.RenderHelper exposing (renderStatus)
-import Scenes.Game.Components.Self.GetBasicValue exposing (genActionPoints)
+import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Self.Init exposing (Self)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
-getSequence : List Self -> Messenger.Base.Env SceneCommonData UserData -> List Self
-getSequence data env =
+type alias Charactor =
+    { name : String
+    , position : Int
+    , agility : Float
+    }
+
+
+convertSelfToCharactor : Self -> Charactor
+convertSelfToCharactor self =
+    { name = self.career
+    , position = self.position
+    , agility = self.attributes.agility
+    }
+
+
+convertEnemyToCharactor : Enemy -> Charactor
+convertEnemyToCharactor enemy =
+    { name = "monster"
+    , position = enemy.position
+    , agility = enemy.attributes.agility
+    }
+
+
+genActionPoints : Charactor -> Messenger.Base.Env SceneCommonData UserData -> Float
+genActionPoints char env =
+    -- let
+    --     upperBound =
+    --         char.attributes.agility
+    -- in
+    -- genRandomNum 1 upperBound env
+    char.agility
+
+
+getSequence : Messenger.Base.Env SceneCommonData UserData -> List Charactor -> List Charactor
+getSequence env data =
     data
-        |> List.filter (\x -> x.hp /= 0)
         |> List.sortBy .position
         |> List.reverse
         |> List.sortBy (\x -> genActionPoints x env)
         |> List.reverse
 
 
-getQueue : List Self -> Messenger.Base.Env SceneCommonData UserData -> List Int
-getQueue data env =
+getQueue : List Self -> List Enemy -> Messenger.Base.Env SceneCommonData UserData -> List Int
+getQueue selfs enemies env =
+    let
+        enemyChar =
+            List.map
+                (\x -> convertEnemyToCharactor x)
+                enemies
+
+        selfChar =
+            List.map
+                (\x -> convertSelfToCharactor x)
+                selfs
+    in
     List.map
         (\x -> x.position)
-        (getSequence data env)
+            <|  getSequence env
+            <|  enemyChar ++ selfChar
 
 
 getFirstChar : List Int -> Int
@@ -53,7 +96,7 @@ getAt index list =
 
 findIndex : Int -> List Int -> Maybe Int
 findIndex target list =
-    List.head (List.indexedMap Tuple.pair list |> List.filter (\( index, value ) -> value == target) |> List.map Tuple.first)
+    List.head (List.indexedMap Tuple.pair list |> List.filter (\( _, value ) -> value == target) |> List.map Tuple.first)
 
 
 

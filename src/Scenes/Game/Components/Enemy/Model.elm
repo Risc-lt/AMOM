@@ -58,11 +58,6 @@ update env evnt data basedata =
                 { defaultEnemy | position = -1 }
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
-            -- if curEnemy.position == 0 then
-            --     ( ( curEnemy, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], ( env, False ) )
-            -- else if curEnemy.position == -1 && basedata.state == EnemyMove then
-            --     ( ( curEnemy, { basedata | state = PlayerTurn } ), [ Other ( "Self", SwitchTurn ) ], ( env, False ) )
-            -- else
             updateOne data env evnt curEnemy basedata
 
         newData =

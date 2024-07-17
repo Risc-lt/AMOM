@@ -120,7 +120,7 @@ update env evnt data basedata =
                 if 0 < basedata.curChar && basedata.curChar <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == Debug.log "" basedata.curChar && x.hp /= 0) posChanged
+                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
 
                 else
                     { defaultSelf | position = -1 }

@@ -135,7 +135,7 @@ nextChar queue curChar =
 
         -- or any other value indicating the end of the list
         Nothing ->
-            -1
+            getFirstChar queue
 
 
 nextSelf : List Int -> Int -> Int
@@ -223,19 +223,5 @@ initUI env data basedata =
 
         firstSide =
             checkSide firstChar
-
-        firstSelf =
-            if checkSide firstChar == PlayerSide then
-                firstChar
-
-            else
-                nextSelf firstQueue firstChar
-
-        firstEnemy =
-            if checkSide firstChar == EnemySide then
-                firstChar
-
-            else
-                nextEnemy firstQueue firstChar
     in
-    ( data, { basedata | queue = firstQueue, curChar = firstSelf, curEnemy = firstEnemy, side = firstSide } )
+    ( data, { basedata | queue = firstQueue, curChar = firstChar, curEnemy = firstChar, side = firstSide } )

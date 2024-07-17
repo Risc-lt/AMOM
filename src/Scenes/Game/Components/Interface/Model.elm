@@ -54,43 +54,16 @@ update env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-updateBaseData : Bool -> List Int -> BaseData -> BaseData
-updateBaseData flag queue basedata =
+updateBaseData : List Int -> BaseData -> BaseData
+updateBaseData queue basedata =
     let
         nextOne =
-            if flag then
-                nextChar queue basedata.curChar
-
-            else
-                nextChar queue basedata.curEnemy
+            nextChar (Debug.log "queue" queue) (Debug.log "cur" basedata.curChar)
 
         newside =
             checkSide nextOne
     in
-    case newside of
-        PlayerSide ->
-            { basedata | side = newside, curChar = nextOne }
-
-        EnemySide ->
-            { basedata | side = newside, curEnemy = nextOne }
-
-        _ ->
-            basedata
-
-
-updatePointer : Int -> List Int -> BaseData -> BaseData
-updatePointer sideNum queue basedata =
-    case sideNum of
-        -- From Self side
-        0 ->
-            updateBaseData True queue basedata
-
-        -- From Enemy side
-        1 ->
-            updateBaseData False queue basedata
-
-        _ ->
-            basedata
+    { basedata | side = newside, curChar = nextOne }
 
 
 sendMsg : BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
@@ -100,7 +73,7 @@ sendMsg basedata =
             ( PlayerTurn, [ Other ( "Self", SwitchTurn basedata.curChar ) ] )
 
         EnemySide ->
-            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curEnemy ) ] )
+            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curChar ) ] )
 
         _ ->
             ( basedata.state, [] )
@@ -118,13 +91,13 @@ updaterec env msg data basedata =
         ChangeBase newBaseData ->
             ( ( data, newBaseData ), [], env )
 
-        SwitchTurn sideNum ->
+        SwitchTurn _ ->
             let
                 newQueue =
                     getQueue data.selfs data.enemies env
 
                 newBaseData =
-                    updatePointer sideNum newQueue basedata
+                    updateBaseData newQueue basedata
 
                 ( newState, newMsg ) =
                     sendMsg newBaseData

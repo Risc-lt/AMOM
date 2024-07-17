@@ -192,10 +192,5 @@ defaultSelf =
     , mpMax = 3
     , state = Waiting
     , career = ""
-
-    -- , phyDefence = 0
-    -- , magDefence = 0
     , attributes = baseAttributes
-
-    -- , ratio = baseRatio
     }

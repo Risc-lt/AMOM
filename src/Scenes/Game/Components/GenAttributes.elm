@@ -1,9 +1,10 @@
-module Scenes.Game.Components.Enemy.GenAttributes exposing (..)
-
-import Random
+module Scenes.Game.Components.GenAttributes exposing (..)
 
 
-{-| basic attributes of the enemy
+import Scenes.Game.Components.GenRandom exposing (..)
+
+
+{-| basic attributes of the characters
 -}
 type alias Attribute =
     { strength : Int
@@ -13,7 +14,7 @@ type alias Attribute =
     }
 
 
-{-| Additional attributes of the enemy
+{-| Additional attributes of the characters
 -}
 type alias ExtendValue =
     { basicStatus : BasicStatus
@@ -23,7 +24,7 @@ type alias ExtendValue =
     }
 
 
-{-| Basic status of the Enemy
+{-| Basic status of the characters
 -}
 type alias BasicStatus = 
     { maxHp : Int
@@ -31,7 +32,7 @@ type alias BasicStatus =
     }
 
 
-{-| Ratio values of the Enemy
+{-| Ratio values of the characters
 -}
 type alias RatioValues =
     { avoidRate : Int
@@ -42,7 +43,7 @@ type alias RatioValues =
     }
 
 
-{-| Elemental resistance of the Enemy
+{-| Elemental resistance of the characters
 -}
 type alias EleResistance = 
     { waterResistance : Int
@@ -74,17 +75,6 @@ genBasicStatus attributes =
     { maxHp = genHp attributes
     , maxMp = genMp attributes
     }
-
-
-genRandomNum : Int -> Int -> Int -> Int
-genRandomNum lowerBound upperBound time =
-    let
-        ( value, _ ) =
-            Random.step (Random.int lowerBound upperBound) <|
-                Random.initialSeed <|
-                    time
-    in
-    value
 
 
 genActionPoints : Attribute -> Int -> Int

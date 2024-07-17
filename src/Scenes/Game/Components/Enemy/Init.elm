@@ -13,7 +13,7 @@ module Scenes.Game.Components.Enemy.Init exposing
 -}
 
 
-import Scenes.Game.Components.Enemy.GenAttributes exposing (..)
+import Scenes.Game.Components.GenAttributes exposing (..)
 
 
 {-| Core data structure for the enemy

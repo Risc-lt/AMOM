@@ -6,6 +6,7 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -17,10 +18,8 @@ type alias Data =
 
 checkHealth : Enemy -> Enemy
 checkHealth enemy =
-    if enemy.extendValues.basicStatus.hp < 0 then
-        let
-            
-        in
+    if enemy.hp < 0 then
+        { enemy | hp = 0 }
 
     else
         enemy

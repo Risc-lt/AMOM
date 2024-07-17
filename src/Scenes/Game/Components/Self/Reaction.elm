@@ -6,6 +6,8 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.Self.GetBasicValue exposing (checkRate, genAvoidRate, genCriticalHitRate, getSpecificNormalAttack)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -23,16 +25,48 @@ checkHealth char =
         char
 
 
-getHurt : AttackType -> Self -> Self
-getHurt attackType char =
-    case attackType of
-        Physical ->
-            checkHealth <|
-                { char | hp = char.hp - 50 * (100 - char.phyDefence) / 100 }
+normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self
+normalAttackDemage char enemy env =
+    let
+        isCritical =
+            checkRate env <|
+                genCriticalHitRate char
 
-        Magical ->
-            checkHealth <|
-                { char | hp = char.hp - 50 * (100 - char.magDefence) / 100 }
+        demage =
+            getSpecificNormalAttack char enemy isCritical
+    in
+    checkHealth <|
+        { char | hp = char.hp - demage }
+
+
+getHurt : AttackType -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> Self
+getHurt attackType enemy env char =
+    let
+        isAvoid =
+            checkRate env <|
+                genAvoidRate char
+
+        oldAttributes =
+            char.attributes
+
+        newAttributes =
+            { oldAttributes | energy = oldAttributes.energy + 0.3 }
+    in
+    if isAvoid then
+        char
+
+    else
+        case attackType of
+            NormalAttack ->
+                normalAttackDemage char enemy env
+
+            SpecialSkill ->
+                checkHealth <|
+                    { char | hp = char.hp - 50, attributes = newAttributes }
+
+            Magic ->
+                checkHealth <|
+                    { char | hp = char.hp - 50, attributes = newAttributes }
 
 
 getTargetChar : List Self -> Int -> Self
@@ -66,11 +100,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : AttackType -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack attackType num env msg data basedata =
+handleAttack : AttackType -> Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack attackType enemy num env msg data basedata =
     let
         targetChar =
-            getHurt attackType <|
+            getHurt attackType enemy env <|
                 getTargetChar data num
 
         newData =
@@ -82,6 +116,6 @@ handleAttack attackType num env msg data basedata =
             )
 
         newRemain =
-            [ Other ( "Enemy", ChangeTarget (Debug.log "newNum" remainCharNum) ) ]
+            [ Other ( "Enemy", ChangeTarget remainCharNum ) ]
     in
     ( ( newData, { basedata | selfNum = remainCharNum } ), newRemain, env )

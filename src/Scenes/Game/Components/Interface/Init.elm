@@ -29,6 +29,7 @@ type alias InitData =
     { selfs : List Self
     , enemies : List Enemy
     , curChar : Chars
+    , charPointer : Int
     }
 
 
@@ -53,6 +54,7 @@ emptyInitData =
     { selfs = emptyInitSelf
     , enemies = emptyInitEnemy
     , curChar = Self { defaultSelf | position = 0 }
+    , charPointer = 1
     }
 
 
@@ -60,7 +62,8 @@ emptyInitData =
 -}
 defaultUI : InitData
 defaultUI =
-    { selfs = [ defaultSelf ]
-    , enemies = [ defaultEnemy ]
+    { selfs = emptyInitSelf
+    , enemies = emptyInitEnemy
     , curChar = Self { defaultSelf | position = 0 }
+    , charPointer = 1
     }

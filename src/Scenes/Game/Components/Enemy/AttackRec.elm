@@ -6,8 +6,8 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
-import Scenes.Game.Components.Enemy.GenRatio exposing (checkRate, genAvoidRate, genCriticalHitRate, getSpecificNormalAttack)
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.Enemy.GenAttributes exposing (Enemy, checkRate, genAvoidRate, genCriticalHitRate, getSpecificNormalAttack)
+import Scenes.Game.Components.Enemy.Init exposing (defaultEnemy)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -25,6 +25,19 @@ checkHealth char =
         char
 
 
+checkRate : Int -> Int -> Bool
+checkRate time rate =
+    let
+        randomNum =
+            genRandomNum 0 1 time
+    in
+    if randomNum < rate then
+        True
+
+    else
+        False
+
+
 normalAttackDemage : Enemy -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy
 normalAttackDemage enemy char env =
     let
@@ -37,6 +50,24 @@ normalAttackDemage enemy char env =
     in
     checkHealth <|
         { enemy | hp = enemy.hp - demage }
+
+
+getSpecificNormalAttack : Enemy -> Self -> Bool -> Int
+getSpecificNormalAttack enemy char isCritical =
+    let
+        criticalHitRate =
+            if isCritical then
+                1.5
+
+            else
+                1
+    in
+    20 * enemy.attributes.strength / char.attributes.stamina * criticalHitRate
+
+
+getSpecificMagicalAttack : Enemy -> Self -> Float
+getSpecificMagicalAttack enemy char =
+    1 + enemy.attributes.spirit * 0.025
 
 
 getHurt : AttackType -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> Enemy

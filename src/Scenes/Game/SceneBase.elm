@@ -32,9 +32,3 @@ type LayerMsg scenemsg
     = PlayInitData (PlayInit.InitData SceneCommonData scenemsg)
     | NullLayerMsg
 
-
-type Element
-    = Water
-    | Fire
-    | Wind
-    | Earth

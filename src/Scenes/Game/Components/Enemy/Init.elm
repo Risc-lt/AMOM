@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, defaultEnemy, emptyInitData
+    , defaultEnemy, emptyInitData
     )
 
 {-|
@@ -13,16 +13,7 @@ module Scenes.Game.Components.Enemy.Init exposing
 -}
 
 
-{-| Core data structure for the enemy
--}
-type alias Enemy =
-    { x : Float
-    , y : Float
-    , hp : Float
-    , position : Int
-    , race : String
-    , attributes : Attribute
-    }
+import Scenes.Game.Components.Enemy.GenAttributes exposing (..)
 
 
 {-| The data used to initialize the scene
@@ -31,32 +22,14 @@ type alias InitData =
     List Enemy
 
 
-{-| Additional attributes of the enemy
--}
-type alias Attribute =
-    { strength : Float
-    , agility : Float
-    , stamina : Float
-    , spirit : Float
-    , waterResistance : Float
-    , fireResistance : Float
-    , windResistance : Float
-    , earthResistance : Float
-    }
-
-
 {-| Base attributes for the self
 -}
 baseAttributes : Attribute
 baseAttributes =
-    { strength = 10
-    , agility = 10
-    , stamina = 10
-    , spirit = 10
-    , waterResistance = 0.1
-    , fireResistance = 0.1
-    , windResistance = 0.1
-    , earthResistance = 0.1
+    { strength = 20
+    , dexterity = 20
+    , constitution = 20
+    , intelligence = 20
     }
 
 
@@ -68,9 +41,7 @@ emptyInitData =
         (\p ->
             { x = 230
             , y = toFloat (160 + 130 * (p - 7))
-            , hp = 100
             , position = p
-            , race = "Physical"
             , attributes = baseAttributes
             }
         )
@@ -79,9 +50,7 @@ emptyInitData =
             (\p ->
                 { x = 100
                 , y = toFloat (160 + 130 * (p - 10))
-                , hp = 100
                 , position = p
-                , race = "Magical"
                 , attributes = baseAttributes
                 }
             )
@@ -96,6 +65,5 @@ defaultEnemy =
     , y = 100
     , hp = 100
     , position = 7
-    , race = "Physical"
     , attributes = baseAttributes
     }

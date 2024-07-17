@@ -18,7 +18,6 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
-import Scenes.Game.Components.Enemy.GenRatio exposing (initEnemy)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import Scenes.Game.Components.Self.Init exposing (State(..))
@@ -35,9 +34,7 @@ init env initMsg =
         EnemyInit initData ->
             let
                 firstData =
-                    List.map
-                        initEnemy
-                        initData
+                    initData
             in
             ( firstData, initBaseData )
 

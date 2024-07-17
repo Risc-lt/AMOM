@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , defaultEnemy, emptyInitData
+    , defaultEnemy, emptyInitData, Enemy
     )
 
 {-|
@@ -14,6 +14,21 @@ module Scenes.Game.Components.Enemy.Init exposing
 
 
 import Scenes.Game.Components.Enemy.GenAttributes exposing (..)
+
+
+{-| Core data structure for the enemy
+-}
+type alias Enemy =
+    { x : Float
+    , y : Float
+    , position : Int
+    , hp : Int
+    , mp : Int
+    , energy : Int
+    , attributes : Attribute
+    , extendValues : ExtendValue
+    }
+
 
 
 {-| The data used to initialize the scene
@@ -33,16 +48,37 @@ baseAttributes =
     }
 
 
+{-| Base elemental resistance for the self
+-}
+baseEleResistance : EleResistance
+baseEleResistance =
+    { waterResistance = 10
+    , fireResistance = 10
+    , airResistance = 10
+    , earthResistance = 10
+    }
+
+
 {-| Empty init data for enemy
 -}
-emptyInitData : InitData
-emptyInitData =
+emptyInitData : Int -> InitData
+emptyInitData time =
     List.map
         (\p ->
             { x = 230
             , y = toFloat (160 + 130 * (p - 7))
             , position = p
+            , hp = genHp baseAttributes
+            , mp = genMp baseAttributes
+            , energy = 0
             , attributes = baseAttributes
+            , extendValues = genExtendValues 
+                                baseAttributes
+                                (time + p)
+                                baseEleResistance.waterResistance
+                                baseEleResistance.fireResistance
+                                baseEleResistance.airResistance
+                                baseEleResistance.earthResistance
             }
         )
         [ 7, 8, 9 ]
@@ -51,7 +87,17 @@ emptyInitData =
                 { x = 100
                 , y = toFloat (160 + 130 * (p - 10))
                 , position = p
+                , hp = genHp baseAttributes
+                , mp = genMp baseAttributes
+                , energy = 0
                 , attributes = baseAttributes
+                , extendValues = genExtendValues 
+                                    baseAttributes 
+                                    (time + p)
+                                    baseEleResistance.waterResistance
+                                    baseEleResistance.fireResistance
+                                    baseEleResistance.airResistance
+                                    baseEleResistance.earthResistance
                 }
             )
             [ 10, 11, 12 ]
@@ -63,7 +109,10 @@ defaultEnemy : Enemy
 defaultEnemy =
     { x = 100
     , y = 100
-    , hp = 100
     , position = 7
+    , hp = 0
+    , mp = 0
+    , energy = 0
     , attributes = baseAttributes
+    , extendValues = defaultExtendValues
     }

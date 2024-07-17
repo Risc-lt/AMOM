@@ -30,6 +30,7 @@ import Scenes.Game.Components.Self.Model as Self
 import Scenes.Game.Play.Attack exposing (judgeAttack)
 import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)
+import Time
 
 
 type alias GameComponent =
@@ -42,8 +43,12 @@ type alias Data =
 
 init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
+    let
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
+    in
     InitData
-        [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
+        [ Enemy.component (EnemyInit <| EneMsg.emptyInitData <| time) env
         , Self.component (SelfInit <| SelfMsg.emptyInitData) env
         , UI.component (UIInit <| UIMsg.emptyInitData) env
         ]

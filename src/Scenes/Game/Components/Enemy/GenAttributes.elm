@@ -3,17 +3,6 @@ module Scenes.Game.Components.Enemy.GenAttributes exposing (..)
 import Random
 
 
-{-| Core data structure for the enemy
--}
-type alias Enemy =
-    { x : Float
-    , y : Float
-    , position : Int
-    , attributes : Attribute
-    , extendValues : ExtendValue
-    }
-
-
 {-| basic attributes of the enemy
 -}
 type alias Attribute =
@@ -29,7 +18,7 @@ type alias Attribute =
 type alias ExtendValue =
     { basicStatus : BasicStatus
     , actionPoints : Int
-    , rateValues : RatioValues
+    , ratioValues : RatioValues
     , eleResistance : EleResistance
     }
 
@@ -37,11 +26,8 @@ type alias ExtendValue =
 {-| Basic status of the Enemy
 -}
 type alias BasicStatus = 
-    { hp : Int
-    , maxHp : Int
-    , mp : Int
+    { maxHp : Int
     , maxMp : Int
-    , energy : Int
     }
 
 
@@ -73,23 +59,20 @@ type Element
     | Earth
 
 
-genHp : Enemy -> Int
-genHp enemy = 
-    enemy.attributes.constitution * 10
+genHp : Attribute -> Int
+genHp attributes = 
+    attributes.constitution * 10
 
 
-genMp : Enemy -> Int
-genMp enemy = 
-    enemy.attributes.intelligence
+genMp : Attribute -> Int
+genMp attributes = 
+    attributes.intelligence
 
 
-genBasicStatus : Enemy -> Int -> BasicStatus
-genBasicStatus enemy energy = 
-    { hp = genHp enemy
-    , maxHp = genHp enemy
-    , mp = genMp enemy
-    , maxMp = genMp enemy
-    , energy = energy
+genBasicStatus : Attribute -> BasicStatus
+genBasicStatus attributes = 
+    { maxHp = genHp attributes
+    , maxMp = genMp attributes
     }
 
 
@@ -104,28 +87,28 @@ genRandomNum lowerBound upperBound time =
     value
 
 
-genActionPoints : Enemy -> Int -> Int
-genActionPoints enemy time =
+genActionPoints : Attribute -> Int -> Int
+genActionPoints attributes time =
     let
         upperBound =
-            enemy.attributes.dexterity
+            attributes.dexterity
     in
     genRandomNum 1 upperBound time
 
 
-genAvoidRate : Enemy -> Int
-genAvoidRate enemy =
-    enemy.attributes.dexterity
+genAvoidRate : Attribute -> Int
+genAvoidRate attributes =
+    attributes.dexterity
 
 
-genNormalHitRate : Enemy -> Int
-genNormalHitRate enemy =
-    60 + enemy.attributes.dexterity + enemy.attributes.intelligence
+genNormalHitRate : Attribute -> Int
+genNormalHitRate attributes =
+    60 + attributes.dexterity + attributes.intelligence
 
 
-genMagicalHitRate : Enemy -> Int
-genMagicalHitRate enemy =
-    80 + enemy.attributes.intelligence
+genMagicalHitRate : Attribute -> Int
+genMagicalHitRate attributes =
+    80 + attributes.intelligence
 
 
 genCriticalHitRate : Int
@@ -133,30 +116,78 @@ genCriticalHitRate =
     10
 
 
-genCounterRate : Enemy -> Int
-genCounterRate enemy =
-    (enemy.attributes.dexterity + enemy.attributes.intelligence) // 4
+genCounterRate : Attribute -> Int
+genCounterRate attributes =
+    (attributes.dexterity + attributes.intelligence) // 4
 
 
-genRatioValues : Enemy -> RatioValues
-genRatioValues enemy =
-    { avoidRate = genAvoidRate enemy
-    , normalHitRate = genNormalHitRate enemy
-    , magicalHitRate = genMagicalHitRate enemy
+genRatioValues : Attribute -> RatioValues
+genRatioValues attributes =
+    { avoidRate = genAvoidRate attributes
+    , normalHitRate = genNormalHitRate attributes
+    , magicalHitRate = genMagicalHitRate attributes
     , criticalHitRate = genCriticalHitRate
-    , counterRate = genCounterRate enemy
+    , counterRate = genCounterRate attributes
     }
 
 
-genSpecificResistance : Int -> Enemy -> Int
-genSpecificResistance baseResistance enemy =
-    baseResistance + enemy.attributes.intelligence
+genSpecificResistance : Int -> Attribute -> Int
+genSpecificResistance baseResistance attributes =
+    baseResistance + attributes.intelligence
 
 
-genEleResistence : Enemy -> Int -> Int -> Int -> Int -> EleResistance
-genEleResistence enemy water fire air earth =
-    { waterResistance = genSpecificResistance water enemy
-    , fireResistance = genSpecificResistance fire enemy
-    , airResistance = genSpecificResistance air enemy
-    , earthResistance = genSpecificResistance earth enemy
+genEleResistence : Attribute -> Int -> Int -> Int -> Int -> EleResistance
+genEleResistence attributes water fire air earth =
+    { waterResistance = genSpecificResistance water attributes
+    , fireResistance = genSpecificResistance fire attributes
+    , airResistance = genSpecificResistance air attributes
+    , earthResistance = genSpecificResistance earth attributes
+    }
+
+
+genExtendValues : Attribute -> Int -> Int -> Int -> Int -> Int -> ExtendValue
+genExtendValues attributes time water fire air earth =
+    { basicStatus = genBasicStatus attributes
+    , actionPoints = genActionPoints attributes time
+    , ratioValues = genRatioValues attributes
+    , eleResistance = genEleResistence attributes water fire air earth
+    }
+
+defaultAttributes : Attribute
+defaultAttributes = 
+    { strength = 0
+    , dexterity = 0
+    , constitution = 0
+    , intelligence = 0
+    }
+
+defaultBasicStatus : BasicStatus
+defaultBasicStatus =
+    { maxHp = 0
+    , maxMp = 0
+    }
+
+defaultRatioValues : RatioValues
+defaultRatioValues = 
+    { avoidRate = 0
+    , normalHitRate = 0
+    , magicalHitRate = 0
+    , criticalHitRate = 0
+    , counterRate = 0
+    }
+
+defaultEleResistance : EleResistance
+defaultEleResistance =
+    { waterResistance = 0
+    , fireResistance = 0
+    , airResistance = 0
+    , earthResistance = 0
+    }
+
+defaultExtendValues : ExtendValue
+defaultExtendValues =
+    { basicStatus = defaultBasicStatus
+    , actionPoints = 0
+    , ratioValues = defaultRatioValues
+    , eleResistance = defaultEleResistance
     }

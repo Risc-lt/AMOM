@@ -7,38 +7,42 @@ import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Random
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
-import Scenes.Game.Components.Enemy.AttackRec exposing (findMin)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Messenger.Base exposing (Env)
 
 
 type alias Data =
     Enemy
 
 
+attackMsg : Data -> BaseData -> Env cdata userdata -> Msg othertar msg sommsg
+attackMsg data basedata env =
+    Other
+        ( "Self"
+        , Action <|
+            EnemyNormal data <|
+                Tuple.first <|
+                    Random.step
+                        (Random.int 1
+                            (if Tuple.first basedata.selfNum == 0 then
+                                Tuple.second basedata.selfNum
+
+                            else
+                                Tuple.first basedata.selfNum
+                            )
+                        )
+                    <|
+                        Random.initialSeed <|
+                            Time.posixToMillis env.globalData.currentTimeStamp
+        )
+
+
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 attackPlayer env evnt data basedata =
     ( ( data, { basedata | state = EnemyReturn } )
-    , [ Other
-            ( "Self"
-            , Action <|
-                EnemyNormal data <|
-                    Tuple.first <|
-                        Random.step
-                            (Random.int 1
-                                (if Tuple.first basedata.selfNum == 0 then
-                                    Tuple.second basedata.selfNum
-
-                                else
-                                    Tuple.first basedata.selfNum
-                                )
-                            )
-                        <|
-                            Random.initialSeed <|
-                                Time.posixToMillis env.globalData.currentTimeStamp
-            )
-      ]
+    , [ attackMsg data basedata env ]
     , ( env, False )
     )
 

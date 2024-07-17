@@ -38,8 +38,8 @@ normalAttackDemage char enemy env =
         { char | hp = char.hp - demage }
 
 
-getHurt : AttackType -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> Self
-getHurt attackType enemy env char =
+getHurt : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> Self
+getHurt enemy env char =
     let
         isAvoid =
             checkRate env <|
@@ -99,11 +99,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : AttackType -> Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack attackType enemy num env msg data basedata =
+handleAttack : Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack enemy num env msg data basedata =
     let
         targetChar =
-            getHurt attackType enemy env <|
+            getHurt enemy env <|
                 getTargetChar data num
 
         newData =

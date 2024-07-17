@@ -5,12 +5,13 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ActionMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Scenes.Game.Components.Enemy.UpdateOne exposing (attackMsg)
 
 
 type alias Data =
@@ -52,7 +53,7 @@ normalAttackDemage enemy self env =
             getSpecificNormalAttack enemy self isCritical
     in
     checkHealth <|
-        { enemy | hp = enemy.hp - damage }
+        { enemy | hp = enemy.hp - damage, energy = enemy.energy + 30 }
 
 
 getSpecificNormalAttack : Enemy -> Self -> Bool -> Int
@@ -89,7 +90,7 @@ getHurt self env enemy =
         normalAttackDemage enemy self env
 
 
-attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> Data
+attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Enemy )
 attackRec self env allEnemy position =
     let
         targetEnemy =
@@ -113,8 +114,23 @@ attackRec self env allEnemy position =
                             x
                     )
                     allEnemy
+
+        remainNum =
+            List.map (\x -> x.position) <|
+                List.filter (\x -> x.hp /= 0) <|
+                    newData
+
+        time = 
+            Time.posixToMillis env.globalData.currentTimeStamp
+
+        isCounter =
+            if List.length remainNum == List.length allEnemy then
+                checkRate time targetEnemy.extendValues.ratioValues.counterRate
+
+            else
+                False
     in
-    newData
+    ( newData, isCounter, newEnemy )
 
 
 findMin : Data -> Int
@@ -129,7 +145,7 @@ findMin data =
 handleAttack : Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleAttack self position env msg data basedata =
     let
-        newData =
+        ( newData, isCounter, newEnemy ) =
             attackRec self env data position
 
         remainNum =
@@ -137,11 +153,18 @@ handleAttack self position env msg data basedata =
                 List.filter (\x -> x.hp /= 0) <|
                     newData
 
-        newMsg =
+        counterMsg =
+            if isCounter then
+                []
+
+            else
+                [ attackMsg newEnemy basedata env ]
+
+        dieMsg =
             if remainNum == basedata.enemyNum then
                 []
 
             else
                 [ Other ( "Self", EnemyDie remainNum ) ]
     in
-    ( ( newData, { basedata | enemyNum = remainNum } ), newMsg, env )
+    ( ( newData, { basedata | enemyNum = remainNum } ), counterMsg ++ dieMsg, env )

@@ -16,7 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), InitMsg(..), ActionMsg(..), StatusMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
@@ -31,12 +31,8 @@ type alias Data =
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        EnemyInit initData ->
-            let
-                firstData =
-                    initData
-            in
-            ( firstData, initBaseData )
+        Init (EnemyInit initData) ->
+            ( initData, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -68,14 +64,14 @@ update env evnt data basedata =
                 )
                 data
     in
-    ( ( newData, newBasedata ), Other ( "Interface", ChangeEnemies newData ) :: msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        AttackEnemy attackType char position ->
-            handleAttack attackType char position env msg data basedata
+        Action (PlayerNormal self position) ->
+            handleAttack self position env msg data basedata
 
         ChangeTarget length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
@@ -96,7 +92,7 @@ renderEnemy enemy env =
         [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) "monster"
         , Canvas.shapes
             [ fill Color.red ]
-            [ rect env.globalData.internalData ( enemy.x, enemy.y ) ( 100 * (enemy.hp / 100), 5 ) ]
+            [ rect env.globalData.internalData ( enemy.x, enemy.y ) ( 100 * (toFloat enemy.hp / 100), 5 ) ]
         ]
 
 

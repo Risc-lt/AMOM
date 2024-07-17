@@ -42,10 +42,10 @@ allTexture : Dict String String
 allTexture =
     Dict.fromList
         [ ( "monster", "assets/character/monster.png" )
-        , ( "magician", "assets/character/magic.png" )
-        , ( "archer", "assets/character/archer.png" )
-        , ( "pharmacist", "assets/character/pharmacist.png" )
-        , ( "swordsman", "assets/character/swordsman.png" )
+        , ( "Bulingze", "assets/character/magic.png" )
+        , ( "Bruce", "assets/character/archer.png" )
+        , ( "Bithif", "assets/character/pharmacist.png" )
+        , ( "Wenderd", "assets/character/swordsman.png" )
         , ( "background ", "assets/character/background.png" )
         , ( "head_archer", "assets/character/newhead2.png" )
         , ( "head_magic", "assets/character/newhead.png" )

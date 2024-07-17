@@ -6,7 +6,7 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Random
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -19,46 +19,28 @@ type alias Data =
 
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 attackPlayer env evnt data basedata =
-    case data.race of
-        "Physical" ->
-            ( ( data, { basedata | state = EnemyReturn } )
-            , [ Other
-                    ( "Self"
-                    , AttackPlayer NormalAttack data <|
-                        Tuple.first <|
-                            Random.step
-                                (Random.int 1
-                                    (if Tuple.first basedata.selfNum == 0 then
-                                        Tuple.second basedata.selfNum
+    ( ( data, { basedata | state = EnemyReturn } )
+    , [ Other
+            ( "Self"
+            , Action <|
+                EnemyNormal data <|
+                    Tuple.first <|
+                        Random.step
+                            (Random.int 1
+                                (if Tuple.first basedata.selfNum == 0 then
+                                    Tuple.second basedata.selfNum
 
-                                     else
-                                        Tuple.first basedata.selfNum
-                                    )
+                                else
+                                    Tuple.first basedata.selfNum
                                 )
-                            <|
-                                Random.initialSeed <|
-                                    Time.posixToMillis env.globalData.currentTimeStamp
-                    )
-              ]
-            , ( env, False )
+                            )
+                        <|
+                            Random.initialSeed <|
+                                Time.posixToMillis env.globalData.currentTimeStamp
             )
-
-        "Magical" ->
-            ( ( data, { basedata | state = EnemyReturn } )
-            , [ Other
-                    ( "Self"
-                    , AttackPlayer Magic data <|
-                        Tuple.first <|
-                            Random.step (Random.int 1 (Tuple.first basedata.selfNum + Tuple.second basedata.selfNum)) <|
-                                Random.initialSeed <|
-                                    Time.posixToMillis env.globalData.currentTimeStamp
-                    )
-              ]
-            , ( env, False )
-            )
-
-        _ ->
-            ( ( data, basedata ), [], ( env, False ) )
+      ]
+    , ( env, False )
+    )
 
 
 handleMove : List Enemy -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

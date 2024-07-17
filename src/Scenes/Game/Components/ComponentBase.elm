@@ -1,7 +1,9 @@
 module Scenes.Game.Components.ComponentBase exposing
     ( ActionSide(..)
-    , AttackType(..)
     , BaseData
+    , InitMsg(..)
+    , StatusMsg(..)
+    , ActionMsg(..)
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
@@ -11,6 +13,7 @@ module Scenes.Game.Components.ComponentBase exposing
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.GenAttributes exposing (..)
 
 
 {-|
@@ -25,29 +28,36 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 @docs initBaseData: Initial base data
 
 -}
-type ComponentMsg
+
+
+type InitMsg 
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
-    | AttackEnemy AttackType Self Int
-    | AttackPlayer AttackType Enemy Int
+
+type StatusMsg
+    = ChangeSelfs (List Self)
+    | ChangeEnemies (List Enemy)
+    | ChangeBase BaseData
+
+
+type ActionMsg
+    = PlayerNormal Self Int
+    | EnemyNormal Enemy Int
+
+
+type ComponentMsg
+    = Init InitMsg
+    | Action ActionMsg
     | ChangeTarget ( Int, Int )
     | EnemyDie (List Int)
     | SwitchTurn Int
-    | ChangeSelfs (List Self)
-    | ChangeEnemies (List Enemy)
-    | ChangeBase BaseData
+    | ChangeStatus StatusMsg
     | UpdateChangingPos (List Self)
     | StartGame
     | GameOver
     | Defeated
     | NullComponentMsg
-
-
-type AttackType
-    = NormalAttack
-    | SpecialSkill
-    | Magic
 
 
 type alias ComponentTarget =

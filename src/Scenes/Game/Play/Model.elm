@@ -20,7 +20,7 @@ import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerS
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
 import Scenes.Game.Components.Interface.Init as UIMsg
@@ -48,9 +48,9 @@ init env initMsg =
             Time.posixToMillis env.globalData.currentTimeStamp
     in
     InitData
-        [ Enemy.component (EnemyInit <| EneMsg.emptyInitData <| time) env
-        , Self.component (SelfInit <| SelfMsg.emptyInitData) env
-        , UI.component (UIInit <| UIMsg.emptyInitData) env
+        [ Enemy.component (Init <| EnemyInit <| EneMsg.emptyInitData <| time) env
+        , Self.component (Init <| SelfInit <| SelfMsg.emptyInitData <| time) env
+        , UI.component (Init <| UIInit <| UIMsg.emptyInitData) env
         ]
 
 

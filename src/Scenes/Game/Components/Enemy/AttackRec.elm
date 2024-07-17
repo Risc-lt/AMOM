@@ -5,11 +5,12 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Time
 
 
 type alias Data =
@@ -39,21 +40,23 @@ checkRate time rate =
 
 
 normalAttackDemage : Enemy -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy
-normalAttackDemage enemy char env =
+normalAttackDemage enemy self env =
     let
-        isCritical =
-            checkRate env <|
-                genCriticalHitRate enemy
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
 
-        demage =
-            getSpecificNormalAttack enemy char isCritical
+        isCritical =
+            checkRate time enemy.extendValues.ratioValues.criticalHitRate
+
+        damage =
+            getSpecificNormalAttack enemy self isCritical
     in
     checkHealth <|
-        { enemy | hp = enemy.hp - demage }
+        { enemy | hp = enemy.hp - damage }
 
 
 getSpecificNormalAttack : Enemy -> Self -> Bool -> Int
-getSpecificNormalAttack enemy char isCritical =
+getSpecificNormalAttack enemy self isCritical =
     let
         criticalHitRate =
             if isCritical then
@@ -62,40 +65,32 @@ getSpecificNormalAttack enemy char isCritical =
             else
                 1
     in
-    20 * enemy.attributes.strength / char.attributes.stamina * criticalHitRate
+    floor (toFloat (20 * enemy.attributes.strength // self.attributes.constitution) * criticalHitRate)
 
 
-getSpecificMagicalAttack : Enemy -> Self -> Float
-getSpecificMagicalAttack enemy char =
-    1 + enemy.attributes.spirit * 0.025
+getSpecificMagicalAttack : Enemy -> Self -> Int
+getSpecificMagicalAttack enemy self =
+    floor (1 + toFloat enemy.attributes.intelligence * 0.025)
 
 
-getHurt : AttackType -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> Enemy
-getHurt attackType char env enemy =
+getHurt : Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> Enemy
+getHurt self env enemy =
     let
+        time = 
+            Time.posixToMillis env.globalData.currentTimeStamp
+
         isAvoid =
-            checkRate env <|
-                genAvoidRate enemy
+            checkRate time enemy.extendValues.ratioValues.avoidRate
     in
     if isAvoid then
         enemy
 
     else
-        case attackType of
-            NormalAttack ->
-                normalAttackDemage enemy char env
-
-            SpecialSkill ->
-                checkHealth <|
-                    { enemy | hp = char.hp - 50 }
-
-            Magic ->
-                checkHealth <|
-                    { enemy | hp = char.hp - 50 }
+        normalAttackDemage enemy self env
 
 
-attackRec : AttackType -> Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> Data
-attackRec attackType char env allEnemy position =
+attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> Data
+attackRec self env allEnemy position =
     let
         targetEnemy =
             Maybe.withDefault { defaultEnemy | position = 0 } <|
@@ -103,7 +98,7 @@ attackRec attackType char env allEnemy position =
                     List.filter (\x -> x.position == position) allEnemy
 
         newEnemy =
-            getHurt attackType char env targetEnemy
+            getHurt self env targetEnemy
 
         newData =
             List.filter
@@ -131,11 +126,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : AttackType -> Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack attackType char position env msg data basedata =
+handleAttack : Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack self position env msg data basedata =
     let
         newData =
-            attackRec attackType char env data position
+            attackRec self env data position
 
         remainNum =
             List.map (\x -> x.position) <|

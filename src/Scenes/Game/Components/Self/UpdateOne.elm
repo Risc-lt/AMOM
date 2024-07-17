@@ -64,7 +64,7 @@ handleMouseDown x y self env evnt data basedata =
                         0
 
                 melee =
-                    self.career == "swordsman" || self.career == "pharmacist"
+                    self.name /= "Bruce"
 
                 front =
                     List.any (\p -> p <= 9) basedata.enemyNum
@@ -129,7 +129,7 @@ handleMove list env evnt data basedata =
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", AttackEnemy NormalAttack data basedata.curEnemy ) ]
+                [ Other ( "Enemy", NormalAttack data basedata.curEnemy ) ]
 
             else
                 []

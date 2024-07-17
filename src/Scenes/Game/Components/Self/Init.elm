@@ -99,7 +99,7 @@ emptyInitData time =
       , attributes = baseAttributes
       , extendValues = genExtendValues
                         baseAttributes
-                        (time + 1)
+                        (time + 2)
                         baseEleResistance.waterResistance
                         baseEleResistance.fireResistance
                         baseEleResistance.airResistance
@@ -116,7 +116,7 @@ emptyInitData time =
       , attributes = baseAttributes
       , extendValues = genExtendValues
                         baseAttributes
-                        (time + 1)
+                        (time + 3)
                         baseEleResistance.waterResistance
                         baseEleResistance.fireResistance
                         baseEleResistance.airResistance
@@ -133,7 +133,7 @@ emptyInitData time =
       , attributes = baseAttributes
       , extendValues = genExtendValues
                         baseAttributes
-                        (time + 1)
+                        (time + 4)
                         baseEleResistance.waterResistance
                         baseEleResistance.fireResistance
                         baseEleResistance.airResistance

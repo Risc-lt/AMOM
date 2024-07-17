@@ -16,8 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Self.GetBasicValue exposing (initSelf)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData, InitMsg(..), ActionMsg(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
@@ -31,12 +30,8 @@ type alias Data =
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        SelfInit initData ->
-            let
-                data =
-                    List.map initSelf initData
-            in
-            ( data, initBaseData )
+        Init (SelfInit initData) ->
+            ( initData, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -157,8 +152,8 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        AttackPlayer attackType enemy num ->
-            handleAttack attackType enemy num env msg data basedata
+        Action (EnemyNormal enemy position) ->
+            handleAttack enemy position env msg data basedata
 
         EnemyDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )
@@ -176,7 +171,7 @@ updaterec env msg data basedata =
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
     if char.hp /= 0 then
-        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.name
 
     else
         empty

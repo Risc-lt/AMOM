@@ -24,7 +24,7 @@ attackPlayer env evnt data basedata =
             ( ( data, { basedata | state = EnemyReturn } )
             , [ Other
                     ( "Self"
-                    , Attack Physical <|
+                    , AttackPlayer NormalAttack data <|
                         Tuple.first <|
                             Random.step
                                 (Random.int 1
@@ -47,7 +47,7 @@ attackPlayer env evnt data basedata =
             ( ( data, { basedata | state = EnemyReturn } )
             , [ Other
                     ( "Self"
-                    , Attack Magical <|
+                    , AttackPlayer Magic data <|
                         Tuple.first <|
                             Random.step (Random.int 1 (Tuple.first basedata.selfNum + Tuple.second basedata.selfNum)) <|
                                 Random.initialSeed <|
@@ -65,7 +65,7 @@ handleMove : List Enemy -> ComponentUpdate SceneCommonData Data UserData SceneMs
 handleMove list env evnt data basedata =
     let
         returnX =
-            if data.position <= 3 then
+            if data.position <= 9 then
                 230
 
             else
@@ -94,7 +94,7 @@ handleMove list env evnt data basedata =
                 ( { basedata | state = EnemyAttack }, [] )
 
             else if basedata.state == EnemyReturn && newX <= returnX then
-                ( { basedata | state = EnemyMove, curEnemy = basedata.curEnemy + 1 }, [] )
+                ( { basedata | state = PlayerTurn }, [ Other ( "Interface", SwitchTurn 1 ) ] )
 
             else
                 ( basedata, [] )

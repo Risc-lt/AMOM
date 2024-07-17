@@ -20,7 +20,7 @@ handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
             if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn, curChar = findMin list } ), [ Other ( "Interface", SwitchTurn ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", StartGame ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -43,22 +43,22 @@ handleMouseDown x y self env evnt data basedata =
             let
                 position =
                     if x > 640 && x < 1030 && y > 680 && y < 813.3 then
-                        4
+                        10
 
                     else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
-                        5
+                        11
 
                     else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
-                        6
+                        12
 
                     else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
-                        1
+                        7
 
                     else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
-                        2
+                        8
 
                     else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
-                        3
+                        9
 
                     else
                         0
@@ -67,10 +67,10 @@ handleMouseDown x y self env evnt data basedata =
                     self.career == "swordsman" || self.career == "pharmacist"
 
                 front =
-                    List.any (\p -> p <= 3) basedata.enemyNum
+                    List.any (\p -> p <= 9) basedata.enemyNum
 
                 effective =
-                    if melee && front && position > 3 then
+                    if melee && front && position > 9 then
                         False
 
                     else
@@ -117,28 +117,24 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        newBaseData =
+        ( newBaseData, msg0 ) =
             if basedata.state == PlayerReturn && newX >= returnX then
-                { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }
+                ( { basedata | state = EnemyMove }, [ Other ( "Interface", SwitchTurn 0 ) ] )
 
             else if basedata.state == PlayerAttack && newX <= 670 then
-                { basedata | state = PlayerReturn }
+                ( { basedata | state = PlayerReturn }, [] )
 
             else
-                basedata
+                ( basedata, [] )
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                if data.career == "archer" then
-                    [ Other ( "Enemy", Attack Physical basedata.curEnemy ) ]
-
-                else
-                    [ Other ( "Enemy", Attack Magical basedata.curEnemy ) ]
+                [ Other ( "Enemy", AttackEnemy NormalAttack data basedata.curEnemy ) ]
 
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), msg ++ msg0, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

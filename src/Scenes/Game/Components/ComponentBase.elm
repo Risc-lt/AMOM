@@ -1,5 +1,6 @@
 module Scenes.Game.Components.ComponentBase exposing
-    ( AttackType(..)
+    ( ActionSide(..)
+    , AttackType(..)
     , BaseData
     , ComponentMsg(..)
     , ComponentTarget
@@ -28,21 +29,25 @@ type ComponentMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
-    | Attack AttackType Int
+    | AttackEnemy AttackType Self Int
+    | AttackPlayer AttackType Enemy Int
     | ChangeTarget ( Int, Int )
     | EnemyDie (List Int)
-    | SwitchTurn
+    | SwitchTurn Int
     | ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
     | ChangeBase BaseData
+    | UpdateChangingPos (List Self)
+    | StartGame
     | GameOver
     | Defeated
     | NullComponentMsg
 
 
 type AttackType
-    = Physical
-    | Magical
+    = NormalAttack
+    | SpecialSkill
+    | Magic
 
 
 type alias ComponentTarget =
@@ -60,20 +65,30 @@ type Gamestate
     | EnemyReturn
 
 
+type ActionSide
+    = PlayerSide
+    | EnemySide
+    | Undeclaced
+
+
 type alias BaseData =
     { state : Gamestate
     , enemyNum : List Int
     , selfNum : ( Int, Int )
     , curChar : Int
     , curEnemy : Int
+    , queue : List Int
+    , side : ActionSide
     }
 
 
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyNum = [ 1, 2, 3, 4, 5, 6 ]
+    , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
     , selfNum = ( 2, 2 )
     , curChar = 1
-    , curEnemy = 1
+    , curEnemy = 7
+    , queue = []
+    , side = Undeclaced
     }

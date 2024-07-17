@@ -17,6 +17,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.Self.GetBasicValue exposing (initSelf)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
@@ -31,7 +32,11 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         SelfInit initData ->
-            ( initData, initBaseData )
+            let
+                data =
+                    List.map initSelf initData
+            in
+            ( data, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -107,9 +112,12 @@ update env evnt data basedata =
         posChanged =
             posExchange evnt data basedata
 
+        msgPos =
+            [ Other ( "Interface", UpdateChangingPos posChanged ) ]
+
         curChar =
             if basedata.state /= GameBegin then
-                if basedata.curChar <= 6 then
+                if 0 < basedata.curChar && basedata.curChar <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
                             List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
@@ -121,14 +129,7 @@ update env evnt data basedata =
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curChar.position == 0 then
-                ( ( curChar, { basedata | curChar = basedata.curChar + 1 } ), [], ( env, False ) )
-
-            else if curChar.position == -1 && basedata.state == PlayerTurn then
-                ( ( curChar, { basedata | state = EnemyMove } ), [ Other ( "Enemy", SwitchTurn ) ], ( env, False ) )
-
-            else
-                updateOne posChanged env evnt curChar basedata
+            updateOne posChanged env evnt curChar basedata
 
         newData =
             if basedata.state /= GameBegin then
@@ -150,20 +151,20 @@ update env evnt data basedata =
             , Other ( "Interface", ChangeBase newBasedata )
             ]
     in
-    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Attack attackType num ->
-            handleAttack attackType num env msg data basedata
+        AttackPlayer attackType enemy num ->
+            handleAttack attackType enemy num env msg data basedata
 
         EnemyDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
-        SwitchTurn ->
-            ( ( data, { basedata | state = PlayerTurn, curChar = findMin data } ), [], env )
+        SwitchTurn pos ->
+            ( ( data, { basedata | state = PlayerTurn, curChar = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )

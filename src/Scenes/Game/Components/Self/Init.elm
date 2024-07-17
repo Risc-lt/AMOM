@@ -13,6 +13,10 @@ module Scenes.Game.Components.Self.Init exposing
 -}
 
 
+import Scenes.Game.Components.GenAttributes exposing (..)
+import Time exposing (ZoneName(..))
+
+
 {-| Character state
 -}
 type State
@@ -23,48 +27,16 @@ type State
 {-| Core data structure for the self
 -}
 type alias Self =
-    { x : Float
+    { name : String
+    , x : Float
     , y : Float
     , position : Int
-    , hp : Float
-    , mp : Float
-    , hpMax : Float
-    , mpMax : Float
-    , state : State
-    , career : String
-
-    -- , phyDefence : Float
-    -- , magDefence : Float
+    , hp : Int
+    , mp : Int
+    , energy : Int
     , attributes : Attribute
-
-    -- , ratio : RatioValue
-    }
-
-
-{-| Additional attributes of the self
--}
-type alias Attribute =
-    { strength : Float
-    , agility : Float
-    , stamina : Float
-    , spirit : Float
-    , energy : Float
-    , waterResistance : Float
-    , fireResistance : Float
-    , windResistance : Float
-    , earthResistance : Float
-    }
-
-
-{-| The ratio value of the self
--}
-type alias RatioValue =
-    { actionPoints : Float
-    , avoidRate : Float
-    , normalHitRate : Float
-    , magicalHitRate : Float
-    , criticalHitRate : Float
-    , counterRate : Float
+    , extendValues : ExtendValue
+    , state : State
     }
 
 
@@ -78,103 +50,117 @@ type alias InitData =
 -}
 baseAttributes : Attribute
 baseAttributes =
-    { strength = 10
-    , agility = 10
-    , stamina = 10
-    , spirit = 10
-    , energy = 3
-    , waterResistance = 0.1
-    , fireResistance = 0.1
-    , windResistance = 0.1
-    , earthResistance = 0.1
+    { strength = 20
+    , dexterity = 20
+    , constitution = 20
+    , intelligence = 20
     }
 
 
-{-| Empty attributes for the self
+{-| Base elemental resistance for the self
 -}
-emptyAttributes : Attribute
-emptyAttributes =
-    { strength = 0
-    , agility = 0
-    , stamina = 0
-    , spirit = 0
-    , energy = 0
-    , waterResistance = 1
-    , fireResistance = 1
-    , windResistance = 1
-    , earthResistance = 1
+baseEleResistance : EleResistance
+baseEleResistance =
+    { waterResistance = 10
+    , fireResistance = 10
+    , airResistance = 10
+    , earthResistance = 10
     }
 
 
 {-| Empty init data for self
 -}
-emptyInitData : InitData
-emptyInitData =
-    [ { x = 1100
+emptyInitData : Int -> InitData
+emptyInitData time =
+    [ { name = "Wenderd"
+      , x = 1100
       , y = 160
       , position = 1
-      , hp = 100
-      , mp = 30
-      , hpMax = 100
-      , mpMax = 3
-      , state = Waiting
-      , career = "swordsman"
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
+      , energy = 0
       , attributes = baseAttributes
+      , extendValues = genExtendValues
+                        baseAttributes
+                        (time + 1)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
+      , state = Waiting
       }
-    , { x = 1100
+    , { name = "Bruce"
+      , x = 1100
       , y = 290
       , position = 2
-      , hp = 100
-      , mp = 30
-      , hpMax = 100
-      , mpMax = 3
-      , state = Waiting
-      , career = "archer"
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
+      , energy = 0
       , attributes = baseAttributes
+      , extendValues = genExtendValues
+                        baseAttributes
+                        (time + 1)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
+      , state = Waiting
       }
-    , { x = 1100
+    , { name = "Bulingze"
+      , x = 1100
       , y = 420
       , position = 3
-      , hp = 0
-      , mp = 0
-      , hpMax = 0
-      , mpMax = 0
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
+      , energy = 0
+      , attributes = baseAttributes
+      , extendValues = genExtendValues
+                        baseAttributes
+                        (time + 1)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
       , state = Waiting
-      , career = ""
-      , attributes = emptyAttributes
       }
-    , { x = 1220
+    , { name = "Bithif"
+      , x = 1220
       , y = 160
       , position = 4
-      , hp = 100
-      , mp = 30
-      , hpMax = 100
-      , mpMax = 3
-      , state = Waiting
-      , career = "magician"
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
+      , energy = 0
       , attributes = baseAttributes
+      , extendValues = genExtendValues
+                        baseAttributes
+                        (time + 1)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
+      , state = Waiting
       }
-    , { x = 1220
+    , { name = ""
+      , x = 1220
       , y = 290
       , position = 5
-      , hp = 100
-      , mp = 30
-      , hpMax = 100
-      , mpMax = 3
+      , hp = 0
+      , mp = 0
+      , energy = 0
+      , attributes = defaultAttributes
+      , extendValues = defaultExtendValues
       , state = Waiting
-      , career = "pharmacist"
-      , attributes = baseAttributes
       }
-    , { x = 1220
+    , { name = ""
+      , x = 1220
       , y = 420
       , position = 6
       , hp = 0
       , mp = 0
-      , hpMax = 100
-      , mpMax = 3
+      , energy = 0
+      , attributes = defaultAttributes
+      , extendValues = defaultExtendValues
       , state = Waiting
-      , career = ""
-      , attributes = emptyAttributes
       }
     ]
 
@@ -183,14 +169,14 @@ emptyInitData =
 -}
 defaultSelf : Self
 defaultSelf =
-    { x = 0
+    { name = ""
+    , x = 0
     , y = 0
     , position = 1
     , hp = 0
-    , mp = 3
-    , hpMax = 100
-    , mpMax = 3
+    , mp = 0
+    , energy = 0
+    , attributes = defaultAttributes
+    , extendValues = defaultExtendValues
     , state = Waiting
-    , career = ""
-    , attributes = baseAttributes
     }

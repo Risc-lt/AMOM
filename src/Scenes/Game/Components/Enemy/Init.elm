@@ -37,7 +37,7 @@ type alias InitData =
     List Enemy
 
 
-{-| Base attributes for the self
+{-| Base attributes for the enemy
 -}
 baseAttributes : Attribute
 baseAttributes =
@@ -48,7 +48,7 @@ baseAttributes =
     }
 
 
-{-| Base elemental resistance for the self
+{-| Base elemental resistance for the enemy
 -}
 baseEleResistance : EleResistance
 baseEleResistance =

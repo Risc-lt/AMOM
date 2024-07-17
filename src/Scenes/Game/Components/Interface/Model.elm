@@ -54,26 +54,30 @@ update env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-updateBaseData : List Int -> BaseData -> BaseData
-updateBaseData queue basedata =
+updateBaseData : Int -> List Int -> BaseData -> Data -> ( Data, BaseData )
+updateBaseData sideNum queue basedata data =
     let
         nextOne =
-            nextChar (Debug.log "queue" queue) (Debug.log "cur" basedata.curChar)
+            if sideNum == 0 then
+                nextChar queue data.charPointer
+
+            else
+                nextChar queue data.charPointer
 
         newside =
             checkSide nextOne
     in
-    { basedata | side = newside, curChar = nextOne }
+    ( { data | charPointer = nextOne }, { basedata | side = newside } )
 
 
-sendMsg : BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
-sendMsg basedata =
+sendMsg : Data -> BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
+sendMsg data basedata =
     case basedata.side of
         PlayerSide ->
-            ( PlayerTurn, [ Other ( "Self", SwitchTurn basedata.curChar ) ] )
+            ( PlayerTurn, [ Other ( "Self", SwitchTurn data.charPointer ) ] )
 
         EnemySide ->
-            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curChar ) ] )
+            ( EnemyMove, [ Other ( "Enemy", SwitchTurn data.charPointer ) ] )
 
         _ ->
             ( basedata.state, [] )
@@ -91,23 +95,23 @@ updaterec env msg data basedata =
         ChangeBase newBaseData ->
             ( ( data, newBaseData ), [], env )
 
-        SwitchTurn _ ->
+        SwitchTurn sideNum ->
             let
                 newQueue =
                     getQueue data.selfs data.enemies env
 
-                newBaseData =
-                    updateBaseData newQueue basedata
+                ( newData, newBaseData ) =
+                    updateBaseData sideNum newQueue basedata data
 
                 ( newState, newMsg ) =
-                    sendMsg newBaseData
+                    sendMsg newData newBaseData
             in
-            ( ( data, { basedata | state = newState } ), newMsg, env )
+            ( ( newData, { newBaseData | state = newState, queue = newQueue } ), newMsg, env )
 
         StartGame ->
             let
                 ( firstState, newMsg ) =
-                    sendMsg basedata
+                    sendMsg data basedata
             in
             ( ( data, { basedata | state = firstState } ), newMsg, env )
 

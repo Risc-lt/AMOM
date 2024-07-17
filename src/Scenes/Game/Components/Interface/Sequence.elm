@@ -224,4 +224,4 @@ initUI env data basedata =
         firstSide =
             checkSide firstChar
     in
-    ( data, { basedata | queue = firstQueue, curChar = firstChar, curEnemy = firstChar, side = firstSide } )
+    ( { data | charPointer = firstChar }, { basedata | queue = firstQueue, side = firstSide } )

@@ -131,11 +131,11 @@ nextChar queue curChar =
                 getAt nextIndex queue |> Maybe.withDefault -1
 
             else
-                -1
+                getFirstChar queue
 
         -- or any other value indicating the end of the list
         Nothing ->
-            getFirstChar queue
+            -1
 
 
 nextSelf : List Int -> Int -> Int

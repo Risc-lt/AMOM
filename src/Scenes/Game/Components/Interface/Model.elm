@@ -59,15 +59,15 @@ updateBaseData sideNum queue basedata data =
     let
         nextOne =
             if sideNum == 0 then
-                nextChar queue data.charPointer
+                nextChar (Debug.log "queue" queue) data.charPointer
 
             else
-                nextChar queue data.charPointer
+                nextChar (Debug.log "queue" queue) data.charPointer
 
         newside =
             checkSide nextOne
     in
-    ( { data | charPointer = nextOne }, { basedata | side = newside } )
+    ( { data | charPointer = Debug.log "nextOne" nextOne }, { basedata | side = newside } )
 
 
 sendMsg : Data -> BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )

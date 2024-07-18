@@ -16,7 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), InitMsg(..), ActionMsg(..), StatusMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
@@ -89,10 +89,13 @@ updaterec env msg data basedata =
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) "monster"
+        [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) enemy.name
         , Canvas.shapes
             [ fill Color.red ]
-            [ rect env.globalData.internalData ( enemy.x, enemy.y ) ( 100 * (toFloat enemy.hp / 100), 5 ) ]
+            [ rect env.globalData.internalData
+                ( enemy.x, enemy.y )
+                ( toFloat (100 * (enemy.hp // enemy.extendValues.basicStatus.maxHp)), 5 )
+            ]
         ]
 
 

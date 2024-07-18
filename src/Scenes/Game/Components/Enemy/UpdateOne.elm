@@ -2,7 +2,7 @@ module Scenes.Game.Components.Enemy.UpdateOne exposing (..)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (UserEvent(..))
+import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Random
@@ -10,7 +10,6 @@ import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, C
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Messenger.Base exposing (Env)
 
 
 type alias Data =
@@ -33,13 +32,14 @@ attackMsg data basedata env =
                             (if List.length front == 0 then
                                 List.length basedata.selfNum
 
-                            else
+                             else
                                 List.length front
                             )
                         )
                     <|
                         Random.initialSeed <|
-                            Time.posixToMillis env.globalData.currentTimeStamp)
+                            Time.posixToMillis env.globalData.currentTimeStamp
+            )
                 False
         )
 

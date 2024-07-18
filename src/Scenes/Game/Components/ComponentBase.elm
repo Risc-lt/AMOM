@@ -1,19 +1,19 @@
 module Scenes.Game.Components.ComponentBase exposing
-    ( ActionSide(..)
+    ( ActionMsg(..)
+    , ActionSide(..)
     , BaseData
-    , InitMsg(..)
-    , StatusMsg(..)
-    , ActionMsg(..)
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
+    , InitMsg(..)
+    , StatusMsg(..)
     , initBaseData
     )
 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.GenAttributes exposing (..)
 
 
 {-|
@@ -28,12 +28,11 @@ import Scenes.Game.Components.GenAttributes exposing (..)
 @docs initBaseData: Initial base data
 
 -}
-
-
-type InitMsg 
+type InitMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
+
 
 type StatusMsg
     = ChangeSelfs (List Self)
@@ -44,6 +43,7 @@ type StatusMsg
 type ActionMsg
     = PlayerNormal Self Int IsCounter
     | EnemyNormal Enemy Int IsCounter
+
 
 type alias IsCounter =
     Bool

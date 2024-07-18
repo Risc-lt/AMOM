@@ -5,9 +5,9 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ActionMsg(..), ComponentTarget, Gamestate(..))
-import Scenes.Game.Components.GenRandom exposing (..)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
@@ -76,7 +76,7 @@ getSpecificMagicalAttack enemy self =
 getHurt : Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> Enemy
 getHurt self env enemy =
     let
-        time = 
+        time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isAvoid =
@@ -114,7 +114,7 @@ attackRec selfCounter self env allEnemy position =
                     )
                     allEnemy
 
-        time = 
+        time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isCounter =
@@ -152,7 +152,7 @@ handleAttack selfCounter self position env msg data basedata =
                 []
 
             else
-                [ Other ( "Self", Action (EnemyNormal newEnemy self.position True)) ]
+                [ Other ( "Self", Action (EnemyNormal newEnemy self.position True) ) ]
 
         dieMsg =
             if remainNum == basedata.enemyNum then

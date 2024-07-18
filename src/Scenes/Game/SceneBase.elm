@@ -30,4 +30,3 @@ type alias SceneCommonData =
 type LayerMsg scenemsg
     = PlayInitData (PlayInit.InitData SceneCommonData scenemsg)
     | NullLayerMsg
-

@@ -5,13 +5,13 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ActionMsg(..), ComponentTarget, Gamestate(..))
-import Scenes.Game.Components.GenRandom exposing (..)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.Enemy.UpdateOne exposing (attackMsg)
+import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Scenes.Game.Components.Enemy.UpdateOne exposing (attackMsg)
 
 
 type alias Data =
@@ -77,7 +77,7 @@ getSpecificMagicalAttack self enemy =
 getHurt : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> Self
 getHurt enemy env self =
     let
-        time = 
+        time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isAvoid =
@@ -90,8 +90,8 @@ getHurt enemy env self =
         normalAttackDemage self enemy env
 
 
-attackRec : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Self )
-attackRec enemy env allSelf position =
+attackRec : Bool -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Self )
+attackRec enemyCounter enemy env allSelf position =
     let
         targetSelf =
             Maybe.withDefault { defaultSelf | position = 0 } <|
@@ -100,6 +100,7 @@ attackRec enemy env allSelf position =
 
         newSelf =
             getHurt enemy env targetSelf
+
         newData =
             List.filter
                 (\x -> x.hp /= 0)
@@ -114,16 +115,11 @@ attackRec enemy env allSelf position =
                     )
                     allSelf
 
-        remainNum =
-            List.map (\x -> x.position) <|
-                List.filter (\x -> x.hp /= 0) <|
-                    newData
-
-        time = 
+        time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isCounter =
-            if List.length remainNum == List.length allSelf then
+            if newSelf.hp /= 0 && not enemyCounter then
                 checkRate time targetSelf.extendValues.ratioValues.counterRate
 
             else
@@ -141,11 +137,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack enemy position env msg data basedata =
+handleAttack : Bool -> Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack enemyCounter enemy position env msg data basedata =
     let
         ( newData, isCounter, newSelf ) =
-            attackRec enemy env data position
+            attackRec enemyCounter enemy env data position
 
         remainNum =
             List.map (\x -> x.position) <|
@@ -157,7 +153,7 @@ handleAttack enemy position env msg data basedata =
                 []
 
             else
-                [ Other ("Enemy", Action (PlayerNormal newSelf enemy.position True)) ]
+                [ Other ( "Enemy", Action (PlayerNormal newSelf enemy.position True) ) ]
 
         dieMsg =
             if remainNum == basedata.selfNum then

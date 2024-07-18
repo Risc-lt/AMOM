@@ -1,6 +1,5 @@
 module Scenes.Game.Components.GenAttributes exposing (..)
 
-
 import Scenes.Game.Components.GenRandom exposing (..)
 
 
@@ -26,7 +25,7 @@ type alias ExtendValue =
 
 {-| Basic status of the characters
 -}
-type alias BasicStatus = 
+type alias BasicStatus =
     { maxHp : Int
     , maxMp : Int
     }
@@ -45,7 +44,7 @@ type alias RatioValues =
 
 {-| Elemental resistance of the characters
 -}
-type alias EleResistance = 
+type alias EleResistance =
     { waterResistance : Int
     , fireResistance : Int
     , airResistance : Int
@@ -61,17 +60,17 @@ type Element
 
 
 genHp : Attribute -> Int
-genHp attributes = 
+genHp attributes =
     attributes.constitution * 10
 
 
 genMp : Attribute -> Int
-genMp attributes = 
+genMp attributes =
     attributes.intelligence
 
 
 genBasicStatus : Attribute -> BasicStatus
-genBasicStatus attributes = 
+genBasicStatus attributes =
     { maxHp = genHp attributes
     , maxMp = genMp attributes
     }
@@ -143,13 +142,15 @@ genExtendValues attributes time water fire air earth =
     , eleResistance = genEleResistence attributes water fire air earth
     }
 
+
 defaultAttributes : Attribute
-defaultAttributes = 
+defaultAttributes =
     { strength = 0
     , dexterity = 0
     , constitution = 0
     , intelligence = 0
     }
+
 
 defaultBasicStatus : BasicStatus
 defaultBasicStatus =
@@ -157,14 +158,16 @@ defaultBasicStatus =
     , maxMp = 0
     }
 
+
 defaultRatioValues : RatioValues
-defaultRatioValues = 
+defaultRatioValues =
     { avoidRate = 0
     , normalHitRate = 0
     , magicalHitRate = 0
     , criticalHitRate = 0
     , counterRate = 0
     }
+
 
 defaultEleResistance : EleResistance
 defaultEleResistance =
@@ -173,6 +176,7 @@ defaultEleResistance =
     , airResistance = 0
     , earthResistance = 0
     }
+
 
 defaultExtendValues : ExtendValue
 defaultExtendValues =

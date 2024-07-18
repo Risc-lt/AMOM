@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , defaultEnemy, emptyInitData, Enemy
+    , Enemy, defaultEnemy, emptyInitData
     )
 
 {-|
@@ -11,7 +11,6 @@ module Scenes.Game.Components.Enemy.Init exposing
 @docs InitData
 
 -}
-
 
 import Scenes.Game.Components.GenAttributes exposing (..)
 
@@ -29,7 +28,6 @@ type alias Enemy =
     , attributes : Attribute
     , extendValues : ExtendValue
     }
-
 
 
 {-| The data used to initialize the scene
@@ -74,13 +72,14 @@ emptyInitData time =
             , mp = genMp baseAttributes
             , energy = 0
             , attributes = baseAttributes
-            , extendValues = genExtendValues 
-                                baseAttributes
-                                (time + p)
-                                baseEleResistance.waterResistance
-                                baseEleResistance.fireResistance
-                                baseEleResistance.airResistance
-                                baseEleResistance.earthResistance
+            , extendValues =
+                genExtendValues
+                    baseAttributes
+                    (time + p)
+                    baseEleResistance.waterResistance
+                    baseEleResistance.fireResistance
+                    baseEleResistance.airResistance
+                    baseEleResistance.earthResistance
             }
         )
         [ 7, 8, 9 ]
@@ -94,13 +93,14 @@ emptyInitData time =
                 , mp = genMp baseAttributes
                 , energy = 0
                 , attributes = baseAttributes
-                , extendValues = genExtendValues 
-                                    baseAttributes 
-                                    (time + p)
-                                    baseEleResistance.waterResistance
-                                    baseEleResistance.fireResistance
-                                    baseEleResistance.airResistance
-                                    baseEleResistance.earthResistance
+                , extendValues =
+                    genExtendValues
+                        baseAttributes
+                        (time + p)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
                 }
             )
             [ 10, 11, 12 ]

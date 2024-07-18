@@ -12,7 +12,6 @@ module Scenes.Game.Components.Self.Init exposing
 
 -}
 
-
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Time exposing (ZoneName(..))
 
@@ -80,13 +79,14 @@ emptyInitData time =
       , mp = genMp baseAttributes
       , energy = 0
       , attributes = baseAttributes
-      , extendValues = genExtendValues
-                        baseAttributes
-                        (time + 1)
-                        baseEleResistance.waterResistance
-                        baseEleResistance.fireResistance
-                        baseEleResistance.airResistance
-                        baseEleResistance.earthResistance
+      , extendValues =
+            genExtendValues
+                baseAttributes
+                (time + 1)
+                baseEleResistance.waterResistance
+                baseEleResistance.fireResistance
+                baseEleResistance.airResistance
+                baseEleResistance.earthResistance
       , state = Waiting
       }
     , { name = "Bruce"
@@ -97,53 +97,56 @@ emptyInitData time =
       , mp = genMp baseAttributes
       , energy = 0
       , attributes = baseAttributes
-      , extendValues = genExtendValues
-                        baseAttributes
-                        (time + 2)
-                        baseEleResistance.waterResistance
-                        baseEleResistance.fireResistance
-                        baseEleResistance.airResistance
-                        baseEleResistance.earthResistance
+      , extendValues =
+            genExtendValues
+                baseAttributes
+                (time + 2)
+                baseEleResistance.waterResistance
+                baseEleResistance.fireResistance
+                baseEleResistance.airResistance
+                baseEleResistance.earthResistance
       , state = Waiting
       }
     , { name = "Bulingze"
       , x = 1100
       , y = 420
-      , position = 3
-      , hp = genHp baseAttributes
-      , mp = genMp baseAttributes
-      , energy = 0
-      , attributes = baseAttributes
-      , extendValues = genExtendValues
-                        baseAttributes
-                        (time + 3)
-                        baseEleResistance.waterResistance
-                        baseEleResistance.fireResistance
-                        baseEleResistance.airResistance
-                        baseEleResistance.earthResistance
-      , state = Waiting
-      }
-    , { name = "Bithif"
-      , x = 1220
-      , y = 160
       , position = 4
       , hp = genHp baseAttributes
       , mp = genMp baseAttributes
       , energy = 0
       , attributes = baseAttributes
-      , extendValues = genExtendValues
-                        baseAttributes
-                        (time + 4)
-                        baseEleResistance.waterResistance
-                        baseEleResistance.fireResistance
-                        baseEleResistance.airResistance
-                        baseEleResistance.earthResistance
+      , extendValues =
+            genExtendValues
+                baseAttributes
+                (time + 3)
+                baseEleResistance.waterResistance
+                baseEleResistance.fireResistance
+                baseEleResistance.airResistance
+                baseEleResistance.earthResistance
+      , state = Waiting
+      }
+    , { name = "Bithif"
+      , x = 1220
+      , y = 160
+      , position = 5
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
+      , energy = 0
+      , attributes = baseAttributes
+      , extendValues =
+            genExtendValues
+                baseAttributes
+                (time + 4)
+                baseEleResistance.waterResistance
+                baseEleResistance.fireResistance
+                baseEleResistance.airResistance
+                baseEleResistance.earthResistance
       , state = Waiting
       }
     , { name = ""
       , x = 1220
       , y = 290
-      , position = 5
+      , position = 3
       , hp = 0
       , mp = 0
       , energy = 0

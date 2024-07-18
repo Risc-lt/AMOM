@@ -16,9 +16,9 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), StatusMsg(..), ComponentTarget, Gamestate(..), initBaseData, InitMsg(..), ActionMsg(..))
-import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack)
+import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -153,7 +153,7 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         Action (EnemyNormal enemy position isCounter) ->
-            handleAttack enemy position env msg data basedata
+            handleAttack isCounter enemy position env msg data basedata
 
         CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )

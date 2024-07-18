@@ -47,10 +47,10 @@ init env initMsg =
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
-        enemyInit = 
+        enemyInit =
             EneMsg.emptyInitData <| time
 
-        selfInit = 
+        selfInit =
             SelfMsg.emptyInitData <| time
     in
     InitData

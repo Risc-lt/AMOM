@@ -1,6 +1,5 @@
 module Scenes.Game.Components.GenRandom exposing (..)
 
-
 import Random
 
 

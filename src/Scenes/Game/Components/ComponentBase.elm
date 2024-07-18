@@ -37,7 +37,7 @@ type InitMsg
 type StatusMsg
     = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
-    | ChangeBase BaseData
+    | ChangeState Gamestate
 
 
 type ActionMsg
@@ -88,7 +88,8 @@ type alias BaseData =
     { state : Gamestate
     , enemyNum : List Int
     , selfNum : List Int
-    , curChar : Int
+    , curSelf : Int
+    , curEnemy : Int
     , queue : List Int
     , side : ActionSide
     }
@@ -98,8 +99,9 @@ initBaseData : BaseData
 initBaseData =
     { state = GameBegin
     , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
-    , selfNum = [ 1, 2, 3, 4, 5, 6 ]
-    , curChar = 0
+    , selfNum = [ 1, 2, 4, 5 ]
+    , curSelf = 0
+    , curEnemy = 0
     , queue = []
     , side = Undeclaced
     }

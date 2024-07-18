@@ -112,10 +112,10 @@ update env evnt data basedata =
 
         curChar =
             if basedata.state /= GameBegin then
-                if 0 < basedata.curChar && basedata.curChar <= 6 then
+                if 0 < basedata.curSelf && basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar) posChanged
+                            List.filter (\x -> x.position == basedata.curSelf) posChanged
 
                 else
                     { defaultSelf | position = 0 }
@@ -134,7 +134,7 @@ update env evnt data basedata =
             if basedata.state /= GameBegin then
                 List.map
                     (\x ->
-                        if x.position == basedata.curChar && x.hp /= 0 then
+                        if x.position == basedata.curSelf && x.hp /= 0 then
                             newChar
 
                         else
@@ -176,7 +176,7 @@ updaterec env msg data basedata =
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = PlayerTurn, curChar = pos } ), [], env )
+            ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )

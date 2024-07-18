@@ -5,9 +5,9 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Random
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 
@@ -21,27 +21,24 @@ attackMsg data basedata env =
     let
         front =
             List.filter (\x -> x <= 3) basedata.selfNum
-    in
-    Other
-        ( "Self"
-        , Action <|
-            (EnemyNormal data <|
-                Tuple.first <|
-                    Random.step
-                        (Random.int 1
-                            (if List.length front == 0 then
-                                List.length basedata.selfNum
 
-                             else
-                                List.length front
-                            )
-                        )
-                    <|
-                        Random.initialSeed <|
-                            Time.posixToMillis env.globalData.currentTimeStamp
-            )
-                False
-        )
+        upperbound =
+            if List.length front == 0 then
+                List.length basedata.selfNum
+
+            else
+                List.length front
+
+        index =
+            genRandomNum 1 upperbound <|
+                Time.posixToMillis env.globalData.currentTimeStamp
+
+        position =
+            Maybe.withDefault 100 <|
+                List.head <|
+                    List.drop (index - 1) basedata.selfNum
+    in
+    Other ( "Self", Action (EnemyNormal data position False) )
 
 
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

@@ -50,30 +50,26 @@ update env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-updateBaseData : Int -> List Int -> BaseData -> Data -> ( Data, BaseData )
-updateBaseData sideNum queue basedata data =
+updateBaseData : List Int -> BaseData -> Data -> ( Data, BaseData )
+updateBaseData queue basedata data =
     let
         nextOne =
-            if sideNum == 0 then
-                nextChar (Debug.log "queue" queue) data.charPointer
-
-            else
-                nextChar (Debug.log "queue" queue) data.charPointer
+            nextChar (Debug.log "queue" queue) basedata.curSelf
 
         newside =
             checkSide nextOne
     in
-    ( { data | charPointer = Debug.log "nextOne" nextOne }, { basedata | side = newside } )
+    ( data, { basedata | side = newside, curSelf = Debug.log "nextOne" nextOne } )
 
 
 sendMsg : Data -> BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
 sendMsg data basedata =
     case basedata.side of
         PlayerSide ->
-            ( PlayerTurn, [ Other ( "Self", SwitchTurn data.charPointer ) ] )
+            ( PlayerTurn, [ Other ( "Self", SwitchTurn basedata.curSelf ) ] )
 
         EnemySide ->
-            ( EnemyMove, [ Other ( "Enemy", SwitchTurn data.charPointer ) ] )
+            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curSelf ) ] )
 
         _ ->
             ( basedata.state, [] )
@@ -88,16 +84,16 @@ updaterec env msg data basedata =
         ChangeStatus (ChangeEnemies list) ->
             ( ( { data | enemies = list }, basedata ), [], env )
 
-        ChangeStatus (ChangeBase newBaseData) ->
-            ( ( data, newBaseData ), [], env )
+        ChangeStatus (ChangeState state) ->
+            ( ( data, { basedata | state = state } ), [], env )
 
-        SwitchTurn sideNum ->
+        SwitchTurn _ ->
             let
                 newQueue =
                     getQueue data.selfs data.enemies
 
                 ( newData, newBaseData ) =
-                    updateBaseData sideNum newQueue basedata data
+                    updateBaseData newQueue basedata data
 
                 ( newState, newMsg ) =
                     sendMsg newData newBaseData

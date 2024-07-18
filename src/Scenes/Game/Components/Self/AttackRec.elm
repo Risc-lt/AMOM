@@ -7,7 +7,6 @@ import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
-import Scenes.Game.Components.Enemy.UpdateOne exposing (attackMsg)
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -53,7 +52,7 @@ getSpecificNormalAttack self enemy isCritical =
             else
                 1
     in
-    floor (toFloat (20 * self.attributes.strength // enemy.attributes.constitution) * criticalHitRate)
+    floor (20 * toFloat self.attributes.strength / toFloat enemy.attributes.constitution * criticalHitRate)
 
 
 getSpecificMagicalAttack : Self -> Enemy -> Int
@@ -74,10 +73,10 @@ getHurt enemy env self =
                         - self.extendValues.ratioValues.avoidRate
     in
     if isAvoid then
-        ( self, False )
+        ( self, True )
 
     else
-        ( normalAttackDemage self enemy env, True )
+        ( normalAttackDemage self enemy env, False )
 
 
 attackRec : Bool -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, ( Bool, Bool ), Self )
@@ -140,13 +139,13 @@ handleAttack enemyCounter enemy position env msg data basedata =
 
         counterMsg =
             if isCounter then
-                []
-
-            else
                 [ Other ( "Enemy", Action (PlayerNormal newSelf enemy.position True) ) ]
 
+            else
+                []
+
         avoidMsg =
-            if isCounter then
+            if isAvoid then
                 []
 
             else

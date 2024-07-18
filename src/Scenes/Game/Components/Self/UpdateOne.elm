@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -33,7 +33,10 @@ handleMouseDown x y self env evnt data basedata =
     case basedata.state of
         PlayerTurn ->
             if x > 320 && x < 540 && y > 680 && y < 1080 then
-                ( ( data, { basedata | state = TargetSelection } ), [], ( env, False ) )
+                ( ( data, { basedata | state = TargetSelection } )
+                , [ Other ( "Interface", ChangeStatus (ChangeState TargetSelection) ) ]
+                , ( env, False )
+                )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -82,7 +85,10 @@ handleMouseDown x y self env evnt data basedata =
                     else
                         TargetSelection
             in
-            ( ( data, { basedata | curChar = position, state = newState } ), [], ( env, False ) )
+            ( ( data, { basedata | curEnemy = position, state = Debug.log "test" newState } )
+            , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+            , ( env, False )
+            )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -128,7 +134,7 @@ handleMove list env evnt data basedata =
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", Action (PlayerNormal data basedata.curChar False) ) ]
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy False) ) ]
 
             else
                 []

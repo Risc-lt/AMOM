@@ -42,10 +42,10 @@ update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget 
 update env evnt data basedata =
     let
         curEnemy =
-            if 7 <= basedata.curChar && basedata.curChar <= 12 then
+            if 7 <= basedata.curEnemy && basedata.curEnemy <= 12 then
                 Maybe.withDefault { defaultEnemy | position = 0 } <|
                     List.head <|
-                        List.filter (\x -> x.position == basedata.curChar) data
+                        List.filter (\x -> x.position == basedata.curEnemy) data
 
             else
                 { defaultEnemy | position = 0 }
@@ -60,7 +60,7 @@ update env evnt data basedata =
         newData =
             List.map
                 (\x ->
-                    if x.position == basedata.curChar then
+                    if x.position == basedata.curEnemy then
                         newEnemy
 
                     else
@@ -96,7 +96,7 @@ updaterec env msg data basedata =
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = EnemyMove, curChar = pos } ), [], env )
+            ( ( data, { basedata | state = EnemyMove, curEnemy = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
@@ -113,7 +113,7 @@ renderEnemy enemy env =
             [ fill Color.red ]
             [ rect env.globalData.internalData
                 ( enemy.x, enemy.y )
-                ( toFloat (100 * (enemy.hp // enemy.extendValues.basicStatus.maxHp)), 5 )
+                ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
             ]
         ]
 

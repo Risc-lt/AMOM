@@ -220,4 +220,4 @@ initUI data basedata =
         firstSide =
             checkSide firstChar
     in
-    ( { data | charPointer = firstChar }, { basedata | queue = firstQueue, side = firstSide } )
+    ( data, { basedata | queue = firstQueue, side = firstSide, curSelf = firstChar } )

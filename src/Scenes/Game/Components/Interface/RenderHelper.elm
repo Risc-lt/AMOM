@@ -28,7 +28,7 @@ renderOneBar y val upperBound valType env =
     Canvas.group []
         [ Canvas.shapes
             [ fill Color.red ]
-            [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( toFloat (150 * (val // upperBound)), 15 ) ]
+            [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150 * (toFloat val / toFloat upperBound), 15 ) ]
         , Canvas.shapes
             [ stroke Color.black ]
             [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
@@ -69,7 +69,7 @@ renderStatus self env =
             [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.name
             , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" env
             , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" env
-            , renderOneBar (y + 40) self.energy 10 "En" env
+            , renderOneBar (y + 40) self.energy 300 "En" env
             , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
             ]
 
@@ -117,10 +117,10 @@ renderPlayerTurn env data basedata =
     if basedata.state == PlayerTurn then
         let
             target =
-                if basedata.curChar <= 6 then
+                if basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) data.selfs
+                            List.filter (\x -> x.position == basedata.curSelf && x.hp /= 0) data.selfs
 
                 else
                     defaultSelf
@@ -164,10 +164,10 @@ renderTargetSelection env data basedata =
     if basedata.state == TargetSelection then
         let
             self =
-                if basedata.curChar <= 6 then
+                if basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) data.selfs
+                            List.filter (\x -> x.position == basedata.curSelf && x.hp /= 0) data.selfs
 
                 else
                     defaultSelf

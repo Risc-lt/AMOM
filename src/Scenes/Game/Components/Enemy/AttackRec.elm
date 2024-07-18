@@ -52,7 +52,7 @@ getSpecificNormalAttack enemy self isCritical =
             else
                 1
     in
-    floor (toFloat (20 * enemy.attributes.strength // self.attributes.constitution) * criticalHitRate)
+    floor (20 * toFloat enemy.attributes.strength / toFloat self.attributes.constitution * criticalHitRate)
 
 
 getSpecificMagicalAttack : Enemy -> Self -> Int
@@ -73,10 +73,10 @@ getHurt self env enemy =
                         - enemy.extendValues.ratioValues.avoidRate
     in
     if isAvoid then
-        ( enemy, False )
+        ( enemy, True )
 
     else
-        ( normalAttackDemage enemy self env, True )
+        ( normalAttackDemage enemy self env, False )
 
 
 attackRec : Bool -> Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, ( Bool, Bool ), Enemy )
@@ -139,10 +139,10 @@ handleAttack selfCounter self position env msg data basedata =
 
         counterMsg =
             if isCounter then
-                []
+                [ Other ( "Self", Action (EnemyNormal newEnemy self.position True) ) ]
 
             else
-                [ Other ( "Self", Action (EnemyNormal newEnemy self.position True) ) ]
+                []
 
         avoidMsg =
             if isAvoid then

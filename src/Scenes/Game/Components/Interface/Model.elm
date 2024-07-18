@@ -44,11 +44,7 @@ update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget 
 update env evnt data basedata =
     case evnt of
         Tick _ ->
-            let
-                newQueue =
-                    getQueue data.selfs data.enemies
-            in
-            ( ( data, { basedata | queue = newQueue } ), [], ( env, False ) )
+            ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

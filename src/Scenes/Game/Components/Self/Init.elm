@@ -107,28 +107,21 @@ emptyInitData time =
                 baseEleResistance.earthResistance
       , state = Waiting
       }
-    , { name = "Bulingze"
+    , { name = ""
       , x = 1100
       , y = 420
-      , position = 4
-      , hp = genHp baseAttributes
-      , mp = genMp baseAttributes
+      , position = 3
+      , hp = 0
+      , mp = 0
       , energy = 0
-      , attributes = baseAttributes
-      , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + 3)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
+      , attributes = defaultAttributes
+      , extendValues = defaultExtendValues
       , state = Waiting
       }
-    , { name = "Bithif"
+    , { name = "Bulingze"
       , x = 1220
       , y = 160
-      , position = 5
+      , position = 4
       , hp = genHp baseAttributes
       , mp = genMp baseAttributes
       , energy = 0
@@ -143,15 +136,22 @@ emptyInitData time =
                 baseEleResistance.earthResistance
       , state = Waiting
       }
-    , { name = ""
+    , { name = "Bithif"
       , x = 1220
       , y = 290
-      , position = 3
-      , hp = 0
-      , mp = 0
+      , position = 5
+      , hp = genHp baseAttributes
+      , mp = genMp baseAttributes
       , energy = 0
-      , attributes = defaultAttributes
-      , extendValues = defaultExtendValues
+      , attributes = baseAttributes
+      , extendValues =
+            genExtendValues
+                baseAttributes
+                (time + 5)
+                baseEleResistance.waterResistance
+                baseEleResistance.fireResistance
+                baseEleResistance.airResistance
+                baseEleResistance.earthResistance
       , state = Waiting
       }
     , { name = ""

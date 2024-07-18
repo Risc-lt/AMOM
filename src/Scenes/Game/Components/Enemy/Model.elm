@@ -42,21 +42,25 @@ update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget 
 update env evnt data basedata =
     let
         curEnemy =
-            if 7 <= basedata.curEnemy && basedata.curEnemy <= 12 then
+            if 7 <= basedata.curChar && basedata.curChar <= 12 then
                 Maybe.withDefault { defaultEnemy | position = 0 } <|
                     List.head <|
-                        List.filter (\x -> x.position == basedata.curEnemy) data
+                        List.filter (\x -> x.position == basedata.curChar) data
 
             else
-                { defaultEnemy | position = -1 }
+                { defaultEnemy | position = 0 }
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne data env evnt curEnemy basedata
+            if curEnemy.position /= 0 then
+                updateOne data env evnt curEnemy basedata
+
+            else
+                ( ( curEnemy, basedata ), [], ( env, False ) )
 
         newData =
             List.map
                 (\x ->
-                    if x.position == basedata.curEnemy then
+                    if x.position == basedata.curChar then
                         newEnemy
 
                     else
@@ -73,11 +77,26 @@ updaterec env msg data basedata =
         Action (PlayerNormal self position isCounter) ->
             handleAttack isCounter self position env msg data basedata
 
+        AttackSuccess position ->
+            let
+                newData =
+                    List.map
+                        (\x ->
+                            if x.position == position then
+                                { x | energy = x.energy + 20 }
+
+                            else
+                                x
+                        )
+                        data
+            in
+            ( ( newData, basedata ), [], env )
+
         CharDie length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = EnemyMove, curEnemy = pos } ), [], env )
+            ( ( data, { basedata | state = EnemyMove, curChar = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

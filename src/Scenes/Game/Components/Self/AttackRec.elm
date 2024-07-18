@@ -27,19 +27,6 @@ checkHealth self =
         self
 
 
-checkRate : Int -> Int -> Bool
-checkRate time rate =
-    let
-        randomNum =
-            genRandomNum 0 1 time
-    in
-    if randomNum < rate then
-        True
-
-    else
-        False
-
-
 normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self
 normalAttackDemage self enemy env =
     let
@@ -74,23 +61,26 @@ getSpecificMagicalAttack self enemy =
     floor (1 + toFloat self.attributes.intelligence * 0.025)
 
 
-getHurt : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> Self
+getHurt : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> ( Self, Bool )
 getHurt enemy env self =
     let
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isAvoid =
-            checkRate time self.extendValues.ratioValues.avoidRate
+            not <|
+                checkRate time <|
+                    enemy.extendValues.ratioValues.normalHitRate
+                        - self.extendValues.ratioValues.avoidRate
     in
     if isAvoid then
-        self
+        ( self, False )
 
     else
-        normalAttackDemage self enemy env
+        ( normalAttackDemage self enemy env, True )
 
 
-attackRec : Bool -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Self )
+attackRec : Bool -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, ( Bool, Bool ), Self )
 attackRec enemyCounter enemy env allSelf position =
     let
         targetSelf =
@@ -98,7 +88,7 @@ attackRec enemyCounter enemy env allSelf position =
                 List.head <|
                     List.filter (\x -> x.position == position) allSelf
 
-        newSelf =
+        ( newSelf, isAvoid ) =
             getHurt enemy env targetSelf
 
         newData =
@@ -125,7 +115,7 @@ attackRec enemyCounter enemy env allSelf position =
             else
                 False
     in
-    ( newData, isCounter, newSelf )
+    ( newData, ( isCounter, isAvoid ), newSelf )
 
 
 findMin : Data -> Int
@@ -140,7 +130,7 @@ findMin data =
 handleAttack : Bool -> Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleAttack enemyCounter enemy position env msg data basedata =
     let
-        ( newData, isCounter, newSelf ) =
+        ( newData, ( isCounter, isAvoid ), newSelf ) =
             attackRec enemyCounter enemy env data position
 
         remainNum =
@@ -155,6 +145,13 @@ handleAttack enemyCounter enemy position env msg data basedata =
             else
                 [ Other ( "Enemy", Action (PlayerNormal newSelf enemy.position True) ) ]
 
+        avoidMsg =
+            if isCounter then
+                []
+
+            else
+                [ Other ( "Enemy", AttackSuccess enemy.position ) ]
+
         dieMsg =
             if remainNum == basedata.selfNum then
                 []
@@ -162,4 +159,4 @@ handleAttack enemyCounter enemy position env msg data basedata =
             else
                 [ Other ( "Enemy", CharDie remainNum ) ]
     in
-    ( ( newData, { basedata | selfNum = remainNum } ), counterMsg ++ dieMsg, env )
+    ( ( newData, { basedata | selfNum = remainNum } ), counterMsg ++ avoidMsg ++ dieMsg, env )

@@ -115,16 +115,20 @@ update env evnt data basedata =
                 if 0 < basedata.curChar && basedata.curChar <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
+                            List.filter (\x -> x.position == basedata.curChar) posChanged
 
                 else
-                    { defaultSelf | position = -1 }
+                    { defaultSelf | position = 0 }
 
             else
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne posChanged env evnt curChar basedata
+            if curChar.position /= 0 then
+                updateOne posChanged env evnt curChar basedata
+
+            else
+                ( ( curChar, basedata ), [], ( env, False ) )
 
         newData =
             if basedata.state /= GameBegin then
@@ -142,9 +146,7 @@ update env evnt data basedata =
                 posChanged
 
         interfaceMsg =
-            [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) )
-            , Other ( "Interface", ChangeStatus (ChangeBase newBasedata) )
-            ]
+            [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
     in
     ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
@@ -154,6 +156,21 @@ updaterec env msg data basedata =
     case msg of
         Action (EnemyNormal enemy position isCounter) ->
             handleAttack isCounter enemy position env msg data basedata
+
+        AttackSuccess position ->
+            let
+                newData =
+                    List.map
+                        (\x ->
+                            if x.position == position then
+                                { x | energy = x.energy + 20 }
+
+                            else
+                                x
+                        )
+                        data
+            in
+            ( ( newData, basedata ), [], env )
 
         CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )

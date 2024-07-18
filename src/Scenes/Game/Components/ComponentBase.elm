@@ -52,6 +52,7 @@ type alias IsCounter =
 type ComponentMsg
     = Init InitMsg
     | Action ActionMsg
+    | AttackSuccess Int
     | CharDie (List Int)
     | SwitchTurn Int
     | ChangeStatus StatusMsg
@@ -88,7 +89,6 @@ type alias BaseData =
     , enemyNum : List Int
     , selfNum : List Int
     , curChar : Int
-    , curEnemy : Int
     , queue : List Int
     , side : ActionSide
     }
@@ -99,8 +99,7 @@ initBaseData =
     { state = GameBegin
     , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
     , selfNum = [ 1, 2, 3, 4, 5, 6 ]
-    , curChar = 1
-    , curEnemy = 7
+    , curChar = 0
     , queue = []
     , side = Undeclaced
     }

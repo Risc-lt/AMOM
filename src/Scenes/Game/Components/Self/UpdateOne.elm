@@ -82,7 +82,7 @@ handleMouseDown x y self env evnt data basedata =
                     else
                         TargetSelection
             in
-            ( ( data, { basedata | curEnemy = position, state = newState } ), [], ( env, False ) )
+            ( ( data, { basedata | curChar = position, state = newState } ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -128,7 +128,7 @@ handleMove list env evnt data basedata =
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy False) ) ]
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curChar False) ) ]
 
             else
                 []

@@ -19,6 +19,14 @@ type alias Charactor =
     }
 
 
+defaultChatactor : Charactor
+defaultChatactor =
+    { name = ""
+    , position = 0
+    , ap = 0
+    }
+
+
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
     { name = self.name
@@ -152,20 +160,20 @@ nextEnemy queue curChar =
         nextEnemy queue nextPos
 
 
-sortCharByQueue : List Charactor -> List Int -> List Charactor
+sortCharByQueue : List Charactor -> List Int -> List String
 sortCharByQueue data queue =
     List.map
-        (\x ->
-            case findIndex x.position queue of
-                Just index ->
-                    ( index, x )
-
-                Nothing ->
-                    ( 100, x )
+        (\p ->
+            .name <|
+                Maybe.withDefault defaultChatactor <|
+                    List.head <|
+                        List.filter
+                            (\c ->
+                                c.position == p
+                            )
+                            data
         )
-        data
-        |> List.sortBy Tuple.first
-        |> List.map Tuple.second
+        queue
 
 
 renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Enemy -> List Canvas.Renderable
@@ -181,7 +189,7 @@ renderQueue env selfs enemies =
             sortCharByQueue allChars queue
     in
     List.map2
-        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x.name)
+        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x)
         sortedData
     <|
         List.map toFloat
@@ -189,11 +197,11 @@ renderQueue env selfs enemies =
 
 
 checkSide : Int -> ActionSide
-checkSide char =
-    if 1 <= char && char <= 6 then
+checkSide position =
+    if 1 <= position && position <= 6 then
         PlayerSide
 
-    else if 7 <= char && char <= 12 then
+    else if 7 <= position && position <= 12 then
         EnemySide
 
     else

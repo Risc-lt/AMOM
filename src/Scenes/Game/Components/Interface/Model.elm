@@ -14,7 +14,7 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (SceneOutputMsg)
-import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), InitMsg(..), StatusMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
 import Scenes.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, nextSelf, renderQueue)
@@ -29,10 +29,10 @@ type alias Data =
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        UIInit initData ->
+        Init (UIInit initData) ->
             let
                 ( firstdata, firstBaseData ) =
-                    initUI env initData initBaseData
+                    initUI initData initBaseData
             in
             ( firstdata, firstBaseData )
 
@@ -46,7 +46,7 @@ update env evnt data basedata =
         Tick _ ->
             let
                 newQueue =
-                    getQueue data.selfs data.enemies env
+                    getQueue data.selfs data.enemies
             in
             ( ( data, { basedata | queue = newQueue } ), [], ( env, False ) )
 
@@ -86,19 +86,19 @@ sendMsg data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        ChangeSelfs list ->
+        ChangeStatus (ChangeSelfs list) ->
             ( ( { data | selfs = list }, basedata ), [], env )
 
-        ChangeEnemies list ->
+        ChangeStatus (ChangeEnemies list) ->
             ( ( { data | enemies = list }, basedata ), [], env )
 
-        ChangeBase newBaseData ->
+        ChangeStatus (ChangeBase newBaseData) ->
             ( ( data, newBaseData ), [], env )
 
         SwitchTurn sideNum ->
             let
                 newQueue =
-                    getQueue data.selfs data.enemies env
+                    getQueue data.selfs data.enemies
 
                 ( newData, newBaseData ) =
                     updateBaseData sideNum newQueue basedata data
@@ -118,7 +118,7 @@ updaterec env msg data basedata =
         UpdateChangingPos selfs ->
             let
                 newQueue =
-                    getQueue selfs data.enemies env
+                    getQueue selfs data.enemies
             in
             ( ( { data | selfs = selfs }, { basedata | queue = newQueue } ), [], env )
 

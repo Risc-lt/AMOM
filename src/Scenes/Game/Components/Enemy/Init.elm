@@ -19,7 +19,8 @@ import Scenes.Game.Components.GenAttributes exposing (..)
 {-| Core data structure for the enemy
 -}
 type alias Enemy =
-    { x : Float
+    { name : String
+    , x : Float
     , y : Float
     , position : Int
     , hp : Int
@@ -65,7 +66,8 @@ emptyInitData : Int -> InitData
 emptyInitData time =
     List.map
         (\p ->
-            { x = 230
+            { name = "Wild Wolf"
+            , x = 230
             , y = toFloat (160 + 130 * (p - 7))
             , position = p
             , hp = genHp baseAttributes
@@ -84,7 +86,8 @@ emptyInitData time =
         [ 7, 8, 9 ]
         ++ List.map
             (\p ->
-                { x = 100
+                { name = "Wild Wolf"
+                , x = 100
                 , y = toFloat (160 + 130 * (p - 10))
                 , position = p
                 , hp = genHp baseAttributes
@@ -107,7 +110,8 @@ emptyInitData time =
 -}
 defaultEnemy : Enemy
 defaultEnemy =
-    { x = 100
+    { name = ""
+    , x = 100
     , y = 100
     , position = 7
     , hp = 0

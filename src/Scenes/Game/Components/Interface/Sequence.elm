@@ -15,42 +15,30 @@ import Scenes.Game.SceneBase exposing (SceneCommonData)
 type alias Charactor =
     { name : String
     , position : Int
-    , agility : Float
+    , ap : Int
     }
 
 
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
-    { name = self.career
+    { name = self.name
     , position = self.position
-    , agility = self.attributes.agility
+    , ap = self.extendValues.actionPoints
     }
 
 
 convertEnemyToCharactor : Enemy -> Charactor
 convertEnemyToCharactor enemy =
-    { name = "monster"
+    { name = enemy.name
     , position = enemy.position
-    , agility = enemy.attributes.agility
+    , ap = enemy.extendValues.actionPoints
     }
 
 
-genActionPoints : Charactor -> Messenger.Base.Env SceneCommonData UserData -> Float
-genActionPoints char env =
-    -- let
-    --     upperBound =
-    --         char.attributes.agility
-    -- in
-    -- genRandomNum 1 upperBound env
-    char.agility
-
-
-getSequence : Messenger.Base.Env SceneCommonData UserData -> List Charactor -> List Charactor
-getSequence env data =
+getSequence : List Charactor -> List Charactor
+getSequence data =
     data
-        |> List.sortBy .position
-        |> List.reverse
-        |> List.sortBy (\x -> genActionPoints x env)
+        |> List.sortBy .ap
         |> List.reverse
 
 
@@ -71,12 +59,12 @@ concatSelfEnemy selfs enemies =
             aliveEnemies
 
 
-getQueue : List Self -> List Enemy -> Messenger.Base.Env SceneCommonData UserData -> List Int
-getQueue selfs enemies env =
+getQueue : List Self -> List Enemy -> List Int
+getQueue selfs enemies =
     List.map
         (\x -> x.position)
     <|
-        getSequence env <|
+        getSequence <|
             concatSelfEnemy selfs enemies
 
 
@@ -187,7 +175,7 @@ renderQueue env selfs enemies =
             concatSelfEnemy selfs enemies
 
         queue =
-            getQueue selfs enemies env
+            getQueue selfs enemies
 
         sortedData =
             sortCharByQueue allChars queue
@@ -212,11 +200,11 @@ checkSide char =
         Undeclaced
 
 
-initUI : Messenger.Base.Env SceneCommonData UserData -> InitData -> BaseData -> ( InitData, BaseData )
-initUI env data basedata =
+initUI : InitData -> BaseData -> ( InitData, BaseData )
+initUI data basedata =
     let
         firstQueue =
-            getQueue data.selfs data.enemies env
+            getQueue data.selfs data.enemies
 
         firstChar =
             getFirstChar firstQueue

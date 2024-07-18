@@ -46,11 +46,17 @@ init env initMsg =
     let
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
+
+        enemyInit = 
+            EneMsg.emptyInitData <| time
+
+        selfInit = 
+            SelfMsg.emptyInitData <| time
     in
     InitData
-        [ Enemy.component (Init <| EnemyInit <| EneMsg.emptyInitData <| time) env
-        , Self.component (Init <| SelfInit <| SelfMsg.emptyInitData <| time) env
-        , UI.component (Init <| UIInit <| UIMsg.emptyInitData) env
+        [ Enemy.component (Init <| EnemyInit <| enemyInit) env
+        , Self.component (Init <| SelfInit <| selfInit) env
+        , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
         ]
 
 

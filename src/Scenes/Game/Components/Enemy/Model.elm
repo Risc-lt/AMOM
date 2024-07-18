@@ -70,10 +70,10 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Action (PlayerNormal self position) ->
-            handleAttack self position env msg data basedata
+        Action (PlayerNormal self position isCounter) ->
+            handleAttack isCounter self position env msg data basedata
 
-        ChangeTarget length ->
+        CharDie length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->

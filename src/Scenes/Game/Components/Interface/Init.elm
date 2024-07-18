@@ -33,26 +33,12 @@ type alias InitData =
     }
 
 
-{-| Empty init data for allies
--}
-emptyInitSelf : List Self
-emptyInitSelf =
-    SelfMsg.emptyInitData
-
-
-{-| Empty init data for enemies
--}
-emptyInitEnemy : List Enemy
-emptyInitEnemy =
-    EnemyMsg.emptyInitData
-
-
 {-| Empty init data for interface
 -}
-emptyInitData : InitData
-emptyInitData =
-    { selfs = emptyInitSelf
-    , enemies = emptyInitEnemy
+emptyInitData : List Self -> List Enemy -> InitData
+emptyInitData selfInit enemyInit =
+    { selfs = selfInit
+    , enemies = enemyInit
     , curChar = Self { defaultSelf | position = 0 }
     , charPointer = 1
     }
@@ -62,8 +48,8 @@ emptyInitData =
 -}
 defaultUI : InitData
 defaultUI =
-    { selfs = emptyInitSelf
-    , enemies = emptyInitEnemy
+    { selfs = [ defaultSelf ]
+    , enemies = [ defaultEnemy ]
     , curChar = Self { defaultSelf | position = 0 }
     , charPointer = 1
     }

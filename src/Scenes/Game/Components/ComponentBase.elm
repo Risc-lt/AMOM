@@ -42,15 +42,17 @@ type StatusMsg
 
 
 type ActionMsg
-    = PlayerNormal Self Int
-    | EnemyNormal Enemy Int
+    = PlayerNormal Self Int IsCounter
+    | EnemyNormal Enemy Int IsCounter
+
+type alias IsCounter =
+    Bool
 
 
 type ComponentMsg
     = Init InitMsg
     | Action ActionMsg
-    | ChangeTarget ( Int, Int )
-    | EnemyDie (List Int)
+    | CharDie (List Int)
     | SwitchTurn Int
     | ChangeStatus StatusMsg
     | UpdateChangingPos (List Self)
@@ -84,7 +86,7 @@ type ActionSide
 type alias BaseData =
     { state : Gamestate
     , enemyNum : List Int
-    , selfNum : ( Int, Int )
+    , selfNum : List Int
     , curChar : Int
     , curEnemy : Int
     , queue : List Int
@@ -96,7 +98,7 @@ initBaseData : BaseData
 initBaseData =
     { state = GameBegin
     , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
-    , selfNum = ( 2, 2 )
+    , selfNum = [ 1, 2, 3, 4, 5, 6 ]
     , curChar = 1
     , curEnemy = 7
     , queue = []

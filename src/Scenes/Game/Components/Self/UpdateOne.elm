@@ -5,9 +5,8 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ActionMsg(..), ComponentTarget, Gamestate(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Self.Reaction exposing (findMin)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -129,7 +128,7 @@ handleMove list env evnt data basedata =
 
         msg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", NormalAttack data basedata.curEnemy ) ]
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy False) ) ]
 
             else
                 []

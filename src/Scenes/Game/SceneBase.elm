@@ -1,6 +1,5 @@
 module Scenes.Game.SceneBase exposing
-    ( Element(..)
-    , LayerMsg(..)
+    ( LayerMsg(..)
     , LayerTarget
     , SceneCommonData
     )

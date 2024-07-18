@@ -17,25 +17,30 @@ type alias Data =
     Enemy
 
 
-attackMsg : Data -> BaseData -> Env cdata userdata -> Msg othertar msg sommsg
+attackMsg : Data -> BaseData -> Env cdata userdata -> Msg String ComponentMsg sommsg
 attackMsg data basedata env =
+    let
+        front =
+            List.filter (\x -> x <= 3) basedata.selfNum
+    in
     Other
         ( "Self"
         , Action <|
-            EnemyNormal data <|
+            (EnemyNormal data <|
                 Tuple.first <|
                     Random.step
                         (Random.int 1
-                            (if Tuple.first basedata.selfNum == 0 then
-                                Tuple.second basedata.selfNum
+                            (if List.length front == 0 then
+                                List.length basedata.selfNum
 
                             else
-                                Tuple.first basedata.selfNum
+                                List.length front
                             )
                         )
                     <|
                         Random.initialSeed <|
-                            Time.posixToMillis env.globalData.currentTimeStamp
+                            Time.posixToMillis env.globalData.currentTimeStamp)
+                False
         )
 
 

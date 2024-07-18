@@ -11,7 +11,6 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Scenes.Game.Components.Enemy.UpdateOne exposing (attackMsg)
 
 
 type alias Data =
@@ -90,8 +89,8 @@ getHurt self env enemy =
         normalAttackDemage enemy self env
 
 
-attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Enemy )
-attackRec self env allEnemy position =
+attackRec : Bool -> Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, Bool, Enemy )
+attackRec selfCounter self env allEnemy position =
     let
         targetEnemy =
             Maybe.withDefault { defaultEnemy | position = 0 } <|
@@ -115,16 +114,11 @@ attackRec self env allEnemy position =
                     )
                     allEnemy
 
-        remainNum =
-            List.map (\x -> x.position) <|
-                List.filter (\x -> x.hp /= 0) <|
-                    newData
-
         time = 
             Time.posixToMillis env.globalData.currentTimeStamp
 
         isCounter =
-            if List.length remainNum == List.length allEnemy then
+            if newEnemy.hp /= 0 && not selfCounter then
                 checkRate time targetEnemy.extendValues.ratioValues.counterRate
 
             else
@@ -142,11 +136,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack self position env msg data basedata =
+handleAttack : Bool -> Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack selfCounter self position env msg data basedata =
     let
         ( newData, isCounter, newEnemy ) =
-            attackRec self env data position
+            attackRec selfCounter self env data position
 
         remainNum =
             List.map (\x -> x.position) <|
@@ -158,13 +152,13 @@ handleAttack self position env msg data basedata =
                 []
 
             else
-                [ attackMsg newEnemy basedata env ]
+                [ Other ( "Self", Action (EnemyNormal newEnemy self.position True)) ]
 
         dieMsg =
             if remainNum == basedata.enemyNum then
                 []
 
             else
-                [ Other ( "Self", EnemyDie remainNum ) ]
+                [ Other ( "Self", CharDie remainNum ) ]
     in
     ( ( newData, { basedata | enemyNum = remainNum } ), counterMsg ++ dieMsg, env )

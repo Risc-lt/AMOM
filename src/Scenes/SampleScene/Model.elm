@@ -30,7 +30,7 @@ init env msg =
 
 initData : Env () UserData -> Maybe SceneMsg -> InitData SceneMsg
 initData env msg = { objects =
-        [ Background.component
+        [ 
         ]
     , order = "1"
     }

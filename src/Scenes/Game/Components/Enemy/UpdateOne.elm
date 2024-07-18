@@ -16,8 +16,8 @@ type alias Data =
     Enemy
 
 
-attackMsg : Data -> BaseData -> Env cdata userdata -> Msg String ComponentMsg sommsg
-attackMsg data basedata env =
+getTarget : BaseData -> Env cdata userdata -> Int
+getTarget basedata env =
     let
         front =
             List.filter (\x -> x <= 3) basedata.selfNum
@@ -32,19 +32,16 @@ attackMsg data basedata env =
         index =
             genRandomNum 1 upperbound <|
                 Time.posixToMillis env.globalData.currentTimeStamp
-
-        position =
-            Maybe.withDefault 100 <|
-                List.head <|
-                    List.drop (index - 1) basedata.selfNum
     in
-    Other ( "Self", Action (EnemyNormal data position False) )
+    Maybe.withDefault 100 <|
+        List.head <|
+            List.drop (index - 1) basedata.selfNum
 
 
 attackPlayer : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 attackPlayer env evnt data basedata =
     ( ( data, { basedata | state = EnemyReturn } )
-    , [ attackMsg data basedata env ]
+    , [ Other ( "Self", Action (EnemyNormal data basedata.curSelf) ) ]
     , ( env, False )
     )
 
@@ -67,7 +64,7 @@ handleMove list env evnt data basedata =
                 else
                     670
 
-            else if basedata.state == EnemyReturn then
+            else if basedata.state == EnemyReturn || basedata.state == Counter then
                 if data.x - 5 > returnX then
                     data.x - 5
 
@@ -77,15 +74,28 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        ( newBaseData, msg ) =
-            if basedata.state == EnemyMove && newX >= 670 then
-                ( { basedata | state = EnemyAttack }, [] )
+        newBaseData =
+            if basedata.state == EnemyReturn && newX <= returnX then
+                { basedata | state = PlayerTurn }
 
-            else if basedata.state == EnemyReturn && newX <= returnX then
-                ( { basedata | state = PlayerTurn }, [ Other ( "Interface", SwitchTurn 1 ) ] )
+            else if basedata.state == Counter && newX <= returnX then
+                { basedata | state = PlayerAttack }
+
+            else if basedata.state == EnemyMove && newX >= 670 then
+                { basedata | state = EnemyAttack }
 
             else
-                ( basedata, [] )
+                basedata
+
+        msg =
+            if basedata.state == Counter && newX <= returnX then
+                [ Other ( "Self", Action StartCounter ) ]
+
+            else if basedata.state == EnemyReturn && newX <= returnX then
+                [ Other ( "Interface", SwitchTurn 0 ) ]
+
+            else
+                []
     in
     ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
 

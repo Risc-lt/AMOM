@@ -85,7 +85,7 @@ handleMouseDown x y self env evnt data basedata =
                     else
                         TargetSelection
             in
-            ( ( data, { basedata | curEnemy = position, state = Debug.log "test" newState } )
+            ( ( data, { basedata | curEnemy = position, state = newState } )
             , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
             , ( env, False )
             )
@@ -112,7 +112,7 @@ handleMove list env evnt data basedata =
                 else
                     670
 
-            else if basedata.state == PlayerReturn then
+            else if basedata.state == PlayerReturn || basedata.state == Counter then
                 if data.x < returnX then
                     data.x + 5
 
@@ -122,24 +122,37 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        ( newBaseData, msg0 ) =
+        newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                ( { basedata | state = EnemyMove }, [ Other ( "Interface", SwitchTurn 0 ) ] )
+                { basedata | state = EnemyMove }
+
+            else if basedata.state == Counter && newX >= returnX then
+                { basedata | state = EnemyAttack }
 
             else if basedata.state == PlayerAttack && newX <= 670 then
-                ( { basedata | state = PlayerReturn }, [] )
+                { basedata | state = PlayerReturn }
 
             else
-                ( basedata, [] )
+                basedata
 
-        msg =
+        turnMsg =
+            if basedata.state == Counter && newX >= returnX then
+                [ Other ( "Enemy", Action StartCounter ) ]
+
+            else if basedata.state == PlayerReturn && newX >= returnX then
+                [ Other ( "Interface", SwitchTurn 0 ) ]
+
+            else
+                []
+
+        attackMsg =
             if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy False) ) ]
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg ++ msg0, ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

@@ -14,7 +14,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Interface.Init exposing (Chars, InitData, defaultUI)
+import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 

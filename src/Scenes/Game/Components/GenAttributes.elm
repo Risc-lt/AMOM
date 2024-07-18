@@ -107,7 +107,11 @@ genCriticalHitRate =
 
 genCounterRate : Attribute -> Int
 genCounterRate attributes =
-    (attributes.dexterity + attributes.intelligence) // 4
+    100
+
+
+
+{- (attributes.dexterity + attributes.intelligence) // 4 -}
 
 
 genRatioValues : Attribute -> RatioValues

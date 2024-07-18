@@ -41,12 +41,9 @@ type StatusMsg
 
 
 type ActionMsg
-    = PlayerNormal Self Int IsCounter
-    | EnemyNormal Enemy Int IsCounter
-
-
-type alias IsCounter =
-    Bool
+    = PlayerNormal Self Int
+    | EnemyNormal Enemy Int
+    | StartCounter
 
 
 type ComponentMsg
@@ -76,6 +73,7 @@ type Gamestate
     | EnemyMove
     | EnemyAttack
     | EnemyReturn
+    | Counter
 
 
 type ActionSide
@@ -90,7 +88,6 @@ type alias BaseData =
     , selfNum : List Int
     , curSelf : Int
     , curEnemy : Int
-    , queue : List Int
     , side : ActionSide
     }
 
@@ -102,6 +99,5 @@ initBaseData =
     , selfNum = [ 1, 2, 4, 5 ]
     , curSelf = 0
     , curEnemy = 0
-    , queue = []
     , side = Undeclaced
     }

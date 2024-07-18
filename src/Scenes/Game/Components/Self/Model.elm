@@ -154,8 +154,11 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Action (EnemyNormal enemy position isCounter) ->
-            handleAttack isCounter enemy position env msg data basedata
+        Action (EnemyNormal enemy position) ->
+            handleAttack enemy position env msg data basedata
+
+        Action StartCounter ->
+            ( ( data, { basedata | state = PlayerAttack } ), [], env )
 
         AttackSuccess position ->
             let
@@ -163,7 +166,11 @@ updaterec env msg data basedata =
                     List.map
                         (\x ->
                             if x.position == position then
-                                { x | energy = x.energy + 20 }
+                                if x.energy + 20 > 300 then
+                                    { x | energy = 300 }
+
+                                else
+                                    { x | energy = x.energy + 20 }
 
                             else
                                 x
@@ -171,6 +178,9 @@ updaterec env msg data basedata =
                         data
             in
             ( ( newData, basedata ), [], env )
+
+        ChangeStatus (ChangeState state) ->
+            ( ( data, { basedata | state = state } ), [], env )
 
         CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )

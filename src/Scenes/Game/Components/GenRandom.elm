@@ -9,7 +9,7 @@ checkRate time rate =
         randomNum =
             genRandomNum 1 100 time
     in
-    if randomNum < rate then
+    if randomNum <= rate then
         True
 
     else

@@ -19,7 +19,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
-import Scenes.Game.Components.Enemy.UpdateOne exposing (updateOne)
+import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
 import Scenes.Game.Components.Self.Init exposing (State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -74,8 +74,11 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        Action (PlayerNormal self position isCounter) ->
-            handleAttack isCounter self position env msg data basedata
+        Action (PlayerNormal self position) ->
+            handleAttack self position env msg data basedata
+
+        Action StartCounter ->
+            ( ( data, { basedata | state = EnemyMove } ), [], env )
 
         AttackSuccess position ->
             let
@@ -83,7 +86,11 @@ updaterec env msg data basedata =
                     List.map
                         (\x ->
                             if x.position == position then
-                                { x | energy = x.energy + 20 }
+                                if x.energy + 20 > 300 then
+                                    { x | energy = 300 }
+
+                                else
+                                    { x | energy = x.energy + 20 }
 
                             else
                                 x
@@ -92,11 +99,18 @@ updaterec env msg data basedata =
             in
             ( ( newData, basedata ), [], env )
 
+        ChangeStatus (ChangeState state) ->
+            ( ( data, { basedata | state = state } ), [], env )
+
         CharDie length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = EnemyMove, curEnemy = pos } ), [], env )
+            let
+                target =
+                    getTarget basedata env
+            in
+            ( ( data, { basedata | state = EnemyMove, curEnemy = pos, curSelf = target } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

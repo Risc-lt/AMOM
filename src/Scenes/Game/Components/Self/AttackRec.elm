@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
@@ -37,9 +37,16 @@ normalAttackDemage self enemy env =
 
         damage =
             getSpecificNormalAttack self enemy isCritical
+
+        newEnergy =
+            if self.energy + 30 > 300 then
+                300
+
+            else
+                self.energy + 30
     in
     checkHealth <|
-        { self | hp = self.hp - damage, energy = self.energy + 30 }
+        { self | hp = self.hp - damage, energy = newEnergy }
 
 
 getSpecificNormalAttack : Self -> Enemy -> Bool -> Int
@@ -79,8 +86,8 @@ getHurt enemy env self =
         ( normalAttackDemage self enemy env, False )
 
 
-attackRec : Bool -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> ( Data, ( Bool, Bool ), Self )
-attackRec enemyCounter enemy env allSelf position =
+attackRec : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> ( Data, Bool, Bool )
+attackRec enemy env allSelf position basedata =
     let
         targetSelf =
             Maybe.withDefault { defaultSelf | position = 0 } <|
@@ -107,14 +114,27 @@ attackRec enemyCounter enemy env allSelf position =
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
+        melee =
+            newSelf.name /= "Bruce"
+
+        front =
+            List.any (\p -> p <= 9) basedata.enemyNum
+
+        effective =
+            if melee && front && enemy.position > 9 then
+                False
+
+            else
+                True
+
         isCounter =
-            if newSelf.hp /= 0 && not enemyCounter then
-                checkRate time targetSelf.extendValues.ratioValues.counterRate
+            if newSelf.hp /= 0 && basedata.state /= EnemyAttack && effective then
+                checkRate time newSelf.extendValues.ratioValues.counterRate
 
             else
                 False
     in
-    ( newData, ( isCounter, isAvoid ), newSelf )
+    ( newData, isCounter, isAvoid )
 
 
 findMin : Data -> Int
@@ -126,11 +146,11 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : Bool -> Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack enemyCounter enemy position env msg data basedata =
+handleAttack : Enemy -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack enemy position env msg data basedata =
     let
-        ( newData, ( isCounter, isAvoid ), newSelf ) =
-            attackRec enemyCounter enemy env data position
+        ( newData, isCounter, isAvoid ) =
+            attackRec enemy env data position basedata
 
         remainNum =
             List.map (\x -> x.position) <|
@@ -139,7 +159,7 @@ handleAttack enemyCounter enemy position env msg data basedata =
 
         counterMsg =
             if isCounter then
-                [ Other ( "Enemy", Action (PlayerNormal newSelf enemy.position True) ) ]
+                [ Other ( "Enemy", ChangeStatus (ChangeState Counter) ) ]
 
             else
                 []
@@ -158,4 +178,7 @@ handleAttack enemyCounter enemy position env msg data basedata =
             else
                 [ Other ( "Enemy", CharDie remainNum ) ]
     in
-    ( ( newData, { basedata | selfNum = remainNum } ), counterMsg ++ avoidMsg ++ dieMsg, env )
+    ( ( newData, { basedata | selfNum = remainNum, curSelf = position, curEnemy = enemy.position } )
+    , counterMsg ++ avoidMsg ++ dieMsg
+    , env
+    )

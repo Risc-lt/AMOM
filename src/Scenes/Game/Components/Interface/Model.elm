@@ -66,10 +66,18 @@ sendMsg : Data -> BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneO
 sendMsg data basedata =
     case basedata.side of
         PlayerSide ->
-            ( PlayerTurn, [ Other ( "Self", SwitchTurn basedata.curSelf ) ] )
+            ( PlayerTurn
+            , [ Other ( "Self", SwitchTurn basedata.curSelf )
+              , Other ( "Enemy", ChangeStatus (ChangeState PlayerTurn) )
+              ]
+            )
 
         EnemySide ->
-            ( EnemyMove, [ Other ( "Enemy", SwitchTurn basedata.curSelf ) ] )
+            ( EnemyMove
+            , [ Other ( "Enemy", SwitchTurn basedata.curSelf )
+              , Other ( "Self", ChangeStatus (ChangeState EnemyMove) )
+              ]
+            )
 
         _ ->
             ( basedata.state, [] )
@@ -98,7 +106,7 @@ updaterec env msg data basedata =
                 ( newState, newMsg ) =
                     sendMsg newData newBaseData
             in
-            ( ( newData, { newBaseData | state = newState, queue = newQueue } ), newMsg, env )
+            ( ( newData, { newBaseData | state = newState } ), newMsg, env )
 
         StartGame ->
             let
@@ -112,7 +120,7 @@ updaterec env msg data basedata =
                 newQueue =
                     getQueue selfs data.enemies
             in
-            ( ( { data | selfs = selfs }, { basedata | queue = newQueue } ), [], env )
+            ( ( { data | selfs = selfs }, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

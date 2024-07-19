@@ -31,6 +31,10 @@ init env msg =
 
 initData : Env () UserData -> Maybe SceneMsg -> InitData SceneMsg
 initData env msg =
+    let
+        initBithif =
+            Bithif.component
+    in
     { objects =
         []
     , order = "1"

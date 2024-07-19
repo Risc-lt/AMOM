@@ -12,7 +12,8 @@
                 "Components": [
                     "Enemy",
                     "Self",
-                    "Interface"
+                    "Interface",
+                    "Dialogue"
                 ]
             },
             "layers": [

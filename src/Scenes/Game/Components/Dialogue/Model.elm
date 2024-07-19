@@ -36,9 +36,9 @@ init env initMsg =
     case initMsg of
         NewDialogueMsg createInitData ->
             ( { frameName = "dialogue_frame"
-              , framePos = ( 720, 0 )
+              , framePos = ( 980, 0 )
               , speaker = createInitData.speaker
-              , speakerPos = ( 720, 0 )
+              , speakerPos = ( 656, 10 )
               , font = "Comic Sans MS"
               , isSpeaking = False
               , content = createInitData.content
@@ -49,13 +49,13 @@ init env initMsg =
 
         _ ->
             ( { frameName = "dialogue_frame"
-              , framePos = ( 720, 0 )
-              , speaker = "newhead"
-              , speakerPos = ( 720, 0 )
+              , framePos = ( 0, 500 )
+              , speaker = "head_magic"
+              , speakerPos = ( -20, 680 )
               , font = "Comic Sans MS"
               , isSpeaking = True
               , content = [ "test: first line", "test:second line" ]
-              , textPos = ( 720, 1320 )
+              , textPos = ( 880, 800 )
               }
             , initBaseData
             )
@@ -89,24 +89,27 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
+contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Canvas.Renderable
+contentToView ( index, text ) env data =
+    let
+        lineHeight =
+            72
+    in
+    Canvas.group []
+        [ renderTextWithColorCenter env.globalData.internalData 60 text data.font Color.black ( Tuple.first data.textPos, toFloat index * lineHeight + Tuple.second data.textPos )
+        ]
+
+
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     if data.isSpeaking then
         let
-            lineHeight =
-                30
-
-            textStartPosition =
-                data.textPos
-
             renderableTexts =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.framePos ( 1980, 0 ) data.frameName
-             , renderSprite env.globalData.internalData [] data.speakerPos ( 1980, 0 ) data.speaker
-
-             --, renderTextWithColorCenter env.globalData.internalData 60 ( data.content data.textPos env) data.font Color.black data.textPos
+            ([ renderSprite env.globalData.internalData [] data.framePos ( 1420, 591 ) data.frameName
+             , renderSprite env.globalData.internalData [] data.speakerPos ( 420, 0 ) data.speaker
              ]
                 ++ renderableTexts
             )
@@ -138,10 +141,3 @@ componentcon =
 component : ComponentStorage SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg
 component =
     genComponent componentcon
-
-
-contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Canvas.Renderable
-contentToView ( index, text ) env data =
-    Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.font Color.black ( Tuple.first data.textPos, toFloat index * 30 + Tuple.second data.textPos )
-        ]

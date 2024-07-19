@@ -21,6 +21,7 @@ import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import Scenes.Game.Components.Dialogue.Model as Dialogue
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
 import Scenes.Game.Components.Interface.Init as UIMsg
@@ -46,7 +47,12 @@ init env initMsg =
         [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
         , Self.component (SelfInit <| SelfMsg.emptyInitData) env
         , UI.component (UIInit <| UIMsg.emptyInitData) env
+        , Dialogue.component (UIInit <| UIMsg.emptyInitData) env
         ]
+
+
+
+--Dialogue Msg Should be changed before release
 
 
 handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg ComponentMsg

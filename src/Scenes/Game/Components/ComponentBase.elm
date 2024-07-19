@@ -35,6 +35,7 @@ type InitMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
+    | InitDialogueMsg CreateInitData
 
 
 type StatusMsg

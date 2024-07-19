@@ -15,7 +15,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -33,32 +33,17 @@ type alias Data =
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    case initMsg of
-        NewDialogueMsg createInitData ->
-            ( { frameName = "dialogue_frame"
-              , framePos = ( 980, 0 )
-              , speaker = createInitData.speaker
-              , speakerPos = ( 656, 10 )
-              , font = "Comic Sans MS"
-              , isSpeaking = False
-              , content = createInitData.content
-              , textPos = ( 720, 1320 )
-              }
-            , initBaseData
-            )
-
-        _ ->
-            ( { frameName = "dialogue_frame"
-              , framePos = ( 0, 500 )
-              , speaker = "head_magic"
-              , speakerPos = ( -20, 680 )
-              , font = "Comic Sans MS"
-              , isSpeaking = True
-              , content = [ "test: first line", "test:second line" ]
-              , textPos = ( 880, 800 )
-              }
-            , initBaseData
-            )
+    ( { frameName = "dialogue_frame"
+      , framePos = ( 0, 500 )
+      , speaker = "newhead"
+      , speakerPos = ( -20, 680 )
+      , font = "Comic Sans MS"
+      , isSpeaking = True
+      , content = [ "Hello!", "Thank you!" ]
+      , textPos = ( 880, 800 )
+      }
+    , initBaseData
+    )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

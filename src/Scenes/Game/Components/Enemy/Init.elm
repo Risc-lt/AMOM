@@ -12,15 +12,21 @@ module Scenes.Game.Components.Enemy.Init exposing
 
 -}
 
+import Scenes.Game.Components.GenAttributes exposing (..)
+
 
 {-| Core data structure for the enemy
 -}
 type alias Enemy =
-    { x : Float
+    { name : String
+    , x : Float
     , y : Float
-    , hp : Float
     , position : Int
-    , race : String
+    , hp : Int
+    , mp : Int
+    , energy : Int
+    , attributes : Attribute
+    , extendValues : ExtendValue
     }
 
 
@@ -30,39 +36,87 @@ type alias InitData =
     List Enemy
 
 
+{-| Base attributes for the enemy
+-}
+baseAttributes : Attribute
+baseAttributes =
+    { strength = 20
+    , dexterity = 20
+    , constitution = 20
+    , intelligence = 20
+    }
+
+
+{-| Base elemental resistance for the enemy
+-}
+baseEleResistance : EleResistance
+baseEleResistance =
+    { waterResistance = 10
+    , fireResistance = 10
+    , airResistance = 10
+    , earthResistance = 10
+    }
+
+
 {-| Empty init data for enemy
 -}
-emptyInitData : InitData
-emptyInitData =
+emptyInitData : Int -> InitData
+emptyInitData time =
     List.map
         (\p ->
-            { x = 230
-            , y = toFloat (160 + 130 * (p - 1))
-            , hp = 100
+            { name = "Wild Wolf"
+            , x = 230
+            , y = toFloat (160 + 130 * (p - 7))
             , position = p
-            , race = "Physical"
+            , hp = genHp baseAttributes
+            , mp = genMp baseAttributes
+            , energy = 0
+            , attributes = baseAttributes
+            , extendValues =
+                genExtendValues
+                    baseAttributes
+                    (time + p)
+                    baseEleResistance.waterResistance
+                    baseEleResistance.fireResistance
+                    baseEleResistance.airResistance
+                    baseEleResistance.earthResistance
             }
         )
-        [ 1, 2, 3 ]
+        [ 7, 8, 9 ]
         ++ List.map
             (\p ->
-                { x = 100
-                , y = toFloat (160 + 130 * (p - 4))
-                , hp = 100
+                { name = "Wild Wolf"
+                , x = 100
+                , y = toFloat (160 + 130 * (p - 10))
                 , position = p
-                , race = "Magical"
+                , hp = genHp baseAttributes
+                , mp = genMp baseAttributes
+                , energy = 0
+                , attributes = baseAttributes
+                , extendValues =
+                    genExtendValues
+                        baseAttributes
+                        (time + p)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
                 }
             )
-            [ 4, 5, 6 ]
+            [ 10, 11, 12 ]
 
 
 {-| Default enemy
 -}
 defaultEnemy : Enemy
 defaultEnemy =
-    { x = 100
+    { name = ""
+    , x = 100
     , y = 100
-    , hp = 100
-    , position = 1
-    , race = "Physical"
+    , position = 7
+    , hp = 0
+    , mp = 0
+    , energy = 0
+    , attributes = baseAttributes
+    , extendValues = defaultExtendValues
     }

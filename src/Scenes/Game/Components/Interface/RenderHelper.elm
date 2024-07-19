@@ -14,7 +14,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Interface.Init exposing (Chars, InitData, defaultUI)
+import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -23,43 +23,35 @@ type alias Data =
     InitData
 
 
-getName : String -> String
-getName career =
-    case career of
-        "swordsman" ->
-            "Wenderd"
-
-        "archer" ->
-            "Bruce"
-
-        "magician" ->
-            "Bulingze"
-
-        "pharmacist" ->
-            "Bithif"
-
-        _ ->
-            ""
+renderOneBar : Float -> Int -> Int -> String -> Color.Color -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderOneBar y val upperBound valType color env =
+    Canvas.group []
+        [ Canvas.shapes
+            [ fill color ]
+            [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150 * (toFloat val / toFloat upperBound), 15 ) ]
+        , Canvas.shapes
+            [ stroke Color.black ]
+            [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
+        , renderTextWithColorCenter env.globalData.internalData 20 valType "Arial" Color.black ( 1650, y + 65 )
+        , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Arial" Color.black ( 1850, y + 65 )
+        ]
 
 
 renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderStatus self env =
     let
-        name =
-            getName self.career
-
         y =
-            case self.career of
-                "swordsman" ->
+            case self.name of
+                "Wenderd" ->
                     40
 
-                "archer" ->
+                "Bruce" ->
                     250
 
-                "magician" ->
+                "Bulingze" ->
                     460
 
-                "pharmacist" ->
+                "Bithif" ->
                     670
 
                 _ ->
@@ -72,18 +64,13 @@ renderStatus self env =
             else
                 Color.black
     in
-    if self.career /= "" then
+    if self.name /= "" then
         Canvas.group []
-            [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.career
-            , Canvas.shapes
-                [ fill Color.red ]
-                [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150 * (self.hp / 100), 15 ) ]
-            , Canvas.shapes
-                [ stroke Color.black ]
-                [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
-            , renderTextWithColorCenter env.globalData.internalData 20 "Hp" "Arial" Color.black ( 1650, y + 65 )
-            , renderTextWithColorCenter env.globalData.internalData 20 (toString <| floor self.hp) "Arial" Color.black ( 1850, y + 65 )
-            , renderTextWithColorStyle env.globalData.internalData 20 name "Arial" color "" ( 1675, y + 27.5 )
+            [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.name
+            , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
+            , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
+            , renderOneBar (y + 40) self.energy 300 "En" Color.green env
+            , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
             ]
 
     else
@@ -109,8 +96,8 @@ renderChangePosition env data basedata =
                     defaultSelf
 
             name =
-                if target.career /= "" then
-                    getName target.career ++ " chosen"
+                if target.name /= "" then
+                    target.name ++ " chosen"
 
                 else
                     "Nobody chosen"
@@ -130,17 +117,17 @@ renderPlayerTurn env data basedata =
     if basedata.state == PlayerTurn then
         let
             target =
-                if basedata.curChar <= 6 then
+                if basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) data.selfs
+                            List.filter (\x -> x.position == basedata.curSelf && x.hp /= 0) data.selfs
 
                 else
                     defaultSelf
 
             name =
-                if target.career /= "" then
-                    getName target.career ++ "'s"
+                if target.name /= "" then
+                    target.name ++ "'s"
 
                 else
                     ""
@@ -177,23 +164,23 @@ renderTargetSelection env data basedata =
     if basedata.state == TargetSelection then
         let
             self =
-                if basedata.curChar <= 6 then
+                if basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) data.selfs
+                            List.filter (\x -> x.position == basedata.curSelf && x.hp /= 0) data.selfs
 
                 else
                     defaultSelf
 
             name =
-                if self.career /= "" then
-                    getName self.career ++ "'s"
+                if self.name /= "" then
+                    self.name ++ "'s"
 
                 else
                     ""
 
             remainEnemy =
-                List.map (\x -> x.position) <|
+                List.map (\x -> x.position - 6) <|
                     List.filter (\x -> x.hp /= 0) <|
                         data.enemies
         in

@@ -5,9 +5,8 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Self.Reaction exposing (findMin)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -20,7 +19,7 @@ handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
             if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn, curChar = findMin list } ), [ Other ( "Interface", SwitchTurn ) ], ( env, False ) )
+                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", StartGame ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -34,7 +33,10 @@ handleMouseDown x y self env evnt data basedata =
     case basedata.state of
         PlayerTurn ->
             if x > 320 && x < 540 && y > 680 && y < 1080 then
-                ( ( data, { basedata | state = TargetSelection } ), [], ( env, False ) )
+                ( ( data, { basedata | state = TargetSelection } )
+                , [ Other ( "Interface", ChangeStatus (ChangeState TargetSelection) ) ]
+                , ( env, False )
+                )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -43,34 +45,34 @@ handleMouseDown x y self env evnt data basedata =
             let
                 position =
                     if x > 640 && x < 1030 && y > 680 && y < 813.3 then
-                        4
+                        10
 
                     else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
-                        5
+                        11
 
                     else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
-                        6
+                        12
 
                     else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
-                        1
+                        7
 
                     else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
-                        2
+                        8
 
                     else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
-                        3
+                        9
 
                     else
                         0
 
                 melee =
-                    self.career == "swordsman" || self.career == "pharmacist"
+                    self.name /= "Bruce"
 
                 front =
-                    List.any (\p -> p <= 3) basedata.enemyNum
+                    List.any (\p -> p <= 9) basedata.enemyNum
 
                 effective =
-                    if melee && front && position > 3 then
+                    if melee && front && position > 9 then
                         False
 
                     else
@@ -83,7 +85,10 @@ handleMouseDown x y self env evnt data basedata =
                     else
                         TargetSelection
             in
-            ( ( data, { basedata | curEnemy = position, state = newState } ), [], ( env, False ) )
+            ( ( data, { basedata | curEnemy = position, state = newState } )
+            , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+            , ( env, False )
+            )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -99,15 +104,18 @@ handleMove list env evnt data basedata =
             else
                 1220
 
+        longRange =
+            data.name == "Bruce"
+
         newX =
-            if basedata.state == PlayerAttack then
+            if basedata.state == PlayerAttack && not longRange then
                 if data.x > 670 then
                     data.x - 5
 
                 else
                     670
 
-            else if basedata.state == PlayerReturn then
+            else if basedata.state == PlayerReturn || basedata.state == Counter then
                 if data.x < returnX then
                     data.x + 5
 
@@ -119,26 +127,35 @@ handleMove list env evnt data basedata =
 
         newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                { basedata | state = PlayerTurn, curChar = basedata.curChar + 1 }
+                { basedata | state = EnemyMove }
 
-            else if basedata.state == PlayerAttack && newX <= 670 then
+            else if basedata.state == Counter && newX >= returnX then
+                { basedata | state = EnemyAttack }
+
+            else if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
                 { basedata | state = PlayerReturn }
 
             else
                 basedata
 
-        msg =
-            if basedata.state == PlayerAttack && newX <= 670 then
-                if data.career == "archer" then
-                    [ Other ( "Enemy", Attack Physical basedata.curEnemy ) ]
+        turnMsg =
+            if basedata.state == Counter && newX >= returnX then
+                [ Other ( "Enemy", Action StartCounter ) ]
 
-                else
-                    [ Other ( "Enemy", Attack Magical basedata.curEnemy ) ]
+            else if basedata.state == PlayerReturn && newX >= returnX then
+                [ Other ( "Interface", SwitchTurn 0 ) ]
+
+            else
+                []
+
+        attackMsg =
+            if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

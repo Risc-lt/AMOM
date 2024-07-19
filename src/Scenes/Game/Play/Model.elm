@@ -149,8 +149,9 @@ view env data =
                     ]
                 ]
             , viewComponents env data.components
-            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 980 )
-            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 1030 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Attacks are possible to miss" "Arial" Color.black ( 1680, 1030 )
             ]
 
         outComeView =

@@ -104,8 +104,11 @@ handleMove list env evnt data basedata =
             else
                 1220
 
+        longRange =
+            data.name == "Bruce"
+
         newX =
-            if basedata.state == PlayerAttack then
+            if basedata.state == PlayerAttack && not longRange then
                 if data.x > 670 then
                     data.x - 5
 
@@ -129,7 +132,7 @@ handleMove list env evnt data basedata =
             else if basedata.state == Counter && newX >= returnX then
                 { basedata | state = EnemyAttack }
 
-            else if basedata.state == PlayerAttack && newX <= 670 then
+            else if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
                 { basedata | state = PlayerReturn }
 
             else
@@ -146,7 +149,7 @@ handleMove list env evnt data basedata =
                 []
 
         attackMsg =
-            if basedata.state == PlayerAttack && newX <= 670 then
+            if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
                 [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else

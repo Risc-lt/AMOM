@@ -98,18 +98,15 @@ attackRec enemy env allSelf position basedata =
             getHurt enemy env targetSelf
 
         newData =
-            List.filter
-                (\x -> x.hp /= 0)
-            <|
-                List.map
-                    (\x ->
-                        if x.position == position then
-                            newSelf
+            List.map
+                (\x ->
+                    if x.position == position then
+                        newSelf
 
-                        else
-                            x
-                    )
-                    allSelf
+                    else
+                        x
+                )
+                allSelf
 
         time =
             Time.posixToMillis env.globalData.currentTimeStamp

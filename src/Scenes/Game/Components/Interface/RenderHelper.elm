@@ -23,11 +23,11 @@ type alias Data =
     InitData
 
 
-renderOneBar : Float -> Int -> Int -> String -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderOneBar y val upperBound valType env =
+renderOneBar : Float -> Int -> Int -> String -> Color.Color -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderOneBar y val upperBound valType color env =
     Canvas.group []
         [ Canvas.shapes
-            [ fill Color.red ]
+            [ fill color ]
             [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150 * (toFloat val / toFloat upperBound), 15 ) ]
         , Canvas.shapes
             [ stroke Color.black ]
@@ -67,9 +67,9 @@ renderStatus self env =
     if self.name /= "" then
         Canvas.group []
             [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.name
-            , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" env
-            , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" env
-            , renderOneBar (y + 40) self.energy 300 "En" env
+            , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
+            , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
+            , renderOneBar (y + 40) self.energy 300 "En" Color.green env
             , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
             ]
 

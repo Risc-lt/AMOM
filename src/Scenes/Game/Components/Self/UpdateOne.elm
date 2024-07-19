@@ -6,11 +6,10 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
-import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.SceneBase exposing (SceneCommonData)
-import Scenes.Game.Components.Skill.Init exposing (SkillType(..), Range(..))
-import Scenes.Game.Components.Skill.Init exposing (defaultSkill)
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
+import Scenes.Game.Components.Self.Init exposing (Self, State(..))
+import Scenes.Game.Components.Skill.Init exposing (Range(..), SkillType(..), defaultSkill)
+import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
@@ -57,11 +56,11 @@ handleTargetSelection x y self env evnt data basedata =
                 0
 
         newPosition =
-            case position of 
-                7 -> 
+            case position of
+                7 ->
                     4
 
-                8 -> 
+                8 ->
                     5
 
                 9 ->
@@ -75,7 +74,7 @@ handleTargetSelection x y self env evnt data basedata =
 
                 12 ->
                     3
-                            
+
                 _ ->
                     0
 
@@ -213,7 +212,7 @@ handleMouseDown x y self env evnt data basedata =
             , ( env, False )
             )
 
-        TargetSelection _->
+        TargetSelection _ ->
             handleTargetSelection x y self env evnt data basedata
 
         _ ->

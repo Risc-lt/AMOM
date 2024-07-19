@@ -5,11 +5,12 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
-import Scenes.Game.Components.Enemy.GenRatio exposing (checkRate, genAvoidRate, genCriticalHitRate, getSpecificNormalAttack)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Time
 
 
 type alias Data =
@@ -17,62 +18,84 @@ type alias Data =
 
 
 checkHealth : Enemy -> Enemy
-checkHealth char =
-    if char.hp < 0 then
-        { char | hp = 0 }
+checkHealth enemy =
+    if enemy.hp < 0 then
+        { enemy | hp = 0 }
 
     else
-        char
+        enemy
 
 
 normalAttackDemage : Enemy -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy
-normalAttackDemage enemy char env =
+normalAttackDemage enemy self env =
     let
-        isCritical =
-            checkRate env <|
-                genCriticalHitRate enemy
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
 
-        demage =
-            getSpecificNormalAttack enemy char isCritical
+        isCritical =
+            checkRate time enemy.extendValues.ratioValues.criticalHitRate
+
+        damage =
+            getSpecificNormalAttack enemy self isCritical
+
+        newEnergy =
+            if enemy.energy + 30 > 300 then
+                300
+
+            else
+                enemy.energy + 30
     in
     checkHealth <|
-        { enemy | hp = enemy.hp - demage }
+        { enemy | hp = enemy.hp - damage, energy = newEnergy }
 
 
-getHurt : AttackType -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> Enemy
-getHurt attackType char env enemy =
+getSpecificNormalAttack : Enemy -> Self -> Bool -> Int
+getSpecificNormalAttack enemy self isCritical =
     let
+        criticalHitRate =
+            if isCritical then
+                1.5
+
+            else
+                1
+    in
+    floor (20 * toFloat enemy.attributes.strength / toFloat self.attributes.constitution * criticalHitRate)
+
+
+getSpecificMagicalAttack : Enemy -> Self -> Int
+getSpecificMagicalAttack enemy self =
+    floor (1 + toFloat enemy.attributes.intelligence * 0.025)
+
+
+getHurt : Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> ( Enemy, Bool )
+getHurt self env enemy =
+    let
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
+
         isAvoid =
-            checkRate env <|
-                genAvoidRate enemy
+            not <|
+                checkRate time <|
+                    self.extendValues.ratioValues.normalHitRate
+                        - enemy.extendValues.ratioValues.avoidRate
     in
     if isAvoid then
-        enemy
+        ( enemy, True )
 
     else
-        case attackType of
-            NormalAttack ->
-                normalAttackDemage enemy char env
-
-            SpecialSkill ->
-                checkHealth <|
-                    { enemy | hp = char.hp - 50 }
-
-            Magic ->
-                checkHealth <|
-                    { enemy | hp = char.hp - 50 }
+        ( normalAttackDemage enemy self env, False )
 
 
-attackRec : AttackType -> Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> Data
-attackRec attackType char env allEnemy position =
+attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> ( Data, Bool, Bool )
+attackRec self env allEnemy position basedata =
     let
         targetEnemy =
             Maybe.withDefault { defaultEnemy | position = 0 } <|
                 List.head <|
                     List.filter (\x -> x.position == position) allEnemy
 
-        newEnemy =
-            getHurt attackType char env targetEnemy
+        ( newEnemy, isAvoid ) =
+            getHurt self env targetEnemy
 
         newData =
             List.filter
@@ -87,8 +110,28 @@ attackRec attackType char env allEnemy position =
                             x
                     )
                     allEnemy
+
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
+
+        front =
+            List.any (\p -> p <= 3) basedata.selfNum
+
+        effective =
+            if front && self.position > 3 then
+                False
+
+            else
+                True
+
+        isCounter =
+            if newEnemy.hp /= 0 && basedata.state /= PlayerAttack && self.name /= "Bruce" && effective then
+                checkRate time newEnemy.extendValues.ratioValues.counterRate
+
+            else
+                False
     in
-    newData
+    ( newData, isCounter, isAvoid )
 
 
 findMin : Data -> Int
@@ -100,22 +143,39 @@ findMin data =
         |> Maybe.withDefault 100
 
 
-handleAttack : AttackType -> Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleAttack attackType char position env msg data basedata =
+handleAttack : Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleAttack self position env msg data basedata =
     let
-        newData =
-            attackRec attackType char env data position
+        ( newData, isCounter, isAvoid ) =
+            attackRec self env data position basedata
 
         remainNum =
             List.map (\x -> x.position) <|
                 List.filter (\x -> x.hp /= 0) <|
                     newData
 
-        newMsg =
+        counterMsg =
+            if isCounter then
+                [ Other ( "Self", ChangeStatus (ChangeState Counter) ) ]
+
+            else
+                []
+
+        avoidMsg =
+            if isAvoid then
+                []
+
+            else
+                [ Other ( "Self", AttackSuccess self.position ) ]
+
+        dieMsg =
             if remainNum == basedata.enemyNum then
                 []
 
             else
-                [ Other ( "Self", EnemyDie remainNum ) ]
+                [ Other ( "Self", CharDie remainNum ) ]
     in
-    ( ( newData, { basedata | enemyNum = remainNum } ), newMsg, env )
+    ( ( newData, { basedata | enemyNum = remainNum, curSelf = self.position, curEnemy = position } )
+    , counterMsg ++ avoidMsg ++ dieMsg
+    , env
+    )

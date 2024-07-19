@@ -35,10 +35,10 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     ( { frameName = "dialogue_frame"
       , framePos = ( 0, 500 )
-      , speaker = "newhead"
+      , speaker = "head_magic"
       , speakerPos = ( -20, 680 )
       , font = "Comic Sans MS"
-      , isSpeaking = True
+      , isSpeaking = False
       , content = [ "Hello!", "Thank you!" ]
       , textPos = ( 880, 800 )
       }

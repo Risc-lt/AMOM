@@ -53,11 +53,17 @@ init env initMsg =
 
         selfInit =
             SelfMsg.emptyInitData <| time
+
+        dialogueInit =
+            { speaker = "This string is useless"
+            , content = [ "It's just for no bug", "Check /Game/Component/Dialogue" ]
+            }
     in
     InitData
         [ Enemy.component (Init <| EnemyInit <| enemyInit) env
         , Self.component (Init <| SelfInit <| selfInit) env
         , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
+        , Dialogue.component (Init <| InitDialogueMsg <| dialogueInit) env
         ]
 
 
@@ -143,6 +149,8 @@ view env data =
                     ]
                 ]
             , viewComponents env data.components
+            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 980 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 1030 )
             ]
 
         outComeView =

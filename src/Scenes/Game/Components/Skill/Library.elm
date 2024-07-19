@@ -1,6 +1,5 @@
 module Scenes.Game.Components.Skill.Library exposing (..)
 
-
 {-| Skill library
 
 @docs scatterShot
@@ -11,12 +10,11 @@ module Scenes.Game.Components.Skill.Library exposing (..)
 
 -}
 
-
 import Scenes.Game.Components.Skill.Init exposing (..)
 
 
 scatterShot : Skill
-scatterShot = 
+scatterShot =
     { kind = SpecialSkill
     , name = "Scatter Shot"
     , effect = { defaultEffect | hp = 30 }
@@ -25,8 +23,9 @@ scatterShot =
     , cost = 1
     }
 
+
 airBlade : Skill
-airBlade = 
+airBlade =
     { kind = SpecialSkill
     , name = "Air Blade"
     , effect = { defaultEffect | hp = 80 }
@@ -35,8 +34,9 @@ airBlade =
     , cost = 1
     }
 
+
 compounding : Skill
-compounding = 
+compounding =
     { kind = SpecialSkill
     , name = "Compounding"
     , effect = defaultEffect
@@ -45,8 +45,9 @@ compounding =
     , cost = 1
     }
 
+
 arcaneBeam : Skill
-arcaneBeam = 
+arcaneBeam =
     { kind = Magic
     , name = "Arcane Beam"
     , effect = { defaultEffect | hp = 40 }
@@ -55,8 +56,9 @@ arcaneBeam =
     , cost = 4
     }
 
+
 fireBall : Skill
-fireBall = 
+fireBall =
     { kind = Magic
     , name = "Fire Ball"
     , effect = { defaultEffect | hp = 40 }

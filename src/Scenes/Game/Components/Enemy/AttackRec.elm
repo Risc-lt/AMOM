@@ -179,3 +179,8 @@ handleAttack self position env msg data basedata =
     , counterMsg ++ avoidMsg ++ dieMsg
     , env
     )
+
+
+handleSkill : Self -> Position -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleSkill self skill position env msg data basedata =
+    

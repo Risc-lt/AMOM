@@ -13,6 +13,8 @@ module Scenes.Game.Components.Self.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
+import Scenes.Game.Components.Skill.Init exposing (Skill)
+import Scenes.Game.Components.Skill.Library exposing (..)
 import Time exposing (ZoneName(..))
 
 
@@ -35,6 +37,7 @@ type alias Self =
     , energy : Int
     , attributes : Attribute
     , extendValues : ExtendValue
+    , skills : List Skill
     , state : State
     }
 
@@ -87,6 +90,10 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , skills =
+            [ airBlade
+            , arcaneBeam
+            ]
       , state = Waiting
       }
     , { name = "Bruce"
@@ -105,6 +112,10 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , skills =
+            [ scatterShot
+            , arcaneBeam
+            ]
       , state = Waiting
       }
     , { name = ""
@@ -116,6 +127,7 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , skills = []
       , state = Waiting
       }
     , { name = "Bulingze"
@@ -134,6 +146,10 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , skills =
+            [ arcaneBeam
+            , fireBall
+            ]
       , state = Waiting
       }
     , { name = "Bithif"
@@ -152,6 +168,10 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , skills =
+            [ compounding
+            , arcaneBeam
+            ]
       , state = Waiting
       }
     , { name = ""
@@ -163,6 +183,7 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , skills = []
       , state = Waiting
       }
     ]
@@ -181,5 +202,6 @@ defaultSelf =
     , energy = 0
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
+    , skills = []
     , state = Waiting
     }

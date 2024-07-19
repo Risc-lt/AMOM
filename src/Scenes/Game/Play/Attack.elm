@@ -29,7 +29,7 @@ judgeHelper enemy self =
             List.length (unroll enemy).baseData.enemyNum
 
         realSelfNum =
-            Tuple.first (unroll self).baseData.selfNum + Tuple.second (unroll self).baseData.selfNum
+            List.length (unroll enemy).baseData.selfNum
     in
     if realEnemyNum <= 0 then
         [ ( "Enemy", Defeated ) ]

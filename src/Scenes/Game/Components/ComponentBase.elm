@@ -1,9 +1,12 @@
 module Scenes.Game.Components.ComponentBase exposing
-    ( AttackType(..)
+    ( ActionMsg(..)
+    , ActionSide(..)
     , BaseData
     , ComponentMsg(..)
     , ComponentTarget
     , Gamestate(..)
+    , InitMsg(..)
+    , StatusMsg(..)
     , initBaseData
     )
 
@@ -11,6 +14,7 @@ import Json.Decode exposing (string)
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
 
@@ -27,27 +31,39 @@ import Scenes.Game.Components.Self.Init exposing (Self)
 @docs initBaseData: Initial base data
 
 -}
-type ComponentMsg
+type InitMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
-    | Attack AttackType Int
-    | ChangeTarget ( Int, Int )
-    | EnemyDie (List Int)
-    | SwitchTurn
-    | ChangeSelfs (List Self)
+
+
+type StatusMsg
+    = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
     | ChangeBase BaseData
     | NewDialogueMsg CreateInitData
     | CloseDialogue
+    | ChangeState Gamestate
+
+
+type ActionMsg
+    = PlayerNormal Self Int
+    | EnemyNormal Enemy Int
+    | StartCounter
+
+
+type ComponentMsg
+    = Init InitMsg
+    | Action ActionMsg
+    | AttackSuccess Int
+    | CharDie (List Int)
+    | SwitchTurn Int
+    | ChangeStatus StatusMsg
+    | UpdateChangingPos (List Self)
+    | StartGame
     | GameOver
     | Defeated
     | NullComponentMsg
-
-
-type AttackType
-    = Physical
-    | Magical
 
 
 type alias ComponentTarget =
@@ -63,28 +79,31 @@ type Gamestate
     | EnemyMove
     | EnemyAttack
     | EnemyReturn
+    | Counter
+
+
+type ActionSide
+    = PlayerSide
+    | EnemySide
+    | Undeclaced
 
 
 type alias BaseData =
     { state : Gamestate
     , enemyNum : List Int
-    , selfNum : ( Int, Int )
-    , curChar : Int
+    , selfNum : List Int
+    , curSelf : Int
     , curEnemy : Int
+    , side : ActionSide
     }
 
 
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin
-    , enemyNum = [ 1, 2, 3, 4, 5, 6 ]
-    , selfNum = ( 2, 2 )
-    , curChar = 1
-    , curEnemy = 1
-    }
-
-
-type alias CreateInitData =
-    { speaker : String
-    , content : List String
+    , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
+    , selfNum = [ 1, 2, 4, 5 ]
+    , curSelf = 0
+    , curEnemy = 0
+    , side = Undeclaced
     }

@@ -1,7 +1,6 @@
 module Scenes.Game.Components.ComponentBase exposing
     ( ActionMsg(..)
     , ActionSide(..)
-    , ActionType(..)
     , BaseData
     , ComponentMsg(..)
     , ComponentTarget
@@ -15,7 +14,6 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Skill.Init exposing (Skill)
 
 
 {-|
@@ -42,17 +40,10 @@ type StatusMsg
     | ChangeState Gamestate
 
 
-type ActionType
-    = Attack
-    | Skills Skill
-
-
 type ActionMsg
     = PlayerNormal Self Int
     | EnemyNormal Enemy Int
     | StartCounter
-    | PlayerSkill Self Skill Int
-    | EnemySkill Enemy Skill Int
 
 
 type ComponentMsg
@@ -77,9 +68,7 @@ type Gamestate
     = GameBegin
     | PlayerTurn
     | PlayerAttack
-    | ChooseSpeSkill
-    | ChooseMagic
-    | TargetSelection ActionType
+    | TargetSelection
     | PlayerReturn
     | EnemyMove
     | EnemyAttack

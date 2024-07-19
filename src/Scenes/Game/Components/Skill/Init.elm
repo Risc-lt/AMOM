@@ -1,7 +1,8 @@
-module Scenes.Game.Components.Skill.Init exposing
+module Scenes.Game.Components.Skill.Init exposing 
     ( Skill
     , Element(..), Range(..), SkillType(..), defaultEffect, defaultSkill
     )
+
 
 {-|
 
@@ -26,7 +27,7 @@ type alias Effect =
 
 type Range
     = One
-    | Chain
+    | Random Int
     | AllFront
     | Oneself
     | Ally

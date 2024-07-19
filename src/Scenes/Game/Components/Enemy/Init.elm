@@ -13,8 +13,6 @@ module Scenes.Game.Components.Enemy.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Skill.Init exposing (Skill)
-import Scenes.Game.Components.Skill.Library exposing (..)
 
 
 {-| Core data structure for the enemy
@@ -28,7 +26,6 @@ type alias Enemy =
     , mp : Int
     , energy : Int
     , attributes : Attribute
-    , skills : List Skill
     , extendValues : ExtendValue
     }
 
@@ -83,7 +80,6 @@ emptyInitData time =
                     baseEleResistance.fireResistance
                     baseEleResistance.airResistance
                     baseEleResistance.earthResistance
-            , skills = []
             }
         )
         [ 7, 8, 9 ]
@@ -105,7 +101,6 @@ emptyInitData time =
                         baseEleResistance.fireResistance
                         baseEleResistance.airResistance
                         baseEleResistance.earthResistance
-                , skills = []
                 }
             )
             [ 10, 11, 12 ]
@@ -124,5 +119,4 @@ defaultEnemy =
     , energy = 0
     , attributes = baseAttributes
     , extendValues = defaultExtendValues
-    , skills = []
     }

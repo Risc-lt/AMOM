@@ -80,9 +80,6 @@ updaterec env msg data basedata =
         Action StartCounter ->
             ( ( data, { basedata | state = EnemyMove } ), [], env )
 
-        Action (PlayerSkill self skill position) ->
-            handleSkill self skill position env msg data basedata
-
         AttackSuccess position ->
             let
                 newData =

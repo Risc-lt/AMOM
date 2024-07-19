@@ -46,10 +46,11 @@ allTexture =
         , ( "archer", "assets/character/archer.png" )
         , ( "pharmacist", "assets/character/pharmacist.png" )
         , ( "swordsman", "assets/character/swordsman.png" )
-        , ( "background ", "assets/character/background.png" )
+        , ( "background ", "assets/character/background_1.jpg" )
         , ( "head_archer", "assets/character/newhead2.png" )
         , ( "head_magic", "assets/character/newhead.png" )
         , ( "dialogue_frame", "assets/character/dialogue_frame.png" )
+        , ( "Start", "assets/character/Start.jpg" )
         ]
 
 

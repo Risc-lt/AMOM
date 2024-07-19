@@ -41,8 +41,6 @@ type StatusMsg
     = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
     | ChangeBase BaseData
-    | NewDialogueMsg CreateInitData
-    | CloseDialogue
     | ChangeState Gamestate
 
 
@@ -62,6 +60,8 @@ type ComponentMsg
     | UpdateChangingPos (List Self)
     | StartGame
     | GameOver
+    | NewDialogueMsg CreateInitData
+    | CloseDialogue
     | Defeated
     | NullComponentMsg
 

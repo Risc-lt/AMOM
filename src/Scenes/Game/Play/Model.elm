@@ -58,6 +58,7 @@ init env initMsg =
         [ Enemy.component (Init <| EnemyInit <| enemyInit) env
         , Self.component (Init <| SelfInit <| selfInit) env
         , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
+        , Dialogue.component ()
         ]
 
 

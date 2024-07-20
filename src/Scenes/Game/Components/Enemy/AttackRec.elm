@@ -212,7 +212,7 @@ getSpecificMagicalAttack enemy self skill =
                 None ->
                     0
     in
-    floor (toFloat skill.effect.hp * (1 + toFloat self.attributes.intelligence * 0.025) * toFloat (1 - eleResistance))
+    floor (toFloat skill.effect.hp * (1 + toFloat self.attributes.intelligence * 0.025) * toFloat (100 - eleResistance) / 100)
 
 
 getEffect : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> BaseData -> Enemy

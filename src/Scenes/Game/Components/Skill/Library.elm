@@ -20,7 +20,7 @@ scatterShot =
     , effect = { defaultEffect | hp = 30 }
     , range = AllFront
     , element = None
-    , cost = 1
+    , cost = 100
     }
 
 
@@ -31,7 +31,7 @@ airBlade =
     , effect = { defaultEffect | hp = 80 }
     , range = One
     , element = None
-    , cost = 1
+    , cost = 100
     }
 
 
@@ -42,7 +42,7 @@ compounding =
     , effect = defaultEffect
     , range = Oneself
     , element = None
-    , cost = 1
+    , cost = 100
     }
 
 

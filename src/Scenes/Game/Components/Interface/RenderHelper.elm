@@ -223,7 +223,7 @@ renderChooseSkill env self name state =
                         (toString <| .cost <| Tuple.second x)
                         "Arial"
                         Color.black
-                        ( 1390
+                        ( 1380
                         , toFloat (Tuple.first x * 88 + 748)
                         )
                 )

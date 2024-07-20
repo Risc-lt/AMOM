@@ -30,8 +30,8 @@ handleKeyDown key list env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-handleTargetSelection : Float -> Float -> Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleTargetSelection x y self env evnt data basedata =
+handleTargetSelection : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleTargetSelection x y env evnt data basedata =
     let
         position =
             if x > 640 && x < 1030 && y > 680 && y < 813.3 then
@@ -79,7 +79,7 @@ handleTargetSelection x y self env evnt data basedata =
                     0
 
         melee =
-            self.name /= "Bruce"
+            data.name /= "Bruce"
 
         front =
             List.any (\p -> p <= 9) basedata.enemyNum
@@ -111,34 +111,46 @@ handleTargetSelection x y self env evnt data basedata =
             case basedata.state of
                 TargetSelection (Skills skill) ->
                     if skill.range == Ally then
-                        [ Other ( "Self", Action (PlayerSkill self skill newPosition) ) ]
+                        [ Other ( "Self", Action (PlayerSkill data skill newPosition) ) ]
 
                     else
-                        [ Other ( "Enemy", Action (PlayerSkill self skill position) ) ]
+                        [ Other ( "Enemy", Action (PlayerSkill data skill position) ) ]
 
                 _ ->
                     []
+
+        newData =
+            case basedata.state of
+                TargetSelection (Skills skill) ->
+                    if skill.kind == SpecialSkill then
+                        { data | energy = data.energy - skill.cost }
+
+                    else
+                        { data | mp = data.mp - skill.cost }
+
+                _ ->
+                    data
     in
-    ( ( data, { basedata | curEnemy = position, state = newState } )
+    ( ( newData, { basedata | curEnemy = position, state = newState } )
     , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
     , ( env, False )
     )
 
 
-handleChooseSkill : Float -> Float -> Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleChooseSkill x y self env evnt data basedata =
+handleChooseSkill : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleChooseSkill x y env evnt data basedata =
     let
         ( kind, storage ) =
             if basedata.state == ChooseSpeSkill then
-                ( SpecialSkill, self.energy )
+                ( SpecialSkill, data.energy )
 
             else
-                ( Magic, self.mp )
+                ( Magic, data.mp )
 
         skills =
             List.sortBy .cost <|
                 List.filter (\s -> s.kind == kind) <|
-                    self.skills
+                    data.skills
 
         index =
             if x > 640 && x < 1420 && y > 728 && y < 768 then
@@ -169,13 +181,13 @@ handleChooseSkill x y self env evnt data basedata =
         case skill.range of
             Oneself ->
                 ( ( data, { basedata | state = EnemyMove } )
-                , [ Other ( "Self", Action (PlayerSkill self skill 0) ) ]
+                , [ Other ( "Self", Action (PlayerSkill data skill 0) ) ]
                 , ( env, False )
                 )
 
             AllEnemy ->
                 ( ( data, { basedata | state = EnemyMove } )
-                , [ Other ( "Enemy", Action (PlayerSkill self skill 0) ) ]
+                , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                 , ( env, False )
                 )
 
@@ -189,8 +201,8 @@ handleChooseSkill x y self env evnt data basedata =
         ( ( data, basedata ), [], ( env, False ) )
 
 
-handleMouseDown : Float -> Float -> Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleMouseDown x y self env evnt data basedata =
+handleMouseDown : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMouseDown x y env evnt data basedata =
     case basedata.state of
         PlayerTurn ->
             let
@@ -213,7 +225,13 @@ handleMouseDown x y self env evnt data basedata =
             )
 
         TargetSelection _ ->
-            handleTargetSelection x y self env evnt data basedata
+            handleTargetSelection x y env evnt data basedata
+
+        ChooseMagic ->
+            handleChooseSkill x y env evnt data basedata
+
+        ChooseSpeSkill ->
+            handleChooseSkill x y env evnt data basedata
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -298,7 +316,7 @@ updateOne list env evnt data basedata =
 
         MouseUp key ( x, y ) ->
             if key == 0 then
-                handleMouseDown x y data env evnt data basedata
+                handleMouseDown x y env evnt data basedata
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

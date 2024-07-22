@@ -230,7 +230,11 @@ skillRec self skill env data position basedata =
         newPosition =
             case skill.range of
                 AllFront ->
-                    [ 7, 8, 9 ]
+                    if List.any (\x -> x <= 9) basedata.enemyNum then
+                        [ 7, 8, 9 ]
+
+                    else
+                        [ 10, 11, 12 ]
 
                 Chain ->
                     case position of

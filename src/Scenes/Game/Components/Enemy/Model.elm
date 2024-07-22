@@ -52,7 +52,7 @@ update env evnt data basedata =
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
             if curEnemy.position /= 0 then
-                updateOne data env evnt curEnemy basedata
+                updateOne env evnt curEnemy basedata
 
             else
                 ( ( curEnemy, basedata ), [], ( env, False ) )
@@ -78,7 +78,7 @@ updaterec env msg data basedata =
             handleAttack self position env msg data basedata
 
         Action StartCounter ->
-            ( ( data, { basedata | state = EnemyMove } ), [], env )
+            ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
             handleSkill self skill position env msg data basedata
@@ -109,11 +109,7 @@ updaterec env msg data basedata =
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            let
-                target =
-                    getTarget basedata env
-            in
-            ( ( data, { basedata | state = EnemyMove, curEnemy = pos, curSelf = target } ), [], env )
+            ( ( data, { basedata | state = EnemyTurn, curEnemy = pos } ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

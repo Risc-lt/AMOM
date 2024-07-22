@@ -73,9 +73,9 @@ sendMsg data basedata =
             )
 
         EnemySide ->
-            ( EnemyMove
+            ( EnemyTurn
             , [ Other ( "Enemy", SwitchTurn basedata.curSelf )
-              , Other ( "Self", ChangeStatus (ChangeState EnemyMove) )
+              , Other ( "Self", ChangeStatus (ChangeState EnemyTurn) )
               ]
             )
 

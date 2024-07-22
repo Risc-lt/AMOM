@@ -16,6 +16,26 @@ type alias Data =
     Self
 
 
+checkStorage : Data -> Data
+checkStorage data =
+    let
+        mpCheck =
+            if data.mp < 0 then
+                { data | mp = 0 }
+
+            else
+                data
+
+        energyCheck =
+            if data.mp < 0 then
+                { mpCheck | energy = 0 }
+
+            else
+                mpCheck
+    in
+    energyCheck
+
+
 handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleKeyDown key list env evnt data basedata =
     case key of
@@ -94,8 +114,15 @@ handleTargetSelection x y env evnt data basedata =
         newState =
             case basedata.state of
                 TargetSelection (Skills skill) ->
-                    if skill.range == Ally && List.member newPosition basedata.selfNum then
-                        EnemyMove
+                    if
+                        skill.range
+                            == Ally
+                            && List.member newPosition basedata.selfNum
+                            || skill.range
+                            /= Ally
+                            && List.member position basedata.enemyNum
+                    then
+                        EnemyTurn
 
                     else
                         basedata.state
@@ -108,28 +135,36 @@ handleTargetSelection x y env evnt data basedata =
                         basedata.state
 
         skillMsg =
-            case basedata.state of
-                TargetSelection (Skills skill) ->
-                    if skill.range == Ally then
-                        [ Other ( "Self", Action (PlayerSkill data skill newPosition) ) ]
+            if basedata.state /= newState then
+                case basedata.state of
+                    TargetSelection (Skills skill) ->
+                        if skill.range == Ally then
+                            [ Other ( "Self", Action (PlayerSkill data skill newPosition) ) ]
 
-                    else
-                        [ Other ( "Enemy", Action (PlayerSkill data skill position) ) ]
+                        else
+                            [ Other ( "Enemy", Action (PlayerSkill data skill position) ) ]
 
-                _ ->
-                    []
+                    _ ->
+                        []
+
+            else
+                []
 
         newData =
-            case basedata.state of
-                TargetSelection (Skills skill) ->
-                    if skill.kind == SpecialSkill then
-                        { data | energy = data.energy - skill.cost }
+            if basedata.state /= newState then
+                case basedata.state of
+                    TargetSelection (Skills skill) ->
+                        if skill.kind == SpecialSkill then
+                            checkStorage <| { data | energy = data.energy - skill.cost }
 
-                    else
-                        { data | mp = data.mp - skill.cost }
+                        else
+                            checkStorage <| { data | mp = data.mp - skill.cost }
 
-                _ ->
-                    data
+                    _ ->
+                        data
+
+            else
+                data
     in
     ( ( newData, { basedata | curEnemy = position, state = newState } )
     , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
@@ -176,17 +211,24 @@ handleChooseSkill x y env evnt data basedata =
 
             else
                 defaultSkill
+
+        newData =
+            if skill.kind == SpecialSkill then
+                checkStorage <| { data | energy = data.energy - skill.cost }
+
+            else
+                checkStorage <| { data | mp = data.mp - skill.cost }
     in
     if skill.cost <= storage && skill.name /= "" then
         case skill.range of
             Oneself ->
-                ( ( data, { basedata | state = EnemyMove } )
+                ( ( newData, { basedata | state = EnemyTurn } )
                 , [ Other ( "Self", Action (PlayerSkill data skill 0) ) ]
                 , ( env, False )
                 )
 
-            AllEnemy ->
-                ( ( data, { basedata | state = EnemyMove } )
+            AllFront ->
+                ( ( newData, { basedata | state = EnemyTurn } )
                 , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                 , ( env, False )
                 )
@@ -270,7 +312,7 @@ handleMove list env evnt data basedata =
 
         newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                { basedata | state = EnemyMove }
+                { basedata | state = EnemyTurn }
 
             else if basedata.state == Counter && newX >= returnX then
                 { basedata | state = EnemyAttack }

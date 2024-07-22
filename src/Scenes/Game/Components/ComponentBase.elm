@@ -81,7 +81,7 @@ type Gamestate
     | ChooseMagic
     | TargetSelection ActionType
     | PlayerReturn
-    | EnemyMove
+    | EnemyTurn
     | EnemyAttack
     | EnemyReturn
     | Counter

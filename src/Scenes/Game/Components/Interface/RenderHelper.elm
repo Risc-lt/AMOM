@@ -13,10 +13,10 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Skill.Init exposing (SkillType(..))
+import Scenes.Game.Components.Skill.Init exposing (Range(..), Skill, SkillType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -135,13 +135,54 @@ renderPlayerTurn env name =
         ]
 
 
-renderTargetSelection : Env cdata userdata -> Data -> String -> Renderable
-renderTargetSelection env data name =
+renderTargetSelection : Env cdata userdata -> Data -> BaseData -> String -> Renderable
+renderTargetSelection env data basedata name =
     let
-        remainEnemy =
-            List.map (\x -> x.position - 6) <|
+        isAlly =
+            case basedata.state of
+                TargetSelection (Skills skill) ->
+                    skill.range == Ally
+
+                _ ->
+                    False
+
+        remainEnemies =
+            List.map (\x -> { x | position = x.position - 6 }) <|
                 List.filter (\x -> x.hp /= 0) <|
                     data.enemies
+
+        remainSelfs =
+            List.filter (\x -> x.hp /= 0) <|
+                data.selfs
+
+        renderTargets =
+            if isAlly then
+                List.map
+                    (\x ->
+                        renderTextWithColorCenter env.globalData.internalData
+                            60
+                            x.name
+                            "Arial"
+                            Color.black
+                            ( toFloat (1225 - (x.position - 1) // 3 * 390)
+                            , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
+                            )
+                    )
+                    remainSelfs
+
+            else
+                List.map
+                    (\x ->
+                        renderTextWithColorCenter env.globalData.internalData
+                            60
+                            x.name
+                            "Arial"
+                            Color.black
+                            ( toFloat (1225 - (x.position - 1) // 3 * 390)
+                            , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
+                            )
+                    )
+                    remainEnemies
     in
     Canvas.group []
         ([ renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 160, 820 )
@@ -161,18 +202,7 @@ renderTargetSelection env data name =
          , renderTextWithColorCenter env.globalData.internalData 60 "Target" "Arial" Color.black ( 480, 820 )
          , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Arial" Color.black ( 480, 930 )
          ]
-            ++ List.map
-                (\x ->
-                    renderTextWithColorCenter env.globalData.internalData
-                        60
-                        "Monster"
-                        "Arial"
-                        Color.black
-                        ( toFloat (1225 - (x - 1) // 3 * 390)
-                        , toFloat ((x - (x - 1) // 3 * 3) - 1) * 133.3 + 746.65
-                        )
-                )
-                remainEnemy
+            ++ renderTargets
         )
 
 
@@ -259,7 +289,7 @@ renderAction env data basedata =
                     renderPlayerTurn env name
 
                 TargetSelection _ ->
-                    renderTargetSelection env data name
+                    renderTargetSelection env data basedata name
 
                 ChooseSpeSkill ->
                     renderChooseSkill env self name basedata.state

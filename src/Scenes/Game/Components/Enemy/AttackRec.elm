@@ -9,7 +9,7 @@ import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, C
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
+import Scenes.Game.Components.Skill.Init exposing (Element(..), Range(..), Skill, SkillType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 

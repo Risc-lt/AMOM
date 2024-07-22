@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Special.Library exposing (..)
+module Scenes.Game.Components.Skill.Library exposing (..)
 
 {-| Skill library
 
@@ -10,7 +10,7 @@ module Scenes.Game.Components.Special.Library exposing (..)
 
 -}
 
-import Scenes.Game.Components.Special.Init exposing (..)
+import Scenes.Game.Components.Skill.Init exposing (..)
 
 
 scatterShot : Skill

@@ -10,7 +10,7 @@ import Power exposing (electricalHorsepower)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
-import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Skill.Init exposing (Range(..), Skill, SkillType(..), defaultSkill)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 

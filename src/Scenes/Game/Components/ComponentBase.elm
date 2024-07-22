@@ -1,6 +1,7 @@
 module Scenes.Game.Components.ComponentBase exposing
     ( ActionMsg(..)
     , ActionSide(..)
+    , ActionType(..)
     , BaseData
     , ComponentMsg(..)
     , ComponentTarget
@@ -10,14 +11,11 @@ module Scenes.Game.Components.ComponentBase exposing
     , initBaseData
     )
 
-import Json.Decode exposing (string)
-import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
-import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Special.Init exposing (Skill)
+import Scenes.Game.Components.Skill.Init exposing (Skill)
 
 
 {-|
@@ -36,20 +34,25 @@ type InitMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
-    | InitDialogueMsg CreateInitData
 
 
 type StatusMsg
     = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
-    | ChangeBase BaseData
     | ChangeState Gamestate
+
+
+type ActionType
+    = Attack
+    | Skills Skill
 
 
 type ActionMsg
     = PlayerNormal Self Int
     | EnemyNormal Enemy Int
     | StartCounter
+    | PlayerSkill Self Skill Int
+    | EnemySkill Enemy Skill Int
 
 
 type ComponentMsg
@@ -62,8 +65,6 @@ type ComponentMsg
     | UpdateChangingPos (List Self)
     | StartGame
     | GameOver
-    | NewDialogueMsg CreateInitData
-    | CloseDialogue
     | Defeated
     | NullComponentMsg
 
@@ -76,7 +77,9 @@ type Gamestate
     = GameBegin
     | PlayerTurn
     | PlayerAttack
-    | TargetSelection
+    | ChooseSpeSkill
+    | ChooseMagic
+    | TargetSelection ActionType
     | PlayerReturn
     | EnemyTurn
     | EnemyAttack

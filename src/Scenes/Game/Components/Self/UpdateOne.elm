@@ -8,7 +8,7 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Skill.Init exposing (Range(..), SkillType(..), defaultSkill)
+import Scenes.Game.Components.Special.Init exposing (Range(..), SpecialType(..), defaultSkill)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 

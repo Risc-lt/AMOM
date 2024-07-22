@@ -16,7 +16,7 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import Scenes.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Skill.Init exposing (Range(..), Skill, SkillType(..))
+import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 

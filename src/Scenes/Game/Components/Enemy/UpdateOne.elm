@@ -10,7 +10,7 @@ import Power exposing (electricalHorsepower)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
-import Scenes.Game.Components.Skill.Init exposing (Range(..), Skill, SkillType(..), defaultSkill)
+import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 
@@ -65,9 +65,9 @@ getTarget basedata env skill =
             List.drop (index - 1) basedata.selfNum
 
 
-attackPlayer : Env SceneCommonData UserData -> UserEvent -> Data -> BaseData -> List (MMsg ComponentTarget ComponentMsg SceneMsg UserData)
-attackPlayer env evnt data basedata =
-    [ Other ( "Self", Action (EnemyNormal data <| getTarget basedata env defaultSkill) ) ]
+attackPlayer : Data -> BaseData -> List (MMsg ComponentTarget ComponentMsg SceneMsg UserData)
+attackPlayer data basedata =
+    [ Other ( "Self", Action (EnemyNormal data basedata.curSelf) ) ]
 
 
 handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -119,7 +119,7 @@ handleMove env evnt data basedata =
                 [ Other ( "Interface", SwitchTurn 0 ) ]
 
             else if basedata.state == EnemyAttack && newX >= 670 then
-                attackPlayer env evnt data basedata
+                attackPlayer data basedata
 
             else
                 []
@@ -152,8 +152,15 @@ chooseAction env evnt data basedata =
             List.drop (index - 1) hasSpeSkill
                 |> List.head
                 |> Maybe.withDefault GameBegin
+
+        newBasedata =
+            if newState == EnemyAttack then
+                { basedata | state = newState, curSelf = getTarget basedata env defaultSkill }
+
+            else
+                { basedata | state = newState }
     in
-    ( ( data, { basedata | state = newState } ), [], ( env, False ) )
+    ( ( data, newBasedata ), [], ( env, False ) )
 
 
 chooseSpecial : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

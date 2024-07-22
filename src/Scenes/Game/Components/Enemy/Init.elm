@@ -13,8 +13,8 @@ module Scenes.Game.Components.Enemy.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Skill.Init exposing (Skill)
-import Scenes.Game.Components.Skill.Library exposing (..)
+import Scenes.Game.Components.Special.Init exposing (Skill)
+import Scenes.Game.Components.Special.Library exposing (..)
 
 
 {-| Core data structure for the enemy

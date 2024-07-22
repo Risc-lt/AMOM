@@ -1,6 +1,6 @@
-module Scenes.Game.Components.Skill.Init exposing
+module Scenes.Game.Components.Special.Init exposing
     ( Skill
-    , Element(..), Range(..), SkillType(..), defaultEffect, defaultSkill
+    , Element(..), Range(..), SpecialType(..), defaultEffect, defaultSkill
     )
 
 {-|
@@ -13,7 +13,7 @@ module Scenes.Game.Components.Skill.Init exposing
 -}
 
 
-type SkillType
+type SpecialType
     = Magic
     | SpecialSkill
 
@@ -45,7 +45,7 @@ type Element
 
 
 type alias Skill =
-    { kind : SkillType
+    { kind : SpecialType
     , name : String
     , effect : Effect
     , range : Range

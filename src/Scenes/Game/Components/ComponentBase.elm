@@ -18,7 +18,7 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Skill.Init exposing (Skill)
+import Scenes.Game.Components.Special.Init exposing (Skill)
 
 
 {-|

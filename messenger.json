@@ -13,14 +13,14 @@
                     "Enemy",
                     "Self",
                     "Interface",
-                    "Skill"
+                    "Dialogue"
                 ]
             },
             "layers": [
                 "Play"
             ]
         },
-        "SampleStory": []
+        "SampleScene": []
     },
     "sceneprotos": {
         "Story": {

@@ -52,6 +52,13 @@ type alias EleResistance =
     }
 
 
+type Element
+    = Water
+    | Fire
+    | Air
+    | Earth
+
+
 genHp : Attribute -> Int
 genHp attributes =
     attributes.constitution * 10

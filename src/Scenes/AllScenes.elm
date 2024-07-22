@@ -16,6 +16,7 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.Game.Model as Game
+import Scenes.SampleScene.Model as SampleScene
 
 
 {-| All Scenes
@@ -27,4 +28,5 @@ allScenes : AllScenes UserData SceneMsg
 allScenes =
     Dict.fromList
         [ ( "Game", Game.scene )
+        , ( "SampleScene", SampleScene.scene )
         ]

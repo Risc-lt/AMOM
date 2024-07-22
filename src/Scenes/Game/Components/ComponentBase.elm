@@ -11,6 +11,9 @@ module Scenes.Game.Components.ComponentBase exposing
     , initBaseData
     )
 
+import Json.Decode exposing (string)
+import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
+import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
@@ -34,11 +37,13 @@ type InitMsg
     = EnemyInit (List Enemy)
     | SelfInit (List Self)
     | UIInit InitData
+    | InitDialogueMsg CreateInitData
 
 
 type StatusMsg
     = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
+    | ChangeBase BaseData
     | ChangeState Gamestate
 
 
@@ -65,6 +70,8 @@ type ComponentMsg
     | UpdateChangingPos (List Self)
     | StartGame
     | GameOver
+    | NewDialogueMsg CreateInitData
+    | CloseDialogue
     | Defeated
     | NullComponentMsg
 

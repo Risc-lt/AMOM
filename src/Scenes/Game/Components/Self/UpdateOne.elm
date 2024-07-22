@@ -223,13 +223,15 @@ handleChooseSkill x y env evnt data basedata =
         case skill.range of
             Oneself ->
                 ( ( newData, { basedata | state = EnemyTurn } )
-                , [ Other ( "Self", Action (PlayerSkill data skill 0) ) ]
+                , [ Other ( "Self", Action (PlayerSkill data skill 0) ) 
+                  , Other ( "Interface", SwitchTurn 0 ) ]
                 , ( env, False )
                 )
 
             AllFront ->
                 ( ( newData, { basedata | state = EnemyTurn } )
-                , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
+                , [ Other ( "Enemy", Action (PlayerSkill data skill 0) )
+                  , Other ( "Interface", SwitchTurn 0 ) ]
                 , ( env, False )
                 )
 

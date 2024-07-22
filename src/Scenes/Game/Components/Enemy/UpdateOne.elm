@@ -6,7 +6,6 @@ import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (MMsg)
-import Power exposing (electricalHorsepower)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
@@ -202,7 +201,8 @@ chooseSpecial env evnt data basedata =
         case skill.range of
             AllEnemy ->
                 ( ( newData, { basedata | state = PlayerTurn } )
-                , [ Other ( "Self", Action (EnemySkill data skill 0) ) ]
+                , [ Other ( "Self", Action (EnemySkill data skill 0) ) 
+                  , Other ( "Interface", SwitchTurn 0 ) ]
                 , ( env, False )
                 )
 

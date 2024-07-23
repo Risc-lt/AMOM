@@ -34,8 +34,15 @@ checkStorage data =
 
             else
                 mpCheck
+
+        itemCheck =
+            List.filter
+                (\x ->
+                    x.cost /= 0 || x.kind /= Item
+                )
+                energyCheck.skills
     in
-    energyCheck
+    { energyCheck | skills = itemCheck }
 
 
 getTarget : BaseData -> Env cdata userdata -> Skill -> Int
@@ -143,12 +150,19 @@ chooseAction env evnt data basedata =
             else
                 hasMagic
 
+        hasItem =
+            if (List.length <| List.filter (\s -> s.kind == Item) data.skills) /= 0 then
+                ChooseItem :: hasSpeSkill
+
+            else
+                hasSpeSkill
+
         index =
             Time.posixToMillis env.globalData.currentTimeStamp
-                |> genRandomNum 1 (List.length hasSpeSkill)
+                |> genRandomNum 1 (List.length hasItem)
 
         newState =
-            List.drop (index - 1) hasSpeSkill
+            List.drop (index - 1) hasItem
                 |> List.head
                 |> Maybe.withDefault GameBegin
 
@@ -169,8 +183,11 @@ chooseSpecial env evnt data basedata =
             if basedata.state == ChooseSpeSkill then
                 ( SpecialSkill, data.energy )
 
-            else
+            else if basedata.state == ChooseMagic then
                 ( Magic, data.mp )
+
+            else
+                ( Item, 100 )
 
         skills =
             List.sortBy .cost <|
@@ -264,13 +281,31 @@ handleSpecial skill env evnt data basedata =
             else
                 []
 
+        newItem =
+            if skill.kind == Item then
+                List.map
+                    (\s ->
+                        if s.name == skill.name then
+                            { s | cost = s.cost - 1 }
+
+                        else
+                            s
+                    )
+                    data.skills
+
+            else
+                data.skills
+
         newData =
             if basedata.state /= newState then
                 if skill.kind == SpecialSkill then
                     checkStorage <| { data | energy = data.energy - skill.cost }
 
-                else
+                else if skill.kind == Magic then
                     checkStorage <| { data | mp = data.mp - skill.cost }
+
+                else
+                    checkStorage <| { data | skills = newItem }
 
             else
                 data
@@ -300,6 +335,9 @@ handleTurn env evnt data basedata =
             chooseSpecial env evnt data basedata
 
         ChooseMagic ->
+            chooseSpecial env evnt data basedata
+
+        ChooseItem ->
             chooseSpecial env evnt data basedata
 
         TargetSelection (Skills skill) ->

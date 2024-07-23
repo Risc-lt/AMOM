@@ -12,19 +12,45 @@ import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Energy exposing (Energy)
 
 
 type alias Data =
     List Enemy
 
 
-checkHealth : Enemy -> Enemy
-checkHealth enemy =
-    if enemy.hp < 0 then
-        { enemy | hp = 0 }
+checkStatus : Enemy -> Enemy
+checkStatus enemy =
+    let
+        lowHpCheck =
+            if enemy.hp < 0 then
+                { enemy | hp = 0 }
 
-    else
-        enemy
+            else
+                enemy
+
+        highHpCheck =
+            if enemy.hp > enemy.extendValues.basicStatus.maxHp then
+                { lowHpCheck | hp = enemy.extendValues.basicStatus.maxHp }
+
+            else
+                lowHpCheck
+
+        mpCheck =
+            if enemy.mp > enemy.extendValues.basicStatus.maxMp then
+                { highHpCheck | mp = enemy.extendValues.basicStatus.maxMp }
+
+            else
+                highHpCheck
+
+        energyCheck =
+            if enemy.energy > 300 then
+                { mpCheck | energy = 300 }
+
+            else
+                mpCheck
+    in
+    energyCheck
 
 
 normalAttackDemage : Enemy -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy
@@ -46,7 +72,7 @@ normalAttackDemage enemy self env =
             else
                 enemy.energy + 30
     in
-    checkHealth <|
+    checkStatus <|
         { enemy | hp = enemy.hp - damage, energy = newEnergy }
 
 
@@ -224,8 +250,11 @@ getEffect self skill env target basedata =
 
             else
                 skill.effect.hp
+
+        mpChange =
+            skill.effect.mp
     in
-    checkHealth { target | hp = target.hp - hpChange }
+    checkStatus { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
 
 
 skillRec : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data

@@ -41,8 +41,15 @@ checkStatus self =
 
             else
                 highHpCheck
+
+        energyCheck =
+            if self.energy > 300 then
+                { mpCheck | energy = 300 }
+
+            else
+                mpCheck
     in
-    mpCheck
+    energyCheck
 
 
 normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self

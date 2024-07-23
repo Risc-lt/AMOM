@@ -14,7 +14,8 @@
                     "Self",
                     "Interface",
                     "Special",
-                    "Dialogue"
+                    "Dialogue",
+                    "Buff"
                 ]
             },
             "layers": [

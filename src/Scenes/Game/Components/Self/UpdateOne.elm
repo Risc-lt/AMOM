@@ -76,7 +76,9 @@ handleCompounding skill env evnt data basedata =
             else
                 { skill | cost = 1 } :: data.skills
     in
-    ( ( checkStorage <| { data | skills = newItem, energy = data.energy - 100 }, { basedata | state = EnemyTurn } )
+    ( ( checkStorage <| { data | buff = getNewBuff data.buff, skills = newItem, energy = data.energy - 100 }
+      , { basedata | state = EnemyTurn } 
+      )
     , [ Other ( "Interface", SwitchTurn 0 ) ]
     , ( env, False )
     )
@@ -164,10 +166,8 @@ handleChooseSkill x y env evnt data basedata =
                     )
 
                 AllFront ->
-                    ( ( newData, { basedata | state = EnemyTurn } )
-                    , [ Other ( "Enemy", Action (PlayerSkill data skill 0) )
-                      , Other ( "Interface", SwitchTurn 0 )
-                      ]
+                    ( ( { newData | buff = getNewBuff newData.buff }, { basedata | state = EnemyTurn } )
+                    , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                     , ( env, False )
                     )
 
@@ -309,13 +309,25 @@ handleTargetSelection x y env evnt data basedata =
                 case basedata.state of
                     TargetSelection (Skills skill) ->
                         if skill.kind == SpecialSkill then
-                            checkStorage <| { data | energy = data.energy - skill.cost }
+                            checkStorage <| 
+                                { data 
+                                | energy = data.energy - skill.cost
+                                , buff = getNewBuff data.buff 
+                                }
 
                         else if skill.kind == Magic then
-                            checkStorage <| { data | mp = data.mp - skill.cost }
+                            checkStorage <| 
+                                { data 
+                                | mp = data.mp - skill.cost 
+                                , buff = getNewBuff data.buff 
+                                }
 
                         else
-                            checkStorage <| { data | skills = newItem }
+                            checkStorage <| 
+                                { data 
+                                | skills = newItem 
+                                , buff = getNewBuff data.buff 
+                                }
 
                     _ ->
                         data
@@ -444,6 +456,13 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
+        newBuff =
+            if basedata.state == PlayerReturn && newX >= returnX then
+                getNewBuff data.buff
+
+            else
+                data.buff
+
         newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
                 { basedata | state = EnemyTurn }
@@ -474,7 +493,7 @@ handleMove list env evnt data basedata =
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
+    ( ( { data | x = newX, buff = newBuff }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

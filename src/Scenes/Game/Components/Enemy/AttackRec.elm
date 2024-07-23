@@ -13,6 +13,8 @@ import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
+import Scenes.Game.Components.Special.Library exposing (getNewBuff)
 
 
 type alias Data =
@@ -119,6 +121,13 @@ attackRec self env allEnemy position basedata =
         ( newEnemy, isAvoid ) =
             getHurt self env targetEnemy
 
+        newBuff =
+            if basedata.state == EnemyAttack then
+                getNewBuff newEnemy.buff
+
+            else
+                newEnemy.buff
+
         newData =
             List.filter
                 (\x -> x.hp /= 0)
@@ -126,7 +135,7 @@ attackRec self env allEnemy position basedata =
                 List.map
                     (\x ->
                         if x.position == position then
-                            newEnemy
+                            { newEnemy | buff = newBuff }
 
                         else
                             x
@@ -197,7 +206,7 @@ handleAttack self position env msg data basedata =
             else
                 [ Other ( "Self", CharDie remainNum ) ]
     in
-    ( ( newData, { basedata | enemyNum = remainNum, curSelf = self.position, curEnemy = position } )
+    ( ( newData, { basedata | state = PlayerTurn, enemyNum = remainNum, curSelf = self.position, curEnemy = position } )
     , counterMsg ++ avoidMsg ++ dieMsg
     , env
     )
@@ -253,8 +262,21 @@ getEffect self skill env target basedata =
 
         mpChange =
             skill.effect.mp
+
+        newBuff =
+            case List.head skill.buff of
+                Nothing ->
+                    []
+
+                Just buff ->
+                    [ ( buff, skill.lasting ) ]
     in
-    checkStatus { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
+    checkStatus 
+        { target 
+        | hp = target.hp - hpChange
+        , mp = target.mp - mpChange 
+        , buff = newBuff ++ target.buff
+        }
 
 
 skillRec : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data

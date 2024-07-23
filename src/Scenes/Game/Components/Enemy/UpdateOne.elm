@@ -12,6 +12,7 @@ import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Scenes.Game.Components.Special.Library exposing (getNewBuff)
 
 
 type alias Data =
@@ -104,6 +105,13 @@ handleMove env evnt data basedata =
             else
                 data.x
 
+        newBuff =
+            if basedata.state == EnemyReturn && newX >= returnX then
+                getNewBuff data.buff
+
+            else
+                data.buff
+
         newBaseData =
             if basedata.state == EnemyReturn && newX <= returnX then
                 { basedata | state = PlayerTurn }
@@ -130,7 +138,7 @@ handleMove env evnt data basedata =
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg, ( env, False ) )
+    ( ( { data | x = newX, buff = newBuff }, newBaseData ), msg, ( env, False ) )
 
 
 chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -217,10 +225,8 @@ chooseSpecial env evnt data basedata =
     if skill.cost <= storage && skill.name /= "" then
         case skill.range of
             AllEnemy ->
-                ( ( newData, { basedata | state = PlayerTurn } )
-                , [ Other ( "Self", Action (EnemySkill data skill 0) )
-                  , Other ( "Interface", SwitchTurn 0 )
-                  ]
+                ( ( { newData | buff = getNewBuff newData.buff }, { basedata | state = PlayerTurn } )
+                , [ Other ( "Self", Action (EnemySkill data skill 0) ) ]
                 , ( env, False )
                 )
 
@@ -299,13 +305,25 @@ handleSpecial skill env evnt data basedata =
         newData =
             if basedata.state /= newState then
                 if skill.kind == SpecialSkill then
-                    checkStorage <| { data | energy = data.energy - skill.cost }
+                    checkStorage <| 
+                        { data 
+                        | energy = data.energy - skill.cost 
+                        , buff = getNewBuff data.buff 
+                        }
 
                 else if skill.kind == Magic then
-                    checkStorage <| { data | mp = data.mp - skill.cost }
+                    checkStorage <| 
+                        { data 
+                        | mp = data.mp - skill.cost 
+                        , buff = getNewBuff data.buff 
+                        }
 
                 else
-                    checkStorage <| { data | skills = newItem }
+                    checkStorage <| 
+                        { data 
+                        | skills = newItem 
+                        , buff = getNewBuff data.buff 
+                        }
 
             else
                 data

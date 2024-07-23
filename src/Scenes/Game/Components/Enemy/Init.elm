@@ -15,6 +15,7 @@ module Scenes.Game.Components.Enemy.Init exposing
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Special.Init exposing (Skill)
 import Scenes.Game.Components.Special.Library exposing (..)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 {-| Core data structure for the enemy
@@ -30,6 +31,7 @@ type alias Enemy =
     , attributes : Attribute
     , skills : List Skill
     , extendValues : ExtendValue
+    , buff : List ( Buff, Int )
     }
 
 
@@ -83,6 +85,7 @@ emptyInitData time =
                     baseEleResistance.fireResistance
                     baseEleResistance.airResistance
                     baseEleResistance.earthResistance
+            , buff = []
             , skills = []
             }
         )
@@ -105,6 +108,7 @@ emptyInitData time =
                         baseEleResistance.fireResistance
                         baseEleResistance.airResistance
                         baseEleResistance.earthResistance
+                , buff = []
                 , skills = []
                 }
             )
@@ -124,5 +128,6 @@ defaultEnemy =
     , energy = 0
     , attributes = baseAttributes
     , extendValues = defaultExtendValues
+    , buff = []
     , skills = []
     }

@@ -16,14 +16,29 @@ module Scenes.Game.Components.Special.Library exposing (..)
 import Scenes.Game.Components.Special.Init exposing (..)
 
 
+getNewBuff : List ( Buff, Int ) -> List ( Buff, Int )
+getNewBuff buff = 
+    List.filter 
+        (\(_, l) ->
+            l /= 0
+        ) <|
+            List.map
+                (\(b, l) ->
+                    (b, l - 1)
+                )
+                buff
+
+
 scatterShot : Skill
 scatterShot =
     { kind = SpecialSkill
     , name = "Scatter Shot"
     , effect = { defaultEffect | hp = 30 }
+    , buff = []
     , range = AllFront
     , element = None
     , cost = 100
+    , lasting = 0
     }
 
 
@@ -32,9 +47,11 @@ airBlade =
     { kind = SpecialSkill
     , name = "Air Blade"
     , effect = { defaultEffect | hp = 80 }
+    , buff = []
     , range = One
     , element = None
     , cost = 100
+    , lasting = 0
     }
 
 
@@ -43,9 +60,11 @@ compounding =
     { kind = SpecialSkill
     , name = "Compounding"
     , effect = defaultEffect
+    , buff = []
     , range = Oneself
     , element = None
     , cost = 100
+    , lasting = 0
     }
 
 
@@ -54,9 +73,11 @@ arcaneBeam =
     { kind = Magic
     , name = "Arcane Beam"
     , effect = { defaultEffect | hp = 40 }
+    , buff = []
     , range = One
     , element = None
     , cost = 4
+    , lasting = 0
     }
 
 
@@ -65,9 +86,11 @@ fireBall =
     { kind = Magic
     , name = "Fire Ball"
     , effect = { defaultEffect | hp = 40 }
+    , buff = []
     , range = Region
     , element = Fire
     , cost = 12
+    , lasting = 0
     }
 
 
@@ -76,9 +99,11 @@ restorationPotion =
     { kind = Item
     , name = "Restoration Potion"
     , effect = { defaultEffect | hp = -40 }
+    , buff = []
     , range = Ally
     , element = None
     , cost = 0
+    , lasting = 0
     }
 
 
@@ -87,9 +112,11 @@ magicWater =
     { kind = Item
     , name = "Magic Water"
     , effect = { defaultEffect | mp = -20 }
+    , buff = []
     , range = Ally
     , element = None
     , cost = 0
+    , lasting = 0
     }
 
 
@@ -98,7 +125,9 @@ poison =
     { kind = Item
     , name = "Poison"
     , effect = { defaultEffect | hp = -40 }
+    , buff = []
     , range = Ally
     , element = None
     , cost = 0
+    , lasting = 0
     }

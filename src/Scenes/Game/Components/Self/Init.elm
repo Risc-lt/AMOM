@@ -16,6 +16,7 @@ import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Special.Init exposing (Skill)
 import Scenes.Game.Components.Special.Library exposing (..)
 import Time exposing (ZoneName(..))
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 {-| Character state
@@ -38,6 +39,7 @@ type alias Self =
     , attributes : Attribute
     , extendValues : ExtendValue
     , skills : List Skill
+    , buff : List ( Buff, Int )
     , state : State
     }
 
@@ -90,6 +92,7 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
       , skills =
             [ airBlade
             , arcaneBeam
@@ -112,6 +115,7 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
       , skills =
             [ scatterShot
             , arcaneBeam
@@ -127,6 +131,7 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , buff = []
       , skills = []
       , state = Waiting
       }
@@ -146,6 +151,7 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
       , skills =
             [ arcaneBeam
             , fireBall
@@ -168,6 +174,7 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
       , skills =
             [ compounding
             , arcaneBeam
@@ -185,6 +192,7 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , buff = []
       , skills = []
       , state = Waiting
       }
@@ -204,6 +212,7 @@ defaultSelf =
     , energy = 0
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
+    , buff = []
     , skills = []
     , state = Waiting
     }

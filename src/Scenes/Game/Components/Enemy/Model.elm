@@ -22,6 +22,7 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
 import Scenes.Game.Components.Self.Init exposing (State(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Scenes.Game.Components.Self.Init exposing (defaultSelf)
 
 
 type alias Data =
@@ -82,6 +83,14 @@ updaterec env msg data basedata =
 
         Action (PlayerSkill self skill position) ->
             handleSkill self skill position env msg data basedata
+
+        Action (EnemySkill enemy skill position) ->
+            handleSkill 
+                { defaultSelf
+                | attributes = enemy.attributes
+                , extendValues = enemy.extendValues
+                }
+                skill position env msg data basedata
 
         AttackSuccess position ->
             let

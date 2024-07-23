@@ -12,6 +12,7 @@ import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
+import Scenes.Game.Components.Special.Library exposing (getNewBuff)
 
 
 type alias Data =
@@ -118,11 +119,18 @@ attackRec enemy env allSelf position basedata =
         ( newSelf, isAvoid ) =
             getHurt enemy env targetSelf
 
+        newBuff =
+            if basedata.state == EnemyAttack then
+                getNewBuff newSelf.buff
+
+            else
+                newSelf.buff
+
         newData =
             List.map
                 (\x ->
                     if x.position == position then
-                        newSelf
+                        { newSelf | buff = newBuff }
 
                     else
                         x
@@ -196,7 +204,7 @@ handleAttack enemy position env msg data basedata =
             else
                 [ Other ( "Enemy", CharDie remainNum ) ]
     in
-    ( ( newData, { basedata | selfNum = remainNum, curSelf = position, curEnemy = enemy.position } )
+    ( ( newData, { basedata | state = EnemyTurn, selfNum = remainNum, curSelf = position, curEnemy = enemy.position } )
     , counterMsg ++ avoidMsg ++ dieMsg
     , env
     )
@@ -249,8 +257,21 @@ getEffect enemy skill env target basedata =
 
         mpChange =
             skill.effect.mp
+
+        newBuff =
+            case List.head skill.buff of
+                Nothing ->
+                    []
+
+                Just buff ->
+                    [ ( buff, skill.lasting ) ]
     in
-    checkStatus { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
+    checkStatus 
+        { target 
+        | hp = target.hp - hpChange
+        , mp = target.mp - mpChange 
+        , buff = newBuff ++ target.buff
+        }
 
 
 skillRec : Enemy -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data

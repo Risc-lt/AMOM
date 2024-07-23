@@ -13,6 +13,7 @@ import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialTy
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 import Scenes.Game.Components.Special.Library exposing (getNewBuff)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -117,7 +118,7 @@ handleMove env evnt data basedata =
                 { basedata | state = PlayerTurn }
 
             else if basedata.state == Counter && newX <= returnX then
-                { basedata | state = PlayerAttack }
+                { basedata | state = PlayerAttack False }
 
             else if basedata.state == EnemyAttack && newX >= 670 then
                 { basedata | state = EnemyReturn }
@@ -369,7 +370,13 @@ updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarg
 updateOne env evnt data basedata =
     case evnt of
         Tick _ ->
-            handleTurn env evnt data basedata
+            if List.any (\( b, _ ) -> b == NoAction) data.buff then
+                ( ( { data | buff = getNewBuff data.buff }, { basedata | state = PlayerTurn } )
+                , [ Other ( "Interface", SwitchTurn 1 ) ]
+                , ( env, False ) )
+
+            else
+                handleTurn env evnt data basedata
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

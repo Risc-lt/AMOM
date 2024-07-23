@@ -13,6 +13,7 @@ import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Ski
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
 import Scenes.Game.Components.Special.Library exposing (getNewBuff)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -85,8 +86,40 @@ getSpecificNormalAttack self enemy isCritical =
 
             else
                 1
+
+        attackUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            AttackUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+
+        defenceUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            DefenceUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
     in
-    floor (20 * toFloat self.attributes.strength / toFloat enemy.attributes.constitution * criticalHitRate)
+    floor <|
+        (20 
+        * toFloat self.attributes.strength 
+        / toFloat enemy.attributes.constitution 
+        * criticalHitRate
+        * toFloat (100 + attackUp - defenceUp)
+        )
 
 
 getHurt : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self -> ( Self, Bool )
@@ -95,11 +128,25 @@ getHurt enemy env self =
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
+        hitRateUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            HitRateUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+
         isAvoid =
             not <|
                 checkRate time <|
                     enemy.extendValues.ratioValues.normalHitRate
                         - self.extendValues.ratioValues.avoidRate
+                        + hitRateUp
     in
     if isAvoid then
         ( self, True )
@@ -153,9 +200,22 @@ attackRec enemy env allSelf position basedata =
             else
                 True
 
+        criticalUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            CriticalRateUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+
         isCounter =
             if newSelf.hp /= 0 && basedata.state /= EnemyAttack && effective then
-                checkRate time newSelf.extendValues.ratioValues.counterRate
+                checkRate time (newSelf.extendValues.ratioValues.counterRate + criticalUp)
 
             else
                 False

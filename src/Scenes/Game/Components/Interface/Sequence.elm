@@ -10,6 +10,7 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Charactor =
@@ -29,17 +30,51 @@ defaultChatactor =
 
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+    in
     { name = self.name
     , position = self.position
-    , ap = self.extendValues.actionPoints
+    , ap = self.extendValues.actionPoints + apUp
     }
 
 
 convertEnemyToCharactor : Enemy -> Charactor
 convertEnemyToCharactor enemy =
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+    in
     { name = enemy.name
     , position = enemy.position
-    , ap = enemy.extendValues.actionPoints
+    , ap = enemy.extendValues.actionPoints + apUp
     }
 
 

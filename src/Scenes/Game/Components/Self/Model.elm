@@ -156,7 +156,7 @@ updaterec env msg data basedata =
             handleAttack enemy position env msg data basedata
 
         Action StartCounter ->
-            ( ( data, { basedata | state = PlayerAttack } ), [], env )
+            ( ( data, { basedata | state = PlayerAttack True } ), [], env )
 
         Action (EnemySkill enemy skill position) ->
             handleSkill enemy skill position env msg data basedata
@@ -194,7 +194,11 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
-            ( ( data, { basedata | state = state } ), [], env )
+            if state == Counter && basedata.state == PlayerReturn True then
+                ( ( data, basedata ), [], env )
+
+            else
+                ( ( data, { basedata | state = state } ), [], env )
 
         CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )

@@ -87,8 +87,40 @@ getSpecificNormalAttack enemy self isCritical =
 
             else
                 1
+
+        attackUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            AttackUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+
+        defenceUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            DefenceUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
     in
-    floor (20 * toFloat enemy.attributes.strength / toFloat self.attributes.constitution * criticalHitRate)
+    floor <|
+        (20 
+        * toFloat enemy.attributes.strength 
+        / toFloat self.attributes.constitution 
+        * criticalHitRate
+        * toFloat (100 + attackUp - defenceUp)
+        )
 
 
 getHurt : Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> ( Enemy, Bool )
@@ -97,11 +129,25 @@ getHurt self env enemy =
         time =
             Time.posixToMillis env.globalData.currentTimeStamp
 
+        hitRateUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            HitRateUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+
         isAvoid =
             not <|
                 checkRate time <|
                     self.extendValues.ratioValues.normalHitRate
                         - enemy.extendValues.ratioValues.avoidRate
+                        + hitRateUp
     in
     if isAvoid then
         ( enemy, True )
@@ -155,9 +201,22 @@ attackRec self env allEnemy position basedata =
             else
                 True
 
+        criticalUp =
+            List.sum <|
+                List.map
+                    (\(b, _) ->
+                        case b of
+                            CriticalRateUp value ->
+                                value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+
         isCounter =
-            if newEnemy.hp /= 0 && basedata.state /= PlayerAttack && self.name /= "Bruce" && effective then
-                checkRate time newEnemy.extendValues.ratioValues.counterRate
+            if newEnemy.hp /= 0 && basedata.state /= PlayerAttack False && self.name /= "Bruce" && effective then
+                checkRate time (newEnemy.extendValues.ratioValues.counterRate + criticalUp)
 
             else
                 False

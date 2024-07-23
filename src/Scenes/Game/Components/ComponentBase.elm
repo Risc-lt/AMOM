@@ -82,13 +82,13 @@ type alias ComponentTarget =
 type Gamestate
     = GameBegin
     | PlayerTurn
-    | PlayerAttack
+    | PlayerAttack Bool
     | ChooseSpeSkill
     | ChooseMagic
     | ChooseItem
     | Compounding
     | TargetSelection ActionType
-    | PlayerReturn
+    | PlayerReturn Bool
     | EnemyTurn
     | EnemyAttack
     | EnemyReturn

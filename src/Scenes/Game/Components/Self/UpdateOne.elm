@@ -11,6 +11,7 @@ import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
 import Scenes.Game.Components.Special.Library exposing (..)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -263,7 +264,7 @@ handleTargetSelection x y env evnt data basedata =
 
                 _ ->
                     if List.member position basedata.enemyNum && effective then
-                        PlayerAttack
+                        PlayerAttack <| List.any (\(b, _) -> b == ExtraAttack) data.buff
 
                     else
                         basedata.state
@@ -350,6 +351,9 @@ handleMouseDown x y env evnt data basedata =
                     if x > 320 && x < 540 && y > 680 && y < 1080 then
                         TargetSelection Attack
 
+                    else if x > 540 && x < 760 && y > 680 && y < 1080 then
+                        EnemyTurn
+
                     else if x > 760 && x < 980 && y > 680 && y < 1080 then
                         ChooseSpeSkill
 
@@ -361,9 +365,23 @@ handleMouseDown x y env evnt data basedata =
 
                     else
                         basedata.state
+
+                newBuff =
+                    if action == EnemyTurn then
+                        ( DefenceUp 50, 1 ) :: getNewBuff data.buff
+
+                    else
+                        data.buff
+
+                msg =
+                    if action == EnemyTurn then
+                        [ Other ( "Interface", SwitchTurn 0 ) ]
+
+                    else
+                        [ Other ( "Interface", ChangeStatus (ChangeState action) ) ]
             in
-            ( ( data, { basedata | state = action } )
-            , [ Other ( "Interface", ChangeStatus (ChangeState action) ) ]
+            ( ( { data | buff = newBuff }, { basedata | state = action } )
+            , msg
             , ( env, False )
             )
 
@@ -439,14 +457,22 @@ handleMove list env evnt data basedata =
             data.name == "Bruce"
 
         newX =
-            if basedata.state == PlayerAttack && not longRange then
+            if 
+                basedata.state == PlayerAttack True 
+                    || basedata.state == PlayerAttack False
+                    && not longRange 
+                then
                 if data.x > 670 then
                     data.x - 5
 
                 else
                     670
 
-            else if basedata.state == PlayerReturn || basedata.state == Counter then
+            else if 
+                basedata.state == (PlayerReturn True) 
+                    || basedata.state == (PlayerReturn False)
+                    || basedata.state == Counter 
+                then
                 if data.x < returnX then
                     data.x + 5
 
@@ -457,21 +483,27 @@ handleMove list env evnt data basedata =
                 data.x
 
         newBuff =
-            if basedata.state == PlayerReturn && newX >= returnX then
+            if basedata.state == PlayerReturn False && newX >= returnX then
                 getNewBuff data.buff
 
             else
                 data.buff
 
         newBaseData =
-            if basedata.state == PlayerReturn && newX >= returnX then
+            if basedata.state == PlayerReturn False && newX >= returnX then
                 { basedata | state = EnemyTurn }
+
+            else if basedata.state == PlayerReturn True && newX >= returnX then
+                { basedata | state = PlayerAttack False }
 
             else if basedata.state == Counter && newX >= returnX then
                 { basedata | state = EnemyAttack }
 
-            else if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
-                { basedata | state = PlayerReturn }
+            else if basedata.state == PlayerAttack False && (newX <= 670 || longRange) then
+                { basedata | state = PlayerReturn False }
+
+            else if basedata.state == PlayerAttack True && (newX <= 670 || longRange) then
+                { basedata | state = PlayerReturn True }
 
             else
                 basedata
@@ -480,14 +512,16 @@ handleMove list env evnt data basedata =
             if basedata.state == Counter && newX >= returnX then
                 [ Other ( "Enemy", Action StartCounter ) ]
 
-            else if basedata.state == PlayerReturn && newX >= returnX then
+            else if basedata.state == PlayerReturn False && newX >= returnX then
                 [ Other ( "Interface", SwitchTurn 0 ) ]
 
             else
                 []
 
         attackMsg =
-            if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
+            if (basedata.state == PlayerAttack True || basedata.state == PlayerAttack False)
+                && (newX <= 670 || longRange) 
+                then
                 [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else

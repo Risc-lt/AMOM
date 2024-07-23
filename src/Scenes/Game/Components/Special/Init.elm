@@ -16,6 +16,7 @@ module Scenes.Game.Components.Special.Init exposing
 type SpecialType
     = Magic
     | SpecialSkill
+    | Item
 
 
 type alias Effect =

@@ -219,7 +219,11 @@ getEffect : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Enem
 getEffect self skill env target basedata =
     let
         hpChange =
-            getSpecificMagicalAttack target self skill
+            if skill.kind == Magic then
+                getSpecificMagicalAttack target self skill
+
+            else
+                skill.effect.hp
     in
     checkHealth { target | hp = target.hp - hpChange }
 
@@ -280,7 +284,7 @@ skillRec self skill env data position basedata =
             List.filter (\x -> List.member x.position newPosition) data
 
         newTargets =
-            if skill.range /= Ally || skill.kind == Magic then
+            if skill.range /= Ally && skill.kind == Magic then
                 List.indexedMap Tuple.pair targets
                     |> List.filter
                         (\( index, enemy ) ->

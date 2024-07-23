@@ -7,6 +7,9 @@ module Scenes.Game.Components.Special.Library exposing (..)
 @docs compounding
 @docs arcaneBeam
 @docs fireBall
+@docs restorationPotion
+@docs magicWater
+@docs poison
 
 -}
 
@@ -65,4 +68,34 @@ fireBall =
     , range = Region
     , element = Fire
     , cost = 12
+    }
+
+restorationPotion : Skill
+restorationPotion =
+    { kind = Item
+    , name = "Restoration Potion"
+    , effect = { defaultEffect | hp = -40 }
+    , range = Ally
+    , element = None
+    , cost = 0
+    }
+
+magicWater : Skill
+magicWater =
+    { kind = Item
+    , name = "Magic Water"
+    , effect = { defaultEffect | mp = -20 }
+    , range = Ally
+    , element = None
+    , cost = 0
+    }
+
+poison : Skill
+poison =
+    { kind = Item
+    , name = "Poison"
+    , effect = { defaultEffect | hp = -40 }
+    , range = Ally
+    , element = None
+    , cost = 0
     }

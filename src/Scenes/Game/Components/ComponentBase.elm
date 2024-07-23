@@ -68,7 +68,6 @@ type ComponentMsg
     | SwitchTurn Int
     | ChangeStatus StatusMsg
     | UpdateChangingPos (List Self)
-    | StartGame
     | GameOver
     | NewDialogueMsg CreateInitData
     | CloseDialogue

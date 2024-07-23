@@ -221,7 +221,7 @@ renderChooseSkill env self name state =
                 ( Item, "Item" )
 
             else
-                ( Item, "Compounding" )
+                ( Item, "Compound" )
 
         skills =
             let

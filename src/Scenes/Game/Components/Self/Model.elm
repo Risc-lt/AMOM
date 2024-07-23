@@ -108,9 +108,6 @@ update env evnt data basedata =
         posChanged =
             posExchange evnt data basedata
 
-        msgPos =
-            [ Other ( "Interface", UpdateChangingPos posChanged ) ]
-
         curChar =
             if basedata.state /= GameBegin then
                 if 0 < basedata.curSelf && basedata.curSelf <= 6 then
@@ -149,7 +146,7 @@ update env evnt data basedata =
         interfaceMsg =
             [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
     in
-    ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

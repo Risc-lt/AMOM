@@ -21,6 +21,8 @@ import Scenes.Game.Components.Self.Init as SelfMsg exposing (Self, defaultSelf)
 type alias InitData =
     { selfs : List Self
     , enemies : List Enemy
+    , queue : List Int
+    , curIndex : Int
     }
 
 
@@ -30,6 +32,8 @@ emptyInitData : List Self -> List Enemy -> InitData
 emptyInitData selfInit enemyInit =
     { selfs = selfInit
     , enemies = enemyInit
+    , queue = []
+    , curIndex = 0
     }
 
 
@@ -39,4 +43,6 @@ defaultUI : InitData
 defaultUI =
     { selfs = [ defaultSelf ]
     , enemies = [ defaultEnemy ]
+    , queue = []
+    , curIndex = 0
     }

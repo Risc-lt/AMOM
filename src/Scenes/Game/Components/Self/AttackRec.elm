@@ -18,13 +18,31 @@ type alias Data =
     List Self
 
 
-checkHealth : Self -> Self
-checkHealth self =
-    if self.hp < 0 then
-        { self | hp = 0 }
+checkStatus : Self -> Self
+checkStatus self =
+    let
+        lowHpCheck =
+            if self.hp < 0 then
+                { self | hp = 0 }
 
-    else
-        self
+            else
+                self
+
+        highHpCheck =
+            if self.hp > self.extendValues.basicStatus.maxHp then
+                { lowHpCheck | hp = self.extendValues.basicStatus.maxHp }
+
+            else
+                lowHpCheck
+
+        mpCheck =
+            if self.mp > self.extendValues.basicStatus.maxMp then
+                { highHpCheck | mp = self.extendValues.basicStatus.maxMp }
+
+            else
+                highHpCheck
+    in
+    mpCheck
 
 
 normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self
@@ -46,7 +64,7 @@ normalAttackDemage self enemy env =
             else
                 self.energy + 30
     in
-    checkHealth <|
+    checkStatus <|
         { self | hp = self.hp - damage, energy = newEnergy }
 
 
@@ -225,7 +243,7 @@ getEffect enemy skill env target basedata =
         mpChange =
             skill.effect.mp
     in
-    checkHealth { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
+    checkStatus { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
 
 
 skillRec : Enemy -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data

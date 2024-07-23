@@ -165,7 +165,7 @@ renderTargetSelection env data basedata name =
                             x.name
                             "Arial"
                             Color.black
-                            ( toFloat (1225 - (x.position - 1) // 3 * 390)
+                            ( toFloat (835 + (x.position - 1) // 3 * 390)
                             , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
                             )
                     )

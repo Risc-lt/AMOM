@@ -370,6 +370,45 @@ handleMouseDown x y env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
+handleBack : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleBack env evnt data basedata =
+    let
+        newState =
+            case basedata.state of
+                TargetSelection Attack ->
+                    PlayerTurn
+
+                TargetSelection (Skills skill) ->
+                    if skill.kind == Magic then
+                        ChooseMagic
+
+                    else if skill.kind == SpecialSkill then
+                        ChooseSpeSkill
+
+                    else
+                        ChooseItem
+
+                ChooseMagic ->
+                    PlayerTurn
+
+                ChooseSpeSkill ->
+                    PlayerTurn
+
+                ChooseItem ->
+                    PlayerTurn
+
+                Compounding ->
+                    ChooseSpeSkill
+
+                _ ->
+                    basedata.state
+    in
+    ( ( data, { basedata | state = newState } )
+    , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+    , ( env, False )
+    )
+
+
 handleMove : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleMove list env evnt data basedata =
     let
@@ -450,6 +489,9 @@ updateOne list env evnt data basedata =
         MouseUp key ( x, y ) ->
             if key == 0 then
                 handleMouseDown x y env evnt data basedata
+
+            else if key == 2 then
+                handleBack env evnt data basedata
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

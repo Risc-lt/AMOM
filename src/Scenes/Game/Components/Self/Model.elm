@@ -16,10 +16,9 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Self.GetBasicValue exposing (initSelf)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Self.Reaction exposing (findMin, getHurt, getNewData, getTargetChar, handleAttack)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
@@ -31,12 +30,8 @@ type alias Data =
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        SelfInit initData ->
-            let
-                data =
-                    List.map initSelf initData
-            in
-            ( data, initBaseData )
+        Init (SelfInit initData) ->
+            ( initData, initBaseData )
 
         _ ->
             ( [], initBaseData )
@@ -117,25 +112,29 @@ update env evnt data basedata =
 
         curChar =
             if basedata.state /= GameBegin then
-                if 0 < basedata.curChar && basedata.curChar <= 6 then
+                if 0 < basedata.curSelf && basedata.curSelf <= 6 then
                     Maybe.withDefault { defaultSelf | position = 0 } <|
                         List.head <|
-                            List.filter (\x -> x.position == basedata.curChar && x.hp /= 0) posChanged
+                            List.filter (\x -> x.position == basedata.curSelf) posChanged
 
                 else
-                    { defaultSelf | position = -1 }
+                    { defaultSelf | position = 0 }
 
             else
                 defaultSelf
 
         ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            updateOne posChanged env evnt curChar basedata
+            if curChar.position /= 0 then
+                updateOne posChanged env evnt curChar basedata
+
+            else
+                ( ( curChar, basedata ), [], ( env, False ) )
 
         newData =
             if basedata.state /= GameBegin then
                 List.map
                     (\x ->
-                        if x.position == basedata.curChar && x.hp /= 0 then
+                        if x.position == basedata.curSelf && x.hp /= 0 then
                             newChar
 
                         else
@@ -147,9 +146,7 @@ update env evnt data basedata =
                 posChanged
 
         interfaceMsg =
-            [ Other ( "Interface", ChangeSelfs newData )
-            , Other ( "Interface", ChangeBase newBasedata )
-            ]
+            [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
     in
     ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
@@ -157,17 +154,42 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        AttackPlayer attackType enemy num ->
-            handleAttack attackType enemy num env msg data basedata
+        Action (EnemyNormal enemy position) ->
+            handleAttack enemy position env msg data basedata
 
-        EnemyDie length ->
+        Action StartCounter ->
+            ( ( data, { basedata | state = PlayerAttack } ), [], env )
+
+        AttackSuccess position ->
+            let
+                newData =
+                    List.map
+                        (\x ->
+                            if x.position == position then
+                                if x.energy + 20 > 300 then
+                                    { x | energy = 300 }
+
+                                else
+                                    { x | energy = x.energy + 20 }
+
+                            else
+                                x
+                        )
+                        data
+            in
+            ( ( newData, basedata ), [], env )
+
+        ChangeStatus (ChangeState state) ->
+            ( ( data, { basedata | state = state } ), [], env )
+
+        CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = PlayerTurn, curChar = pos } ), [], env )
+            ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
 
         Defeated ->
-            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeSelfs data ) ], env )
+            ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -176,7 +198,7 @@ updaterec env msg data basedata =
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
     if char.hp /= 0 then
-        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.career
+        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.name
 
     else
         empty

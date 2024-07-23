@@ -5,9 +5,8 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (AttackType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Self.Reaction exposing (findMin)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -34,7 +33,10 @@ handleMouseDown x y self env evnt data basedata =
     case basedata.state of
         PlayerTurn ->
             if x > 320 && x < 540 && y > 680 && y < 1080 then
-                ( ( data, { basedata | state = TargetSelection } ), [], ( env, False ) )
+                ( ( data, { basedata | state = TargetSelection } )
+                , [ Other ( "Interface", ChangeStatus (ChangeState TargetSelection) ) ]
+                , ( env, False )
+                )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -64,7 +66,7 @@ handleMouseDown x y self env evnt data basedata =
                         0
 
                 melee =
-                    self.career == "swordsman" || self.career == "pharmacist"
+                    self.name /= "Bruce"
 
                 front =
                     List.any (\p -> p <= 9) basedata.enemyNum
@@ -83,7 +85,10 @@ handleMouseDown x y self env evnt data basedata =
                     else
                         TargetSelection
             in
-            ( ( data, { basedata | curEnemy = position, state = newState } ), [], ( env, False ) )
+            ( ( data, { basedata | curEnemy = position, state = newState } )
+            , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+            , ( env, False )
+            )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -99,15 +104,18 @@ handleMove list env evnt data basedata =
             else
                 1220
 
+        longRange =
+            data.name == "Bruce"
+
         newX =
-            if basedata.state == PlayerAttack then
+            if basedata.state == PlayerAttack && not longRange then
                 if data.x > 670 then
                     data.x - 5
 
                 else
                     670
 
-            else if basedata.state == PlayerReturn then
+            else if basedata.state == PlayerReturn || basedata.state == Counter then
                 if data.x < returnX then
                     data.x + 5
 
@@ -117,24 +125,37 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        ( newBaseData, msg0 ) =
+        newBaseData =
             if basedata.state == PlayerReturn && newX >= returnX then
-                ( { basedata | state = EnemyMove }, [ Other ( "Interface", SwitchTurn 0 ) ] )
+                { basedata | state = EnemyMove }
 
-            else if basedata.state == PlayerAttack && newX <= 670 then
-                ( { basedata | state = PlayerReturn }, [] )
+            else if basedata.state == Counter && newX >= returnX then
+                { basedata | state = EnemyAttack }
+
+            else if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
+                { basedata | state = PlayerReturn }
 
             else
-                ( basedata, [] )
+                basedata
 
-        msg =
-            if basedata.state == PlayerAttack && newX <= 670 then
-                [ Other ( "Enemy", AttackEnemy NormalAttack data basedata.curEnemy ) ]
+        turnMsg =
+            if basedata.state == Counter && newX >= returnX then
+                [ Other ( "Enemy", Action StartCounter ) ]
+
+            else if basedata.state == PlayerReturn && newX >= returnX then
+                [ Other ( "Interface", SwitchTurn 0 ) ]
+
+            else
+                []
+
+        attackMsg =
+            if basedata.state == PlayerAttack && (newX <= 670 || longRange) then
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else
                 []
     in
-    ( ( { data | x = newX }, newBaseData ), msg ++ msg0, ( env, False ) )
+    ( ( { data | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

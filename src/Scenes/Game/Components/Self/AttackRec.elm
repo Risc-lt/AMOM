@@ -9,12 +9,9 @@ import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, C
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Scenes.Game.Components.Special.Init exposing (Skill)
-import Scenes.Game.Components.Special.Init exposing (Element(..))
-import Scenes.Game.Components.Special.Init exposing (Range(..))
-import Scenes.Game.Components.Special.Init exposing (SpecialType(..))
 
 
 type alias Data =
@@ -179,6 +176,7 @@ handleAttack enemy position env msg data basedata =
     , env
     )
 
+
 getSpecificMagicalAttack : Self -> Enemy -> Skill -> Int
 getSpecificMagicalAttack self enemy skill =
     let
@@ -223,8 +221,11 @@ getEffect enemy skill env target basedata =
 
             else
                 skill.effect.hp
+
+        mpChange =
+            skill.effect.mp
     in
-    checkHealth { target | hp = target.hp - hpChange }
+    checkHealth { target | hp = target.hp - hpChange, mp = target.mp - mpChange }
 
 
 skillRec : Enemy -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data

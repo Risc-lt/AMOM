@@ -70,6 +70,7 @@ fireBall =
     , cost = 12
     }
 
+
 restorationPotion : Skill
 restorationPotion =
     { kind = Item
@@ -80,6 +81,7 @@ restorationPotion =
     , cost = 0
     }
 
+
 magicWater : Skill
 magicWater =
     { kind = Item
@@ -89,6 +91,7 @@ magicWater =
     , element = None
     , cost = 0
     }
+
 
 poison : Skill
 poison =

@@ -8,7 +8,8 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Special.Init exposing (Range(..), SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Special.Library exposing (..)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -32,8 +33,15 @@ checkStorage data =
 
             else
                 mpCheck
+
+        itemCheck =
+            List.filter
+                (\x ->
+                    x.cost /= 0 || x.kind /= Item
+                )
+                energyCheck.skills
     in
-    energyCheck
+    { energyCheck | skills = itemCheck }
 
 
 handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -48,6 +56,128 @@ handleKeyDown key list env evnt data basedata =
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
+
+
+handleCompounding : Skill -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleCompounding skill env evnt data basedata =
+    let
+        newItem =
+            List.map
+                (\s ->
+                    if s.name == skill.name then
+                        { s | cost = s.cost + 1 }
+
+                    else
+                        s
+                )
+                data.skills
+    in
+    ( ( checkStorage <| { data | skills = newItem }, { basedata | state = EnemyTurn } )
+    , [ Other ( "Interface", SwitchTurn 0 ) ]
+    , ( env, False )
+    )
+
+
+handleChooseSkill : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleChooseSkill x y env evnt data basedata =
+    let
+        ( kind, storage ) =
+            if basedata.state == ChooseSpeSkill then
+                ( SpecialSkill, data.energy )
+
+            else if basedata.state == ChooseMagic then
+                ( Magic, data.mp )
+
+            else
+                ( Item, 100 )
+
+        skills =
+            let
+                targets =
+                    List.sortBy .cost <|
+                        List.filter (\s -> s.kind == kind) <|
+                            data.skills
+
+                addPoison =
+                    if List.any (\i -> i.name == "Poison") targets then
+                        targets
+
+                    else
+                        targets ++ [ poison ]
+
+                addMagicWater =
+                    if List.any (\i -> i.name == "Magic Water") targets then
+                        addPoison
+
+                    else
+                        addPoison ++ [ magicWater ]
+            in
+            if basedata.state == Compounding then
+                addMagicWater
+
+            else
+                targets
+
+        index =
+            if x > 640 && x < 1420 && y > 728 && y < 768 then
+                1
+
+            else if x > 640 && x < 1420 && y > 816 && y < 856 then
+                2
+
+            else if x > 640 && x < 1420 && y > 904 && y < 944 then
+                3
+
+            else if x > 640 && x < 1420 && y > 992 && y < 1032 then
+                4
+
+            else
+                0
+
+        skill =
+            if index /= 0 then
+                Maybe.withDefault defaultSkill <|
+                    List.head <|
+                        List.drop (index - 1) skills
+
+            else
+                defaultSkill
+
+        newData =
+            if skill.kind == SpecialSkill then
+                checkStorage <| { data | energy = data.energy - skill.cost }
+
+            else
+                checkStorage <| { data | mp = data.mp - skill.cost }
+    in
+    if basedata.state /= Compounding then
+        if skill.cost <= storage && skill.name /= "" then
+            case skill.range of
+                Oneself ->
+                    ( ( newData, { basedata | state = Compounding } )
+                    , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
+                    , ( env, False )
+                    )
+
+                AllFront ->
+                    ( ( newData, { basedata | state = EnemyTurn } )
+                    , [ Other ( "Enemy", Action (PlayerSkill data skill 0) )
+                      , Other ( "Interface", SwitchTurn 0 )
+                      ]
+                    , ( env, False )
+                    )
+
+                _ ->
+                    ( ( data, { basedata | state = TargetSelection (Skills skill) } )
+                    , [ Other ( "Interface", ChangeStatus (ChangeState (TargetSelection (Skills skill))) ) ]
+                    , ( env, False )
+                    )
+
+        else
+            ( ( data, basedata ), [], ( env, False ) )
+
+    else
+        handleCompounding skill env evnt data basedata
 
 
 handleTargetSelection : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -150,6 +280,26 @@ handleTargetSelection x y env evnt data basedata =
             else
                 []
 
+        newItem =
+            case basedata.state of
+                TargetSelection (Skills skill) ->
+                    if skill.kind == Item then
+                        List.map
+                            (\s ->
+                                if s.name == skill.name then
+                                    { s | cost = s.cost - 1 }
+
+                                else
+                                    s
+                            )
+                            data.skills
+
+                    else
+                        data.skills
+
+                _ ->
+                    data.skills
+
         newData =
             if basedata.state /= newState then
                 case basedata.state of
@@ -157,8 +307,11 @@ handleTargetSelection x y env evnt data basedata =
                         if skill.kind == SpecialSkill then
                             checkStorage <| { data | energy = data.energy - skill.cost }
 
-                        else
+                        else if skill.kind == Magic then
                             checkStorage <| { data | mp = data.mp - skill.cost }
+
+                        else
+                            checkStorage <| { data | skills = newItem }
 
                     _ ->
                         data
@@ -170,79 +323,6 @@ handleTargetSelection x y env evnt data basedata =
     , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
     , ( env, False )
     )
-
-
-handleChooseSkill : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleChooseSkill x y env evnt data basedata =
-    let
-        ( kind, storage ) =
-            if basedata.state == ChooseSpeSkill then
-                ( SpecialSkill, data.energy )
-
-            else
-                ( Magic, data.mp )
-
-        skills =
-            List.sortBy .cost <|
-                List.filter (\s -> s.kind == kind) <|
-                    data.skills
-
-        index =
-            if x > 640 && x < 1420 && y > 728 && y < 768 then
-                1
-
-            else if x > 640 && x < 1420 && y > 816 && y < 856 then
-                2
-
-            else if x > 640 && x < 1420 && y > 904 && y < 944 then
-                3
-
-            else if x > 640 && x < 1420 && y > 992 && y < 1032 then
-                4
-
-            else
-                0
-
-        skill =
-            if index /= 0 then
-                Maybe.withDefault defaultSkill <|
-                    List.head <|
-                        List.drop (index - 1) skills
-
-            else
-                defaultSkill
-
-        newData =
-            if skill.kind == SpecialSkill then
-                checkStorage <| { data | energy = data.energy - skill.cost }
-
-            else
-                checkStorage <| { data | mp = data.mp - skill.cost }
-    in
-    if skill.cost <= storage && skill.name /= "" then
-        case skill.range of
-            Oneself ->
-                ( ( newData, { basedata | state = EnemyTurn } )
-                , [ Other ( "Self", Action (PlayerSkill data skill 0) ) 
-                  , Other ( "Interface", SwitchTurn 0 ) ]
-                , ( env, False )
-                )
-
-            AllFront ->
-                ( ( newData, { basedata | state = EnemyTurn } )
-                , [ Other ( "Enemy", Action (PlayerSkill data skill 0) )
-                  , Other ( "Interface", SwitchTurn 0 ) ]
-                , ( env, False )
-                )
-
-            _ ->
-                ( ( data, { basedata | state = TargetSelection (Skills skill) } )
-                , [ Other ( "Interface", ChangeStatus (ChangeState (TargetSelection (Skills skill))) ) ]
-                , ( env, False )
-                )
-
-    else
-        ( ( data, basedata ), [], ( env, False ) )
 
 
 handleMouseDown : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -260,6 +340,9 @@ handleMouseDown x y env evnt data basedata =
                     else if x > 980 && x < 1200 && y > 680 && y < 1080 then
                         ChooseMagic
 
+                    else if x > 1200 && x < 1420 && y > 680 && y < 1080 then
+                        ChooseItem
+
                     else
                         basedata.state
             in
@@ -275,6 +358,12 @@ handleMouseDown x y env evnt data basedata =
             handleChooseSkill x y env evnt data basedata
 
         ChooseSpeSkill ->
+            handleChooseSkill x y env evnt data basedata
+
+        ChooseItem ->
+            handleChooseSkill x y env evnt data basedata
+
+        Compounding ->
             handleChooseSkill x y env evnt data basedata
 
         _ ->

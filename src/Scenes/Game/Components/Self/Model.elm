@@ -17,7 +17,8 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack)
+import Scenes.Game.Components.Enemy.Init exposing (defaultEnemy)
+import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack, handleSkill)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -159,6 +160,22 @@ updaterec env msg data basedata =
 
         Action StartCounter ->
             ( ( data, { basedata | state = PlayerAttack } ), [], env )
+
+        Action (EnemySkill enemy skill position) ->
+            handleSkill enemy skill position env msg data basedata
+
+        Action (PlayerSkill self skill position) ->
+            handleSkill
+                { defaultEnemy
+                    | attributes = self.attributes
+                    , extendValues = self.extendValues
+                }
+                skill
+                position
+                env
+                msg
+                data
+                basedata
 
         AttackSuccess position ->
             let

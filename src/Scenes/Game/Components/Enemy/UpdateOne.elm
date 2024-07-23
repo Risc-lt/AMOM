@@ -201,8 +201,9 @@ chooseSpecial env evnt data basedata =
         case skill.range of
             AllEnemy ->
                 ( ( newData, { basedata | state = PlayerTurn } )
-                , [ Other ( "Self", Action (EnemySkill data skill 0) ) 
-                  , Other ( "Interface", SwitchTurn 0 ) ]
+                , [ Other ( "Self", Action (EnemySkill data skill 0) )
+                  , Other ( "Interface", SwitchTurn 0 )
+                  ]
                 , ( env, False )
                 )
 

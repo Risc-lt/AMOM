@@ -86,6 +86,8 @@ type Gamestate
     | PlayerAttack
     | ChooseSpeSkill
     | ChooseMagic
+    | ChooseItem
+    | Compounding
     | TargetSelection ActionType
     | PlayerReturn
     | EnemyTurn

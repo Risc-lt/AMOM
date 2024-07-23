@@ -17,6 +17,7 @@ import Scenes.Game.Components.ComponentBase exposing (ActionType(..), BaseData, 
 import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..))
+import Scenes.Game.Components.Special.Library exposing (magicWater, poison)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -213,14 +214,42 @@ renderChooseSkill env self name state =
             if state == ChooseSpeSkill then
                 ( SpecialSkill, "Spe Skill" )
 
-            else
+            else if state == ChooseMagic then
                 ( Magic, "Magic" )
 
+            else if state == ChooseItem then
+                ( Item, "Item" )
+
+            else
+                ( Item, "Compounding" )
+
         skills =
-            List.indexedMap Tuple.pair <|
-                List.sortBy .cost <|
-                    List.filter (\s -> s.kind == kind) <|
-                        self.skills
+            let
+                targets =
+                    List.indexedMap Tuple.pair <|
+                        List.sortBy .cost <|
+                            List.filter (\s -> s.kind == kind) <|
+                                self.skills
+
+                addPoison =
+                    if List.any (\i -> (Tuple.second i).name == "Poison") targets then
+                        targets
+
+                    else
+                        targets ++ [ ( List.length targets, poison ) ]
+
+                addMagicWater =
+                    if List.any (\i -> (Tuple.second i).name == "Magic Water") targets then
+                        addPoison
+
+                    else
+                        addPoison ++ [ ( List.length targets, magicWater ) ]
+            in
+            if state == Compounding then
+                addMagicWater
+
+            else
+                targets
     in
     Canvas.group []
         ([ renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 160, 820 )
@@ -295,6 +324,12 @@ renderAction env data basedata =
                     renderChooseSkill env self name basedata.state
 
                 ChooseMagic ->
+                    renderChooseSkill env self name basedata.state
+
+                ChooseItem ->
+                    renderChooseSkill env self name basedata.state
+
+                Compounding ->
                     renderChooseSkill env self name basedata.state
 
                 _ ->

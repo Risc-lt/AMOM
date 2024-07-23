@@ -171,6 +171,8 @@ emptyInitData time =
       , skills =
             [ compounding
             , arcaneBeam
+            , { poison | cost = 1 }
+            , { magicWater | cost = 1 }
             ]
       , state = Waiting
       }

@@ -1,5 +1,6 @@
 module Scenes.Game.Components.Enemy.AttackRec exposing (..)
 
+import Energy exposing (Energy)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -12,7 +13,6 @@ import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Energy exposing (Energy)
 
 
 type alias Data =

@@ -62,17 +62,21 @@ handleCompounding : Skill -> ComponentUpdate SceneCommonData Data UserData Scene
 handleCompounding skill env evnt data basedata =
     let
         newItem =
-            List.map
-                (\s ->
-                    if s.name == skill.name then
-                        { s | cost = s.cost + 1 }
+            if List.any (\s -> s.name == skill.name) data.skills then
+                List.map
+                    (\s ->
+                        if s.name == skill.name then
+                            { s | cost = s.cost + 1 }
 
-                    else
-                        s
-                )
-                data.skills
+                        else
+                            s
+                    )
+                    data.skills
+
+            else
+                { skill | cost = 1 } :: data.skills
     in
-    ( ( checkStorage <| { data | skills = newItem }, { basedata | state = EnemyTurn } )
+    ( ( checkStorage <| { data | skills = newItem, energy = data.energy - 100 }, { basedata | state = EnemyTurn } )
     , [ Other ( "Interface", SwitchTurn 0 ) ]
     , ( env, False )
     )
@@ -154,7 +158,7 @@ handleChooseSkill x y env evnt data basedata =
         if skill.cost <= storage && skill.name /= "" then
             case skill.range of
                 Oneself ->
-                    ( ( newData, { basedata | state = Compounding } )
+                    ( ( data, { basedata | state = Compounding } )
                     , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
                     , ( env, False )
                     )

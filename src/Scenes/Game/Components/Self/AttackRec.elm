@@ -329,20 +329,17 @@ handleSkill enemy skill position env msg data basedata =
             skillRec enemy skill env data position basedata
 
         newData =
-            List.filter
-                (\x -> x.hp /= 0)
-            <|
-                List.map
-                    (\x ->
-                        Maybe.withDefault x <|
-                            List.head <|
-                                List.filter
-                                    (\e ->
-                                        x.position == e.position
-                                    )
-                                    newSelfs
-                    )
-                    data
+            List.map
+                (\x ->
+                    Maybe.withDefault x <|
+                        List.head <|
+                            List.filter
+                                (\e ->
+                                    x.position == e.position
+                                )
+                                newSelfs
+                )
+                data
 
         remainNum =
             List.map (\x -> x.position) <|

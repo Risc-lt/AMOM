@@ -243,7 +243,7 @@ renderChooseSkill env self name state =
                         addPoison
 
                     else
-                        addPoison ++ [ ( List.length targets, magicWater ) ]
+                        addPoison ++ [ ( List.length addPoison, magicWater ) ]
             in
             if state == Compounding then
                 addMagicWater

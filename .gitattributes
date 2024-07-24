@@ -46,3 +46,5 @@ assets/character/symbol_magic.png filter=lfs diff=lfs merge=lfs -text
 assets/character/symbol_sword.png filter=lfs diff=lfs merge=lfs -text
 assets/character/Start.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/background_1.jpg filter=lfs diff=lfs merge=lfs -text
+assets/character/wolf.png filter=lfs diff=lfs merge=lfs -text
+assets/character/Fight_frame_1.jpg filter=lfs diff=lfs merge=lfs -text

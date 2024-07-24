@@ -51,6 +51,8 @@ allTexture =
         , ( "head_magic", "assets/character/newhead.png" )
         , ( "dialogue_frame", "assets/character/dialogue_frame.png" )
         , ( "Start", "assets/character/Start.jpg" )
+        ,("Fight_frame","assets/character/Fight_frame_1.jpg")
+        ,("wolf","assets/character/wolf.png")
         ]
 
 

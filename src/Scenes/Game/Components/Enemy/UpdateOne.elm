@@ -378,7 +378,7 @@ updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarg
 updateOne env evnt data basedata =
     case evnt of
         Tick _ ->
-            if data.state == Rest then
+            if data.state == Rest && basedata.side == EnemySide then
                 ( ( data, { basedata | state = PlayerTurn } )
                 , [ Other ( "Interface", SwitchTurn 1 ) ]
                 , ( env, False )

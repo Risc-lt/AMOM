@@ -551,14 +551,14 @@ updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg 
 updateOne list env evnt data basedata =
     case evnt of
         Tick _ ->
-            if data.state /= Rest then
-                handleMove list env evnt data basedata
-
-            else
+            if data.state == Rest && basedata.side == PlayerSide then
                 ( ( data, { basedata | state = EnemyTurn } )
                 , [ Other ( "Interface", SwitchTurn 0 ) ]
                 , ( env, False )
                 )
+
+            else
+                handleMove list env evnt data basedata
 
         KeyDown key ->
             if basedata.state == GameBegin then

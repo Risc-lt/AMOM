@@ -74,6 +74,14 @@ updaterec env msg data basedata =
                         List.head <|
                             List.filter (\dia -> dia.id == id) data.remainDiaList
 
+                otherMsg =
+                    case nextDialogue.id of
+                        101 ->
+                            [ Other ( "Enemy", AddChar ) ]
+
+                        _ ->
+                            []
+
                 remainingDialogues =
                     List.filter (\dia -> dia.id /= id) data.remainDiaList
             in
@@ -86,6 +94,7 @@ updaterec env msg data basedata =
             , [ Other ( "Self", BeginDialogue id )
               , Other ( "Enemy", BeginDialogue id )
               ]
+                ++ otherMsg
             , env
             )
 

@@ -99,11 +99,13 @@ checkOneTrigger trigger data basedata =
     case trigger.side of
         "Enemy" ->
             if
-                trigger.frameNum
+                (trigger.frameNum
                     <= 0
                     && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
                     && trigger.gameState
                     == toString basedata.state
+                )
+                    || (trigger.id == 101 && List.length data.enemies < 6)
             then
                 trigger.id
 

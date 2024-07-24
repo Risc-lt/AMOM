@@ -40,4 +40,10 @@ emptyInitData =
       , gameState = "GameBegin"
       , id = 0
       }
+    , { side = "Enemy"
+      , frameNum = 0
+      , hpTrigger = 0
+      , gameState = "EnemyTurn"
+      , id = 101
+      }
     ]

@@ -33,5 +33,16 @@ emptyInitData =
         , textPos = ( 880, 800 )
         , id = 0
         }
-    , remainDiaList = []
+    , remainDiaList =
+        [ { frameName = "dialogue_frame"
+          , framePos = ( 0, 500 )
+          , speaker = "head_magic"
+          , speakerPos = ( -20, 680 )
+          , font = "Comic Sans MS"
+          , isSpeaking = False
+          , content = [ "Hello!", "Thank you!" ]
+          , textPos = ( 880, 800 )
+          , id = 101
+          }
+        ]
     }

@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, State(..), defaultEnemy, emptyInitData
+    , Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy
     )
 
 {-|
@@ -129,15 +129,57 @@ emptyInitData time =
 -}
 defaultEnemy : Enemy
 defaultEnemy =
-    { name = ""
-    , x = 100
-    , y = 100
+    { name = "Wild Wolf"
+    , x = 230
+    , y = toFloat (160 + 130 * (7 - 7))
     , position = 7
-    , hp = 0
-    , mp = 0
+    , hp = genHp baseAttributes
+    , mp = genMp baseAttributes
     , energy = 0
     , attributes = baseAttributes
-    , extendValues = defaultExtendValues
+    , extendValues =
+        genExtendValues
+            baseAttributes
+            5
+            baseEleResistance.waterResistance
+            baseEleResistance.fireResistance
+            baseEleResistance.airResistance
+            baseEleResistance.earthResistance
+    , buff = []
+    , skills = []
+    , state = Waiting
+    }
+
+
+{-| -}
+genDefaultEnemy : Int -> Enemy
+genDefaultEnemy id =
+    { name = "Wild Wolf"
+    , x =
+        if id >= 7 && id <= 9 then
+            230
+
+        else
+            100
+    , y =
+        if id >= 7 && id <= 9 then
+            toFloat (160 + 130 * (id - 7))
+
+        else
+            toFloat (160 + 130 * (id - 10))
+    , position = id
+    , hp = genHp baseAttributes
+    , mp = genMp baseAttributes
+    , energy = 0
+    , attributes = baseAttributes
+    , extendValues =
+        genExtendValues
+            baseAttributes
+            10
+            baseEleResistance.waterResistance
+            baseEleResistance.fireResistance
+            baseEleResistance.airResistance
+            baseEleResistance.earthResistance
     , buff = []
     , skills = []
     , state = Waiting

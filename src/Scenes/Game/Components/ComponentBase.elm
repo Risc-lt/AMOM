@@ -76,6 +76,7 @@ type ComponentMsg
     | CloseDialogue
     | CheckIsTriggered (List TriggerConditions)
     | Defeated
+    | AddChar
     | NullComponentMsg
 
 

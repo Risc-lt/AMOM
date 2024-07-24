@@ -18,7 +18,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy)
+import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
 import Scenes.Game.Components.Self.Init exposing (defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -157,21 +157,40 @@ updaterec env msg data basedata =
         CloseDialogue ->
             ( ( data, { basedata | isStopped = False } ), [], env )
 
+        AddChar ->
+            let
+                emptySlot =
+                    Maybe.withDefault -1 <|
+                        List.head <|
+                            List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
+
+                newEnemy =
+                    genDefaultEnemy emptySlot
+
+                newData =
+                    newEnemy :: data
+            in
+            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], env )
+
         _ ->
             ( ( data, basedata ), [], env )
 
 
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
-    Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) enemy.name
-        , Canvas.shapes
-            [ fill Color.red ]
-            [ rect env.globalData.internalData
-                ( enemy.x, enemy.y )
-                ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
+    if enemy.hp == 0 then
+        Canvas.empty
+
+    else
+        Canvas.group []
+            [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) enemy.name
+            , Canvas.shapes
+                [ fill Color.red ]
+                [ rect env.globalData.internalData
+                    ( enemy.x, enemy.y )
+                    ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
+                ]
             ]
-        ]
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

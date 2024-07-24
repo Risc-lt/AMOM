@@ -17,7 +17,8 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack)
+import Scenes.Game.Components.Enemy.Init exposing (defaultEnemy)
+import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack, handleSkill)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import Scenes.Game.Components.Self.UpdateOne exposing (updateOne)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -107,8 +108,19 @@ update env evnt data basedata =
         posChanged =
             posExchange evnt data basedata
 
-        msgPos =
-            [ Other ( "Interface", UpdateChangingPos posChanged ) ]
+        posMsg =
+            if basedata.state == GameBegin then
+                [ Other
+                    ( "Enemy"
+                    , CharDie <|
+                        List.map .position <|
+                            List.filter (\s -> s.hp /= 0) <|
+                                posChanged
+                    )
+                ]
+
+            else
+                []
 
         curChar =
             if basedata.state /= GameBegin then
@@ -148,7 +160,7 @@ update env evnt data basedata =
         interfaceMsg =
             [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
     in
-    ( ( newData, newBasedata ), msgPos ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -158,7 +170,23 @@ updaterec env msg data basedata =
             handleAttack enemy position env msg data basedata
 
         Action StartCounter ->
-            ( ( data, { basedata | state = PlayerAttack } ), [], env )
+            ( ( data, { basedata | state = PlayerAttack False } ), [], env )
+
+        Action (EnemySkill enemy skill position) ->
+            handleSkill enemy skill position env msg data basedata
+
+        Action (PlayerSkill self skill position) ->
+            handleSkill
+                { defaultEnemy
+                    | attributes = self.attributes
+                    , extendValues = self.extendValues
+                }
+                skill
+                position
+                env
+                msg
+                data
+                basedata
 
         AttackSuccess position ->
             let
@@ -180,13 +208,29 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
-            ( ( data, { basedata | state = state } ), [], env )
+            if state == Counter && basedata.state == PlayerReturn True then
+                ( ( data, basedata ), [], env )
+
+            else
+                ( ( data, { basedata | state = state } ), [], env )
 
         CharDie length ->
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
+            if List.any (\s -> s.position == pos && s.hp /= 0) data then
+                ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
+
+            else
+                ( ( data, basedata )
+                , [ Other ( "Interface", ChangeStatus (ChangeSelfs data) )
+                  , Other ( "Interface", SwitchTurn 0 )
+                  ]
+                , env
+                )
+
+        NewRound ->
+            ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )

@@ -13,6 +13,8 @@ module Scenes.Game.Components.Self.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Skill)
+import Scenes.Game.Components.Special.Library exposing (..)
 import Time exposing (ZoneName(..))
 
 
@@ -21,6 +23,7 @@ import Time exposing (ZoneName(..))
 type State
     = Working
     | Waiting
+    | Rest
 
 
 {-| Core data structure for the self
@@ -35,6 +38,8 @@ type alias Self =
     , energy : Int
     , attributes : Attribute
     , extendValues : ExtendValue
+    , skills : List Skill
+    , buff : List ( Buff, Int )
     , state : State
     }
 
@@ -87,6 +92,11 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
+      , skills =
+            [ airBlade
+            , arcaneBeam
+            ]
       , state = Waiting
       }
     , { name = "Bruce"
@@ -105,6 +115,11 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
+      , skills =
+            [ scatterShot
+            , arcaneBeam
+            ]
       , state = Waiting
       }
     , { name = ""
@@ -116,6 +131,8 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , buff = []
+      , skills = []
       , state = Waiting
       }
     , { name = "Bulingze"
@@ -134,6 +151,11 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
+      , skills =
+            [ arcaneBeam
+            , fireBall
+            ]
       , state = Waiting
       }
     , { name = "Bithif"
@@ -152,6 +174,13 @@ emptyInitData time =
                 baseEleResistance.fireResistance
                 baseEleResistance.airResistance
                 baseEleResistance.earthResistance
+      , buff = []
+      , skills =
+            [ compounding
+            , arcaneBeam
+            , { poison | cost = 1 }
+            , { magicWater | cost = 1 }
+            ]
       , state = Waiting
       }
     , { name = ""
@@ -163,6 +192,8 @@ emptyInitData time =
       , energy = 0
       , attributes = defaultAttributes
       , extendValues = defaultExtendValues
+      , buff = []
+      , skills = []
       , state = Waiting
       }
     ]
@@ -181,5 +212,7 @@ defaultSelf =
     , energy = 0
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
+    , buff = []
+    , skills = []
     , state = Waiting
     }

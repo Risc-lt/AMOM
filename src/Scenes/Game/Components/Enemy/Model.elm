@@ -17,10 +17,10 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack)
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
+import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
-import Scenes.Game.Components.Self.Init exposing (State(..))
+import Scenes.Game.Components.Self.Init exposing (defaultSelf)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -52,7 +52,7 @@ update env evnt data basedata =
 
         ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
             if curEnemy.position /= 0 then
-                updateOne data env evnt curEnemy basedata
+                updateOne env evnt curEnemy basedata
 
             else
                 ( ( curEnemy, basedata ), [], ( env, False ) )
@@ -78,7 +78,23 @@ updaterec env msg data basedata =
             handleAttack self position env msg data basedata
 
         Action StartCounter ->
-            ( ( data, { basedata | state = EnemyMove } ), [], env )
+            ( ( data, { basedata | state = EnemyAttack } ), [], env )
+
+        Action (PlayerSkill self skill position) ->
+            handleSkill self skill position env msg data basedata
+
+        Action (EnemySkill enemy skill position) ->
+            handleSkill
+                { defaultSelf
+                    | attributes = enemy.attributes
+                    , extendValues = enemy.extendValues
+                }
+                skill
+                position
+                env
+                msg
+                data
+                basedata
 
         AttackSuccess position ->
             let
@@ -106,11 +122,19 @@ updaterec env msg data basedata =
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            let
-                target =
-                    getTarget basedata env
-            in
-            ( ( data, { basedata | state = EnemyMove, curEnemy = pos, curSelf = target } ), [], env )
+            if List.any (\e -> e.position == pos && e.hp /= 0) data then
+                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos } ), [], env )
+
+            else
+                ( ( data, basedata )
+                , [ Other ( "Interface", ChangeStatus (ChangeEnemies data) )
+                  , Other ( "Interface", SwitchTurn 1 )
+                  ]
+                , env
+                )
+
+        NewRound ->
+            ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

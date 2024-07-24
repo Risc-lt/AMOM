@@ -118,5 +118,5 @@ initBaseData =
     , selfNum = [ 1, 2, 4, 5 ]
     , curSelf = 0
     , curEnemy = 0
-    , side = Undeclaced
+    , side = PlayerSide
     }

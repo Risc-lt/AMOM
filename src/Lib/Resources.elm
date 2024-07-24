@@ -41,11 +41,10 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-
-        [ ( "background ", "assets/character/background_1.jpg" )
+        [ ( "background", "assets/character/background_1.jpg" )
         , ( "Start", "assets/character/Start.jpg" )
-        ,("Fight_frame","assets/character/Fight_frame_1.jpg")
-        ,( "Wild Wolf", "assets/character/monster.png" )
+        , ( "Fight_frame", "assets/character/Fight_frame_1.jpg" )
+        , ( "Wild Wolf", "assets/character/wolf.png" )
         , ( "Bulingze", "assets/character/magic.png" )
         , ( "Bruce", "assets/character/archer.png" )
         , ( "Bithif", "assets/character/pharmacist.png" )

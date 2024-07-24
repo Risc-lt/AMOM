@@ -50,16 +50,25 @@ update env evnt data basedata =
             ( ( data, basedata ), [], ( env, False ) )
 
 
-updateBaseData : BaseData -> Data -> ( Data, BaseData )
+updateBaseData : BaseData -> Data -> ( Data, BaseData, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
 updateBaseData basedata data =
     let
-        ( nextOne, nextIndex ) =
+        ( nextOne, nextIndex, isNewRound ) =
             nextChar data basedata
 
         newside =
             checkSide nextOne
+
+        newMsg =
+            if isNewRound then
+                [ Other ( "Enemy", NewRound )
+                , Other ( "Self", NewRound )
+                ]
+
+            else
+                []
     in
-    ( { data | curIndex = nextIndex }, { basedata | side = newside, curSelf = nextOne } )
+    ( { data | curIndex = nextIndex }, { basedata | side = newside, curSelf = nextOne }, newMsg )
 
 
 sendMsg : Data -> BaseData -> ( Gamestate, List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData)) )
@@ -105,13 +114,13 @@ updaterec env msg data basedata =
 
         SwitchTurn _ ->
             let
-                ( newData, newBaseData ) =
+                ( newData, newBaseData, newRoundMsg ) =
                     updateBaseData basedata data
 
                 ( newState, newMsg ) =
                     sendMsg newData newBaseData
             in
-            ( ( newData, { newBaseData | state = newState } ), newMsg, env )
+            ( ( newData, { newBaseData | state = newState } ), newRoundMsg ++ newMsg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

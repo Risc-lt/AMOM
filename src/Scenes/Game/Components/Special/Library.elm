@@ -17,16 +17,17 @@ import Scenes.Game.Components.Special.Init exposing (..)
 
 
 getNewBuff : List ( Buff, Int ) -> List ( Buff, Int )
-getNewBuff buff = 
-    List.filter 
-        (\(_, l) ->
+getNewBuff buff =
+    List.filter
+        (\( _, l ) ->
             l /= 0
-        ) <|
-            List.map
-                (\(b, l) ->
-                    (b, l - 1)
-                )
-                buff
+        )
+    <|
+        List.map
+            (\( b, l ) ->
+                ( b, l - 1 )
+            )
+            buff
 
 
 scatterShot : Skill

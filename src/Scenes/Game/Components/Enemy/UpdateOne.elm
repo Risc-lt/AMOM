@@ -7,13 +7,12 @@ import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (MMsg)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
-import Scenes.Game.Components.Enemy.Init exposing (Enemy)
+import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
-import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Special.Library exposing (getNewBuff)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Scenes.Game.Components.Special.Library exposing (getNewBuff)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -70,7 +69,9 @@ getTarget basedata env skill =
     in
     Maybe.withDefault 100 <|
         List.head <|
-            List.drop (index - 1) basedata.selfNum
+            List.drop (index - 1) <|
+                List.sort <|
+                    basedata.selfNum
 
 
 attackPlayer : Data -> BaseData -> List (MMsg ComponentTarget ComponentMsg SceneMsg UserData)
@@ -106,12 +107,12 @@ handleMove env evnt data basedata =
             else
                 data.x
 
-        newBuff =
-            if basedata.state == EnemyReturn && newX >= returnX then
-                getNewBuff data.buff
+        newData =
+            if basedata.state == PlayerReturn False && newX >= returnX then
+                { data | buff = getNewBuff data.buff, state = Rest }
 
             else
-                data.buff
+                data
 
         newBaseData =
             if basedata.state == EnemyReturn && newX <= returnX then
@@ -139,7 +140,7 @@ handleMove env evnt data basedata =
             else
                 []
     in
-    ( ( { data | x = newX, buff = newBuff }, newBaseData ), msg, ( env, False ) )
+    ( ( { newData | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
 chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -226,7 +227,7 @@ chooseSpecial env evnt data basedata =
     if skill.cost <= storage && skill.name /= "" then
         case skill.range of
             AllEnemy ->
-                ( ( { newData | buff = getNewBuff newData.buff }, { basedata | state = PlayerTurn } )
+                ( ( { newData | buff = getNewBuff newData.buff, state = Rest }, { basedata | state = PlayerTurn } )
                 , [ Other ( "Self", Action (EnemySkill data skill 0) ) ]
                 , ( env, False )
                 )
@@ -306,24 +307,27 @@ handleSpecial skill env evnt data basedata =
         newData =
             if basedata.state /= newState then
                 if skill.kind == SpecialSkill then
-                    checkStorage <| 
-                        { data 
-                        | energy = data.energy - skill.cost 
-                        , buff = getNewBuff data.buff 
+                    checkStorage <|
+                        { data
+                            | energy = data.energy - skill.cost
+                            , buff = getNewBuff data.buff
+                            , state = Rest
                         }
 
                 else if skill.kind == Magic then
-                    checkStorage <| 
-                        { data 
-                        | mp = data.mp - skill.cost 
-                        , buff = getNewBuff data.buff 
+                    checkStorage <|
+                        { data
+                            | mp = data.mp - skill.cost
+                            , buff = getNewBuff data.buff
+                            , state = Rest
                         }
 
                 else
-                    checkStorage <| 
-                        { data 
-                        | skills = newItem 
-                        , buff = getNewBuff data.buff 
+                    checkStorage <|
+                        { data
+                            | skills = newItem
+                            , buff = getNewBuff data.buff
+                            , state = Rest
                         }
 
             else
@@ -370,10 +374,17 @@ updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarg
 updateOne env evnt data basedata =
     case evnt of
         Tick _ ->
-            if List.any (\( b, _ ) -> b == NoAction) data.buff then
-                ( ( { data | buff = getNewBuff data.buff }, { basedata | state = PlayerTurn } )
+            if data.state == Rest then
+                ( ( data, { basedata | state = PlayerTurn } )
                 , [ Other ( "Interface", SwitchTurn 1 ) ]
-                , ( env, False ) )
+                , ( env, False )
+                )
+
+            else if List.any (\( b, _ ) -> b == NoAction) data.buff then
+                ( ( { data | buff = getNewBuff data.buff, state = Rest }, { basedata | state = PlayerTurn } )
+                , [ Other ( "Interface", SwitchTurn 1 ) ]
+                , ( env, False )
+                )
 
             else
                 handleTurn env evnt data basedata

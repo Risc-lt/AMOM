@@ -9,11 +9,10 @@ import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, C
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenRandom exposing (..)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Special.Init exposing (Element(..), Range(..), Skill, SpecialType(..))
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Element(..), Range(..), Skill, SpecialType(..))
+import Scenes.Game.Components.Special.Library exposing (getNewBuff)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Time
-import Scenes.Game.Components.Special.Library exposing (getNewBuff)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -90,7 +89,7 @@ getSpecificNormalAttack self enemy isCritical =
         attackUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             AttackUp value ->
                                 value
@@ -103,7 +102,7 @@ getSpecificNormalAttack self enemy isCritical =
         defenceUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             DefenceUp value ->
                                 value
@@ -114,11 +113,12 @@ getSpecificNormalAttack self enemy isCritical =
                     self.buff
     in
     floor <|
-        (20 
-        * toFloat self.attributes.strength 
-        / toFloat enemy.attributes.constitution 
-        * criticalHitRate
-        * toFloat (100 + attackUp - defenceUp)
+        (20
+            * toFloat self.attributes.strength
+            / toFloat enemy.attributes.constitution
+            * criticalHitRate
+            * toFloat (100 + attackUp - defenceUp)
+            / 100
         )
 
 
@@ -131,7 +131,7 @@ getHurt enemy env self =
         hitRateUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             HitRateUp value ->
                                 value
@@ -203,7 +203,7 @@ attackRec enemy env allSelf position basedata =
         criticalUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             CriticalRateUp value ->
                                 value
@@ -326,11 +326,11 @@ getEffect enemy skill env target basedata =
                 Just buff ->
                     [ ( buff, skill.lasting ) ]
     in
-    checkStatus 
-        { target 
-        | hp = target.hp - hpChange
-        , mp = target.mp - mpChange 
-        , buff = newBuff ++ target.buff
+    checkStatus
+        { target
+            | hp = target.hp - hpChange
+            , mp = target.mp - mpChange
+            , buff = newBuff ++ target.buff
         }
 
 

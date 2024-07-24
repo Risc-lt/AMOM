@@ -66,8 +66,8 @@ type ComponentMsg
     | AttackSuccess Int
     | CharDie (List Int)
     | SwitchTurn Int
+    | NewRound
     | ChangeStatus StatusMsg
-    | UpdateChangingPos (List Self)
     | GameOver
     | NewDialogueMsg CreateInitData
     | CloseDialogue

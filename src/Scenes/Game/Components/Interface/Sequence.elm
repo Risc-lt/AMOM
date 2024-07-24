@@ -9,8 +9,8 @@ import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Scenes.Game.Components.Special.Init exposing (Buff(..))
+import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Charactor =
@@ -34,7 +34,7 @@ convertSelfToCharactor self =
         apUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             SpeedUp value ->
                                 value
@@ -59,7 +59,7 @@ convertEnemyToCharactor enemy =
         apUp =
             List.sum <|
                 List.map
-                    (\(b, _) ->
+                    (\( b, _ ) ->
                         case b of
                             SpeedUp value ->
                                 value
@@ -144,7 +144,7 @@ findIndex target list =
 -- The nextChar function
 
 
-nextChar : InitData -> BaseData -> ( Int, Int )
+nextChar : InitData -> BaseData -> ( Int, Int, Bool )
 nextChar initData basedata =
     let
         -- Get the index of curChar
@@ -159,21 +159,21 @@ nextChar initData basedata =
                     index + 1
             in
             if nextIndex < List.length initData.queue then
-                ( getAt nextIndex initData.queue |> Maybe.withDefault -1, nextIndex )
+                ( getAt nextIndex initData.queue |> Maybe.withDefault -1, nextIndex, False )
 
             else
-                ( getFirstChar initData.queue, 0 )
+                ( getFirstChar initData.queue, 0, True )
 
         -- or any other value indicating the end of the list
         Nothing ->
             if basedata.state == GameBegin then
-                ( getFirstChar initData.queue, 0 )
+                ( getFirstChar initData.queue, 0, True )
 
             else if initData.curIndex < List.length initData.queue then
-                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1, initData.curIndex )
+                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1, initData.curIndex, False )
 
             else
-                ( getFirstChar initData.queue, 0 )
+                ( getFirstChar initData.queue, 0, True )
 
 
 sortCharByQueue : List Charactor -> List Int -> List String

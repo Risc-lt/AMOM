@@ -13,10 +13,9 @@ module Scenes.Game.Components.Self.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Special.Init exposing (Skill)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Skill)
 import Scenes.Game.Components.Special.Library exposing (..)
 import Time exposing (ZoneName(..))
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 {-| Character state
@@ -24,6 +23,7 @@ import Scenes.Game.Components.Special.Init exposing (Buff(..))
 type State
     = Working
     | Waiting
+    | Rest
 
 
 {-| Core data structure for the self

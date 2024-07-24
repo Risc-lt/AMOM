@@ -8,10 +8,9 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..), defaultSkill)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import Scenes.Game.Components.Special.Library exposing (..)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -49,11 +48,7 @@ handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserDat
 handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
-            if basedata.state == GameBegin then
-                ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn 0 ) ], ( env, False ) )
-
-            else
-                ( ( data, basedata ), [], ( env, False ) )
+            ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn 0 ) ], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -77,8 +72,14 @@ handleCompounding skill env evnt data basedata =
             else
                 { skill | cost = 1 } :: data.skills
     in
-    ( ( checkStorage <| { data | buff = getNewBuff data.buff, skills = newItem, energy = data.energy - 100 }
-      , { basedata | state = EnemyTurn } 
+    ( ( checkStorage <|
+            { data
+                | buff = getNewBuff data.buff
+                , skills = newItem
+                , energy = data.energy - 100
+                , state = Rest
+            }
+      , { basedata | state = EnemyTurn }
       )
     , [ Other ( "Interface", SwitchTurn 0 ) ]
     , ( env, False )
@@ -167,7 +168,7 @@ handleChooseSkill x y env evnt data basedata =
                     )
 
                 AllFront ->
-                    ( ( { newData | buff = getNewBuff newData.buff }, { basedata | state = EnemyTurn } )
+                    ( ( { newData | buff = getNewBuff newData.buff, state = Rest }, { basedata | state = EnemyTurn } )
                     , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                     , ( env, False )
                     )
@@ -264,7 +265,7 @@ handleTargetSelection x y env evnt data basedata =
 
                 _ ->
                     if List.member position basedata.enemyNum && effective then
-                        PlayerAttack <| List.any (\(b, _) -> b == ExtraAttack) data.buff
+                        PlayerAttack <| List.any (\( b, _ ) -> b == ExtraAttack) data.buff
 
                     else
                         basedata.state
@@ -310,24 +311,27 @@ handleTargetSelection x y env evnt data basedata =
                 case basedata.state of
                     TargetSelection (Skills skill) ->
                         if skill.kind == SpecialSkill then
-                            checkStorage <| 
-                                { data 
-                                | energy = data.energy - skill.cost
-                                , buff = getNewBuff data.buff 
+                            checkStorage <|
+                                { data
+                                    | energy = data.energy - skill.cost
+                                    , buff = getNewBuff data.buff
+                                    , state = Rest
                                 }
 
                         else if skill.kind == Magic then
-                            checkStorage <| 
-                                { data 
-                                | mp = data.mp - skill.cost 
-                                , buff = getNewBuff data.buff 
+                            checkStorage <|
+                                { data
+                                    | mp = data.mp - skill.cost
+                                    , buff = getNewBuff data.buff
+                                    , state = Rest
                                 }
 
                         else
-                            checkStorage <| 
-                                { data 
-                                | skills = newItem 
-                                , buff = getNewBuff data.buff 
+                            checkStorage <|
+                                { data
+                                    | skills = newItem
+                                    , buff = getNewBuff data.buff
+                                    , state = Rest
                                 }
 
                     _ ->
@@ -366,12 +370,12 @@ handleMouseDown x y env evnt data basedata =
                     else
                         basedata.state
 
-                newBuff =
+                newData =
                     if action == EnemyTurn then
-                        ( DefenceUp 50, 1 ) :: getNewBuff data.buff
+                        { data | buff = ( DefenceUp 50, 1 ) :: getNewBuff data.buff, state = Rest }
 
                     else
-                        data.buff
+                        data
 
                 msg =
                     if action == EnemyTurn then
@@ -380,7 +384,7 @@ handleMouseDown x y env evnt data basedata =
                     else
                         [ Other ( "Interface", ChangeStatus (ChangeState action) ) ]
             in
-            ( ( { data | buff = newBuff }, { basedata | state = action } )
+            ( ( newData, { basedata | state = action } )
             , msg
             , ( env, False )
             )
@@ -457,22 +461,27 @@ handleMove list env evnt data basedata =
             data.name == "Bruce"
 
         newX =
-            if 
-                basedata.state == PlayerAttack True 
-                    || basedata.state == PlayerAttack False
-                    && not longRange 
-                then
+            if
+                basedata.state
+                    == PlayerAttack True
+                    || basedata.state
+                    == PlayerAttack False
+                    && not longRange
+            then
                 if data.x > 670 then
                     data.x - 5
 
                 else
                     670
 
-            else if 
-                basedata.state == (PlayerReturn True) 
-                    || basedata.state == (PlayerReturn False)
-                    || basedata.state == Counter 
-                then
+            else if
+                basedata.state
+                    == PlayerReturn True
+                    || basedata.state
+                    == PlayerReturn False
+                    || basedata.state
+                    == Counter
+            then
                 if data.x < returnX then
                     data.x + 5
 
@@ -482,12 +491,12 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
-        newBuff =
+        newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
-                getNewBuff data.buff
+                { data | buff = getNewBuff data.buff, state = Rest }
 
             else
-                data.buff
+                data
 
         newBaseData =
             if basedata.state == PlayerReturn False && newX >= returnX then
@@ -519,15 +528,16 @@ handleMove list env evnt data basedata =
                 []
 
         attackMsg =
-            if (basedata.state == PlayerAttack True || basedata.state == PlayerAttack False)
-                && (newX <= 670 || longRange) 
-                then
+            if
+                (basedata.state == PlayerAttack True || basedata.state == PlayerAttack False)
+                    && (newX <= 670 || longRange)
+            then
                 [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
 
             else
                 []
     in
-    ( ( { data | x = newX, buff = newBuff }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
+    ( ( { newData | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -537,21 +547,28 @@ updateOne list env evnt data basedata =
             handleMove list env evnt data basedata
 
         KeyDown key ->
-            if (basedata.state == PlayerTurn && data.x <= 670) || basedata.state == GameBegin then
+            if basedata.state == GameBegin then
                 handleKeyDown key list env evnt data basedata
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
 
         MouseUp key ( x, y ) ->
-            if key == 0 then
-                handleMouseDown x y env evnt data basedata
+            if data.state /= Rest then
+                if key == 0 then
+                    handleMouseDown x y env evnt data basedata
 
-            else if key == 2 then
-                handleBack env evnt data basedata
+                else if key == 2 then
+                    handleBack env evnt data basedata
+
+                else
+                    ( ( data, basedata ), [], ( env, False ) )
 
             else
-                ( ( data, basedata ), [], ( env, False ) )
+                ( ( data, { basedata | state = EnemyTurn } )
+                , [ Other ( "Interface", SwitchTurn 0 ) ]
+                , ( env, False )
+                )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

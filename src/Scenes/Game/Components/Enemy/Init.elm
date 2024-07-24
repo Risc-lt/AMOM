@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, defaultEnemy, emptyInitData
+    , Enemy, State(..), defaultEnemy, emptyInitData
     )
 
 {-|
@@ -13,9 +13,16 @@ module Scenes.Game.Components.Enemy.Init exposing
 -}
 
 import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Special.Init exposing (Skill)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Skill)
 import Scenes.Game.Components.Special.Library exposing (..)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
+
+
+{-| Character state
+-}
+type State
+    = Working
+    | Waiting
+    | Rest
 
 
 {-| Core data structure for the enemy
@@ -32,6 +39,7 @@ type alias Enemy =
     , skills : List Skill
     , extendValues : ExtendValue
     , buff : List ( Buff, Int )
+    , state : State
     }
 
 
@@ -87,6 +95,7 @@ emptyInitData time =
                     baseEleResistance.earthResistance
             , buff = []
             , skills = []
+            , state = Waiting
             }
         )
         [ 7, 8, 9 ]
@@ -110,6 +119,7 @@ emptyInitData time =
                         baseEleResistance.earthResistance
                 , buff = []
                 , skills = []
+                , state = Waiting
                 }
             )
             [ 10, 11, 12 ]
@@ -130,4 +140,5 @@ defaultEnemy =
     , extendValues = defaultExtendValues
     , buff = []
     , skills = []
+    , state = Waiting
     }

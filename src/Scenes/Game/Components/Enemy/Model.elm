@@ -18,11 +18,10 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
-import Scenes.Game.Components.Self.Init exposing (State(..))
-import Scenes.Game.SceneBase exposing (SceneCommonData)
 import Scenes.Game.Components.Self.Init exposing (defaultSelf)
+import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
@@ -85,12 +84,17 @@ updaterec env msg data basedata =
             handleSkill self skill position env msg data basedata
 
         Action (EnemySkill enemy skill position) ->
-            handleSkill 
+            handleSkill
                 { defaultSelf
-                | attributes = enemy.attributes
-                , extendValues = enemy.extendValues
+                    | attributes = enemy.attributes
+                    , extendValues = enemy.extendValues
                 }
-                skill position env msg data basedata
+                skill
+                position
+                env
+                msg
+                data
+                basedata
 
         AttackSuccess position ->
             let
@@ -118,7 +122,19 @@ updaterec env msg data basedata =
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = EnemyTurn, curEnemy = pos } ), [], env )
+            if List.any (\e -> e.position == pos && e.hp /= 0) data then
+                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos } ), [], env )
+
+            else
+                ( ( data, basedata )
+                , [ Other ( "Interface", ChangeStatus (ChangeEnemies data) )
+                  , Other ( "Interface", SwitchTurn 1 )
+                  ]
+                , env
+                )
+
+        NewRound ->
+            ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )

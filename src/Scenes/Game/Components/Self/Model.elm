@@ -108,6 +108,20 @@ update env evnt data basedata =
         posChanged =
             posExchange evnt data basedata
 
+        posMsg =
+            if basedata.state == GameBegin then
+                [ Other
+                    ( "Enemy"
+                    , CharDie <|
+                        List.map .position <|
+                            List.filter (\s -> s.hp /= 0) <|
+                                posChanged
+                    )
+                ]
+
+            else
+                []
+
         curChar =
             if basedata.state /= GameBegin then
                 if 0 < basedata.curSelf && basedata.curSelf <= 6 then
@@ -146,7 +160,7 @@ update env evnt data basedata =
         interfaceMsg =
             [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
     in
-    ( ( newData, newBasedata ), interfaceMsg ++ msg, ( newEnv, flag ) )
+    ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -156,7 +170,7 @@ updaterec env msg data basedata =
             handleAttack enemy position env msg data basedata
 
         Action StartCounter ->
-            ( ( data, { basedata | state = PlayerAttack True } ), [], env )
+            ( ( data, { basedata | state = PlayerAttack False } ), [], env )
 
         Action (EnemySkill enemy skill position) ->
             handleSkill enemy skill position env msg data basedata
@@ -204,7 +218,19 @@ updaterec env msg data basedata =
             ( ( data, { basedata | enemyNum = length } ), [], env )
 
         SwitchTurn pos ->
-            ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
+            if List.any (\s -> s.position == pos && s.hp /= 0) data then
+                ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
+
+            else
+                ( ( data, basedata )
+                , [ Other ( "Interface", ChangeStatus (ChangeSelfs data) )
+                  , Other ( "Interface", SwitchTurn 0 )
+                  ]
+                , env
+                )
+
+        NewRound ->
+            ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )

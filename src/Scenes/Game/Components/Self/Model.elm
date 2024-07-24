@@ -16,7 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.Init exposing (defaultEnemy)
 import Scenes.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack, handleSkill)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
@@ -211,6 +211,9 @@ updaterec env msg data basedata =
             if state == Counter && basedata.state == PlayerReturn True then
                 ( ( data, basedata ), [], env )
 
+            else if state == EnemyTurn then
+                ( ( data, { basedata | state = state, side = EnemySide } ), [], env )
+
             else
                 ( ( data, { basedata | state = state } ), [], env )
 
@@ -219,7 +222,7 @@ updaterec env msg data basedata =
 
         SwitchTurn pos ->
             if List.any (\s -> s.position == pos && s.hp /= 0) data then
-                ( ( data, { basedata | state = PlayerTurn, curSelf = pos } ), [], env )
+                ( ( data, { basedata | state = PlayerTurn, curSelf = pos, side = PlayerSide } ), [], env )
 
             else
                 ( ( data, basedata )

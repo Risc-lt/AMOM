@@ -16,7 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy)
 import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
@@ -116,14 +116,21 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
-            ( ( data, { basedata | state = state } ), [], env )
+            if state == PlayerTurn then
+                ( ( data, { basedata | state = state, side = PlayerSide } ), [], env )
+
+            else
+                ( ( data, { basedata | state = state } ), [], env )
 
         CharDie length ->
             ( ( data, { basedata | selfNum = length } ), [], env )
 
         SwitchTurn pos ->
             if List.any (\e -> e.position == pos && e.hp /= 0) data then
-                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos } ), [], env )
+                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos, side = EnemySide } )
+                , []
+                , env
+                )
 
             else
                 ( ( data, basedata )

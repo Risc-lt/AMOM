@@ -38,6 +38,7 @@ type InitMsg
     | SelfInit (List Self)
     | UIInit InitData
     | InitDialogueMsg CreateInitData
+    | TriggerInit
 
 
 type StatusMsg

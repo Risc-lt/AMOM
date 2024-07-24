@@ -29,6 +29,8 @@ import Scenes.Game.Components.Interface.Init as UIMsg
 import Scenes.Game.Components.Interface.Model as UI
 import Scenes.Game.Components.Self.Init as SelfMsg
 import Scenes.Game.Components.Self.Model as Self
+import Scenes.Game.Components.StoryTrigger.Init as STriInit
+import Scenes.Game.Components.StoryTrigger.Model as STri
 import Scenes.Game.Play.Attack exposing (judgeAttack)
 import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)

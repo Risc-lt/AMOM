@@ -41,18 +41,22 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "monster", "assets/character/monster.png" )
-        , ( "magician", "assets/character/magic.png" )
-        , ( "archer", "assets/character/archer.png" )
-        , ( "pharmacist", "assets/character/pharmacist.png" )
-        , ( "swordsman", "assets/character/swordsman.png" )
-        , ( "background ", "assets/character/background_1.jpg" )
+
+        [ ( "background ", "assets/character/background_1.jpg" )
+        , ( "Start", "assets/character/Start.jpg" )
+        ,("Fight_frame","assets/character/Fight_frame_1.jpg")
+        ,( "Wild Wolf", "assets/character/monster.png" )
+        , ( "Bulingze", "assets/character/magic.png" )
+        , ( "Bruce", "assets/character/archer.png" )
+        , ( "Bithif", "assets/character/pharmacist.png" )
+        , ( "Wenderd", "assets/character/swordsman.png" )
         , ( "head_archer", "assets/character/newhead2.png" )
         , ( "head_magic", "assets/character/newhead.png" )
         , ( "dialogue_frame", "assets/character/dialogue_frame.png" )
-        , ( "Start", "assets/character/Start.jpg" )
-        ,("Fight_frame","assets/character/Fight_frame_1.jpg")
-        ,("wolf","assets/character/wolf.png")
+        , ( "symbol_archer", "assets/character/symbol_archer.png" )
+        , ( "symbol_magic", "assets/character/symbol_magic.png" )
+        , ( "symbol_pharmacist", "assets/character/symbol_fan.png" )
+        , ( "symbol_swordsman", "assets/character/symbol_sword.png" )
         ]
 
 

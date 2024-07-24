@@ -1,6 +1,6 @@
 module Scenes.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, defaultEnemy, emptyInitData
+    , Enemy, State(..), defaultEnemy, emptyInitData
     )
 
 {-|
@@ -12,16 +12,34 @@ module Scenes.Game.Components.Enemy.Init exposing
 
 -}
 
+import Scenes.Game.Components.GenAttributes exposing (..)
+import Scenes.Game.Components.Special.Init exposing (Buff(..), Skill)
+import Scenes.Game.Components.Special.Library exposing (..)
+
+
+{-| Character state
+-}
+type State
+    = Working
+    | Waiting
+    | Rest
+
 
 {-| Core data structure for the enemy
 -}
 type alias Enemy =
-    { x : Float
+    { name : String
+    , x : Float
     , y : Float
-    , hp : Float
     , position : Int
-    , race : String
+    , hp : Int
+    , mp : Int
+    , energy : Int
     , attributes : Attribute
+    , skills : List Skill
+    , extendValues : ExtendValue
+    , buff : List ( Buff, Int )
+    , state : State
     }
 
 
@@ -31,58 +49,77 @@ type alias InitData =
     List Enemy
 
 
-{-| Additional attributes of the enemy
--}
-type alias Attribute =
-    { strength : Float
-    , agility : Float
-    , stamina : Float
-    , spirit : Float
-    , waterResistance : Float
-    , fireResistance : Float
-    , windResistance : Float
-    , earthResistance : Float
-    }
-
-
-{-| Base attributes for the self
+{-| Base attributes for the enemy
 -}
 baseAttributes : Attribute
 baseAttributes =
-    { strength = 10
-    , agility = 10
-    , stamina = 10
-    , spirit = 10
-    , waterResistance = 0.1
-    , fireResistance = 0.1
-    , windResistance = 0.1
-    , earthResistance = 0.1
+    { strength = 20
+    , dexterity = 20
+    , constitution = 20
+    , intelligence = 20
+    }
+
+
+{-| Base elemental resistance for the enemy
+-}
+baseEleResistance : EleResistance
+baseEleResistance =
+    { waterResistance = 10
+    , fireResistance = 10
+    , airResistance = 10
+    , earthResistance = 10
     }
 
 
 {-| Empty init data for enemy
 -}
-emptyInitData : InitData
-emptyInitData =
+emptyInitData : Int -> InitData
+emptyInitData time =
     List.map
         (\p ->
-            { x = 230
+            { name = "Wild Wolf"
+            , x = 230
             , y = toFloat (160 + 130 * (p - 7))
-            , hp = 100
             , position = p
-            , race = "Physical"
+            , hp = genHp baseAttributes
+            , mp = genMp baseAttributes
+            , energy = 0
             , attributes = baseAttributes
+            , extendValues =
+                genExtendValues
+                    baseAttributes
+                    (time + p)
+                    baseEleResistance.waterResistance
+                    baseEleResistance.fireResistance
+                    baseEleResistance.airResistance
+                    baseEleResistance.earthResistance
+            , buff = []
+            , skills = []
+            , state = Waiting
             }
         )
         [ 7, 8, 9 ]
         ++ List.map
             (\p ->
-                { x = 100
+                { name = "Wild Wolf"
+                , x = 100
                 , y = toFloat (160 + 130 * (p - 10))
-                , hp = 100
                 , position = p
-                , race = "Magical"
+                , hp = genHp baseAttributes
+                , mp = genMp baseAttributes
+                , energy = 0
                 , attributes = baseAttributes
+                , extendValues =
+                    genExtendValues
+                        baseAttributes
+                        (time + p)
+                        baseEleResistance.waterResistance
+                        baseEleResistance.fireResistance
+                        baseEleResistance.airResistance
+                        baseEleResistance.earthResistance
+                , buff = []
+                , skills = []
+                , state = Waiting
                 }
             )
             [ 10, 11, 12 ]
@@ -92,10 +129,16 @@ emptyInitData =
 -}
 defaultEnemy : Enemy
 defaultEnemy =
-    { x = 100
+    { name = ""
+    , x = 100
     , y = 100
-    , hp = 100
     , position = 7
-    , race = "Physical"
+    , hp = 0
+    , mp = 0
+    , energy = 0
     , attributes = baseAttributes
+    , extendValues = defaultExtendValues
+    , buff = []
+    , skills = []
+    , state = Waiting
     }

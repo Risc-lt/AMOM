@@ -12,14 +12,17 @@
                 "Components": [
                     "Enemy",
                     "Self",
-                    "Interface"
+                    "Interface",
+                    "Special",
+                    "Dialogue",
+                    "Buff"
                 ]
             },
             "layers": [
                 "Play"
             ]
         },
-        "SampleStory": []
+        "SampleScene": []
     },
     "sceneprotos": {
         "Story": {

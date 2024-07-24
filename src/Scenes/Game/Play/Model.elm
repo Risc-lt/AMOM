@@ -20,7 +20,8 @@ import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerS
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
+import Scenes.Game.Components.Dialogue.Model as Dialogue
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
 import Scenes.Game.Components.Interface.Init as UIMsg
@@ -30,6 +31,7 @@ import Scenes.Game.Components.Self.Model as Self
 import Scenes.Game.Play.Attack exposing (judgeAttack)
 import Scenes.Game.Play.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (..)
+import Time
 
 
 type alias GameComponent =
@@ -42,11 +44,31 @@ type alias Data =
 
 init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
+    let
+        time =
+            Time.posixToMillis env.globalData.currentTimeStamp
+
+        enemyInit =
+            EneMsg.emptyInitData <| time
+
+        selfInit =
+            SelfMsg.emptyInitData <| time
+
+        dialogueInit =
+            { speaker = "This string is useless"
+            , content = [ "It's just for no bug", "Check /Game/Component/Dialogue" ]
+            }
+    in
     InitData
-        [ Enemy.component (EnemyInit <| EneMsg.emptyInitData) env
-        , Self.component (SelfInit <| SelfMsg.emptyInitData) env
-        , UI.component (UIInit <| UIMsg.emptyInitData) env
+        [ Enemy.component (Init <| EnemyInit <| enemyInit) env
+        , Self.component (Init <| SelfInit <| selfInit) env
+        , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
+        , Dialogue.component (Init <| InitDialogueMsg <| dialogueInit) env
         ]
+
+
+
+--Dialogue Msg Should be changed before release
 
 
 handleComponentMsg : Handler Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg ComponentMsg
@@ -127,6 +149,9 @@ view env data =
                     ]
                 ]
             , viewComponents env data.components
+            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )
+            , renderTextWithColorCenter env.globalData.internalData 30 "Attacks are possible to miss" "Arial" Color.black ( 1680, 1030 )
             ]
 
         outComeView =

@@ -9,48 +9,79 @@ import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Charactor =
     { name : String
     , position : Int
-    , agility : Float
+    , ap : Int
+    }
+
+
+defaultChatactor : Charactor
+defaultChatactor =
+    { name = ""
+    , position = 0
+    , ap = 0
     }
 
 
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
-    { name = self.career
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\( b, _ ) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+    in
+    { name = self.name
     , position = self.position
-    , agility = self.attributes.agility
+    , ap = self.extendValues.actionPoints + apUp
     }
 
 
 convertEnemyToCharactor : Enemy -> Charactor
 convertEnemyToCharactor enemy =
-    { name = "monster"
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\( b, _ ) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+    in
+    { name = enemy.name
     , position = enemy.position
-    , agility = enemy.attributes.agility
+    , ap = enemy.extendValues.actionPoints + apUp
     }
 
 
-genActionPoints : Charactor -> Messenger.Base.Env SceneCommonData UserData -> Float
-genActionPoints char env =
-    -- let
-    --     upperBound =
-    --         char.attributes.agility
-    -- in
-    -- genRandomNum 1 upperBound env
-    char.agility
-
-
-getSequence : Messenger.Base.Env SceneCommonData UserData -> List Charactor -> List Charactor
-getSequence env data =
+getSequence : List Charactor -> List Charactor
+getSequence data =
     data
-        |> List.sortBy .position
-        |> List.reverse
-        |> List.sortBy (\x -> genActionPoints x env)
+        |> List.sortBy .ap
         |> List.reverse
 
 
@@ -71,12 +102,12 @@ concatSelfEnemy selfs enemies =
             aliveEnemies
 
 
-getQueue : List Self -> List Enemy -> Messenger.Base.Env SceneCommonData UserData -> List Int
-getQueue selfs enemies env =
+getQueue : List Self -> List Enemy -> List Int
+getQueue selfs enemies =
     List.map
         (\x -> x.position)
     <|
-        getSequence env <|
+        getSequence <|
             concatSelfEnemy selfs enemies
 
 
@@ -113,12 +144,12 @@ findIndex target list =
 -- The nextChar function
 
 
-nextChar : List Int -> Int -> Int
-nextChar queue curChar =
+nextChar : InitData -> BaseData -> ( Int, Int, Bool )
+nextChar initData basedata =
     let
         -- Get the index of curChar
         maybeIndex =
-            findIndex curChar queue
+            findIndex basedata.curSelf initData.queue
     in
     case maybeIndex of
         Just index ->
@@ -127,73 +158,51 @@ nextChar queue curChar =
                 nextIndex =
                     index + 1
             in
-            if nextIndex < List.length queue then
-                getAt nextIndex queue |> Maybe.withDefault -1
+            if nextIndex < List.length initData.queue then
+                ( getAt nextIndex initData.queue |> Maybe.withDefault -1, nextIndex, False )
 
             else
-                getFirstChar queue
+                ( getFirstChar initData.queue, 0, True )
 
         -- or any other value indicating the end of the list
         Nothing ->
-            -1
+            if basedata.state == GameBegin then
+                ( getFirstChar initData.queue, 0, True )
+
+            else if initData.curIndex < List.length initData.queue then
+                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1, initData.curIndex, False )
+
+            else
+                ( getFirstChar initData.queue, 0, True )
 
 
-nextSelf : List Int -> Int -> Int
-nextSelf queue curChar =
-    let
-        nextPos =
-            nextChar queue curChar
-    in
-    if 1 <= nextPos && nextPos <= 6 then
-        nextPos
-
-    else
-        nextSelf queue nextPos
-
-
-nextEnemy : List Int -> Int -> Int
-nextEnemy queue curChar =
-    let
-        nextPos =
-            nextChar queue curChar
-    in
-    if 7 <= nextPos && nextPos <= 12 then
-        nextPos
-
-    else
-        nextEnemy queue nextPos
-
-
-sortCharByQueue : List Charactor -> List Int -> List Charactor
+sortCharByQueue : List Charactor -> List Int -> List String
 sortCharByQueue data queue =
     List.map
-        (\x ->
-            case findIndex x.position queue of
-                Just index ->
-                    ( index, x )
-
-                Nothing ->
-                    ( 100, x )
+        (\p ->
+            .name <|
+                Maybe.withDefault defaultChatactor <|
+                    List.head <|
+                        List.filter
+                            (\c ->
+                                c.position == p
+                            )
+                            data
         )
-        data
-        |> List.sortBy Tuple.first
-        |> List.map Tuple.second
+        queue
 
 
-renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Enemy -> List Canvas.Renderable
-renderQueue env selfs enemies =
+renderQueue : Messenger.Base.Env SceneCommonData UserData -> InitData -> List Canvas.Renderable
+renderQueue env initData =
     let
         allChars =
-            concatSelfEnemy selfs enemies
-
-        queue =
-            getQueue selfs enemies env
+            concatSelfEnemy initData.selfs initData.enemies
 
         sortedData =
-            sortCharByQueue allChars queue
+            sortCharByQueue allChars initData.queue
     in
     List.map2
-        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x.name)
+        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x)
         sortedData
     <|
         List.map toFloat
@@ -201,27 +210,21 @@ renderQueue env selfs enemies =
 
 
 checkSide : Int -> ActionSide
-checkSide char =
-    if 1 <= char && char <= 6 then
+checkSide position =
+    if 1 <= position && position <= 6 then
         PlayerSide
 
-    else if 7 <= char && char <= 12 then
+    else if 7 <= position && position <= 12 then
         EnemySide
 
     else
         Undeclaced
 
 
-initUI : Messenger.Base.Env SceneCommonData UserData -> InitData -> BaseData -> ( InitData, BaseData )
-initUI env data basedata =
+initUI : InitData -> BaseData -> ( InitData, BaseData )
+initUI data basedata =
     let
         firstQueue =
-            getQueue data.selfs data.enemies env
-
-        firstChar =
-            getFirstChar firstQueue
-
-        firstSide =
-            checkSide firstChar
+            getQueue data.selfs data.enemies
     in
-    ( { data | charPointer = firstChar }, { basedata | queue = firstQueue, side = firstSide } )
+    ( { data | queue = firstQueue }, basedata )

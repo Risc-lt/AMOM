@@ -22,7 +22,8 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
-import Scenes.Game.Components.Dialogue.Model as Dialogue
+import Scenes.Game.Components.Dialogue.Init as DiaMsg
+import Scenes.Game.Components.Dialogue.Model as Dia
 import Scenes.Game.Components.Enemy.Init as EneMsg
 import Scenes.Game.Components.Enemy.Model as Enemy
 import Scenes.Game.Components.Interface.Init as UIMsg
@@ -66,7 +67,8 @@ init env initMsg =
         [ Enemy.component (Init <| EnemyInit <| enemyInit) env
         , Self.component (Init <| SelfInit <| selfInit) env
         , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
-        , Dialogue.component (Init <| InitDialogueMsg <| dialogueInit) env
+        , Dia.component (Init <| InitDialogueMsg <| DiaMsg.emptyInitData) env
+        , STri.component (Init <| TriggerInit <| STriInit.emptyInitData) env
         ]
 
 

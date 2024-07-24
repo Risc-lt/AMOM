@@ -16,34 +16,22 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import Scenes.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    { frameName : String
-    , framePos : ( Float, Float )
-    , speaker : String
-    , speakerPos : ( Float, Float )
-    , font : String
-    , isSpeaking : Bool
-    , content : List String
-    , textPos : ( Float, Float )
-    }
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( { frameName = "dialogue_frame"
-      , framePos = ( 0, 500 )
-      , speaker = "head_magic"
-      , speakerPos = ( -20, 680 )
-      , font = "Comic Sans MS"
-      , isSpeaking = False
-      , content = [ "Hello!", "Thank you!" ]
-      , textPos = ( 880, 800 )
-      }
-    , initBaseData
-    )
+    case initMsg of
+        Init (InitDialogueMsg initData) ->
+            ( initData, initBaseData )
+
+        _ ->
+            ( emptyInitData, initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -64,11 +52,36 @@ updaterec env msg data basedata =
 
                 state =
                     True
+
+                nextDialogue =
+                    Maybe.withDefault
+                        { frameName = "dialogue_frame"
+                        , framePos = ( 0, 500 )
+                        , speaker = "head_magic"
+                        , speakerPos = ( -20, 680 )
+                        , font = "Comic Sans MS"
+                        , isSpeaking = False
+                        , content = [ "Hello!", "Thank you!" ]
+                        , textPos = ( 880, 800 )
+                        }
+                    <|
+                        List.head <|
+                            List.filter (\dia -> dia.speaker == newSpeaker && dia.content == newContent) data.remainDiaList
+
+                remainingDialogues =
+                    List.filter (\dia -> dia.speaker /= newSpeaker || dia.content /= newContent) data.remainDiaList
             in
-            ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+            ( ( { data | curDialogue = { nextDialogue | isSpeaking = state }, remainDiaList = remainingDialogues }, basedata ), [], env )
 
         CloseDialogue ->
-            ( ( { data | isSpeaking = False }, basedata ), [], env )
+            let
+                curDia =
+                    data.curDialogue
+
+                nextDia =
+                    { curDia | isSpeaking = False }
+            in
+            ( ( { data | curDialogue = nextDia }, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -81,20 +94,20 @@ contentToView ( index, text ) env data =
             72
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.font Color.black ( Tuple.first data.textPos, toFloat index * lineHeight + Tuple.second data.textPos )
+        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
         ]
 
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.isSpeaking then
+    if data.curDialogue.isSpeaking then
         let
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.content)
+                List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.framePos ( 1420, 591 ) data.frameName
-             , renderSprite env.globalData.internalData [] data.speakerPos ( 420, 0 ) data.speaker
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

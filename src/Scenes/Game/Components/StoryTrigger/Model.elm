@@ -11,21 +11,22 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..), initBaseData)
+import Scenes.Game.Components.StoryTrigger.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    {}
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        Init TriggerInit ->
-            ( {}, initBaseData )
+        Init (TriggerInit initData) ->
+            ( initData, initBaseData )
 
         _ ->
-            ( {}, initBaseData )
+            ( [], initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

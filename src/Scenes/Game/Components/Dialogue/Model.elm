@@ -18,7 +18,9 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import Scenes.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
+import Scenes.Game.Components.Special.Init exposing (Buff)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -78,6 +80,9 @@ updaterec env msg data basedata =
                     case nextDialogue.id of
                         101 ->
                             [ Other ( "Enemy", AddChar ) ]
+
+                        102 ->
+                            [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
 
                         _ ->
                             []

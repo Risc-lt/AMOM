@@ -15,7 +15,8 @@
                     "Interface",
                     "Special",
                     "Dialogue",
-                    "Buff"
+                    "Buff",
+                    "StoryTrigger"
                 ]
             },
             "layers": [

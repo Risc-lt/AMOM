@@ -99,9 +99,7 @@ checkOneTrigger trigger data basedata =
     case trigger.side of
         "Enemy" ->
             if
-                basedata.side
-                    == EnemySide
-                    && trigger.frameNum
+                trigger.frameNum
                     <= 0
                     && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
                     && trigger.gameState
@@ -114,9 +112,7 @@ checkOneTrigger trigger data basedata =
 
         "Self" ->
             if
-                basedata.side
-                    == EnemySide
-                    && trigger.frameNum
+                trigger.frameNum
                     <= 0
                     && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
                     && trigger.gameState
@@ -140,8 +136,11 @@ handleCheckTrigger data basedata triggers =
 
         msg =
             List.map (\x -> Other ( "Dialogue", BeginDialogue x )) maybeTrigger
+
+        deleteTriggerMsg =
+            List.map (\x -> Other ( "StoryTrigger", BeginDialogue x )) maybeTrigger
     in
-    msg
+    msg ++ deleteTriggerMsg
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

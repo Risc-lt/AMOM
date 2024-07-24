@@ -42,9 +42,9 @@ update env evnt data basedata =
             if key == 13 then
                 let
                     curDia =
-                        data.curDialogue
+                        Debug.log "pre" data.curDialogue
                 in
-                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
+                ( ( { data | curDialogue = Debug.log "after" { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

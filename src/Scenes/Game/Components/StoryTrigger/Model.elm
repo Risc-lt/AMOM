@@ -51,6 +51,15 @@ updaterec env msg data basedata =
             in
             ( ( newData, basedata ), [], env )
 
+        BeginDialogue id ->
+            let
+                newData =
+                    List.filter
+                        (\x -> x.id /= id)
+                        data
+            in
+            ( ( newData, basedata ), [], env )
+
         _ ->
             ( ( data, basedata ), [], env )
 

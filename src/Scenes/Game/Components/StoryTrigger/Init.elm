@@ -34,4 +34,10 @@ type alias TriggerConditions =
 -}
 emptyInitData : InitData
 emptyInitData =
-    []
+    [ { side = "Self"
+      , frameNum = 0
+      , hpTrigger = 200
+      , gameState = "GameBegin"
+      , id = 0
+      }
+    ]

@@ -17,8 +17,8 @@ import SceneProtos.Story.Components.Wenderd.Init as Wendered
 
 -}
 type ComponentMsg
-    = NewDialogueMsg Dialogue.CreateInitData
-    | NextDialogue Dialogue.CreateInitData
+    = NewDialogueMsg (List Dialogue.CreateInitData)
+    | NextDialogue (Dialogue.CreateInitData)
     | CloseDialogue
     | CameraMsg ( Float, Float )
     | NewWenderdMsg ( Float, Float )

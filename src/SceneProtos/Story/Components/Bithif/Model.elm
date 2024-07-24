@@ -14,6 +14,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import Messenger.GeneralModel exposing (Msg(..))
 
 
 type alias Data =

@@ -16,33 +16,51 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import Scenes.Game.Components.ComponentBase exposing (InitMsg)
 
 
-type alias Data =
+type alias OneDialogue =
+    { speaker : String
+    , content : List String
+    }
+
+
+type alias CommonElement =
     { frameName : String
     , framePos : ( Float, Float )
-    , speaker : String
     , speakerPos : ( Float, Float )
     , font : String
     , isSpeaking : Bool
-    , content : List String
     , textPos : ( Float, Float )
+    }
+
+
+type alias Data =
+    { thisDialogue : List OneDialogue
+    , commonElement : CommonElement
     }
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( { frameName = "dialogue_frame"
-      , framePos = ( 720, 0 )
-      , speaker = "Speaker"
-      , speakerPos = ( 720, 0 )
-      , font = "Comic Sans MS"
-      , isSpeaking = False
-      , content = []
-      , textPos = ( 720, 1320 )
-      }
-    , ()
-    )
+    case initMsg of
+        NewDialogueMsg initData ->
+            let
+                initDialogue =
+                    initData
+                initCommonElement =
+                    { frameName = "dialogue_frame"
+                    , framePos = ( 720, 0 )
+                    , speakerPos = ( 720, 0 )
+                    , font = "Comic Sans MS"
+                    , isSpeaking = True
+                    , textPos = ( 720, 1320 )
+                    }
+                data = 
+                    { thisDialogue = initDialogue
+                    , commonElement = initCommonElement }
+            in
+                ( data, () )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -52,52 +70,50 @@ update env evnt data basedata =
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
-    case msg of
-        NewDialogueMsg newDialogue ->
-            let
-                newSpeaker =
-                    newDialogue.speaker
+    ( ( data, basedata ), [], env )
 
-                newContent =
-                    newDialogue.content
+    -- case msg of
+    --     NewDialogueMsg newDialogue ->
+    --         let
+    --             newSpeaker =
+    --                 newDialogue.speaker
 
-                state =
-                    True
-            in
-            ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+    --             newContent =
+    --                 newDialogue.content
 
-        NextDialogue newDialogue ->
-            let
-                newSpeaker =
-                    newDialogue.speaker
+    --             state =
+    --                 True
+    --         in
+    --         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
 
-                newContent =
-                    newDialogue.content
+    --     NextDialogue newDialogue ->
+    --         let
+    --             newSpeaker =
+    --                 newDialogue.speaker
 
-                state =
-                    True
-            in
-            ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+    --             newContent =
+    --                 newDialogue.content
 
-        CloseDialogue ->
-            ( ( { data | isSpeaking = False }, basedata ), [], env )
+    --             state =
+    --                 True
+    --         in
+    --         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
 
-        _ ->
-            ( ( data, basedata ), [], env )
+    --     CloseDialogue ->
+    --         ( ( { data | isSpeaking = False }, basedata ), [], env )
 
+    --     _ ->
+    --         ( ( data, basedata ), [], env )
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.isSpeaking then
+    if data.commonElement.isSpeaking then
         let
             lineHeight =
                 30
 
-            textStartPosition =
-                data.textPos
-
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.content)
+                List.map (\textWithIndex -> contentToView textWithIndex env data.commonElement lineHeight) data.thisDialogue--(List.indexedMap Tuple.pair data.thisDialogue)
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.framePos ( 1980, 0 ) data.frameName
@@ -115,10 +131,10 @@ view env data basedata =
         ( Canvas.empty, 0 )
 
 
-contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Canvas.Renderable
-contentToView ( index, text ) env data =
+contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> CommonElement -> Float -> Canvas.Renderable
+contentToView ( index, text ) env commonElement lineHeight =
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.font Color.black ( Tuple.first data.textPos, toFloat index * 30 + Tuple.second data.textPos )
+        [ renderTextWithColorCenter env.globalData.internalData 60 text commonElement.font Color.black ( Tuple.first commonElement.textPos, toFloat index * lineHeight + Tuple.second commonElement.textPos )
         ]
 
 

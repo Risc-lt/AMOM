@@ -446,6 +446,6 @@ handleSkill self skill position env msg data basedata =
                 [ Other ( "Self", CharDie remainNum ) ]
     in
     ( ( newData, { basedata | enemyNum = remainNum } )
-    , dieMsg ++ [ Other ( "Interface", SwitchTurn 1 ) ]
+    , dieMsg ++ [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
     , env
     )

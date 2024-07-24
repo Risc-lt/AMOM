@@ -232,6 +232,7 @@ updaterec env msg data basedata =
                 ( ( data, basedata )
                 , [ Other ( "Interface", ChangeStatus (ChangeSelfs data) )
                   , Other ( "Interface", SwitchTurn 0 )
+                  , Other ( "StoryTrigger", SwitchTurn 0 )
                   ]
                 , env
                 )

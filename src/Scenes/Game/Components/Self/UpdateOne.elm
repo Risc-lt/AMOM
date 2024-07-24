@@ -84,7 +84,7 @@ handleCompounding skill env evnt data basedata =
             }
       , { basedata | state = EnemyTurn }
       )
-    , [ Other ( "Interface", SwitchTurn 0 ) ]
+    , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
     , ( env, False )
     )
 
@@ -382,7 +382,7 @@ handleMouseDown x y env evnt data basedata =
 
                 msg =
                     if action == EnemyTurn then
-                        [ Other ( "Interface", SwitchTurn 0 ) ]
+                        [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
 
                     else
                         [ Other ( "Interface", ChangeStatus (ChangeState action) ) ]
@@ -529,7 +529,7 @@ handleMove list env evnt data basedata =
                 [ Other ( "Enemy", Action StartCounter ) ]
 
             else if basedata.state == PlayerReturn False && newX >= returnX then
-                [ Other ( "Interface", SwitchTurn 0 ) ]
+                [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
 
             else
                 []
@@ -553,7 +553,7 @@ updateOne list env evnt data basedata =
         Tick _ ->
             if data.state == Rest && basedata.side == PlayerSide then
                 ( ( data, { basedata | state = EnemyTurn } )
-                , [ Other ( "Interface", SwitchTurn 0 ) ]
+                , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
                 , ( env, False )
                 )
 

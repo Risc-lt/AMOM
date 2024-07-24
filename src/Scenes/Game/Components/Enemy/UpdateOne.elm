@@ -136,7 +136,7 @@ handleMove env evnt data basedata =
                 [ Other ( "Self", Action StartCounter ) ]
 
             else if basedata.state == EnemyReturn && newX <= returnX then
-                [ Other ( "Interface", SwitchTurn 0 ) ]
+                [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
 
             else if basedata.state == EnemyAttack && newX >= 670 then
                 attackPlayer data basedata
@@ -380,13 +380,13 @@ updateOne env evnt data basedata =
         Tick _ ->
             if data.state == Rest && basedata.side == EnemySide then
                 ( ( data, { basedata | state = PlayerTurn } )
-                , [ Other ( "Interface", SwitchTurn 1 ) ]
+                , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
                 , ( env, False )
                 )
 
             else if List.any (\( b, _ ) -> b == NoAction) data.buff then
                 ( ( { data | buff = getNewBuff data.buff, state = Rest }, { basedata | state = PlayerTurn } )
-                , [ Other ( "Interface", SwitchTurn 1 ) ]
+                , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
                 , ( env, False )
                 )
 

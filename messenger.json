@@ -13,7 +13,9 @@
                     "Enemy",
                     "Self",
                     "Interface",
-                    "Dialogue"
+                    "Special",
+                    "Dialogue",
+                    "Buff"
                 ]
             },
             "layers": [

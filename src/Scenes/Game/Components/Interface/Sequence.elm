@@ -9,6 +9,7 @@ import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, 
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.Interface.Init exposing (InitData)
 import Scenes.Game.Components.Self.Init exposing (Self)
+import Scenes.Game.Components.Special.Init exposing (Buff(..))
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -29,17 +30,51 @@ defaultChatactor =
 
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\( b, _ ) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    self.buff
+    in
     { name = self.name
     , position = self.position
-    , ap = self.extendValues.actionPoints
+    , ap = self.extendValues.actionPoints + apUp
     }
 
 
 convertEnemyToCharactor : Enemy -> Charactor
 convertEnemyToCharactor enemy =
+    let
+        apUp =
+            List.sum <|
+                List.map
+                    (\( b, _ ) ->
+                        case b of
+                            SpeedUp value ->
+                                value
+
+                            SpeedDown value ->
+                                -value
+
+                            _ ->
+                                0
+                    )
+                    enemy.buff
+    in
     { name = enemy.name
     , position = enemy.position
-    , ap = enemy.extendValues.actionPoints
+    , ap = enemy.extendValues.actionPoints + apUp
     }
 
 
@@ -109,12 +144,12 @@ findIndex target list =
 -- The nextChar function
 
 
-nextChar : List Int -> Int -> Int
-nextChar queue curChar =
+nextChar : InitData -> BaseData -> ( Int, Int, Bool )
+nextChar initData basedata =
     let
         -- Get the index of curChar
         maybeIndex =
-            findIndex curChar queue
+            findIndex basedata.curSelf initData.queue
     in
     case maybeIndex of
         Just index ->
@@ -123,41 +158,22 @@ nextChar queue curChar =
                 nextIndex =
                     index + 1
             in
-            if nextIndex < List.length queue then
-                getAt nextIndex queue |> Maybe.withDefault -1
+            if nextIndex < List.length initData.queue then
+                ( getAt nextIndex initData.queue |> Maybe.withDefault -1, nextIndex, False )
 
             else
-                getFirstChar queue
+                ( getFirstChar initData.queue, 0, True )
 
         -- or any other value indicating the end of the list
         Nothing ->
-            -1
+            if basedata.state == GameBegin then
+                ( getFirstChar initData.queue, 0, True )
 
+            else if initData.curIndex < List.length initData.queue then
+                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1, initData.curIndex, False )
 
-nextSelf : List Int -> Int -> Int
-nextSelf queue curChar =
-    let
-        nextPos =
-            nextChar queue curChar
-    in
-    if 1 <= nextPos && nextPos <= 6 then
-        nextPos
-
-    else
-        nextSelf queue nextPos
-
-
-nextEnemy : List Int -> Int -> Int
-nextEnemy queue curChar =
-    let
-        nextPos =
-            nextChar queue curChar
-    in
-    if 7 <= nextPos && nextPos <= 12 then
-        nextPos
-
-    else
-        nextEnemy queue nextPos
+            else
+                ( getFirstChar initData.queue, 0, True )
 
 
 sortCharByQueue : List Charactor -> List Int -> List String
@@ -176,17 +192,14 @@ sortCharByQueue data queue =
         queue
 
 
-renderQueue : Messenger.Base.Env SceneCommonData UserData -> List Self -> List Enemy -> List Canvas.Renderable
-renderQueue env selfs enemies =
+renderQueue : Messenger.Base.Env SceneCommonData UserData -> InitData -> List Canvas.Renderable
+renderQueue env initData =
     let
         allChars =
-            concatSelfEnemy selfs enemies
-
-        queue =
-            getQueue selfs enemies
+            concatSelfEnemy initData.selfs initData.enemies
 
         sortedData =
-            sortCharByQueue allChars queue
+            sortCharByQueue allChars initData.queue
     in
     List.map2
         (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x)
@@ -213,11 +226,5 @@ initUI data basedata =
     let
         firstQueue =
             getQueue data.selfs data.enemies
-
-        firstChar =
-            getFirstChar firstQueue
-
-        firstSide =
-            checkSide firstChar
     in
-    ( data, { basedata | side = firstSide, curSelf = firstChar } )
+    ( { data | queue = firstQueue }, basedata )

@@ -8,6 +8,7 @@ module Scenes.Game.Components.Interface.Model exposing (component)
 
 import Array exposing (get)
 import Canvas
+import Debug exposing (toString)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -19,6 +20,7 @@ import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import Scenes.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
 import Scenes.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
 import Scenes.Game.Components.Self.Init exposing (State(..))
+import Scenes.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
 
 
@@ -92,6 +94,56 @@ sendMsg data basedata =
             ( basedata.state, [] )
 
 
+checkOneTrigger : TriggerConditions -> Data -> BaseData -> Int
+checkOneTrigger trigger data basedata =
+    case trigger.side of
+        "Enemy" ->
+            if
+                basedata.side
+                    == EnemySide
+                    && trigger.frameNum
+                    <= 0
+                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
+                    && trigger.gameState
+                    == toString basedata.state
+            then
+                trigger.id
+
+            else
+                -1
+
+        "Self" ->
+            if
+                basedata.side
+                    == EnemySide
+                    && trigger.frameNum
+                    <= 0
+                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
+                    && trigger.gameState
+                    == toString basedata.state
+            then
+                trigger.id
+
+            else
+                -1
+
+        _ ->
+            -1
+
+
+handleCheckTrigger : Data -> BaseData -> List TriggerConditions -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
+handleCheckTrigger data basedata triggers =
+    let
+        maybeTrigger =
+            List.filter (\x -> x /= -1) 
+                <| List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
+            
+        msg =
+            List.map (\x -> Other ( "Dialogue", BeginDialogue x )) maybeTrigger
+    in
+    msg
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
@@ -121,6 +173,13 @@ updaterec env msg data basedata =
                     sendMsg newData newBaseData
             in
             ( ( newData, { newBaseData | state = newState } ), newRoundMsg ++ newMsg, env )
+
+        CheckIsTriggered triggerList ->
+            let
+                msg =
+                    handleCheckTrigger data basedata triggerList
+            in
+            ( ( data, basedata ), msg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

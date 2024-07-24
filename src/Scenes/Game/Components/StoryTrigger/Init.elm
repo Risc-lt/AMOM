@@ -26,6 +26,7 @@ type alias TriggerConditions =
     , frameNum : Int
     , hpTrigger : Int
     , gameState : String
+    , id : Int
     }
 
 

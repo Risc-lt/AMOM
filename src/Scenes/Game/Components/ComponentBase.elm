@@ -72,8 +72,9 @@ type ComponentMsg
     | NewRound
     | ChangeStatus StatusMsg
     | GameOver
-    | NewDialogueMsg CreateInitData
+    | BeginDialogue Int
     | CloseDialogue
+    | CheckIsTriggered (List TriggerConditions)
     | Defeated
     | NullComponentMsg
 

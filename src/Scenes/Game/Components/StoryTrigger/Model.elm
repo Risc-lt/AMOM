@@ -9,7 +9,9 @@ module Scenes.Game.Components.StoryTrigger.Model exposing (component)
 import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..), initBaseData)
 import Scenes.Game.Components.StoryTrigger.Init exposing (InitData)
 import Scenes.Game.SceneBase exposing (SceneCommonData)
@@ -31,12 +33,26 @@ init env initMsg =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        Tick _ ->
+            ( ( data, basedata ), [ Other ( "Interface", CheckIsTriggered data ) ], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
-    ( ( data, basedata ), [], env )
+    case msg of
+        SwitchTurn _ ->
+            let
+                newData =
+                    List.map (\x -> { x | frameNum = x.frameNum - 1 }) data
+            in
+            ( ( newData, basedata ), [], env )
+
+        _ ->
+            ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

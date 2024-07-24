@@ -16,6 +16,7 @@ type alias Dialogue =
     , isSpeaking : Bool
     , content : List String
     , textPos : ( Float, Float )
+    , id : Int
     }
 
 
@@ -30,6 +31,7 @@ emptyInitData =
         , isSpeaking = False
         , content = [ "Hello!", "Thank you!" ]
         , textPos = ( 880, 800 )
+        , id = 0
         }
     , remainDiaList = []
     }

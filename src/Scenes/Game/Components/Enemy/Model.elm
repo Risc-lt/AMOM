@@ -40,35 +40,39 @@ init env initMsg =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    let
-        curEnemy =
-            if 7 <= basedata.curEnemy && basedata.curEnemy <= 12 then
-                Maybe.withDefault { defaultEnemy | position = 0 } <|
-                    List.head <|
-                        List.filter (\x -> x.position == basedata.curEnemy) data
+    if basedata.isStopped then
+        ( ( data, basedata ), [], ( env, False ) )
 
-            else
-                { defaultEnemy | position = 0 }
+    else
+        let
+            curEnemy =
+                if 7 <= basedata.curEnemy && basedata.curEnemy <= 12 then
+                    Maybe.withDefault { defaultEnemy | position = 0 } <|
+                        List.head <|
+                            List.filter (\x -> x.position == basedata.curEnemy) data
 
-        ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curEnemy.position /= 0 then
-                updateOne env evnt curEnemy basedata
+                else
+                    { defaultEnemy | position = 0 }
 
-            else
-                ( ( curEnemy, basedata ), [], ( env, False ) )
+            ( ( newEnemy, newBasedata ), msg, ( newEnv, flag ) ) =
+                if curEnemy.position /= 0 then
+                    updateOne env evnt curEnemy basedata
 
-        newData =
-            List.map
-                (\x ->
-                    if x.position == basedata.curEnemy then
-                        newEnemy
+                else
+                    ( ( curEnemy, basedata ), [], ( env, False ) )
 
-                    else
-                        x
-                )
-                data
-    in
-    ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
+            newData =
+                List.map
+                    (\x ->
+                        if x.position == basedata.curEnemy then
+                            newEnemy
+
+                        else
+                            x
+                    )
+                    data
+        in
+        ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -145,6 +149,12 @@ updaterec env msg data basedata =
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
+
+        BeginDialogue _ ->
+            ( ( data, { basedata | isStopped = True } ), [], env )
+
+        CloseDialogue ->
+            ( ( data, { basedata | isStopped = False } ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

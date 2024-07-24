@@ -104,63 +104,67 @@ posExchange evnt data basedata =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    let
-        posChanged =
-            posExchange evnt data basedata
+    if basedata.isStopped then
+        ( ( data, basedata ), [], ( env, False ) )
 
-        posMsg =
-            if basedata.state == GameBegin then
-                [ Other
-                    ( "Enemy"
-                    , CharDie <|
-                        List.map .position <|
-                            List.filter (\s -> s.hp /= 0) <|
-                                posChanged
-                    )
-                ]
+    else
+        let
+            posChanged =
+                posExchange evnt data basedata
 
-            else
-                []
-
-        curChar =
-            if basedata.state /= GameBegin then
-                if 0 < basedata.curSelf && basedata.curSelf <= 6 then
-                    Maybe.withDefault { defaultSelf | position = 0 } <|
-                        List.head <|
-                            List.filter (\x -> x.position == basedata.curSelf) posChanged
+            posMsg =
+                if basedata.state == GameBegin then
+                    [ Other
+                        ( "Enemy"
+                        , CharDie <|
+                            List.map .position <|
+                                List.filter (\s -> s.hp /= 0) <|
+                                    posChanged
+                        )
+                    ]
 
                 else
-                    { defaultSelf | position = 0 }
+                    []
 
-            else
-                defaultSelf
+            curChar =
+                if basedata.state /= GameBegin then
+                    if 0 < basedata.curSelf && basedata.curSelf <= 6 then
+                        Maybe.withDefault { defaultSelf | position = 0 } <|
+                            List.head <|
+                                List.filter (\x -> x.position == basedata.curSelf) posChanged
 
-        ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
-            if curChar.position /= 0 then
-                updateOne posChanged env evnt curChar basedata
+                    else
+                        { defaultSelf | position = 0 }
 
-            else
-                ( ( curChar, basedata ), [], ( env, False ) )
+                else
+                    defaultSelf
 
-        newData =
-            if basedata.state /= GameBegin then
-                List.map
-                    (\x ->
-                        if x.position == basedata.curSelf && x.hp /= 0 then
-                            newChar
+            ( ( newChar, newBasedata ), msg, ( newEnv, flag ) ) =
+                if curChar.position /= 0 then
+                    updateOne posChanged env evnt curChar basedata
 
-                        else
-                            x
-                    )
+                else
+                    ( ( curChar, basedata ), [], ( env, False ) )
+
+            newData =
+                if basedata.state /= GameBegin then
+                    List.map
+                        (\x ->
+                            if x.position == basedata.curSelf && x.hp /= 0 then
+                                newChar
+
+                            else
+                                x
+                        )
+                        posChanged
+
+                else
                     posChanged
 
-            else
-                posChanged
-
-        interfaceMsg =
-            [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
-    in
-    ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+            interfaceMsg =
+                [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
+        in
+        ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -237,6 +241,12 @@ updaterec env msg data basedata =
 
         Defeated ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )
+
+        BeginDialogue _ ->
+            ( ( data, { basedata | isStopped = True } ), [], env )
+
+        CloseDialogue ->
+            ( ( data, { basedata | isStopped = False } ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

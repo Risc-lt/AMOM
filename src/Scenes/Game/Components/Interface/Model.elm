@@ -135,9 +135,9 @@ handleCheckTrigger : Data -> BaseData -> List TriggerConditions -> List (Msg Str
 handleCheckTrigger data basedata triggers =
     let
         maybeTrigger =
-            List.filter (\x -> x /= -1) 
-                <| List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
-            
+            List.filter (\x -> x /= -1) <|
+                List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
+
         msg =
             List.map (\x -> Other ( "Dialogue", BeginDialogue x )) maybeTrigger
     in
@@ -176,10 +176,10 @@ updaterec env msg data basedata =
 
         CheckIsTriggered triggerList ->
             let
-                msg =
+                newMsg =
                     handleCheckTrigger data basedata triggerList
             in
-            ( ( data, basedata ), msg, env )
+            ( ( data, basedata ), newMsg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

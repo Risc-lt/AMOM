@@ -10,8 +10,9 @@ import Canvas
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (GlobalData)
+import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
@@ -36,23 +37,27 @@ init env initMsg =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        KeyDown key ->
+            if key == 13 then
+                let
+                    curDia =
+                        data.curDialogue
+                in
+                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        NewDialogueMsg newDialogue ->
+        BeginDialogue id ->
             let
-                newSpeaker =
-                    newDialogue.speaker
-
-                newContent =
-                    newDialogue.content
-
-                state =
-                    True
-
                 nextDialogue =
                     Maybe.withDefault
                         { frameName = "dialogue_frame"
@@ -63,25 +68,26 @@ updaterec env msg data basedata =
                         , isSpeaking = False
                         , content = [ "Hello!", "Thank you!" ]
                         , textPos = ( 880, 800 )
+                        , id = 0
                         }
                     <|
                         List.head <|
-                            List.filter (\dia -> dia.speaker == newSpeaker && dia.content == newContent) data.remainDiaList
+                            List.filter (\dia -> dia.id == id) data.remainDiaList
 
                 remainingDialogues =
-                    List.filter (\dia -> dia.speaker /= newSpeaker || dia.content /= newContent) data.remainDiaList
+                    List.filter (\dia -> dia.id /= id) data.remainDiaList
             in
-            ( ( { data | curDialogue = { nextDialogue | isSpeaking = state }, remainDiaList = remainingDialogues }, basedata ), [], env )
-
-        CloseDialogue ->
-            let
-                curDia =
-                    data.curDialogue
-
-                nextDia =
-                    { curDia | isSpeaking = False }
-            in
-            ( ( { data | curDialogue = nextDia }, basedata ), [], env )
+            ( ( { data
+                    | curDialogue = { nextDialogue | isSpeaking = True }
+                    , remainDiaList = remainingDialogues
+                }
+              , basedata
+              )
+            , [ Other ( "Self", BeginDialogue id )
+              , Other ( "Enemy", BeginDialogue id )
+              ]
+            , env
+            )
 
         _ ->
             ( ( data, basedata ), [], env )

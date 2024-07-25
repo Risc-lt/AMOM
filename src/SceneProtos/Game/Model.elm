@@ -1,4 +1,4 @@
-module SceneProtos.Game.Model exposing (scene)
+module SceneProtos.Game.Model exposing (genScene)
 
 {-| Scene configuration module
 
@@ -9,22 +9,23 @@ module SceneProtos.Game.Model exposing (scene)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (Env, addCommonData)
-import Messenger.Scene.LayeredScene exposing (LayeredSceneInit, LayeredSceneSettingsFunc, genLayeredScene)
+import Messenger.Scene.LayeredScene exposing (LayeredSceneLevelInit, LayeredSceneProtoInit, LayeredSceneSettingsFunc, genLayeredScene, initCompose)
 import Messenger.Scene.Scene exposing (SceneStorage)
+import SceneProtos.Game.Init exposing (InitData)
 import SceneProtos.Game.Play.Model as Play
 import SceneProtos.Game.SceneBase exposing (..)
 
-
-commonDataInit : Env () UserData -> Maybe SceneMsg -> SceneCommonData
+    
+commonDataInit : Env () UserData -> Maybe (InitData SceneMsg) -> SceneCommonData
 commonDataInit _ _ =
     { gameover = False }
 
 
-init : LayeredSceneInit SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
-init env msg =
+init : LayeredSceneProtoInit SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg (InitData SceneMsg)
+init env data =
     let
         cd =
-            commonDataInit env msg
+            commonDataInit env data
 
         envcd =
             addCommonData cd env
@@ -44,6 +45,6 @@ settings _ _ _ =
 
 {-| Scene generator
 -}
-scene : SceneStorage UserData SceneMsg
-scene =
-    genLayeredScene init settings
+genScene : LayeredSceneLevelInit UserData SceneMsg (InitData SceneMsg) -> SceneStorage UserData SceneMsg
+genScene initd =
+    genLayeredScene (initCompose init initd) settings

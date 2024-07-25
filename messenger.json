@@ -10,6 +10,12 @@
         ]
     },
     "scenes": {
+        "SampleScene": [],
+        "Level1": [],
+        "Level2": [],
+        "Level3": []
+    },
+    "sceneprotos": {
         "Game": {
             "components": {
                 "Components": [
@@ -18,16 +24,14 @@
                     "Interface",
                     "Special",
                     "Dialogue",
-                    "Buff"
+                    "Buff",
+                    "StoryTrigger"
                 ]
             },
             "layers": [
                 "Play"
             ]
         },
-        "SampleScene": []
-    },
-    "sceneprotos": {
         "Story": {
             "raw": false,
             "components": {
@@ -44,10 +48,6 @@
             "layers": [
                 "Main"
             ]
-        },
-        "Game": {
-            "raw": false,
-            "layers": []
         }
     }
 }

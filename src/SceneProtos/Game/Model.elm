@@ -15,7 +15,7 @@ import SceneProtos.Game.Init exposing (InitData)
 import SceneProtos.Game.Play.Model as Play
 import SceneProtos.Game.SceneBase exposing (..)
 
-    
+
 commonDataInit : Env () UserData -> Maybe (InitData SceneMsg) -> SceneCommonData
 commonDataInit _ _ =
     { gameover = False }

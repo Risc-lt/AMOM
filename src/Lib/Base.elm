@@ -1,7 +1,7 @@
 module Lib.Base exposing (SceneMsg(..))
 
-import SceneProtos.Story.Init as StoryInit
 import SceneProtos.Game.Init as GameInit
+import SceneProtos.Story.Init as StoryInit
 
 
 {-|

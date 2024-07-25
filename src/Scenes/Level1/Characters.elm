@@ -131,5 +131,28 @@ genSelf position time name baseAttributes baseEleResistance skills =
 -}
 selfInitData : Int -> List Self
 selfInitData time =
-    [ wenderd time
-    ]
+    let
+        default =
+            List.map 
+                (\p -> 
+                    genSelf p time "" defaultAttributes defaultEleResistance []
+                )
+                (List.range 1 6)
+
+        selfs = 
+            [ wenderd time
+            , bruce time
+            , bulingze time
+            , bithif time
+            ]
+    in
+    List.filter 
+        (\d -> 
+            List.all 
+                (\s -> 
+                    s.position /= d.position
+                )
+                selfs
+        )
+        default 
+            ++ selfs

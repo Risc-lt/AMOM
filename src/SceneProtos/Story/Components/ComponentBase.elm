@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, CharAction(..))
 
 import SceneProtos.Story.Components.Bithif.Init as Bithif
 import SceneProtos.Story.Components.Bruce.Init as Bruce
@@ -6,6 +6,7 @@ import SceneProtos.Story.Components.Bulingze.Init as Bulingze
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.Dialogue.Init as Dialogue
 import SceneProtos.Story.Components.Wenderd.Init as Wendered
+import Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..))
 
 
 {-|
@@ -21,7 +22,10 @@ type ComponentMsg
     | NextDialogue Dialogue.CreateInitData
     | CloseDialogue
     | NewDialogSequenceMsg DialogSequenceDeliver
-    | NewCharSequenceMsg CharSequenceDeliver
+    | NewCharSequenceMsg InitCharSequenceDeliver
+    | UpdateCharSequenceMsg CharSequenceDeliver
+    | VanishCharSequenceMsg
+    | CameraSequenceMsg CharAction
     | CameraMsg ( Float, Float )
     | NewWenderdMsg ( Float, Float )
     | VanishWenderdMsg
@@ -47,6 +51,14 @@ type alias ComponentTarget =
 type alias BaseData =
     ()
 
+type CharAction
+    = MoveLeft Float
+    | MoveUp Float
+    | MoveDown Float
+    | MoveRight Float
+    | Still
+
+
 type alias DialogSequenceDeliver =
     { speaker : String
     , content : List String
@@ -54,15 +66,24 @@ type alias DialogSequenceDeliver =
     , nextTar : List String
     }
 
-type CharAction
-    = MoveLeft Float
-    | MoveUp Float
-    | MoveDown Float
-    | MoveRight Float
+type alias Object =
+    { standingFigure : String
+    , movingSheet : String
+    }
+
+type alias InitCharSequenceDeliver =
+    { object : Object
+    , id : Int
+    , action : CharAction
+    , nextMsg : List ComponentMsg
+    , nextTar : List String 
+    , position : (Float, Float)
+    }
 
 type alias CharSequenceDeliver =
-    { name : String
+    { object : Object
+    , id : Int
     , action : CharAction
-    , nextMsg : ComponentMsg
+    , nextMsg : List ComponentMsg
     , nextTar : List String 
     }

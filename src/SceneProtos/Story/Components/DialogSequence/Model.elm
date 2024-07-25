@@ -89,9 +89,9 @@ update env evnt data basedata =
                     if newMsg == Just (NullComponentMsg) then
                         ( ( { data | timer = 0 }, basedata ), [], ( env, False ) )
                     else
-                        ( ( { data | timer = 0, isSpeaking = False }, basedata ), (List.map (\item -> Other item) msgList), ( env, False ) ) --need Msg sent!
+                        ( ( { data | timer = 0, isSpeaking = False }, basedata ), (List.map (\item -> Other item) msgList), ( env, False ) )
 
-                    ( ( { data | timer = 0, isSpeaking = False }, basedata ), [  ], ( env, False ) )
+                    --( ( { data | timer = 0, isSpeaking = False }, basedata ), [  ], ( env, False ) )
             in
                 if notOver then
                     ( ( { data | timer = newTimer }, basedata ), [], ( env, False ) )
@@ -208,7 +208,7 @@ contentToView ( index, text ) env data lineHeight =
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "DialogSequence" ++ data.speaker
+    tar == "DialogSequence"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

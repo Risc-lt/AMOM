@@ -49,7 +49,7 @@ emptyInitData =
 
 
 defaultDialogue : Dialogue
-defaultDialogue = 
+defaultDialogue =
     { frameName = "dialogue_frame"
     , framePos = ( 0, 500 )
     , speaker = ""
@@ -57,6 +57,6 @@ defaultDialogue =
     , font = "Comic Sans MS"
     , isSpeaking = False
     , content = []
-    , textPos = ( 880, 800 )
+    , textPos = ( 480, 700 )
     , id = ( 0, 0 )
     }

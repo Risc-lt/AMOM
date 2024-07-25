@@ -20,8 +20,8 @@ import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
 import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (HealthStatus(..), TriggerConditions(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..), HealthStatus(..))
 import String exposing (startsWith)
 
 

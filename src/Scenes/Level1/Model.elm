@@ -26,8 +26,8 @@ import SceneProtos.Game.Components.StoryTrigger.Model as STri
 import SceneProtos.Game.Init exposing (InitData)
 import SceneProtos.Game.Model exposing (genScene)
 import Scenes.Level1.Characters exposing (enemyInitData, selfInitData)
+import Scenes.Level1.Plots exposing (dialogueInitData, triggerInitData)
 import Time
-import Scenes.Level1.Plots exposing (dialogueInitData)
 
 
 init : RawSceneProtoLevelInit UserData SceneMsg (InitData SceneMsg)
@@ -52,7 +52,7 @@ initData env msg =
         , Self.component (Init <| SelfInit <| selfInit)
         , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit)
         , Dia.component (Init <| InitDialogueMsg <| dialogueInitData)
-        , STri.component (Init <| TriggerInit <| STriMsg.emptyInitData)
+        , STri.component (Init <| TriggerInit <| triggerInitData)
         ]
     , level = "Level1"
     }

@@ -1,4 +1,4 @@
-module Scenes.Game.Play.Model exposing (layer)
+module SceneProtos.Game.Play.Model exposing (layer)
 
 {-| Layer configuration module
 

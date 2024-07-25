@@ -1,4 +1,4 @@
-module Scenes.Game.Components.GenAttributes exposing (..)
+module SceneProtos.Game.Components.GenAttributes exposing (..)
 
 import SceneProtos.Game.Components.GenRandom exposing (..)
 

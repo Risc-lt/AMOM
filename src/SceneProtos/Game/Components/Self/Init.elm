@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Self.Init exposing
+module SceneProtos.Game.Components.Self.Init exposing
     ( InitData
     , Self, State(..), defaultSelf, emptyInitData
     )

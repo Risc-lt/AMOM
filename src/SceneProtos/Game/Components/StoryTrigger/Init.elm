@@ -1,4 +1,4 @@
-module Scenes.Game.Components.StoryTrigger.Init exposing
+module SceneProtos.Game.Components.StoryTrigger.Init exposing
     ( InitData
     , TriggerConditions, emptyInitData
     )

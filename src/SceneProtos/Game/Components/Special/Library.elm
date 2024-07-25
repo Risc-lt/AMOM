@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Special.Library exposing (..)
+module SceneProtos.Game.Components.Special.Library exposing (..)
 
 {-| Skill library
 

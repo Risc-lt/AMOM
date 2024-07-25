@@ -1,4 +1,4 @@
-module Scenes.Game.Play.Attack exposing (judgeAttack)
+module SceneProtos.Game.Play.Attack exposing (judgeAttack)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

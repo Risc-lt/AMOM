@@ -1,4 +1,4 @@
-module Scenes.Game.Play.Init exposing (InitData)
+module SceneProtos.Game.Play.Init exposing (InitData)
 
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent)

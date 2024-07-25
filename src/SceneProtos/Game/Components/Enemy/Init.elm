@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Enemy.Init exposing
+module SceneProtos.Game.Components.Enemy.Init exposing
     ( InitData
     , Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy
     )

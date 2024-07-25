@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Self.UpdateOne exposing (..)
+module SceneProtos.Game.Components.Self.UpdateOne exposing (..)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

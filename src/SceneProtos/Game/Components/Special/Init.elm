@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Special.Init exposing
+module SceneProtos.Game.Components.Special.Init exposing
     ( Skill
     , Buff(..), Element(..), Range(..), SpecialType(..), defaultEffect, defaultSkill
     )

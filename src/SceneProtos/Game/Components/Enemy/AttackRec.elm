@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Enemy.AttackRec exposing (..)
+module SceneProtos.Game.Components.Enemy.AttackRec exposing (..)
 
 import Energy exposing (Energy)
 import Lib.Base exposing (SceneMsg)

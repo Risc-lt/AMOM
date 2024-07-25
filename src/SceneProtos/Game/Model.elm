@@ -1,4 +1,4 @@
-module Scenes.Game.Model exposing (scene)
+module SceneProtos.Game.Model exposing (scene)
 
 {-| Scene configuration module
 

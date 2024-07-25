@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Interface.RenderHelper exposing (..)
+module SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)

@@ -1,4 +1,4 @@
-module Scenes.Game.SceneBase exposing
+module SceneProtos.Game.SceneBase exposing
     ( LayerMsg(..)
     , LayerTarget
     , SceneCommonData

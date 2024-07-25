@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Interface.Sequence exposing (..)
+module SceneProtos.Game.Components.Interface.Sequence exposing (..)
 
 import Canvas
 import Lib.UserData exposing (UserData)

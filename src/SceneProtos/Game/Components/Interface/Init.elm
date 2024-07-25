@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Interface.Init exposing
+module SceneProtos.Game.Components.Interface.Init exposing
     ( InitData
     , defaultUI, emptyInitData
     )

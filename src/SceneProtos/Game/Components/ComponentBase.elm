@@ -1,4 +1,4 @@
-module Scenes.Game.Components.ComponentBase exposing
+module SceneProtos.Game.Components.ComponentBase exposing
     ( ActionMsg(..)
     , ActionSide(..)
     , ActionType(..)

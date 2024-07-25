@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Dialogue.Init exposing (..)
+module SceneProtos.Game.Components.Dialogue.Init exposing (..)
 
 
 type alias InitData =

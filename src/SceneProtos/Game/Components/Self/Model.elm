@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Self.Model exposing (component)
+module SceneProtos.Game.Components.Self.Model exposing (component)
 
 {-| Component model
 

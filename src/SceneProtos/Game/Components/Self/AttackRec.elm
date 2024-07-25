@@ -1,4 +1,4 @@
-module Scenes.Game.Components.Self.AttackRec exposing (..)
+module SceneProtos.Game.Components.Self.AttackRec exposing (..)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

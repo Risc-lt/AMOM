@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Interface.Model exposing (component)
 
 import Array exposing (get)
 import Canvas
+import Current exposing (Current)
 import Debug exposing (toString)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -154,15 +155,35 @@ updaterec env msg data basedata =
             let
                 newQueue =
                     getQueue list data.enemies
+
+                numDifference =
+                    if List.length newQueue < List.length data.queue then
+                        List.length newQueue - List.length data.queue - 1
+
+                    else
+                        0
             in
-            ( ( { data | selfs = list, queue = newQueue }, basedata ), [], env )
+            ( ( { data | selfs = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
+            , []
+            , env
+            )
 
         ChangeStatus (ChangeEnemies list) ->
             let
                 newQueue =
                     getQueue data.selfs list
+
+                numDifference =
+                    if List.length newQueue < List.length data.queue then
+                        List.length newQueue - List.length data.queue - 1
+
+                    else
+                        0
             in
-            ( ( { data | enemies = list, queue = newQueue }, basedata ), [], env )
+            ( ( { data | enemies = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
+            , []
+            , env
+            )
 
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )

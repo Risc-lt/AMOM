@@ -191,7 +191,7 @@ wolves time =
 
         baseEleResistance =
             { waterResistance = 10
-            , fireResistance = 5
+            , fireResistance = 8
             , airResistance = 15
             , earthResistance = 15
             }

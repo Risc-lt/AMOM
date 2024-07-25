@@ -50,7 +50,7 @@ emptyInitData =
 
 defaultDialogue : Dialogue
 defaultDialogue = 
-    { frameName = ""
+    { frameName = "dialogue_frame"
     , framePos = ( 0, 500 )
     , speaker = ""
     , speakerPos = ( -20, 680 )

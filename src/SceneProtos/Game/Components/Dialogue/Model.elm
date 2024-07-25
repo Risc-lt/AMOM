@@ -21,6 +21,7 @@ import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import SceneProtos.Game.Components.Dialogue.Init exposing (defaultDialogue)
+import Messenger.Render.Text exposing (renderTextWithColorStyle)
 
 
 type alias Data =
@@ -128,7 +129,16 @@ contentToView ( index, text ) env data =
             72
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
+        [ renderTextWithColorStyle
+            env.globalData.internalData 
+            60 
+            text 
+            data.curDialogue.font 
+            Color.black 
+            ""
+            ( Tuple.first data.curDialogue.textPos
+            , toFloat index * lineHeight + Tuple.second data.curDialogue.textPos 
+            )
         ]
 
 

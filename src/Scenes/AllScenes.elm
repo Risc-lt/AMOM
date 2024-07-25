@@ -16,8 +16,8 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.Level1.Model as Level1
-import Scenes.Level2.Model as Level2
-import Scenes.Level3.Model as Level3
+{-import Scenes.Level2.Model as Level2
+import Scenes.Level3.Model as Level3-}
 import Scenes.SampleScene.Model as SampleScene
 
 
@@ -31,6 +31,6 @@ allScenes =
     Dict.fromList
         [ ( "SampleScene", SampleScene.scene )
         , ( "Level1", Level1.scene )
-        , ( "Level2", Level2.scene )
-        , ( "Level3", Level3.scene )
+        {-, ( "Level2", Level2.scene )
+        , ( "Level3", Level3.scene )-}
         ]

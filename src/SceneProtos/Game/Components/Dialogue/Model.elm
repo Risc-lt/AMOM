@@ -53,13 +53,15 @@ update env evnt data basedata =
                                 )
                                 data.remainDiaList
 
-                    nextDia =
+                    ( nextDia, msg ) =
                         case maybeNextDia of
                             Just dia ->
-                                { dia | isSpeaking = True }
+                                ( { dia | isSpeaking = True }, [] )
 
                             _ ->
-                                { curDia | isSpeaking = False }
+                                ( { curDia | isSpeaking = False }
+                                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                                )
 
                     remainingDialogues =
                         List.filter
@@ -69,7 +71,7 @@ update env evnt data basedata =
                             data.remainDiaList
                 in
                 ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
-                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                , msg
                 , ( env, False )
                 )
 

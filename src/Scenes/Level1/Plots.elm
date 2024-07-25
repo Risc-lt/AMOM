@@ -8,16 +8,30 @@ import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDial
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (HealthStatus(..), TriggerConditions(..))
 
 
-startDialogue : Dialogue
-startDialogue =
+start : Dialogue
+start =
     let
         content =
             [ "Bulingze:"
             , "Are you all ready to fight?"
-            , "Press Enter to proceed to the next dialog"
+            , "Press Enter to proceed to the next dialog."
             ]
     in
     genDialogue "head_magic" content ( 1, 1 )
+
+
+preparation : Dialogue
+preparation =
+    let
+        content =
+            [ "Bulingze:"
+            , "Start laying out our formation now!"
+            , "Press Enter to start the position arrangement,"
+            , "and press Enter again to start if you are done "
+            , "to start the battle!"
+            ]
+    in
+    genDialogue "head_magic" content ( 1, 2 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
@@ -33,7 +47,8 @@ dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ startDialogue
+        [ start
+        , preparation
         ]
     }
 

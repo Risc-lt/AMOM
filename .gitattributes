@@ -51,3 +51,5 @@ assets/character/Fight_frame_1.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/dialogue_1.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/dialogue_2.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/dialogue_3.jpg filter=lfs diff=lfs merge=lfs -text
+assets/character/sprite_sheet/fireball_sprite.png filter=lfs diff=lfs merge=lfs -text
+assets/character/battle_background.jpg filter=lfs diff=lfs merge=lfs -text

@@ -56,9 +56,11 @@ allTexture =
         , ( "symbol_magic", "assets/character/symbol_magic.png" )
         , ( "symbol_pharmacist", "assets/character/symbol_fan.png" )
         , ( "symbol_swordsman", "assets/character/symbol_sword.png" )
-        , ("dialogue_1","assets/character/dialogue_1.jpg")
-        , ("dialogue_2","assets/character/dialogue_2.jpg")
-        , ("dialogue_3","assets/character/dialogue_3.jpg")
+        , ( "dialogue_1", "assets/character/dialogue_1.jpg" )
+        , ( "dialogue_2", "assets/character/dialogue_2.jpg" )
+        , ( "dialogue_3", "assets/character/dialogue_3.jpg" )
+        , ( "battle_background", "assets/character/battle_background.jpg" )
+        , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png")
         ]
 
 
@@ -87,30 +89,95 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [{- ( "archer"
+        [( "fire_ball"
             , [ ( "1"
                 , { realStartPoint = ( 0, 0 )
-                  , realSize = ( 160, 160 )
+                  , realSize = ( 64, 64 )
                   }
                 )
               , ( "2"
-                , { realStartPoint = ( 160, 0 )
-                  , realSize = ( 160, 160 )
+                , { realStartPoint = ( 64, 0 )
+                  , realSize = ( 64, 64 )
                   }
                 )
               , ( "3"
-                , { realStartPoint = ( 0, 160 )
-                  , realSize = ( 160, 160 )
+                , { realStartPoint = ( 128, 0 )
+                  , realSize = ( 64, 64 )
                   }
                 )
               , ( "4"
-                , { realStartPoint = ( 160, 160 )
-                  , realSize = ( 160, 160 )
+                , { realStartPoint = ( 192, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "5"
+                , { realStartPoint = ( 256, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "6"
+                , { realStartPoint = ( 320, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "7"
+                , { realStartPoint = ( 384, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "8"
+                , { realStartPoint = ( 448, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "9"
+                , { realStartPoint = ( 512, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "10"
+                , { realStartPoint = ( 576, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "11"
+                , { realStartPoint = ( 640, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "12"
+                , { realStartPoint = ( 704, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "13"
+                , { realStartPoint = ( 768, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "14"
+                , { realStartPoint = ( 832, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "15"
+                , { realStartPoint = ( 896, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "16"
+                , { realStartPoint = ( 960, 0 )
+                  , realSize = ( 64, 64 )
+                  }
+                )
+              , ( "17"
+                , { realStartPoint = ( 1024, 0 )
+                  , realSize = ( 64, 64 )
                   }
                 )
               ]
-            ) as reference
-         -}
+            )
+
         ]
 
 

@@ -18,8 +18,10 @@ import SceneProtos.Story.Components.Wenderd.Init as Wendered
 -}
 type ComponentMsg
     = NewDialogueMsg (List Dialogue.CreateInitData)
-    | NextDialogue (Dialogue.CreateInitData)
+    | NextDialogue Dialogue.CreateInitData
     | CloseDialogue
+    | NewDialogSequenceMsg DialogSequenceDeliver
+    | NewCharSequenceMsg CharSequenceDeliver
     | CameraMsg ( Float, Float )
     | NewWenderdMsg ( Float, Float )
     | VanishWenderdMsg
@@ -44,3 +46,23 @@ type alias ComponentTarget =
 -}
 type alias BaseData =
     ()
+
+type alias DialogSequenceDeliver =
+    { speaker : String
+    , content : List String
+    , next : List ComponentMsg
+    , nextTar : List String
+    }
+
+type CharAction
+    = MoveLeft Float
+    | MoveUp Float
+    | MoveDown Float
+    | MoveRight Float
+
+type alias CharSequenceDeliver =
+    { name : String
+    , action : CharAction
+    , nextMsg : ComponentMsg
+    , nextTar : List String 
+    }

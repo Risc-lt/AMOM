@@ -11,6 +11,17 @@ import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions
 import SceneProtos.Game.Components.Dialogue.Init exposing (defaultDialogue)
 
 
+startDialogue : Dialogue
+startDialogue =
+    let
+        content =
+            [ "Are you all ready to fight?"
+            , "Press Enter to proceed to the next dialog" 
+            ]
+    in
+    genDialogue "head_magic" content ( 1, 1 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -23,5 +34,7 @@ genDialogue speaker content id =
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
-    , remainDiaList = []
+    , remainDiaList = 
+        [ startDialogue
+        ]
     }

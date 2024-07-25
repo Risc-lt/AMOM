@@ -27,6 +27,7 @@ import SceneProtos.Game.Init exposing (InitData)
 import SceneProtos.Game.Model exposing (genScene)
 import Scenes.Level1.Characters exposing (enemyInitData, selfInitData)
 import Time
+import Scenes.Level1.Plots exposing (dialogueInitData)
 
 
 init : RawSceneProtoLevelInit UserData SceneMsg (InitData SceneMsg)
@@ -50,7 +51,7 @@ initData env msg =
         [ Enemy.component (Init <| EnemyInit <| enemyInit)
         , Self.component (Init <| SelfInit <| selfInit)
         , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit)
-        , Dia.component (Init <| InitDialogueMsg <| DiaMsg.emptyInitData)
+        , Dia.component (Init <| InitDialogueMsg <| dialogueInitData)
         , STri.component (Init <| TriggerInit <| STriMsg.emptyInitData)
         ]
     , level = "Level1"

@@ -7,6 +7,10 @@
         ]
     },
     "scenes": {
+        "SampleScene": [],
+        "Level1": []
+    },
+    "sceneprotos": {
         "Game": {
             "components": {
                 "Components": [
@@ -23,9 +27,6 @@
                 "Play"
             ]
         },
-        "SampleScene": []
-    },
-    "sceneprotos": {
         "Story": {
             "raw": false,
             "components": {
@@ -42,10 +43,6 @@
             "layers": [
                 "Main"
             ]
-        },
-        "Game": {
-            "raw": false,
-            "layers": []
         }
     }
 }

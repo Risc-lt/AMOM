@@ -1,4 +1,4 @@
-module SceneProtos.Story.Main.Model exposing (layer)
+module SceneProtos.Story.StoryLayer.Model exposing (layer)
 
 {-| Layer configuration module
 
@@ -12,10 +12,11 @@ import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
-import Messenger.Component.Component exposing (AbstractComponent, updateComponents, viewComponents)
+import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
+import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
-import Messenger.Layer.LayerExtra exposing (Distributor)
+import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
@@ -29,7 +30,7 @@ type alias Data =
 init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
     case initMsg of
-        MainInitData data ->
+        StoryLayerInitData data ->
             Data data.components
 
         _ ->
@@ -46,16 +47,36 @@ handleComponentMsg env compmsg data =
             ( data, [], env )
 
 
+updateBasic : BasicUpdater Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg
+updateBasic env evt data =
+    ( data, [], ( env, False ) )
+
+
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
+    --if not env.commonData.gameover then
     let
-        ( comps1, msgs1, ( env1, block1 ) ) =
-            updateComponents env evt data.components
+        ( data1, lmsg1, ( env1, block1 ) ) =
+            updateBasic env evt data
 
-        ( data1, msgs2, env2 ) =
-            handleComponentMsgs env1 msgs1 { data | components = comps1 } [] handleComponentMsg
+        ( comps1, cmsgs1, ( env2, block2 ) ) =
+            updateComponentsWithBlock env1 evt block1 data1.components
+
+        ( data2, ( lmsg2, tocmsg ), env3 ) =
+            ( { data1 | components = comps1 }, ( [], [] ), env2 )
+
+        ( comps2, cmsgs2, env4 ) =
+            updateComponentsWithTarget env3 tocmsg data2.components
+
+        ( data3, lmsgs3, env5 ) =
+            handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
     in
-    ( data1, msgs2, ( env2, block1 ) )
+    ( data3, lmsgs3, ( env5, block2 ) )
+
+
+
+--else
+--( data, [], ( env, False ) )
 
 
 updaterec : LayerUpdateRec SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
@@ -68,6 +89,7 @@ view env data =
     Canvas.group
         []
         [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "background"
+        , viewComponents env data.components
         ]
 
 

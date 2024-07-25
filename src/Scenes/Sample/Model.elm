@@ -31,7 +31,7 @@ initData env msg =
     let
         objectBulingze =
             { standingFigure = "Bulingze"
-            , movingSheet = "Bulingze"
+            , movingSheet = "archer"
             }
 
         diaDeli =
@@ -57,11 +57,15 @@ initData env msg =
             , nextTar = [ "DialogueSequence" ]
             , position = ( 500, 500 )
             }
+
+        _ =
+            Debug.log "objectBulingze" objectBulingze
     in
     { objects =
-        [ Character.component (NewCharSequenceMsg <| diaBulingze)
+        [ Debug.log "a" Character.component (NewCharSequenceMsg <| diaBulingze)
+        , Debug.log "b" Dialogue.component NullComponentMsg
         ]
-    , order = "1"
+    , order = "Sample"
     }
 
 

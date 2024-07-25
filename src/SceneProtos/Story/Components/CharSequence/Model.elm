@@ -35,6 +35,13 @@ type alias Data =
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
+    let
+        newInitMsg =
+            initMsg
+
+        _ =
+            Debug.log "CharInitMsg" newInitMsg
+    in
     initOne env initMsg
 
 
@@ -59,6 +66,9 @@ initOne env initMsg =
 
                         MoveDown y ->
                             ( Tuple.first deliver.position, Tuple.second deliver.position + y )
+
+                _ =
+                    Debug.log "initoneFunction's Deliver" deliver
             in
             ( { standingFigure = deliver.object.standingFigure
               , movingSheet = deliver.object.movingSheet
@@ -118,8 +128,14 @@ update env evnt data basedata =
                 Still ->
                     data.position
 
+        _ =
+            Debug.log "newPosinUpdate" newPos
+
         newCurrentFrame =
             modBy 4 (data.currentFrame + 1) + 1
+
+        _ =
+            Debug.log "newCurrentFrameinUpdate" newCurrentFrame
 
         newDestination =
             if isReachedX data.position newPos data.destination && isReachedY data.position newPos data.destination then
@@ -150,6 +166,12 @@ update env evnt data basedata =
 
             else
                 ( ( { data | position = newPos, currentFrame = newCurrentFrame, destination = newDestination, action = newAct }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
+
+        _ =
+            Debug.log "sendMsginUpdate" msgList
+
+        -- _ =
+        --    Debug.log "curentframe" newCurrentFrame
     in
     case evnt of
         Tick dt ->
@@ -190,13 +212,13 @@ updaterec env msg data basedata =
     case msg of
         UpdateCharSequenceMsg deliver ->
             let
-                initPosition =
-                    data.position
-
                 newAct =
-                    deliver.action
+                    Debug.log "newAct" deliver.action
+
+                -- _ =
+                --      "CharRecMsg(Action)" newAct
             in
-            ( ( { data | position = initPosition, visible = True, action = newAct }, basedata ), [], env )
+            ( ( { data | visible = True, action = newAct }, basedata ), [], env )
 
         NewCharSequenceMsg deliver ->
             ( initOne env (NewCharSequenceMsg deliver), [], env )
@@ -222,8 +244,11 @@ updaterec env msg data basedata =
 
                         Still ->
                             data.destination
+
+                -- _ =
+                --      newDes
             in
-            ( ( { data | destination = newDes }, basedata ), [], env )
+            ( ( { data | destination = Debug.log "CharCameraMsg" newDes }, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -243,14 +268,18 @@ updatePos ( x, y ) dx dy =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.visible == True then
+    if data.visible then
         let
             newSprite =
-                --if not (data.action == Still) then
-                data.movingSheet ++ "." ++ String.fromInt data.currentFrame
+                "Bithif"
 
+            --    data.standingFigure
+            --if not (data.action == Still) then
+            --data.movingSheet ++ "." ++ String.fromInt data.currentFrame
             -- else
             --     data.standingFigure --testing
+            -- _ =
+            --     Debug.log "newSprite" newSprite
         in
         ( Canvas.group
             []

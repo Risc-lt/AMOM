@@ -39,6 +39,10 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         NewDialogSequenceMsg deliver ->
+            let
+                _ =
+                    Debug.log "DiaInitMsg:" initMsg
+            in
             ( { frameName = "dialogue_frame"
               , framePos = ( 720, 0 )
               , speaker = deliver.speaker
@@ -55,6 +59,10 @@ init env initMsg =
             )
 
         _ ->
+            let
+                _ =
+                    Debug.log "DiaInitNothingMsg:" initMsg
+            in
             ( { frameName = "dialogue_frame"
               , framePos = ( 720, 0 )
               , speaker = "Bithif"
@@ -63,7 +71,7 @@ init env initMsg =
               , isSpeaking = False
               , content = [ "What can I say, Man!" ]
               , textPos = ( 720, 1320 )
-              , nextTar = [ "" ]
+              , nextTar = [ " " ]
               , next = [ NullComponentMsg ]
               , timer = 0
               }
@@ -89,7 +97,7 @@ update env evnt data basedata =
                     data.nextTar
 
                 msgList =
-                    List.map2 Tuple.pair newTar data.next
+                    Debug.log "DiaMsgList(Update)" List.map2 Tuple.pair newTar data.next
 
                 sendMsg =
                     if newMsg == Just NullComponentMsg then
@@ -98,6 +106,8 @@ update env evnt data basedata =
                     else
                         ( ( { data | timer = 0, isSpeaking = False }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
 
+                -- _ =
+                --      msgList
                 --( ( { data | timer = 0, isSpeaking = False }, basedata ), [  ], ( env, False ) )
             in
             if notOver then
@@ -123,6 +133,13 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         NewDialogSequenceMsg deliver ->
+            let
+                newDeliver =
+                    deliver
+
+                _ =
+                    Debug.log "DiaRecMsg" newDeliver
+            in
             ( ( { frameName = "dialogue_frame"
                 , framePos = ( 720, 0 )
                 , speaker = deliver.speaker
@@ -150,7 +167,7 @@ updaterec env msg data basedata =
                 , isSpeaking = False
                 , content = [ "What can I say, Man!" ]
                 , textPos = ( 720, 1320 )
-                , nextTar = [ "" ]
+                , nextTar = [ " " ]
                 , next = [ NullComponentMsg ]
                 , timer = 0
                 }
@@ -198,6 +215,9 @@ view env data basedata =
 
             renderableTexts =
                 List.map (\textWithIndex -> contentToView textWithIndex env data lineHeight) (List.indexedMap Tuple.pair data.content)
+
+            _ =
+                Debug.log "lineHeightView" lineHeight
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.framePos ( 1980, 0 ) data.frameName

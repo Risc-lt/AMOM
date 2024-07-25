@@ -82,30 +82,31 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [{- ( "archer"
-            , [ ( "1"
-                , { realStartPoint = ( 0, 0 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "2"
-                , { realStartPoint = ( 160, 0 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "3"
-                , { realStartPoint = ( 0, 160 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "4"
-                , { realStartPoint = ( 160, 160 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              ]
-            ) as reference
-         -}
+        [ ( "archer"
+          , [ ( "1"
+              , { realStartPoint = ( 0, 0 )
+                , realSize = ( 160, 160 )
+                }
+              )
+            , ( "2"
+              , { realStartPoint = ( 160, 0 )
+                , realSize = ( 160, 160 )
+                }
+              )
+            , ( "3"
+              , { realStartPoint = ( 0, 160 )
+                , realSize = ( 160, 160 )
+                }
+              )
+            , ( "4"
+              , { realStartPoint = ( 160, 160 )
+                , realSize = ( 160, 160 )
+                }
+              )
+            ]
+          )
+
+        --as reference
         ]
 
 

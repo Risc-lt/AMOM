@@ -6,7 +6,7 @@ module Scenes.Level1.Characters exposing (..)
 -}
 
 
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
@@ -102,6 +102,8 @@ bithif time =
     genSelf 5 time "Bithif" baseAttributes baseEleResistance
         [ arcaneBeam
         , compounding
+        , { magicWater | cost = 1 }
+        , { poison | cost = 1 }
         ]
 
 
@@ -118,7 +120,7 @@ genSelf position time name baseAttributes baseEleResistance skills =
     , extendValues =
         genExtendValues
             baseAttributes
-            (time + 1)
+            (time + position)
             baseEleResistance.waterResistance
             baseEleResistance.fireResistance
             baseEleResistance.airResistance
@@ -156,3 +158,76 @@ selfInitData time =
         )
         default 
             ++ selfs
+
+
+wolves : Int -> List Enemy
+wolves time =
+    let
+        baseAttributes =
+            { strength = 30
+            , dexterity = 25
+            , constitution = 25
+            , intelligence = 10
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 5
+            , airResistance = 15
+            , earthResistance = 15
+            }
+    in
+    List.map 
+        (\p -> 
+            genEnemy p time "Wild Wolf" baseAttributes baseEleResistance []
+        )
+        (List.range 7 12)
+
+
+genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
+genEnemy position time name baseAttributes baseEleResistance skills =
+    { defaultEnemy
+    | name = name
+    , x = if position <= 9 then 230 else 100
+    , y = toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
+    , position = position
+    , hp = genHp baseAttributes
+    , mp = genMp baseAttributes
+    , attributes = baseAttributes
+    , extendValues =
+        genExtendValues
+            baseAttributes
+            (time + position)
+            baseEleResistance.waterResistance
+            baseEleResistance.fireResistance
+            baseEleResistance.airResistance
+            baseEleResistance.earthResistance
+    , skills = skills
+    }
+
+
+{-| Init data for selfs
+-}
+enemyInitData : Int -> List Enemy
+enemyInitData time =
+    let
+        default =
+            List.map 
+                (\p -> 
+                    genEnemy p time "" defaultAttributes defaultEleResistance []
+                )
+                (List.range 1 6)
+
+        enemies = 
+            wolves time
+    in
+    List.filter 
+        (\d -> 
+            List.all 
+                (\s -> 
+                    s.position /= d.position
+                )
+                enemies
+        )
+        default 
+            ++ enemies

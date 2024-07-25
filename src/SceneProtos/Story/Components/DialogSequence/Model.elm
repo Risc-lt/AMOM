@@ -109,6 +109,37 @@ isNotOver timer terminal =
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
+    case msg of
+        NewDialogSequenceMsg deliver ->
+            (( { frameName = "dialogue_frame"
+            , framePos = ( 720, 0 )
+            , speaker = deliver.speaker
+            , speakerPos = ( 720, 0 )
+            , font = "Comic Sans MS"
+            , isSpeaking = True
+            , content = deliver.content
+            , textPos = ( 720, 1320 )
+            , nextTar = deliver.nextTar
+            , next = deliver.next
+            , timer = 0
+            }
+            , ()), [], env
+            )
+        _ ->
+            (( { frameName = "dialogue_frame"
+            , framePos = ( 720, 0 )
+            , speaker = "Bithif"
+            , speakerPos = ( 720, 0 )
+            , font = "Comic Sans MS"
+            , isSpeaking = False
+            , content = ["What can I say, Man!"]
+            , textPos = ( 720, 1320 )
+            , nextTar = [""]
+            , next = [NullComponentMsg]
+            , timer = 0
+            }
+            , ()), [], env
+            )
     -- case msg of
     --     NewDialogSequenceMsg newDialogue ->
     --         let
@@ -140,7 +171,7 @@ updaterec env msg data basedata =
     --         ( ( { data | isSpeaking = False }, basedata ), [], env )
 
     --     _ ->
-            ( ( data, basedata ), [], env )
+    --        ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

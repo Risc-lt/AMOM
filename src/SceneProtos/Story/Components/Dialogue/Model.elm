@@ -48,6 +48,7 @@ init env initMsg =
             let
                 initDialogue =
                     initData
+
                 initCommonElement =
                     { frameName = "dialogue_frame"
                     , framePos = ( 720, 0 )
@@ -56,11 +57,13 @@ init env initMsg =
                     , isSpeaking = True
                     , textPos = ( 720, 1320 )
                     }
-                data = 
+
+                data =
                     { thisDialogue = initDialogue
-                    , commonElement = initCommonElement }
+                    , commonElement = initCommonElement
+                    }
             in
-                ( data, () )
+            ( data, () )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -72,38 +75,34 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     ( ( data, basedata ), [], env )
 
-    -- case msg of
-    --     NewDialogueMsg newDialogue ->
-    --         let
-    --             newSpeaker =
-    --                 newDialogue.speaker
 
-    --             newContent =
-    --                 newDialogue.content
 
-    --             state =
-    --                 True
-    --         in
-    --         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+-- case msg of
+--     NewDialogueMsg newDialogue ->
+--         let
+--             newSpeaker =
+--                 newDialogue.speaker
+--             newContent =
+--                 newDialogue.content
+--             state =
+--                 True
+--         in
+--         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+--     NextDialogue newDialogue ->
+--         let
+--             newSpeaker =
+--                 newDialogue.speaker
+--             newContent =
+--                 newDialogue.content
+--             state =
+--                 True
+--         in
+--         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
+--     CloseDialogue ->
+--         ( ( { data | isSpeaking = False }, basedata ), [], env )
+--     _ ->
+--         ( ( data, basedata ), [], env )
 
-    --     NextDialogue newDialogue ->
-    --         let
-    --             newSpeaker =
-    --                 newDialogue.speaker
-
-    --             newContent =
-    --                 newDialogue.content
-
-    --             state =
-    --                 True
-    --         in
-    --         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
-
-    --     CloseDialogue ->
-    --         ( ( { data | isSpeaking = False }, basedata ), [], env )
-
-    --     _ ->
-    --         ( ( data, basedata ), [], env )
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
@@ -113,7 +112,9 @@ view env data basedata =
                 30
 
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data.commonElement lineHeight) data.thisDialogue--(List.indexedMap Tuple.pair data.thisDialogue)
+                List.map (\textWithIndex -> contentToView textWithIndex env data.commonElement lineHeight) data.thisDialogue
+
+            --(List.indexedMap Tuple.pair data.thisDialogue)
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.framePos ( 1980, 0 ) data.frameName

@@ -20,7 +20,8 @@
                 "Play"
             ]
         },
-        "SampleScene": []
+        "SampleScene": [],
+        "Sample": []
     },
     "sceneprotos": {
         "Story": {

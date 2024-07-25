@@ -15,7 +15,8 @@ import SceneProtos.Story.Components.Background.Model as Background
 import SceneProtos.Story.Components.Bithif.Model as Bithif
 import SceneProtos.Story.Components.Bruce.Model as Bruce
 import SceneProtos.Story.Components.Bulingze.Model as Bulingze
-import SceneProtos.Story.Components.Dialogue.Model as Dialogue
+import SceneProtos.Story.Components.CharSequence.Model as Character
+import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
 import SceneProtos.Story.Components.Wenderd.Model as Wendered
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Main.Model as Main

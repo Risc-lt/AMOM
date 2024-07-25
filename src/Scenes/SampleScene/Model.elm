@@ -18,7 +18,6 @@ import SceneProtos.Story.Components.Bithif.Model as Bithif
 import SceneProtos.Story.Components.Bruce.Model as Bruce
 import SceneProtos.Story.Components.Bulingze.Model as Bulingze
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
-import SceneProtos.Story.Components.Dialogue.Model as Dialogue
 import SceneProtos.Story.Components.Wenderd.Model as Wenderd
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)

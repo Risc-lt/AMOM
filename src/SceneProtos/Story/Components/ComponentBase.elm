@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, CharAction(..))
+module SceneProtos.Story.Components.ComponentBase exposing (BaseData, CharAction(..), CharSequenceDeliver, ComponentMsg(..), ComponentTarget)
 
 import SceneProtos.Story.Components.Bithif.Init as Bithif
 import SceneProtos.Story.Components.Bruce.Init as Bruce
@@ -51,6 +51,7 @@ type alias ComponentTarget =
 type alias BaseData =
     ()
 
+
 type CharAction
     = MoveLeft Float
     | MoveUp Float
@@ -66,24 +67,27 @@ type alias DialogSequenceDeliver =
     , nextTar : List String
     }
 
+
 type alias Object =
     { standingFigure : String
     , movingSheet : String
     }
+
 
 type alias InitCharSequenceDeliver =
     { object : Object
     , id : Int
     , action : CharAction
     , nextMsg : List ComponentMsg
-    , nextTar : List String 
-    , position : (Float, Float)
+    , nextTar : List String
+    , position : ( Float, Float )
     }
+
 
 type alias CharSequenceDeliver =
     { object : Object
     , id : Int
     , action : CharAction
     , nextMsg : List ComponentMsg
-    , nextTar : List String 
+    , nextTar : List String
     }

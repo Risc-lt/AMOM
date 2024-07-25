@@ -15,6 +15,7 @@ import Messenger.GeneralModel exposing (Msg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..), initBaseData)
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (InitData)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
 
 
 type alias Data =
@@ -47,7 +48,16 @@ updaterec env msg data basedata =
         SwitchTurn _ ->
             let
                 newData =
-                    List.map (\x -> { x | frameNum = x.frameNum - 1 }) data
+                    List.map 
+                        (\( t, i ) -> 
+                            case t of
+                                FrameTrigger num ->
+                                    ( FrameTrigger (num - 1), i )
+
+                                _ ->
+                                    ( t, i )
+                        ) 
+                        data
             in
             ( ( newData, basedata ), [], env )
 
@@ -55,7 +65,7 @@ updaterec env msg data basedata =
             let
                 newData =
                     List.filter
-                        (\x -> x.id /= id)
+                        (\( _, i ) -> i /= id)
                         data
             in
             ( ( newData, basedata ), [], env )

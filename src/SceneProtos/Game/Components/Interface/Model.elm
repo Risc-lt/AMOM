@@ -20,8 +20,8 @@ import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
 import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..), )
 
 
 type alias Data =
@@ -94,25 +94,17 @@ sendMsg data basedata =
             ( basedata.state, [] )
 
 
-checkOneTrigger : TriggerConditions -> Data -> BaseData -> Int
-checkOneTrigger trigger data basedata =
-    case trigger.side of
-        "Enemy" ->
-            if
-                (trigger.frameNum
-                    <= 0
-                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
-                    && trigger.gameState
-                    == toString basedata.state
-                )
-                    || (trigger.id == 101 && List.length data.enemies < 6)
-            then
-                trigger.id
+checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> Int
+checkOneTrigger ( trigger, id ) data basedata =
+    case trigger of
+        FrameTrigger num ->
+            if num <= 0 then
+                id
 
             else
                 -1
 
-        "Self" ->
+        HpTrigger  ->
             if
                 trigger.frameNum
                     <= 0
@@ -129,7 +121,7 @@ checkOneTrigger trigger data basedata =
             -1
 
 
-handleCheckTrigger : Data -> BaseData -> List TriggerConditions -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
+handleCheckTrigger : Data -> BaseData -> List ( TriggerConditions, Int ) -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
 handleCheckTrigger data basedata triggers =
     let
         maybeTrigger =

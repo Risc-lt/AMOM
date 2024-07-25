@@ -11,7 +11,6 @@ module Scenes.Game.Components.ComponentBase exposing
     )
 
 import Json.Decode exposing (string)
-import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)

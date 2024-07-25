@@ -3,7 +3,10 @@
     "template_repo": "https://github.com/linsyking/messenger-templates",
     "assets": {
         "character": [
-            "assets/character/character.png"
+            "assets/character/background"
+            , "assets/character/chartlet"
+            , "assets/character/role"
+            , "assets/character/sprite_sheet"
         ]
     },
     "scenes": {

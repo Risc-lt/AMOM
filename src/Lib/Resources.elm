@@ -41,21 +41,26 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "background", "assets/character/background_1.jpg" )
-        , ( "Start", "assets/character/Start.jpg" )
-        , ( "Fight_frame", "assets/character/Fight_frame_1.jpg" )
-        , ( "Wild Wolf", "assets/character/wolf.png" )
-        , ( "Bulingze", "assets/character/magic.png" )
-        , ( "Bruce", "assets/character/archer.png" )
-        , ( "Bithif", "assets/character/pharmacist.png" )
-        , ( "Wenderd", "assets/character/swordsman.png" )
-        , ( "head_archer", "assets/character/newhead2.png" )
-        , ( "head_magic", "assets/character/newhead.png" )
-        , ( "dialogue_frame", "assets/character/dialogue_frame.png" )
-        , ( "symbol_archer", "assets/character/symbol_archer.png" )
-        , ( "symbol_magic", "assets/character/symbol_magic.png" )
-        , ( "symbol_pharmacist", "assets/character/symbol_fan.png" )
-        , ( "symbol_swordsman", "assets/character/symbol_sword.png" )
+        [ ( "background", "assets/character/background/background_1.jpg" )
+        , ( "Start", "assets/character/background/Start.jpg" )
+        , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
+        , ( "Wild Wolf", "assets/character/role/wolf.png" )
+        , ( "Bulingze", "assets/character/role/magic.png" )
+        , ( "Bruce", "assets/character/role/archer.png" )
+        , ( "Bithif", "assets/character/role/pharmacist.png" )
+        , ( "Wenderd", "assets/character/role/swordsman.png" )
+        , ( "head_archer", "assets/character/chartlet/newhead2.png" )
+        , ( "head_magic", "assets/character/chartlet/newhead.png" )
+        , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
+        , ( "symbol_archer", "assets/character/chartlet/symbol_archer.png" )
+        , ( "symbol_magic", "assets/character/chartlet/symbol_magic.png" )
+        , ( "symbol_pharmacist", "assets/character/chartlet/symbol_fan.png" )
+        , ( "symbol_swordsman", "assets/character/chartlet/symbol_sword.png" )
+        , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
+        , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
+        , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
+        , ( "battle_background", "assets/character/background/battle_background.jpg" )
+        , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
         ]
 
 
@@ -84,30 +89,94 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [{- ( "archer"
-            , [ ( "1"
-                , { realStartPoint = ( 0, 0 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "2"
-                , { realStartPoint = ( 160, 0 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "3"
-                , { realStartPoint = ( 0, 160 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              , ( "4"
-                , { realStartPoint = ( 160, 160 )
-                  , realSize = ( 160, 160 )
-                  }
-                )
-              ]
-            ) as reference
-         -}
+        [ ( "fire_ball"
+          , [ ( "1"
+              , { realStartPoint = ( 0, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "2"
+              , { realStartPoint = ( 64, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "3"
+              , { realStartPoint = ( 128, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "4"
+              , { realStartPoint = ( 192, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "5"
+              , { realStartPoint = ( 256, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "6"
+              , { realStartPoint = ( 320, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "7"
+              , { realStartPoint = ( 384, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "8"
+              , { realStartPoint = ( 448, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "9"
+              , { realStartPoint = ( 512, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "10"
+              , { realStartPoint = ( 576, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "11"
+              , { realStartPoint = ( 640, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "12"
+              , { realStartPoint = ( 704, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "13"
+              , { realStartPoint = ( 768, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "14"
+              , { realStartPoint = ( 832, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "15"
+              , { realStartPoint = ( 896, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "16"
+              , { realStartPoint = ( 960, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "17"
+              , { realStartPoint = ( 1024, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            ]
+          )
         ]
 
 

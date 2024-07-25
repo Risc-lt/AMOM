@@ -95,7 +95,7 @@ view env data =
 
 matcher : Matcher Data LayerTarget
 matcher data tar =
-    tar == "Main"
+    tar == "StoryLayer"
 
 
 layercon : ConcreteLayer Data SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg

@@ -2,7 +2,7 @@ module Scenes.Game.Play.Init exposing (InitData)
 
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent)
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
+import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
 
 
 {-|

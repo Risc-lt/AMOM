@@ -1,6 +1,6 @@
 module Scenes.Game.Components.GenAttributes exposing (..)
 
-import Scenes.Game.Components.GenRandom exposing (..)
+import SceneProtos.Game.Components.GenRandom exposing (..)
 
 
 {-| basic attributes of the characters

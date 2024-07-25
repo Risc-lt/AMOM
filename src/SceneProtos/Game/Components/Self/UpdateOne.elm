@@ -5,12 +5,12 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
-import Scenes.Game.Components.GenRandom exposing (genRandomNum)
-import Scenes.Game.Components.Self.Init exposing (Self, State(..))
-import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
-import Scenes.Game.Components.Special.Library exposing (..)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
+import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
+import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
+import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =

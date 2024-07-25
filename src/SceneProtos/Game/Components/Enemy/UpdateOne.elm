@@ -6,12 +6,12 @@ import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (MMsg)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..))
-import Scenes.Game.Components.GenRandom exposing (genRandomNum)
-import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
-import Scenes.Game.Components.Special.Library exposing (getNewBuff)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..))
+import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
+import SceneProtos.Game.Components.Special.Library exposing (getNewBuff)
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import Time
 
 

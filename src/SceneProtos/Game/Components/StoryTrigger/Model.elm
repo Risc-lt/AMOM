@@ -12,9 +12,9 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
-import Scenes.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..), initBaseData)
-import Scenes.Game.Components.StoryTrigger.Init exposing (InitData)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..), initBaseData)
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (InitData)
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =

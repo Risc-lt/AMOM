@@ -16,12 +16,12 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import Scenes.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
-import Scenes.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
-import Scenes.Game.Components.Self.Init exposing (defaultSelf)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import SceneProtos.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
+import SceneProtos.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
+import SceneProtos.Game.Components.Self.Init exposing (defaultSelf)
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =

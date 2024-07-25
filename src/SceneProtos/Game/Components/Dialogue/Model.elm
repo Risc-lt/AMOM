@@ -15,11 +15,11 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import Scenes.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
-import Scenes.Game.SceneBase exposing (SceneCommonData) 
 
 
 type alias Data =

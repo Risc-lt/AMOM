@@ -4,7 +4,7 @@ module Scenes.Game.SceneBase exposing
     , SceneCommonData
     )
 
-import Scenes.Game.Play.Init as PlayInit
+import SceneProtos.Game.Play.Init as PlayInit
 
 
 {-|

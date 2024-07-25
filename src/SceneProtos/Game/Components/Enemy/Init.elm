@@ -12,9 +12,9 @@ module Scenes.Game.Components.Enemy.Init exposing
 
 -}
 
-import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Special.Init exposing (Buff(..), Skill)
-import Scenes.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.GenAttributes exposing (..)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
+import SceneProtos.Game.Components.Special.Library exposing (..)
 
 
 {-| Character state

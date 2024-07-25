@@ -13,7 +13,7 @@ module Scenes.Game.Components.Special.Library exposing (..)
 
 -}
 
-import Scenes.Game.Components.Special.Init exposing (..)
+import SceneProtos.Game.Components.Special.Init exposing (..)
 
 
 getNewBuff : List ( Buff, Int ) -> List ( Buff, Int )

@@ -12,8 +12,8 @@ module Scenes.Game.Components.Interface.Init exposing
 
 -}
 
-import Scenes.Game.Components.Enemy.Init as EnemyMsg exposing (Enemy, defaultEnemy)
-import Scenes.Game.Components.Self.Init as SelfMsg exposing (Self, defaultSelf)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 
 
 {-| The data used to initialize the interface

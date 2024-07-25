@@ -12,15 +12,15 @@ module Scenes.Game.Components.ComponentBase exposing
     )
 
 import Json.Decode exposing (string)
+import SceneProtos.Game.Components.Dialogue.Init as DialogueMsg
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
+import SceneProtos.Game.Components.GenAttributes exposing (..)
+import SceneProtos.Game.Components.Interface.Init as InterfaceMsg
+import SceneProtos.Game.Components.Self.Init exposing (Self)
+import SceneProtos.Game.Components.Special.Init exposing (Buff, Skill)
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
-import Scenes.Game.Components.Dialogue.Init as DialogueMsg
-import Scenes.Game.Components.Enemy.Init exposing (Enemy)
-import Scenes.Game.Components.GenAttributes exposing (..)
-import Scenes.Game.Components.Interface.Init as InterfaceMsg
-import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Special.Init exposing (Buff, Skill)
-import Scenes.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
 
 
 {-|

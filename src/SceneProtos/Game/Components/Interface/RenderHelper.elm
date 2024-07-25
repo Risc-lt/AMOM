@@ -13,12 +13,12 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
-import Scenes.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
-import Scenes.Game.Components.Interface.Init exposing (InitData, defaultUI)
-import Scenes.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import Scenes.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..))
-import Scenes.Game.Components.Special.Library exposing (magicWater, poison)
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
+import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
+import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
+import SceneProtos.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..))
+import SceneProtos.Game.Components.Special.Library exposing (magicWater, poison)
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =

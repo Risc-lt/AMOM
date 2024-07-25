@@ -3,14 +3,13 @@ module Scenes.Game.Components.Interface.Sequence exposing (..)
 import Canvas
 import Lib.UserData exposing (UserData)
 import Messenger.Base
-import Messenger.Component.GlobalComponent exposing (filterAliveGC)
 import Messenger.Render.Sprite exposing (renderSprite)
-import Scenes.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, Gamestate(..))
-import Scenes.Game.Components.Enemy.Init exposing (Enemy)
-import Scenes.Game.Components.Interface.Init exposing (InitData)
-import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Special.Init exposing (Buff(..))
-import Scenes.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, Gamestate(..))
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
+import SceneProtos.Game.Components.Interface.Init exposing (InitData)
+import SceneProtos.Game.Components.Self.Init exposing (Self)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
+import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
 type alias Charactor =

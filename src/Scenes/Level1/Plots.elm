@@ -34,6 +34,46 @@ preparation =
     genDialogue "head_magic" content ( 1, 2 )
 
 
+guidence : Dialogue
+guidence =
+    let
+        content =
+            [ "Bulingze:"
+            , "Be careful to choose your action and targets!"
+            , "Only Bruce's normal attack can reach the back"
+            , "row enemies."
+            ]
+    in
+    genDialogue "head_magic" content ( 2, 1 )
+
+
+skill : Dialogue
+skill =
+    let
+        content =
+            [ "Bulingze:"
+            , "We need energy to use special skills and magic"
+            , "points to use magics."
+            , "If you can use skills, don't be stingy!"
+            ]
+    in
+    genDialogue "head_magic" content ( 2, 2 )
+
+
+item : Dialogue
+item =
+    let
+        content =
+            [ "Bulingze:"
+            , "Bithif, you have very limited potions, be careful"
+            , "when to use them!"
+            , "Remember to use poison to restore health and"
+            , "magic water to restore magic points."
+            ]
+    in
+    genDialogue "head_magic" content ( 2, 3 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -49,6 +89,9 @@ dialogueInitData =
     , remainDiaList =
         [ start
         , preparation
+        , guidence
+        , skill
+        , item
         ]
     }
 
@@ -58,7 +101,13 @@ startTrigger =
     ( StateTrigger "GameBegin", 1 )
 
 
+guidenceTrigger : ( TriggerConditions, Int )
+guidenceTrigger =
+    ( StateTrigger "PlayerTurn", 2 )
+
+
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ startTrigger
+    , guidenceTrigger
     ]

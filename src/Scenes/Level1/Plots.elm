@@ -42,6 +42,8 @@ guidence =
             , "Be careful to choose your action and targets!"
             , "Only Bruce's normal attack can reach the back"
             , "row enemies."
+            , "If you want to go back to last step, use the"
+            , "right mouse button."
             ]
     in
     genDialogue "head_magic" content ( 2, 1 )

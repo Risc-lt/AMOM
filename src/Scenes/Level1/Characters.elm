@@ -183,8 +183,8 @@ wolves : Int -> List Enemy
 wolves time =
     let
         baseAttributes =
-            { strength = 30
-            , dexterity = 25
+            { strength = 35
+            , dexterity = 40
             , constitution = 25
             , intelligence = 10
             }

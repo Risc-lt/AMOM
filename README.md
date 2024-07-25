@@ -55,8 +55,11 @@ More detailed game rules can be seen in the game.
 ## Contributing
 
 Ruan Letian - code writing, group leading
+
 Wang Xuanhuan - code modification, music design
+
 Xia Tian - paperwork, presentation
+
 Zhang Haomin - artwork, graphic design
 
 ## Author team 
@@ -66,8 +69,11 @@ Nomnom
 ```
 
 Ruan Letian
+
 Wang Xuanhuan
+
 Xia Tian
+
 Zhang Haomin
 
 ## License 

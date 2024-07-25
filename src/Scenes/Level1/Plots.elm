@@ -27,8 +27,8 @@ preparation =
             [ "Bulingze:"
             , "Start laying out our formation now!"
             , "Press Enter to start the position arrangement,"
-            , "and press Enter again to start if you are done "
-            , "to start the battle!"
+            , "and press Enter again if you are done to start"
+            , "the battle!"
             ]
     in
     genDialogue "head_magic" content ( 1, 2 )
@@ -74,6 +74,21 @@ item =
     genDialogue "head_magic" content ( 2, 3 )
 
 
+normalAttack : Dialogue
+normalAttack =
+    let
+        content =
+            [ "Bulingze:"
+            , "Our normal attacks may be dodged or "
+            , "counterattacked."
+            , "But if we are lucky enough, we can hit the "
+            , "enemy's weak spot and cause more damage."
+            , "Magics may be dodged too."
+            ]
+    in
+    genDialogue "head_magic" content ( 3, 1 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -92,6 +107,7 @@ dialogueInitData =
         , guidence
         , skill
         , item
+        , normalAttack
         ]
     }
 
@@ -106,8 +122,14 @@ guidenceTrigger =
     ( StateTrigger "PlayerTurn", 2 )
 
 
+attackTrigger : ( TriggerConditions, Int )
+attackTrigger =
+    ( FrameTrigger 7, 3 )
+
+
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ startTrigger
     , guidenceTrigger
+    , attackTrigger
     ]

@@ -17,22 +17,91 @@ wenderd : Int -> Self
 wenderd time =
     let
         baseAttributes =
-            { strength = 20
-            , dexterity = 20
-            , constitution = 20
+            { strength = 40
+            , dexterity = 25
+            , constitution = 35
             , intelligence = 20
             }
 
         baseEleResistance =
             { waterResistance = 10
             , fireResistance = 10
-            , airResistance = 10
+            , airResistance = 20
             , earthResistance = 10
             }
     in
     genSelf 1 time "Wenderd" baseAttributes baseEleResistance
         [ arcaneBeam
         , airBlade
+        ]
+
+
+bruce : Int -> Self
+bruce time =
+    let
+        baseAttributes =
+            { strength = 25
+            , dexterity = 40
+            , constitution = 25
+            , intelligence = 30
+            }
+
+        baseEleResistance =
+            { waterResistance = 20
+            , fireResistance = 10
+            , airResistance = 10
+            , earthResistance = 10
+            }
+    in
+    genSelf 2 time "Bruce" baseAttributes baseEleResistance
+        [ arcaneBeam
+        , scatterShot
+        ]
+
+
+bulingze : Int -> Self
+bulingze time =
+    let
+        baseAttributes =
+            { strength = 20
+            , dexterity = 30
+            , constitution = 25
+            , intelligence = 45
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 20
+            , airResistance = 10
+            , earthResistance = 10
+            }
+    in
+    genSelf 4 time "Bulingze" baseAttributes baseEleResistance
+        [ arcaneBeam
+        , fireBall
+        ]
+
+
+bithif : Int -> Self
+bithif time =
+    let
+        baseAttributes =
+            { strength = 25
+            , dexterity = 30
+            , constitution = 30
+            , intelligence = 35
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 5 time "Bithif" baseAttributes baseEleResistance
+        [ arcaneBeam
+        , compounding
         ]
 
 

@@ -25,6 +25,7 @@ import SceneProtos.Game.Components.StoryTrigger.Init as STriMsg
 import SceneProtos.Game.Components.StoryTrigger.Model as STri
 import SceneProtos.Game.Init exposing (InitData)
 import SceneProtos.Game.Model exposing (genScene)
+import Scenes.Level1.Characters exposing (enemyInitData, selfInitData)
 import Time
 
 
@@ -40,10 +41,10 @@ initData env msg =
             Time.posixToMillis env.globalData.currentTimeStamp
 
         enemyInit =
-            EnemyMsg.emptyInitData <| time
+            enemyInitData <| time
 
         selfInit =
-            SelfMsg.emptyInitData <| time
+            selfInitData <| time
     in
     { objects =
         [ Enemy.component (Init <| EnemyInit <| enemyInit)

@@ -6,7 +6,7 @@ import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (MMsg)
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.Enemy.Init exposing (Enemy, State(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
@@ -108,8 +108,12 @@ handleMove env evnt data basedata =
                 data.x
 
         newData =
-            if basedata.state == PlayerReturn False && newX >= returnX then
-                { data | buff = getNewBuff data.buff, state = Rest }
+            if basedata.state == EnemyReturn && newX <= returnX then
+                if basedata.side == EnemySide then
+                    { data | buff = getNewBuff data.buff, state = Rest }
+
+                else
+                    { data | buff = getNewBuff data.buff }
 
             else
                 data
@@ -374,7 +378,7 @@ updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarg
 updateOne env evnt data basedata =
     case evnt of
         Tick _ ->
-            if data.state == Rest then
+            if data.state == Rest && basedata.side == EnemySide then
                 ( ( data, { basedata | state = PlayerTurn } )
                 , [ Other ( "Interface", SwitchTurn 1 ) ]
                 , ( env, False )

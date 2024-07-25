@@ -41,10 +41,10 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "background ", "assets/character/background_1.jpg" )
+        [ ( "background", "assets/character/background_1.jpg" )
         , ( "Start", "assets/character/Start.jpg" )
         , ( "Fight_frame", "assets/character/Fight_frame_1.jpg" )
-        , ( "Wild Wolf", "assets/character/monster.png" )
+        , ( "Wild Wolf", "assets/character/wolf.png" )
         , ( "Bulingze", "assets/character/magic.png" )
         , ( "Bruce", "assets/character/archer.png" )
         , ( "Bithif", "assets/character/pharmacist.png" )
@@ -60,7 +60,7 @@ allTexture =
         , ( "dialogue_2", "assets/character/dialogue_2.jpg" )
         , ( "dialogue_3", "assets/character/dialogue_3.jpg" )
         , ( "battle_background", "assets/character/battle_background.jpg" )
-        , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png")
+        , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
         ]
 
 
@@ -89,95 +89,94 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [( "fire_ball"
-            , [ ( "1"
-                , { realStartPoint = ( 0, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "2"
-                , { realStartPoint = ( 64, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "3"
-                , { realStartPoint = ( 128, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "4"
-                , { realStartPoint = ( 192, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "5"
-                , { realStartPoint = ( 256, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "6"
-                , { realStartPoint = ( 320, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "7"
-                , { realStartPoint = ( 384, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "8"
-                , { realStartPoint = ( 448, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "9"
-                , { realStartPoint = ( 512, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "10"
-                , { realStartPoint = ( 576, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "11"
-                , { realStartPoint = ( 640, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "12"
-                , { realStartPoint = ( 704, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "13"
-                , { realStartPoint = ( 768, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "14"
-                , { realStartPoint = ( 832, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "15"
-                , { realStartPoint = ( 896, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "16"
-                , { realStartPoint = ( 960, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              , ( "17"
-                , { realStartPoint = ( 1024, 0 )
-                  , realSize = ( 64, 64 )
-                  }
-                )
-              ]
-            )
-
+        [ ( "fire_ball"
+          , [ ( "1"
+              , { realStartPoint = ( 0, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "2"
+              , { realStartPoint = ( 64, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "3"
+              , { realStartPoint = ( 128, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "4"
+              , { realStartPoint = ( 192, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "5"
+              , { realStartPoint = ( 256, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "6"
+              , { realStartPoint = ( 320, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "7"
+              , { realStartPoint = ( 384, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "8"
+              , { realStartPoint = ( 448, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "9"
+              , { realStartPoint = ( 512, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "10"
+              , { realStartPoint = ( 576, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "11"
+              , { realStartPoint = ( 640, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "12"
+              , { realStartPoint = ( 704, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "13"
+              , { realStartPoint = ( 768, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "14"
+              , { realStartPoint = ( 832, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "15"
+              , { realStartPoint = ( 896, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "16"
+              , { realStartPoint = ( 960, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            , ( "17"
+              , { realStartPoint = ( 1024, 0 )
+                , realSize = ( 64, 64 )
+                }
+              )
+            ]
+          )
         ]
 
 

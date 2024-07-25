@@ -5,7 +5,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
+import Scenes.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import Scenes.Game.Components.GenRandom exposing (genRandomNum)
 import Scenes.Game.Components.Self.Init exposing (Self, State(..))
 import Scenes.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
@@ -48,7 +48,10 @@ handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserDat
 handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
-            ( ( data, { basedata | state = PlayerTurn } ), [ Other ( "Interface", SwitchTurn 0 ) ], ( env, False ) )
+            ( ( data, { basedata | state = PlayerTurn, side = EnemySide } )
+            , [ Other ( "Interface", SwitchTurn 0 ) ]
+            , ( env, False )
+            )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -493,7 +496,11 @@ handleMove list env evnt data basedata =
 
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
-                { data | buff = getNewBuff data.buff, state = Rest }
+                if basedata.side == PlayerSide then
+                    { data | buff = getNewBuff data.buff, state = Rest }
+
+                else
+                    { data | buff = getNewBuff data.buff }
 
             else
                 data
@@ -544,7 +551,14 @@ updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg 
 updateOne list env evnt data basedata =
     case evnt of
         Tick _ ->
-            handleMove list env evnt data basedata
+            if data.state == Rest && basedata.side == PlayerSide then
+                ( ( data, { basedata | state = EnemyTurn } )
+                , [ Other ( "Interface", SwitchTurn 0 ) ]
+                , ( env, False )
+                )
+
+            else
+                handleMove list env evnt data basedata
 
         KeyDown key ->
             if basedata.state == GameBegin then
@@ -554,21 +568,14 @@ updateOne list env evnt data basedata =
                 ( ( data, basedata ), [], ( env, False ) )
 
         MouseUp key ( x, y ) ->
-            if data.state /= Rest then
-                if key == 0 then
-                    handleMouseDown x y env evnt data basedata
+            if key == 0 then
+                handleMouseDown x y env evnt data basedata
 
-                else if key == 2 then
-                    handleBack env evnt data basedata
-
-                else
-                    ( ( data, basedata ), [], ( env, False ) )
+            else if key == 2 then
+                handleBack env evnt data basedata
 
             else
-                ( ( data, { basedata | state = EnemyTurn } )
-                , [ Other ( "Interface", SwitchTurn 0 ) ]
-                , ( env, False )
-                )
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

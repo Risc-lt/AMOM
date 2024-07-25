@@ -174,7 +174,7 @@ updaterec env msg data basedata =
 
         PutBuff buff num ->
             -- Add buff to all enemies
-            ( ( List.map (\x -> { x | buff = x.buff ++ [ (buff, num) ] }) data, basedata ), [], env )
+            ( ( List.map (\x -> { x | buff = x.buff ++ [ ( buff, num ) ] }) data, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

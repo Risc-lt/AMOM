@@ -19,9 +19,8 @@ import Scenes.Game.Components.Enemy.Init exposing (Enemy)
 import Scenes.Game.Components.GenAttributes exposing (..)
 import Scenes.Game.Components.Interface.Init as InterfaceMsg
 import Scenes.Game.Components.Self.Init exposing (Self)
-import Scenes.Game.Components.Special.Init exposing (Skill)
+import Scenes.Game.Components.Special.Init exposing (Buff, Skill)
 import Scenes.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
-import Scenes.Game.Components.Special.Init exposing (Buff)
 
 
 {-|

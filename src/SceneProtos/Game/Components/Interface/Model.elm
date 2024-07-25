@@ -21,7 +21,8 @@ import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction
 import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..), )
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..), HealthStatus(..))
+import String exposing (startsWith)
 
 
 type alias Data =
@@ -104,21 +105,30 @@ checkOneTrigger ( trigger, id ) data basedata =
             else
                 -1
 
-        HpTrigger  ->
-            if
-                trigger.frameNum
-                    <= 0
-                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
-                    && trigger.gameState
-                    == toString basedata.state
-            then
-                trigger.id
+        HpTrigger status side ->
+            let
+                hpCheck =
+                    if status == Half then
+                        \x -> x.hp <= x.extendValues.basicStatus.maxHp
+
+                    else
+                        \x -> x.hp <= 0
+            in
+            if side == "Enemy" && List.any hpCheck data.enemies then
+                id
+
+            else if side == "Self" && List.any hpCheck data.selfs then
+                id
 
             else
                 -1
 
-        _ ->
-            -1
+        StateTrigger state ->
+            if toString basedata.state == state then
+                id
+
+            else
+                -1
 
 
 handleCheckTrigger : Data -> BaseData -> List ( TriggerConditions, Int ) -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))

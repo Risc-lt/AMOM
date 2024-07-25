@@ -16,7 +16,7 @@ type alias Dialogue =
     , isSpeaking : Bool
     , content : List String
     , textPos : ( Float, Float )
-    , id : Int
+    , id : ( Int, Int )
     }
 
 
@@ -31,7 +31,7 @@ emptyInitData =
         , isSpeaking = False
         , content = [ "Hello!", "Thank you!" ]
         , textPos = ( 880, 800 )
-        , id = 0
+        , id = ( 0, 0 )
         }
     , remainDiaList =
         [ { frameName = "dialogue_frame"
@@ -42,7 +42,21 @@ emptyInitData =
           , isSpeaking = False
           , content = [ "Hello!", "Thank you!" ]
           , textPos = ( 880, 800 )
-          , id = 101
+          , id = ( 101, 0 )
           }
         ]
+    }
+
+
+defaultDialogue : Dialogue
+defaultDialogue = 
+    { frameName = ""
+    , framePos = ( 0, 500 )
+    , speaker = ""
+    , speakerPos = ( -20, 680 )
+    , font = "Comic Sans MS"
+    , isSpeaking = False
+    , content = []
+    , textPos = ( 880, 800 )
+    , id = ( 0, 0 )
     }

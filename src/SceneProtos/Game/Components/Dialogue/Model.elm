@@ -20,6 +20,7 @@ import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, emptyInitDa
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
+import SceneProtos.Game.Components.Dialogue.Init exposing (defaultDialogue)
 
 
 type alias Data =
@@ -44,8 +45,33 @@ update env evnt data basedata =
                 let
                     curDia =
                         data.curDialogue
+
+                    maybeNextDia =
+                        List.head <|
+                            List.filter 
+                                (\dia -> 
+                                    dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                                ) 
+                                data.remainDiaList
+
+                    nextDia =
+                        case maybeNextDia of
+                            Just dia ->
+                                { dia | isSpeaking = True }
+
+                            _ ->
+                                { curDia | isSpeaking = False }
+
+                    remainingDialogues =
+                        List.filter 
+                            (\dia -> 
+                                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                            )  
+                            data.remainDiaList
                 in
-                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
+                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
+                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                , ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -60,34 +86,23 @@ updaterec env msg data basedata =
         BeginDialogue id ->
             let
                 nextDialogue =
-                    Maybe.withDefault
-                        { frameName = "dialogue_frame"
-                        , framePos = ( 0, 500 )
-                        , speaker = "head_magic"
-                        , speakerPos = ( -20, 680 )
-                        , font = "Comic Sans MS"
-                        , isSpeaking = False
-                        , content = [ "Hello!", "Thank you!" ]
-                        , textPos = ( 880, 800 )
-                        , id = 0
-                        }
-                    <|
+                    Maybe.withDefault defaultDialogue <|
                         List.head <|
-                            List.filter (\dia -> dia.id == id) data.remainDiaList
+                            List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 otherMsg =
                     case nextDialogue.id of
-                        101 ->
+                        ( 101, _ ) ->
                             [ Other ( "Enemy", AddChar ) ]
 
-                        102 ->
+                        ( 102, _ ) ->
                             [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
 
                         _ ->
                             []
 
                 remainingDialogues =
-                    List.filter (\dia -> dia.id /= id) data.remainDiaList
+                    List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
             ( ( { data
                     | curDialogue = { nextDialogue | isSpeaking = True }

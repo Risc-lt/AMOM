@@ -1,11 +1,13 @@
-module SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+module SceneProtos.Story.Components.ComponentBase exposing
+    ( BaseData
+    , ComponentMsg(..)
+    , ComponentTarget
+    , initBaseData
+    )
 
-import SceneProtos.Story.Components.Bithif.Init as Bithif
-import SceneProtos.Story.Components.Bruce.Init as Bruce
-import SceneProtos.Story.Components.Bulingze.Init as Bulingze
-import SceneProtos.Story.Components.Character.Init as Character
-import SceneProtos.Story.Components.Dialogue.Init as Dialogue
-import SceneProtos.Story.Components.Wenderd.Init as Wendered
+import SceneProtos.Story.Components.Background.Init as Background
+import SceneProtos.Story.Components.CharSequence.Init as Character exposing (Character)
+import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 
 
 {-|
@@ -17,20 +19,12 @@ import SceneProtos.Story.Components.Wenderd.Init as Wendered
 
 -}
 type ComponentMsg
-    = NewDialogueMsg Dialogue.CreateInitData
-    | NextDialogue Dialogue.CreateInitData
-    | CloseDialogue
-    | CameraMsg ( Float, Float )
-    | NewWenderdMsg ( Float, Float )
-    | VanishWenderdMsg
-    | NewBithifMsg ( Float, Float )
-    | VanishBithifMsg
-    | NewBruceMsg ( Float, Float )
-    | VanishBruceMsg
-    | NewBulingzeMsg ( Float, Float )
-    | VanishBulingzeMsg
-    | MoveTo ( Float, Float )
-    | SetBackgroundMsg ( Float, Float )
+    = BeginPlot Int
+    | DialogueInit Dialogue.InitData
+    | CharInit Character.InitData
+    | BackgroundInit Background.InitData
+    | TriggerInit
+    | EndMove
     | NullComponentMsg
 
 
@@ -43,4 +37,13 @@ type alias ComponentTarget =
 {-| Component base data
 -}
 type alias BaseData =
-    ()
+    { curId : Int
+    , isPlaying : Bool
+    }
+
+
+initBaseData : BaseData
+initBaseData =
+    { curId = 0
+    , isPlaying = False
+    }

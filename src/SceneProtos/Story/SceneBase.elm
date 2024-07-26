@@ -4,7 +4,7 @@ module SceneProtos.Story.SceneBase exposing
     , SceneCommonData
     )
 
-import SceneProtos.Story.Main.Init as MainInit
+import SceneProtos.Story.StoryLayer.Init as StoryLayerInit
 
 
 {-|
@@ -32,5 +32,5 @@ type alias SceneCommonData =
 {-| General message for layers
 -}
 type LayerMsg scenemsg
-    = MainInitData (MainInit.InitData SceneCommonData scenemsg)
+    = StoryLayerInitData (StoryLayerInit.InitData SceneCommonData scenemsg)
     | NullLayerMsg

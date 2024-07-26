@@ -10,44 +10,77 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
 import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
+import SceneProtos.Story.Components.CharSequence.Init exposing (MoveKind(..))
+import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..))
 
 
 type alias Data =
     InitData
 
 
+changeDirection : ( Movement, Character ) -> ( Movement, Character )
+changeDirection ( movement, character ) =
+    case movement.movekind of
+        Real ( targetX, targetY ) _ ->
+            if targetX > character.x then
+                ( movement, { character | direction = Right } )
+
+            else if targetX < character.x then
+                ( movement, { character | direction = Left } )
+
+            else if targetY > character.y then
+                ( movement, { character | direction = Down } )
+
+            else if targetY < character.y then
+                ( movement, { character | direction = Up } )
+
+            else
+                ( movement, character )
+
+        Fake direction ->
+            ( movement, { character | direction = direction } )
+
+        None ->
+            ( movement, character )
+            
+
+
 handleMove : ( Movement, Character ) -> ( Movement, Character )
 handleMove ( movement, character ) =
-    if movement.targetX > character.x then
-        if character.x + movement.speed > movement.targetX then
-            ( movement, { character | x = movement.targetX } )
+    case movement.movekind of
+        Real ( targetX, targetY ) speed ->
+            if movement.targetX > character.x then
+                if character.x + movement.speed > movement.targetX then
+                    ( movement, { character | x = movement.targetX } )
 
-        else
-            ( movement, { character | x = character.x + movement.speed } )
+                else
+                    ( movement, { character | x = character.x + movement.speed } )
 
-    else if movement.targetX < character.x then
-        if character.x - movement.speed < movement.targetX then
-            ( movement, { character | x = movement.targetX } )
+            else if movement.targetX < character.x then
+                if character.x - movement.speed < movement.targetX then
+                    ( movement, { character | x = movement.targetX } )
 
-        else
-            ( movement, { character | x = character.x - movement.speed } )
+                else
+                    ( movement, { character | x = character.x - movement.speed } )
 
-    else if movement.targetY > character.y then
-        if character.y + movement.speed > movement.targetY then
-            ( movement, { character | y = movement.targetY } )
+            else if movement.targetY > character.y then
+                if character.y + movement.speed > movement.targetY then
+                    ( movement, { character | y = movement.targetY } )
 
-        else
-            ( movement, { character | y = character.y + movement.speed } )
+                else
+                    ( movement, { character | y = character.y + movement.speed } )
 
-    else if movement.targetY < character.y then
-        if character.y - movement.speed < movement.targetY then
-            ( movement, { character | y = movement.targetY } )
+            else if movement.targetY < character.y then
+                if character.y - movement.speed < movement.targetY then
+                    ( movement, { character | y = movement.targetY } )
 
-        else
-            ( movement, { character | y = character.y - movement.speed } )
+                else
+                    ( movement, { character | y = character.y - movement.speed } )
 
-    else
-        ( movement, character )
+            else
+                ( movement, character )
+
+        
 
 
 checkDestination : ( Movement, Character ) -> ( Movement, Character )

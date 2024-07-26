@@ -32,6 +32,7 @@ type alias Character =
     , x : Float
     , y : Float
     , speed : Float
+    , isMoving : Bool
     }
 
 
@@ -68,6 +69,7 @@ defaultCharacter =
     , x = 0
     , y = 0
     , speed = 0
+    , isMoving = False
     }
 
 defaultMovement : Movement

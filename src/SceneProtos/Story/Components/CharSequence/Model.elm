@@ -86,8 +86,8 @@ updaterec env msg data basedata =
                             of
                                 Just movement ->
                                     case movement.movekind of 
-                                        Fake direction ->
-                                            { c | direction = direction }
+                                        Real ( _, _ ) speed ->
+                                            { c | speed = speed }
 
                                         _ ->
                                             c

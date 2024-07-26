@@ -1,11 +1,7 @@
 module SceneProtos.Story.Components.ComponentBase exposing (BaseData, CharAction(..), CharSequenceDeliver, ComponentMsg(..), ComponentTarget)
 
-import SceneProtos.Story.Components.Bithif.Init as Bithif
-import SceneProtos.Story.Components.Bruce.Init as Bruce
-import SceneProtos.Story.Components.Bulingze.Init as Bulingze
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.Dialogue.Init as Dialogue
-import SceneProtos.Story.Components.Wenderd.Init as Wendered
 import Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..))
 
 

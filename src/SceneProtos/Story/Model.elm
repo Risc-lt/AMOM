@@ -12,12 +12,8 @@ import Messenger.Base exposing (Env, addCommonData)
 import Messenger.Scene.LayeredScene exposing (LayeredSceneLevelInit, LayeredSceneProtoInit, LayeredSceneSettingsFunc, genLayeredScene, initCompose)
 import Messenger.Scene.Scene exposing (SceneStorage)
 import SceneProtos.Story.Components.Background.Model as Background
-import SceneProtos.Story.Components.Bithif.Model as Bithif
-import SceneProtos.Story.Components.Bruce.Model as Bruce
-import SceneProtos.Story.Components.Bulingze.Model as Bulingze
 import SceneProtos.Story.Components.CharSequence.Model as Character
 import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
-import SceneProtos.Story.Components.Wenderd.Model as Wendered
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.SceneBase exposing (..)
 import SceneProtos.Story.StoryLayer.Model as StoryLayer

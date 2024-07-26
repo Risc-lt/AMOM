@@ -32,6 +32,7 @@ type MoveKind
 type alias Camera =
     { movekind : MoveKind
     , isMoving : Bool
+    , id : Int
     }
 
 
@@ -56,4 +57,5 @@ defaultCamera : Camera
 defaultCamera =
     { movekind = None
     , isMoving = False
+    , id = 0
     }

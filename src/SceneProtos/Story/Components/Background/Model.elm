@@ -55,18 +55,36 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        CameraMsg ( x, y ) ->
+        BeginPlot id ->
             let
-                newDes =
-                    ( x, y )
+                maybeNextMove =
+                    List.head <|
+                        List.filter (\m -> m.id == id) data.remainMove
 
-                newDX =
-                    (x - data.dx) / 5
+                nextMove =
+                    case maybeNextMove of
+                        Just move ->
+                            { move | isMoving = True }
+                        
+                        _ ->
+                            data.curMove
 
-                newDY =
-                    (y - data.dy) / 5
+                remainMove =
+                    List.filter (\m -> m.id /= id) data.remainMove
             in
-            ( ( { data | move = True, destination = newDes, dx = newDX, dy = newDY }, basedata ), [], env )
+            if nextMove.isMoving == True then
+                ( ( { data
+                        | curMove = nextMove
+                        , remainMove = remainMove
+                    }
+                , { basedata | isPlaying = True }
+                )
+                , []
+                , env
+                )
+
+            else
+                ( ( data, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

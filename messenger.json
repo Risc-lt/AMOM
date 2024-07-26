@@ -10,10 +10,8 @@
         ]
     },
     "scenes": {
-        "SampleScene": [],
-        "Level1": [],
-        "Level2": [],
-        "Level3": []
+        "Sample": [],
+        "Level1": []
     },
     "sceneprotos": {
         "Game": {
@@ -32,7 +30,18 @@
                 "Play"
             ]
         },
-        "SampleScene": [],
-        "Sample": []
+        "Story": {
+            "components": {
+                "Components": [
+                    "Background",
+                    "CharSequence",
+                    "DialogSequence",
+                    "Trigger"
+                ]
+            },
+            "layers": [
+                "StoryLayer"
+            ]
+        }
     }
 }

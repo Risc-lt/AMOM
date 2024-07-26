@@ -9,7 +9,7 @@ module SceneProtos.Story.Components.DialogSequence.Init exposing (..)
 
 -}
 
-{- The data sturcture for dialogues  -}
+{- The data sturcture for dialogues -}
 
 
 type alias Dialogue =

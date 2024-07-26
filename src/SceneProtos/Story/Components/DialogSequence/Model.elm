@@ -138,9 +138,8 @@ view env data basedata =
              ]
                 ++ renderableTexts
             )
-        , 100
+        , 1
         )
-        --z-index
 
     else
         ( Canvas.empty, 0 )

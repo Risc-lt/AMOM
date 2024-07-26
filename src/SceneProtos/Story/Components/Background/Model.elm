@@ -16,7 +16,8 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Background.Init exposing (InitData)
 import SceneProtos.Story.Components.Background.Init exposing (defaultBackground)
 import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
-import SceneProtos.Story.Components.Background.UpdateHelper exposing (updateHelper)
+import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
+import Messenger.Render.Sprite exposing (renderSprite)
 
 
 type alias Data =
@@ -87,7 +88,7 @@ updaterec env msg data basedata =
                 ( ( data, basedata ), [], env )
 
         ChangeChars characters ->
-            followMove characters env evnt data basedata
+            followMove characters env msg data basedata
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -95,7 +96,14 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    ( Canvas.empty, 0 )
+    ( renderSprite 
+        env.globalData.internalData 
+        [] 
+        ( data.background.x, data.background.y ) 
+        ( 1920, 1080 ) 
+        data.background.backFigure
+    , 3 
+    )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget

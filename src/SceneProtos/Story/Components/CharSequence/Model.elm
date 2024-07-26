@@ -100,7 +100,7 @@ view env data basedata =
                 renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 100, 0 ) c.name
             )
             data.characters
-    , 53
+    , 2
     )
 
 

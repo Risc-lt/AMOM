@@ -1,4 +1,6 @@
-module SceneProtos.Story.Components.ComponentBase exposing (BaseData, CharAction(..), CharSequenceDeliver, ComponentMsg(..), ComponentTarget)
+module SceneProtos.Story.Components.ComponentBase exposing 
+    (BaseData
+    , CharAction(..), ComponentMsg(..), ComponentTarget, initBaseData)
 
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
@@ -13,8 +15,7 @@ import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 
 -}
 type ComponentMsg
-    = BeginDialogue Int
-    | CloseDialogue
+    = BeginPlot Int
     | DialogueInit Dialogue.InitData
     | NullComponentMsg
 
@@ -28,7 +29,9 @@ type alias ComponentTarget =
 {-| Component base data
 -}
 type alias BaseData =
-    Int
+    { curId : Int
+    , isPlaying : Bool
+    }
 
 
 type CharAction
@@ -39,34 +42,14 @@ type CharAction
     | Still
 
 
-type alias DialogSequenceDeliver =
-    { speaker : String
-    , content : List String
-    , next : List ComponentMsg
-    , nextTar : List String
-    }
-
-
 type alias Object =
     { standingFigure : String
     , movingSheet : String
     }
 
 
-type alias InitCharSequenceDeliver =
-    { object : Object
-    , id : Int
-    , action : CharAction
-    , nextMsg : List ComponentMsg
-    , nextTar : List String
-    , position : ( Float, Float )
-    }
-
-
-type alias CharSequenceDeliver =
-    { object : Object
-    , id : Int
-    , action : CharAction
-    , nextMsg : List ComponentMsg
-    , nextTar : List String
+initBaseData : BaseData
+initBaseData =
+    { curId = 0
+    , isPlaying = False
     }

@@ -16,7 +16,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (defaultDialogue)
@@ -30,13 +30,13 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         DialogueInit deliver ->
-            ( deliver, 0 )
+            ( deliver, initBaseData )
 
         _ ->
             ( { curDialogue = defaultDialogue
               , remainDiaList = []
               }
-            , 0
+            , initBaseData
             )
 
 
@@ -49,7 +49,7 @@ update env evnt data basedata =
                     curDia =
                         data.curDialogue
                 in
-                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
+                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -61,7 +61,7 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        BeginDialogue id ->
+        BeginPlot id ->
             let
                 nextDialogue =
                     Maybe.withDefault defaultDialogue <|
@@ -71,17 +71,19 @@ updaterec env msg data basedata =
                 remainingDialogues =
                     List.filter (\dia -> dia.id /= id) data.remainDiaList
             in
-            ( ( { data
-                    | curDialogue = { nextDialogue | isSpeaking = True }
-                    , remainDiaList = remainingDialogues
-                }
-              , basedata
-              )
-            , [ Other ( "Self", BeginDialogue id )
-              , Other ( "Enemy", BeginDialogue id )
-              ]
-            , env
-            )
+            if nextDialogue.speaker /= "" then
+                ( ( { data
+                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        , remainDiaList = remainingDialogues
+                    }
+                , basedata
+                )
+                , []
+                , env
+                )
+
+            else
+                ( ( data, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

@@ -42,45 +42,43 @@ changeDirection ( movement, character ) =
 
         None ->
             ( movement, character )
-            
 
 
 handleMove : ( Movement, Character ) -> ( Movement, Character )
 handleMove ( movement, character ) =
     case movement.movekind of
-        Real ( targetX, targetY ) speed ->
-            if movement.targetX > character.x then
-                if character.x + movement.speed > movement.targetX then
-                    ( movement, { character | x = movement.targetX } )
+        Real ( targetX, targetY ) _ ->
+            case character.direction of
+                Left ->
+                    if character.x + character.speed > targetX then
+                        ( movement, { character | x = targetX } )
 
-                else
-                    ( movement, { character | x = character.x + movement.speed } )
+                    else
+                        ( movement, { character | x = character.x + character.speed } )
 
-            else if movement.targetX < character.x then
-                if character.x - movement.speed < movement.targetX then
-                    ( movement, { character | x = movement.targetX } )
+                Right ->
+                    if character.x - character.speed < targetX then
+                        ( movement, { character | x = targetX } )
 
-                else
-                    ( movement, { character | x = character.x - movement.speed } )
+                    else
+                        ( movement, { character | x = character.x - character.speed } )
 
-            else if movement.targetY > character.y then
-                if character.y + movement.speed > movement.targetY then
-                    ( movement, { character | y = movement.targetY } )
+                Down ->
+                    if character.y + character.speed > targetY then
+                        ( movement, { character | y = targetY } )
 
-                else
-                    ( movement, { character | y = character.y + movement.speed } )
+                    else
+                        ( movement, { character | y = character.y + character.speed } )
 
-            else if movement.targetY < character.y then
-                if character.y - movement.speed < movement.targetY then
-                    ( movement, { character | y = movement.targetY } )
+                Up ->
+                    if character.y - character.speed < targetY then
+                        ( movement, { character | y = targetY } )
 
-                else
-                    ( movement, { character | y = character.y - movement.speed } )
+                    else
+                        ( movement, { character | y = character.y - character.speed } )
 
-            else
-                ( movement, character )
-
-        
+        _ ->
+            ( movement, character )
 
 
 checkDestination : ( Movement, Character ) -> ( Movement, Character )

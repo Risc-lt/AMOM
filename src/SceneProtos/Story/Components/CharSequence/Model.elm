@@ -88,37 +88,19 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.visible then
-        let
-            newSprite =
-                "Bithif"
-
-            --    data.standingFigure
-            --if not (data.action == Still) then
-            --data.movingSheet ++ "." ++ String.fromInt data.currentFrame
-            -- else
-            --     data.standingFigure --testing
-            -- _ =
-            --     Debug.log "newSprite" newSprite
-        in
-        ( Canvas.group
-            []
-            [ renderSprite env.globalData.internalData [] data.position ( 150, 0 ) newSprite
-            ]
-        , 53
-        )
-
-    else
-        ( Canvas.empty, 53 )
-
-
-
--- z-index
+    ( Canvas.group [] <|
+        List.map
+            (\c ->
+                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 100, 0 ) c.name
+            )
+            data.characters
+    , 53
+    )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "Character" ++ data.standingFigure ++ String.fromInt data.id
+    tar == "Character"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

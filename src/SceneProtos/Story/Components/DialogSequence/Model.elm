@@ -148,7 +148,7 @@ view env data basedata =
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "DialogSequence"
+    tar == "Dialogue"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

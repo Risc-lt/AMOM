@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.Background.Init exposing 
     (InitData
-    , defaultCamera, MoveKind(..))
+    , defaultCamera, defaultBackground, MoveKind(..))
 
 {-|
 
@@ -41,6 +41,14 @@ type alias InitData =
     { background : Background
     , curMove : Camera
     , remainMove : List Camera
+    }
+
+
+defaultBackground : Background
+defaultBackground =
+    { backFigure = ""
+    , x = 0
+    , y = 0
     }
 
 

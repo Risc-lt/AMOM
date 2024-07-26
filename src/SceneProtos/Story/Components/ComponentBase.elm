@@ -4,6 +4,7 @@ module SceneProtos.Story.Components.ComponentBase exposing
 
 import SceneProtos.Story.Components.CharSequence.Init as Character
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
+import SceneProtos.Story.Components.Background.Init as Background
 
 
 {-|
@@ -18,6 +19,7 @@ type ComponentMsg
     = BeginPlot Int
     | DialogueInit Dialogue.InitData
     | CharInit Character.InitData
+    | BackgroundInit Background.InitData
     | NullComponentMsg
 
 

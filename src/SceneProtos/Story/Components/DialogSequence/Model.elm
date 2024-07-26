@@ -76,7 +76,7 @@ updaterec env msg data basedata =
                         | curDialogue = { nextDialogue | isSpeaking = True }
                         , remainDiaList = remainingDialogues
                     }
-                , basedata
+                , { basedata | isPlaying = True }
                 )
                 , []
                 , env

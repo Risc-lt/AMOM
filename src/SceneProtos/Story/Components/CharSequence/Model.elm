@@ -17,6 +17,7 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
 
 
 type alias Data =
@@ -55,6 +56,32 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
+        BeginPlot id ->
+            let
+                nextMove =
+                    List.map 
+                        (\m ->
+                            { m | isMoving = True }
+                        )
+                        <| List.filter (\m -> m.id == id) data.remainMove
+
+                remainMove =
+                    List.filter (\m -> m.id /= id) data.remainMove
+            in
+            if List.length nextMove /= 0 then
+                ( ( { data
+                        | curMove = nextMove
+                        , remainMove = remainMove
+                    }
+                , { basedata | isPlaying = True }
+                )
+                , []
+                , env
+                )
+
+            else
+                ( ( data, basedata ), [], env )
+
         _ ->
             ( ( data, basedata ), [], env )
 

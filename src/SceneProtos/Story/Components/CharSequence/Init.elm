@@ -29,6 +29,7 @@ type alias Movement =
     , targetX : Float
     , targetY : Float
     , id : Int
+    , isMoving : Bool
     }
 
 
@@ -37,7 +38,7 @@ type alias Movement =
 type alias InitData =
     { characters : List Character
     , curMove : List Movement
-    , movement : List Movement
+    , remainMove : List Movement
     }
 
 
@@ -55,4 +56,5 @@ defaultMovement =
     , targetX = 0
     , targetY = 0
     , id = 0
+    , isMoving = False
     }

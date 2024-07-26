@@ -32,7 +32,7 @@ init env initMsg =
         _ ->
             ( { characters = []
               , curMove = []
-              , movement = []
+              , remainMove = []
               }
             , initBaseData
             )
@@ -72,50 +72,38 @@ handleMove ( movement, character ) =
         ( movement, character )
 
 
+checkDestination : ( Movement, Character ) -> ( Movement, Character )
+checkDestination ( movement, character ) =
+    if character.x == movement.targetX && character.y == movement.targetY then
+        ( { movement | isMoving = False }, character )
+
+    else
+        ( movement, character )
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    let
-        curPlots =
-            List.map 
-                (\m -> 
-                    Tuple.pair m <|
-                        Maybe.withDefault defaultCharacter <|
-                            List.head <|
-                                List.filter (\c -> c.name == m.name) data.characters
-                ) 
-                data.curMove
-
-        newPlots =
-            List.map 
-                (\( m, c ) ->
-                    handleMove ( m, c )
-                )
-                curPlots
-
-        newMsg =
-            List.head data.next
-
-        newAct =
-            if newDestination == data.destination then
-                Still
-
-            else
-                data.action
-
-        sendMsg =
-            if newMsg == Just NullComponentMsg then
-                ( ( data, basedata ), [], ( env, False ) )
-
-            else
-                ( ( { data | position = newPos, currentFrame = newCurrentFrame, destination = newDestination, action = newAct }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
-    in
     case evnt of
         Tick dt ->
-            if not (data.action == Still) then
-                ( ( { data | position = newPos, currentFrame = newCurrentFrame, destination = newDestination, action = newAct }, basedata ), [], ( env, False ) )
+            let
+                curPlots =
+                    List.map 
+                        (\m -> 
+                            Tuple.pair m <|
+                                Maybe.withDefault defaultCharacter <|
+                                    List.head <|
+                                        List.filter (\c -> c.name == m.name) data.characters
+                        )
+                        <| List.filter (\m -> m.isMoving == True) data.curMove
 
-            else
-                sendMsg
+                newPlots =
+                    List.map 
+                        (\( m, c ) ->
+                            checkDestination <| handleMove ( m, c )
+                        )
+                        curPlots
+            in
+            ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

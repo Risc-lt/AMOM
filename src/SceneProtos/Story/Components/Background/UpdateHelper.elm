@@ -16,38 +16,38 @@ type alias Data =
     InitData
 
 
-handleMove : Camera -> Background -> ( Camera, Background )
-handleMove camera character =
-    if movement.targetX > character.x then
-        if character.x + movement.speed > movement.targetX then
-            ( movement, { character | x = movement.targetX } )
+bySelfMove : Float -> Float -> Float -> Background -> Background
+bySelfMove targetX targetY speed background =
+    if targetX > background.x then
+        if background.x + speed > targetX then
+            { background | x = targetX }
 
         else
-            ( movement, { character | x = character.x + movement.speed } )
+            { background | x = background.x + speed }
 
-    else if movement.targetX < character.x then
-        if character.x - movement.speed < movement.targetX then
-            ( movement, { character | x = movement.targetX } )
-
-        else
-            ( movement, { character | x = character.x - movement.speed } )
-
-    else if movement.targetY > character.y then
-        if character.y + movement.speed > movement.targetY then
-            ( movement, { character | y = movement.targetY } )
+    else if targetX < background.x then
+        if background.x - speed < targetX then
+            { background | x = targetX }
 
         else
-            ( movement, { character | y = character.y + movement.speed } )
+            { background | x = background.x - speed }
 
-    else if movement.targetY < character.y then
-        if character.y - movement.speed < movement.targetY then
-            ( movement, { character | y = movement.targetY } )
+    else if targetY > background.y then
+        if background.y + speed > targetY then
+            { background | y = targetY }
 
         else
-            ( movement, { character | y = character.y - movement.speed } )
+            { background | y = background.y + speed }
+
+    else if targetY < background.y then
+        if background.y - speed < targetY then
+            { background | y = targetY }
+
+        else
+            { background | y = background.y - speed }
 
     else
-        ( movement, character )
+        background
 
 
 checkDestination : ( Movement, Character ) -> ( Movement, Character )

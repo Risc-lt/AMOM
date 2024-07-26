@@ -2,7 +2,7 @@ module SceneProtos.Story.Components.ComponentBase exposing
     (BaseData
     , ComponentMsg(..), ComponentTarget, initBaseData)
 
-import SceneProtos.Story.Components.Character.Init as Character
+import SceneProtos.Story.Components.CharSequence.Init as Character
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 
 
@@ -17,6 +17,7 @@ import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 type ComponentMsg
     = BeginPlot Int
     | DialogueInit Dialogue.InitData
+    | CharInit Character.InitData
     | NullComponentMsg
 
 

@@ -13,120 +13,60 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.CharSequence.Init exposing (InitData)
 
 
 type alias Data =
-    { standingFigure : String
-    , movingSheet : String
-    , currentFrame : Int
-    , position : ( Float, Float )
-    , visible : Bool
-    , dx : Float
-    , dy : Float
-    , action : CharAction
-    , id : Int
-    , destination : ( Float, Float )
-    , next : List ComponentMsg
-    , nextTar : List String
-    }
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    let
-        newInitMsg =
-            initMsg
-
-        _ =
-            Debug.log "CharInitMsg" newInitMsg
-    in
-    initOne env initMsg
-
-
-initOne : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
-initOne env initMsg =
     case initMsg of
-        NewCharSequenceMsg deliver ->
-            let
-                ( desX, desY ) =
-                    case deliver.action of
-                        Still ->
-                            deliver.position
-
-                        MoveLeft x ->
-                            ( Tuple.first deliver.position - x, Tuple.second deliver.position )
-
-                        MoveRight x ->
-                            ( Tuple.first deliver.position + x, Tuple.second deliver.position )
-
-                        MoveUp y ->
-                            ( Tuple.first deliver.position, Tuple.second deliver.position - y )
-
-                        MoveDown y ->
-                            ( Tuple.first deliver.position, Tuple.second deliver.position + y )
-
-                _ =
-                    Debug.log "initoneFunction's Deliver" deliver
-            in
-            ( { standingFigure = deliver.object.standingFigure
-              , movingSheet = deliver.object.movingSheet
-              , currentFrame = 1
-              , position = deliver.position
-              , visible = True
-              , dx = 5
-              , dy = 5
-              , action = deliver.action
-              , id = deliver.id
-              , destination = ( desX, desY )
-              , nextTar = deliver.nextTar
-              , next = deliver.nextMsg
-              }
-            , ()
-            )
+        CharInit deliver ->
+            ( deliver, initBaseData )
 
         _ ->
-            let
-                act =
-                    Still
-            in
-            ( { standingFigure = "magician"
-              , movingSheet = "magician"
-              , currentFrame = 1
-              , position = ( 0, 0 )
-              , visible = False
-              , dx = 0
-              , dy = 0
-              , action = act
-              , id = 0
-              , destination = ( 0, 0 )
-              , next = [ NullComponentMsg ]
-              , nextTar = []
+            ( { characters = []
+              , curMove = []
+              , movement = []
               }
-            , ()
+            , initBaseData
             )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     let
-        newPos =
-            case data.action of
-                MoveLeft x ->
-                    updatePos data.position -data.dx 0
+        curChars =
+            List.filter 
+                (\c -> 
+                    List.any (\m -> c.name == m.name) data.curMove
+                ) 
+                data.characters
 
-                MoveRight x ->
-                    updatePos data.position data.dx 0
+        newChars =
+            List.map 
+                (\c ->
+                    case data.action of
+                        MoveLeft x ->
+                            updatePos data.position -data.dx 0
 
-                MoveUp y ->
-                    updatePos data.position 0 -data.dy
+                        MoveRight x ->
+                            updatePos data.position data.dx 0
 
-                MoveDown y ->
-                    updatePos data.position 0 data.dy
+                        MoveUp y ->
+                            updatePos data.position 0 -data.dy
 
-                Still ->
-                    data.position
+                        MoveDown y ->
+                            updatePos data.position 0 data.dy
+
+                        Still ->
+                            data.position
+                )
+                curChars
 
         _ =
             Debug.log "newPosinUpdate" newPos

@@ -105,7 +105,8 @@ update env evnt data basedata =
 
                     else
                         ( ( { data | timer = 0, isSpeaking = True }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
-                    -- isSpeaking -> False
+
+                -- isSpeaking -> False
                 -- _ =
                 --      msgList
                 --( ( { data | timer = 0, isSpeaking = False }, basedata ), [  ], ( env, False ) )

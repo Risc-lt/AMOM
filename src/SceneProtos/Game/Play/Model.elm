@@ -48,28 +48,12 @@ type alias Data =
 
 init : LayerInit SceneCommonData UserData (LayerMsg SceneMsg) Data
 init env initMsg =
-    let
-        time =
-            Time.posixToMillis env.globalData.currentTimeStamp
+    case initMsg of
+        PlayInitData data ->
+            Data data.components
 
-        enemyInit =
-            EneMsg.emptyInitData <| time
-
-        selfInit =
-            SelfMsg.emptyInitData <| time
-
-        dialogueInit =
-            { speaker = "This string is useless"
-            , content = [ "It's just for no bug", "Check /Game/Component/Dialogue" ]
-            }
-    in
-    InitData
-        [ Enemy.component (Init <| EnemyInit <| enemyInit) env
-        , Self.component (Init <| SelfInit <| selfInit) env
-        , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit) env
-        , Dia.component (Init <| InitDialogueMsg <| DiaMsg.emptyInitData) env
-        , STri.component (Init <| TriggerInit <| STriInit.emptyInitData) env
-        ]
+        _ ->
+            Data []
 
 
 

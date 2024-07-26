@@ -14,9 +14,9 @@ import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
+import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, defaultDialogue, emptyInitData)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
@@ -43,8 +43,36 @@ update env evnt data basedata =
                 let
                     curDia =
                         data.curDialogue
+
+                    maybeNextDia =
+                        List.head <|
+                            List.filter
+                                (\dia ->
+                                    dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                                )
+                                data.remainDiaList
+
+                    ( nextDia, msg ) =
+                        case maybeNextDia of
+                            Just dia ->
+                                ( { dia | isSpeaking = True }, [] )
+
+                            _ ->
+                                ( { curDia | isSpeaking = False }
+                                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                                )
+
+                    remainingDialogues =
+                        List.filter
+                            (\dia ->
+                                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                            )
+                            data.remainDiaList
                 in
-                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
+                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
+                , msg
+                , ( env, False )
+                )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -59,34 +87,23 @@ updaterec env msg data basedata =
         BeginDialogue id ->
             let
                 nextDialogue =
-                    Maybe.withDefault
-                        { frameName = "dialogue_frame"
-                        , framePos = ( 0, 500 )
-                        , speaker = "head_magic"
-                        , speakerPos = ( -20, 680 )
-                        , font = "Comic Sans MS"
-                        , isSpeaking = False
-                        , content = [ "Hello!", "Thank you!" ]
-                        , textPos = ( 880, 800 )
-                        , id = 0
-                        }
-                    <|
+                    Maybe.withDefault defaultDialogue <|
                         List.head <|
-                            List.filter (\dia -> dia.id == id) data.remainDiaList
+                            List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 otherMsg =
                     case nextDialogue.id of
-                        101 ->
+                        ( 101, _ ) ->
                             [ Other ( "Enemy", AddChar ) ]
 
-                        102 ->
+                        ( 102, _ ) ->
                             [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
 
                         _ ->
                             []
 
                 remainingDialogues =
-                    List.filter (\dia -> dia.id /= id) data.remainDiaList
+                    List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
             ( ( { data
                     | curDialogue = { nextDialogue | isSpeaking = True }
@@ -109,10 +126,19 @@ contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -
 contentToView ( index, text ) env data =
     let
         lineHeight =
-            72
+            60
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
+        [ renderTextWithColorStyle
+            env.globalData.internalData
+            40
+            text
+            data.curDialogue.font
+            Color.black
+            ""
+            ( Tuple.first data.curDialogue.textPos
+            , toFloat index * lineHeight + Tuple.second data.curDialogue.textPos
+            )
         ]
 
 
@@ -121,7 +147,11 @@ view env data basedata =
     if data.curDialogue.isSpeaking then
         let
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
+                List.map
+                    (\textWithIndex ->
+                        contentToView textWithIndex env data
+                    )
+                    (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName

@@ -54,7 +54,7 @@ type alias EleResistance =
 
 genHp : Attribute -> Int
 genHp attributes =
-    attributes.constitution * 10
+    attributes.constitution * 5 + attributes.strength
 
 
 genMp : Attribute -> Int

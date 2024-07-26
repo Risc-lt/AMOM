@@ -1,6 +1,6 @@
 module SceneProtos.Game.Components.StoryTrigger.Init exposing
     ( InitData
-    , TriggerConditions, emptyInitData
+    , HealthStatus(..), TriggerConditions(..), defaultTrigger
     )
 
 {-|
@@ -16,34 +16,24 @@ module SceneProtos.Game.Components.StoryTrigger.Init exposing
 {-| The data used to initialize the scene
 -}
 type alias InitData =
-    List TriggerConditions
+    List ( TriggerConditions, Int )
+
+
+type HealthStatus
+    = Half
+    | Zero
 
 
 {-| The conditions that trigger the story
 -}
-type alias TriggerConditions =
-    { side : String
-    , frameNum : Int
-    , hpTrigger : Int
-    , gameState : String
-    , id : Int
-    }
+type TriggerConditions
+    = FrameTrigger Int
+    | HpTrigger HealthStatus String
+    | StateTrigger String
 
 
 {-| The initial data for the StroryTrigger component
 -}
-emptyInitData : InitData
-emptyInitData =
-    [ { side = "Self"
-      , frameNum = 0
-      , hpTrigger = 200
-      , gameState = "GameBegin"
-      , id = 0
-      }
-    , { side = "Enemy"
-      , frameNum = 0
-      , hpTrigger = 0
-      , gameState = "EnemyTurn"
-      , id = 101
-      }
-    ]
+defaultTrigger : ( TriggerConditions, Int )
+defaultTrigger =
+    ( FrameTrigger 0, 0 )

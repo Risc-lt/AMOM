@@ -61,6 +61,10 @@ allTexture =
         , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
         , ( "battle_background", "assets/character/background/battle_background.jpg" )
         , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
+        , ( "head_bithif", "assets/character/role/role_1.jpg" )
+        , ( "head_bruce", "assets/character/role/role_4.jpg" )
+        , ( "head_bulingze", "assets/character/role/role_2.jpg" )
+        , ( "head_wenderd", "assets/character/role/role_3.jpg" )
         ]
 
 

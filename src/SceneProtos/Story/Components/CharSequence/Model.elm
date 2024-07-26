@@ -17,6 +17,7 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
 import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
 
 
 type alias Data =
@@ -84,96 +85,72 @@ checkDestination ( movement, character ) =
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
-        Tick dt ->
-            let
-                curPlots =
-                    List.map 
-                        (\m -> 
-                            Tuple.pair m <|
-                                Maybe.withDefault defaultCharacter <|
-                                    List.head <|
-                                        List.filter (\c -> c.name == m.name) data.characters
-                        )
-                        <| List.filter (\m -> m.isMoving == True) data.curMove
+        Tick _ ->
+            if basedata.isPlaying == True then
+                let
+                    curPlots =
+                        List.map 
+                            (\m -> 
+                                Tuple.pair m <|
+                                    Maybe.withDefault defaultCharacter <|
+                                        List.head <|
+                                            List.filter (\c -> c.name == m.name) data.characters
+                            )
+                            <| List.filter (\m -> m.isMoving == True) data.curMove
 
-                newPlots =
-                    List.map 
-                        (\( m, c ) ->
-                            checkDestination <| handleMove ( m, c )
-                        )
-                        curPlots
-            in
-            ( ( data, basedata ), [], ( env, False ) )
+                    newPlots =
+                        List.map 
+                            (\( m, c ) ->
+                                checkDestination <| handleMove ( m, c )
+                            )
+                            curPlots
+
+                    newMoves =
+                        List.map
+                            (\m ->
+                                case
+                                    List.head <|
+                                        List.filter (\n -> n.name == m.name) <|
+                                            List.map Tuple.first newPlots
+                                of
+                                    Just movement ->
+                                        movement
+
+                                    _ ->
+                                        m
+                            )
+                            data.curMove
+
+                    newChars =
+                        List.map
+                            (\c ->
+                                case
+                                    List.head <|
+                                        List.filter (\n -> n.name == c.name) <|
+                                            List.map Tuple.second newPlots
+                                of
+                                    Just movement ->
+                                        movement
+
+                                    _ ->
+                                        c
+                            )
+                            data.characters
+                in
+                ( ( { data | characters = newChars, curMove = newMoves }, basedata )
+                , []
+                , ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
 
 
-
--- whether the Position is reach or over the destination
-
-
-isReachedX : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Bool
-isReachedX ( originX, originY ) ( newX, newY ) ( desX, desY ) =
-    if (originX - desX) * (newX - desX) < 0 || (originX - desX) * (newX - desX) == 0 then
-        True
-
-    else
-        False
-
-
-isReachedY : ( Float, Float ) -> ( Float, Float ) -> ( Float, Float ) -> Bool
-isReachedY ( originX, originY ) ( newX, newY ) ( desX, desY ) =
-    if (originY - desY) * (newY - desY) < 0 || (originY - desY) * (newY - desY) == 0 then
-        True
-
-    else
-        False
-
-
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        UpdateCharSequenceMsg deliver ->
-            let
-                newAct =
-                    Debug.log "newAct" deliver.action
-
-                -- _ =
-                --      "CharRecMsg(Action)" newAct
-            in
-            ( ( { data | visible = True, action = newAct }, basedata ), [], env )
-
-        NewCharSequenceMsg deliver ->
-            ( initOne env (NewCharSequenceMsg deliver), [], env )
-
-        VanishCharSequenceMsg ->
-            ( ( { data | visible = False }, basedata ), [], env )
-
-        CameraSequenceMsg act ->
-            let
-                newDes =
-                    case act of
-                        MoveLeft x ->
-                            ( Tuple.first data.destination + x, Tuple.second data.destination )
-
-                        MoveRight x ->
-                            ( Tuple.first data.destination - x, Tuple.second data.destination )
-
-                        MoveUp y ->
-                            ( Tuple.first data.destination, Tuple.second data.destination + y )
-
-                        MoveDown y ->
-                            ( Tuple.first data.destination, Tuple.second data.destination - y )
-
-                        Still ->
-                            data.destination
-
-                -- _ =
-                --      newDes
-            in
-            ( ( { data | destination = Debug.log "CharCameraMsg" newDes }, basedata ), [], env )
-
         _ ->
             ( ( data, basedata ), [], env )
 

@@ -8,7 +8,8 @@
             , "assets/character/role"
             , "assets/character/sprite_sheet"
             , "assets/character/buff"
-        ]
+        ],
+        "audio": []
     },
     "scenes": {
         "Level1": []

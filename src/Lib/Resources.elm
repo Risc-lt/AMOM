@@ -189,4 +189,6 @@ The format is the same with `allTexture`.
 -}
 allAudio : Dict.Dict String String
 allAudio =
-    Dict.empty
+    Dict.fromList
+        [ ( "battle", "assets/audio/demo.ogg" )
+        ]

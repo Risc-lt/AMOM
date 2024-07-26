@@ -7,11 +7,13 @@ module Scenes.Level1.Model exposing (scene)
 
 -}
 
+import Canvas
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (Env)
-import Messenger.Scene.RawScene exposing (RawSceneProtoLevelInit)
-import Messenger.Scene.Scene exposing (SceneStorage)
+import Messenger.Scene.RawScene exposing (RawSceneProtoLevelInit, RawSceneUpdate, RawSceneView)
+import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..), InitMsg(..))
 import SceneProtos.Game.Components.Dialogue.Init as DiaMsg
 import SceneProtos.Game.Components.Dialogue.Model as Dia
@@ -28,6 +30,10 @@ import SceneProtos.Game.Model exposing (genScene)
 import Scenes.Level1.Characters exposing (enemyInitData, selfInitData)
 import Scenes.Level1.Plots exposing (dialogueInitData, triggerInitData)
 import Time
+
+
+type alias Data =
+    {}
 
 
 init : RawSceneProtoLevelInit UserData SceneMsg (InitData SceneMsg)
@@ -56,6 +62,31 @@ initData env msg =
         ]
     , level = "Level1"
     }
+
+
+
+{- update : RawSceneUpdate Data UserData SceneMsg
+   update env msg data =
+       if env.globalData.sceneStartFrame == 0 then
+           ( data, [ SOMPlayAudio 0 "opening" (ALoop Nothing Nothing) ], env )
+
+       else
+           ( data, [], env )
+
+
+   view : RawSceneView UserData Data
+   view env data =
+       Canvas.empty
+
+
+   scenecon : MConcreteScene Data UserData SceneMsg
+   scenecon =
+       { init = init
+       , update = update
+       , view = view
+       }
+
+-}
 
 
 {-| Scene storage

@@ -9,5 +9,6 @@ module SceneProtos.Story.Components.Trigger.Init exposing (..)
 
 -}
 
+
 type alias InitData =
     Int

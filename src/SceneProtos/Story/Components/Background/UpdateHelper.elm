@@ -1,19 +1,15 @@
 module SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
 
-
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
-import Messenger.Component.Component exposing (ComponentUpdate)
+import Messenger.Component.Component exposing (ComponentUpdate, ComponentUpdateRec)
 import Messenger.GeneralModel exposing (Msg(..))
+import SceneProtos.Story.Components.Background.Init exposing (Background, Camera, InitData, defaultCamera)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character, defaultCharacter)
+import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (checkDestination)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.Background.Init exposing (InitData, Background, Camera)
-import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
-import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (checkDestination)
-import SceneProtos.Story.Components.CharSequence.Init exposing (Character)
-import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
-import Messenger.Component.Component exposing (ComponentUpdateRec)
 
 
 type alias Data =
@@ -53,6 +49,7 @@ bySelfMove targetX targetY speed background =
     else
         background
 
+
 checkDestination : Camera -> Background -> Camera
 checkDestination camera background =
     if background.x == camera.targetX && background.y == camera.targetY then
@@ -66,10 +63,10 @@ updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 updateHelper env _ data basedata =
     let
         newBack =
-            bySelfMove 
-                data.curMove.targetX 
-                data.curMove.targetY 
-                data.curMove.speed 
+            bySelfMove
+                data.curMove.targetX
+                data.curMove.targetY
+                data.curMove.speed
                 data.background
 
         newMove =
@@ -87,4 +84,5 @@ updateHelper env _ data basedata =
     in
     ( ( { data | background = newBack, curMove = newMove }, { basedata | isPlaying = not newState } )
     , newMsg
-    , ( env, False ) )
+    , ( env, False )
+    )

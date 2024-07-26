@@ -17,9 +17,8 @@ import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (defaultDialogue)
 
 
 type alias Data =
@@ -64,6 +63,7 @@ update env evnt data basedata =
 
                             _ ->
                                 ( { curDia | isSpeaking = False }, [] )
+
                     remainingDialogues =
                         List.filter
                             (\dia ->
@@ -101,8 +101,8 @@ updaterec env msg data basedata =
                         | curDialogue = { nextDialogue | isSpeaking = True }
                         , remainDiaList = remainingDialogues
                     }
-                , { basedata | isPlaying = True }
-                )
+                  , { basedata | isPlaying = True }
+                  )
                 , []
                 , env
                 )

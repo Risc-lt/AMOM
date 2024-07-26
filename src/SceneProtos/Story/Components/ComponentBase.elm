@@ -1,10 +1,13 @@
-module SceneProtos.Story.Components.ComponentBase exposing 
-    (BaseData
-    , ComponentMsg(..), ComponentTarget, initBaseData)
+module SceneProtos.Story.Components.ComponentBase exposing
+    ( BaseData
+    , ComponentMsg(..)
+    , ComponentTarget
+    , initBaseData
+    )
 
+import SceneProtos.Story.Components.Background.Init as Background
 import SceneProtos.Story.Components.CharSequence.Init as Character exposing (Character)
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
-import SceneProtos.Story.Components.Background.Init as Background
 
 
 {-|

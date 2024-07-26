@@ -13,13 +13,10 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character, InitData, MoveKind(..), Movement, defaultCharacter, defaultMovement)
+import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
-import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
-import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
-import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
-import SceneProtos.Story.Components.CharSequence.Init exposing (MoveKind(..))
 
 
 type alias Data =
@@ -61,11 +58,12 @@ updaterec env msg data basedata =
         BeginPlot id ->
             let
                 nextMove =
-                    List.map 
+                    List.map
                         (\m ->
                             { m | isMoving = True }
                         )
-                        <| List.filter (\m -> m.id == id) data.remainMove
+                    <|
+                        List.filter (\m -> m.id == id) data.remainMove
 
                 remainMove =
                     List.filter (\m -> m.id /= id) data.remainMove
@@ -79,7 +77,7 @@ updaterec env msg data basedata =
                                         nextMove
                             of
                                 Just movement ->
-                                    case movement.movekind of 
+                                    case movement.movekind of
                                         Real _ speed ->
                                             { c | posture = movement.posture, speed = speed, isMoving = True }
 
@@ -100,8 +98,8 @@ updaterec env msg data basedata =
                         , curMove = nextMove
                         , remainMove = remainMove
                     }
-                , { basedata | isPlaying = True }
-                )
+                  , { basedata | isPlaying = True }
+                  )
                 , []
                 , env
                 )
@@ -112,7 +110,7 @@ updaterec env msg data basedata =
         EndMove ->
             let
                 newMove =
-                    List.map 
+                    List.map
                         (\m ->
                             case m.movekind of
                                 Fake _ ->
@@ -132,7 +130,7 @@ updaterec env msg data basedata =
                                         newMove
                             of
                                 Just movement ->
-                                    case movement.movekind of 
+                                    case movement.movekind of
                                         Fake _ ->
                                             { c | isMoving = False }
 

@@ -17,12 +17,13 @@ import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (defaultDialogue)
+
 
 type alias Data =
     Int
+
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
@@ -31,7 +32,7 @@ init env initMsg =
             ( 0, initBaseData )
 
         _ ->
-            ( 0, initBaseData)
+            ( 0, initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -40,11 +41,11 @@ update env evnt data basedata =
         Tick _ ->
             if basedata.isPlaying == False then
                 ( ( data + 1, basedata )
-                , [ Other ( "Background", BeginPlot (data + 1) ) 
+                , [ Other ( "Background", BeginPlot (data + 1) )
                   , Other ( "Character", BeginPlot (data + 1) )
-                  , Other ( "Dialogue", BeginPlot (data + 1) ) 
+                  , Other ( "Dialogue", BeginPlot (data + 1) )
                   ]
-                , ( env, False ) 
+                , ( env, False )
                 )
 
             else

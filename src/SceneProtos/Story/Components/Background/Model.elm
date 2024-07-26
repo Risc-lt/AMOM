@@ -11,13 +11,11 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.Render.Sprite exposing (renderSprite)
+import SceneProtos.Story.Components.Background.Init exposing (InitData, defaultBackground, defaultCamera)
+import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.Background.Init exposing (InitData)
-import SceneProtos.Story.Components.Background.Init exposing (defaultBackground)
-import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
-import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
-import Messenger.Render.Sprite exposing (renderSprite)
 
 
 type alias Data =
@@ -66,7 +64,7 @@ updaterec env msg data basedata =
                     case maybeNextMove of
                         Just move ->
                             { move | isMoving = True }
-                        
+
                         _ ->
                             data.curMove
 
@@ -78,8 +76,8 @@ updaterec env msg data basedata =
                         | curMove = nextMove
                         , remainMove = remainMove
                     }
-                , { basedata | isPlaying = True }
-                )
+                  , { basedata | isPlaying = True }
+                  )
                 , []
                 , env
                 )
@@ -93,13 +91,13 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    ( renderSprite 
-        env.globalData.internalData 
-        [] 
-        ( data.background.x, data.background.y ) 
-        ( 1920, 1080 ) 
+    ( renderSprite
+        env.globalData.internalData
+        []
+        ( data.background.x, data.background.y )
+        ( 1920, 1080 )
         data.background.backFigure
-    , 3 
+    , 3
     )
 
 

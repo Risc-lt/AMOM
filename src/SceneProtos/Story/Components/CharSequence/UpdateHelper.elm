@@ -1,17 +1,13 @@
 module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 
-
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..))
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, defaultCharacter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
-import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
-import SceneProtos.Story.Components.CharSequence.Init exposing (MoveKind(..))
-import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..))
 
 
 type alias Data =
@@ -102,17 +98,18 @@ updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 updateHelper env _ data basedata =
     let
         curPlots =
-            List.map 
-                (\m -> 
+            List.map
+                (\m ->
                     Tuple.pair m <|
                         Maybe.withDefault defaultCharacter <|
                             List.head <|
                                 List.filter (\c -> c.name == m.name) data.characters
                 )
-                <| List.filter (\m -> m.isMoving == True) data.curMove
+            <|
+                List.filter (\m -> m.isMoving == True) data.curMove
 
         newPlots =
-            List.map 
+            List.map
                 (\( m, c ) ->
                     checkDestination <| handleMove <| changeDirection ( m, c )
                 )
@@ -155,4 +152,5 @@ updateHelper env _ data basedata =
     in
     ( ( { data | characters = newChars, curMove = newMoves }, { basedata | isPlaying = not newState } )
     , []
-    , ( env, False ) )
+    , ( env, False )
+    )

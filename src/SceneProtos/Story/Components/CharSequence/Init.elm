@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.CharSequence.Init exposing 
     (InitData
-    , defaultCharacter, defaultMovement)
+    , Movement, Character, defaultCharacter, defaultMovement)
 
 {-|
 
@@ -26,7 +26,8 @@ type alias Character =
 type alias Movement =
     { name : String
     , speed : Float
-    , destination : ( Float, Float )
+    , targetX : Float
+    , targetY : Float
     , id : Int
     }
 
@@ -51,6 +52,7 @@ defaultMovement : Movement
 defaultMovement =
     { name = ""
     , speed = 0
-    , destination = ( 0, 0 )
+    , targetX = 0
+    , targetY = 0
     , id = 0
     }

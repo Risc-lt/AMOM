@@ -15,7 +15,8 @@ import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.CharSequence.Init exposing (InitData)
+import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
 
 
 type alias Data =
@@ -37,36 +38,88 @@ init env initMsg =
             )
 
 
+handleMove : ( Movement, Character ) -> ( Movement, Character )
+handleMove ( movement, character ) =
+    if movement.targetX > character.x then
+        if character.x + movement.speed > movement.targetX then
+            ( movement, { character | x = movement.targetX } )
+
+        else
+            ( movement, { character | x = character.x + movement.speed } )
+
+    else if movement.targetX < character.x then
+        if character.x - movement.speed < movement.targetX then
+            ( movement, { character | x = movement.targetX } )
+
+        else
+            ( movement, { character | x = character.x - movement.speed } )
+
+    else if movement.targetY > character.y then
+        if character.y + movement.speed > movement.targetY then
+            ( movement, { character | y = movement.targetY } )
+
+        else
+            ( movement, { character | y = character.y + movement.speed } )
+
+    else if movement.targetY < character.y then
+        if character.y - movement.speed < movement.targetY then
+            ( movement, { character | y = movement.targetY } )
+
+        else
+            ( movement, { character | y = character.y - movement.speed } )
+
+    else
+        ( movement, character )
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     let
-        curChars =
-            List.filter 
-                (\c -> 
-                    List.any (\m -> c.name == m.name) data.curMove
-                ) 
-                data.characters
-
-        newChars =
+        curPlots =
             List.map 
-                (\c ->
-                    case data.action of
-                        MoveLeft x ->
-                            updatePos data.position -data.dx 0
+                (\m -> 
+                    Tuple.pair m <|
+                        Maybe.withDefault defaultCharacter <|
+                            List.head <|
+                                List.filter (\c -> c.name == m.name) data.characters
+                ) 
+                data.curMove
 
-                        MoveRight x ->
-                            updatePos data.position data.dx 0
+        newPlots =
+            List.map 
+                (\( m, c ) ->
+                    if m.targetX > c.x then
+                        if c.x + m.speed > m.targetX then
+                            ( m, { c | x = m.targetX } )
 
-                        MoveUp y ->
-                            updatePos data.position 0 -data.dy
+                        else
+                            ( m, { c | x = c.x + speed } )
 
-                        MoveDown y ->
-                            updatePos data.position 0 data.dy
+                    else if m.targetX < c.x then
+                        if c.x - m.speed < m.targetX then
+                            ( m, { c | x = m.targetX } )
 
-                        Still ->
-                            data.position
+                        else
+                            ( m, { c | x = c.x - speed } )
+
+                    else if m.targetY > c.y then
+                        if c.y + m.speed > m.targetY then
+                            ( m, { c | y = m.targetY } )
+
+                        else
+                            ( m, { c | y = c.y + speed } )
+
+                    else if m.targetY < c.y then
+                        if c.y - m.speed < m.targetY then
+                            ( m, { c | y = m.targetY } )
+
+                        else
+                            ( m, { c | y = c.y - speed } )
+
+                    else
+                        ( m, c )
                 )
-                curChars
+                curPlots
 
         _ =
             Debug.log "newPosinUpdate" newPos

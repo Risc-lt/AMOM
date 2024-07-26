@@ -13,25 +13,9 @@ import SceneProtos.Story.Components.Dialogue.Init as Dialogue
 
 -}
 type ComponentMsg
-    = NewDialogueMsg (List Dialogue.CreateInitData)
-    | NextDialogue Dialogue.CreateInitData
+    = BeginDialogue Int
     | CloseDialogue
-    | NewDialogSequenceMsg DialogSequenceDeliver
-    | NewCharSequenceMsg InitCharSequenceDeliver
-    | UpdateCharSequenceMsg CharSequenceDeliver
-    | VanishCharSequenceMsg
-    | CameraSequenceMsg CharAction
-    | CameraMsg ( Float, Float )
-    | NewWenderdMsg ( Float, Float )
-    | VanishWenderdMsg
-    | NewBithifMsg ( Float, Float )
-    | VanishBithifMsg
-    | NewBruceMsg ( Float, Float )
-    | VanishBruceMsg
-    | NewBulingzeMsg ( Float, Float )
-    | VanishBulingzeMsg
-    | MoveTo ( Float, Float )
-    | SetBackgroundMsg ( Float, Float )
+    | DialogueInit Dialogue.InitData
     | NullComponentMsg
 
 

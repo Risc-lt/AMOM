@@ -18,174 +18,83 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (defaultDialogue)
 
 
 type alias Data =
-    
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
-        NewDialogSequenceMsg deliver ->
-            ( { frameName = "dialogue_frame"
-              , framePos = ( 720, 0 )
-              , speaker = deliver.speaker
-              , speakerPos = ( 720, 0 )
-              , font = "Comic Sans MS"
-              , isSpeaking = True
-              , content = deliver.content
-              , textPos = ( 720, 1320 )
-              , nextTar = deliver.nextTar
-              , next = deliver.next
-              , timer = 0
-              }
-            , ()
-            )
+        DialogueInit deliver ->
+            deliver
 
         _ ->
-            ( { frameName = "dialogue_frame"
-              , framePos = ( 720, 0 )
-              , speaker = "Bithif"
-              , speakerPos = ( 720, 0 )
-              , font = "Comic Sans MS"
-              , isSpeaking = False
-              , content = [ "What can I say, Man!" ]
-              , textPos = ( 720, 1320 )
-              , nextTar = [ " " ]
-              , next = [ NullComponentMsg ]
-              , timer = 0
-              }
-            , ()
-            )
+            { curDialogue = defaultDialogue
+            , remainDiaList = []
+            }
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
-        Tick dt ->
-            let
-                newTimer =
-                    data.timer + dt
-
-                newMsg =
-                    List.head data.next
-
-                notOver =
-                    isNotOver data.timer 2000
-
-                newTar =
-                    data.nextTar
-
-                msgList =
-                    Debug.log "DiaMsgList(Update)" List.map2 Tuple.pair newTar data.next
-
-                sendMsg =
-                    if newMsg == Just NullComponentMsg then
-                        ( ( { data | timer = 0 }, basedata ), [], ( env, False ) )
-
-                    else
-                        ( ( { data | timer = 0, isSpeaking = True }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
-
-                -- isSpeaking -> False
-                -- _ =
-                --      msgList
-                --( ( { data | timer = 0, isSpeaking = False }, basedata ), [  ], ( env, False ) )
-            in
-            if notOver then
-                ( ( { data | timer = newTimer }, basedata ), [], ( env, False ) )
+        KeyDown key ->
+            if key == 13 then
+                let
+                    curDia =
+                        data.curDialogue
+                in
+                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ], ( env, False ) )
 
             else
-                sendMsg
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
 
 
-isNotOver : Int -> Int -> Bool
-isNotOver timer terminal =
-    if timer <= terminal then
-        True
-
-    else
-        False
-
-
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        NewDialogSequenceMsg deliver ->
+        BeginDialogue id ->
             let
-                newDeliver =
-                    deliver
+                nextDialogue =
+                    Maybe.withDefault
+                        { frameName = "dialogue_frame"
+                        , framePos = ( 0, 500 )
+                        , speaker = "head_magic"
+                        , speakerPos = ( -20, 680 )
+                        , font = "Comic Sans MS"
+                        , isSpeaking = False
+                        , content = [ "Hello!", "Thank you!" ]
+                        , textPos = ( 880, 800 )
+                        , id = 0
+                        }
+                    <|
+                        List.head <|
+                            List.filter (\dia -> dia.id == id) data.remainDiaList
 
-                _ =
-                    Debug.log "DiaRecMsg" newDeliver
+                remainingDialogues =
+                    List.filter (\dia -> dia.id /= id) data.remainDiaList
             in
-            ( ( { frameName = "dialogue_frame"
-                , framePos = ( 720, 0 )
-                , speaker = deliver.speaker
-                , speakerPos = ( 720, 0 )
-                , font = "Comic Sans MS"
-                , isSpeaking = True
-                , content = deliver.content
-                , textPos = ( 720, 1320 )
-                , nextTar = deliver.nextTar
-                , next = deliver.next
-                , timer = 0
+            ( ( { data
+                    | curDialogue = { nextDialogue | isSpeaking = True }
+                    , remainDiaList = remainingDialogues
                 }
-              , ()
+              , basedata
               )
-            , []
+            , [ Other ( "Self", BeginDialogue id )
+              , Other ( "Enemy", BeginDialogue id )
+              ]
+                ++ otherMsg
             , env
             )
 
         _ ->
-            ( ( { frameName = "dialogue_frame"
-                , framePos = ( 720, 0 )
-                , speaker = "Bithif"
-                , speakerPos = ( 720, 0 )
-                , font = "Comic Sans MS"
-                , isSpeaking = False
-                , content = [ "What can I say, Man!" ]
-                , textPos = ( 720, 1320 )
-                , nextTar = [ " " ]
-                , next = [ NullComponentMsg ]
-                , timer = 0
-                }
-              , ()
-              )
-            , []
-            , env
-            )
-
-
-
--- case msg of
---     NewDialogSequenceMsg newDialogue ->
---         let
---             newSpeaker =
---                 newDialogue.speaker
---             newContent =
---                 newDialogue.content
---             state =
---                 True
---         in
---         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
---     NextDialogue newDialogue ->
---         let
---             newSpeaker =
---                 newDialogue.speaker
---             newContent =
---                 newDialogue.content
---             state =
---                 True
---         in
---         ( ( { data | speaker = newSpeaker, content = newContent, isSpeaking = state }, basedata ), [], env )
---     CloseDialogue ->
---         ( ( { data | isSpeaking = False }, basedata ), [], env )
---     _ ->
---        ( ( data, basedata ), [], env )
+            ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

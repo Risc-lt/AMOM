@@ -41,7 +41,7 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "background", "assets/character/background/background_1.jpg" )
+        [ ( "background", "assets/character/background/battle_background.jpg" )
         , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
         , ( "Wild Wolf", "assets/character/role/wolf.png" )
         , ( "Bulingze", "assets/character/role/magic.png" )

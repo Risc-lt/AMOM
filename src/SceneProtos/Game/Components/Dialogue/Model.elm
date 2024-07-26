@@ -155,7 +155,7 @@ view env data basedata =
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 426 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

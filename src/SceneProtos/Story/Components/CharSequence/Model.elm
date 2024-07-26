@@ -46,13 +46,7 @@ update env evnt data basedata =
     case evnt of
         Tick _ ->
             if basedata.isPlaying == True then
-                let
-                    ( ( newData, newBasedata ), newMsg, ( newEnv, newBlock ) ) =
-                        updateHelper env evnt data basedata
-                in
-                ( ( newData, newBasedata )
-                , Other ( "Background", ChangeChars newData.characters ) :: newMsg
-                , ( newEnv, newBlock ) )
+                updateHelper env evnt data basedata
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -114,6 +108,43 @@ updaterec env msg data basedata =
 
             else
                 ( ( data, basedata ), [], env )
+
+        EndMove ->
+            let
+                newMove =
+                    List.map 
+                        (\m ->
+                            case m.movekind of
+                                Fake _ ->
+                                    { m | isMoving = False }
+
+                                _ ->
+                                    m
+                        )
+                        data.curMove
+
+                newChars =
+                    List.map
+                        (\c ->
+                            case
+                                List.head <|
+                                    List.filter (\n -> n.name == c.name) <|
+                                        newMove
+                            of
+                                Just movement ->
+                                    case movement.movekind of 
+                                        Fake _ ->
+                                            { c | isMoving = False }
+
+                                        _ ->
+                                            c
+
+                                _ ->
+                                    c
+                        )
+                        data.characters
+            in
+            ( ( { data | characters = newChars, curMove = newMove }, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

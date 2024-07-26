@@ -20,7 +20,7 @@ type ComponentMsg
     | DialogueInit Dialogue.InitData
     | CharInit Character.InitData
     | BackgroundInit Background.InitData
-    | ChangeChars (List Character)
+    | EndMove
     | NullComponentMsg
 
 

@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.CharSequence.Init exposing 
     (InitData
-    , Movement, Character, defaultCharacter, defaultMovement)
+    , MoveKind(..), Direction(..), Posture(..), Movement, Character, defaultCharacter, defaultMovement)
 
 {-|
 
@@ -12,22 +12,43 @@ module SceneProtos.Story.Components.CharSequence.Init exposing
 -}
 
 
+type Direction
+    = Right
+    | Left
+    | Up
+    | Down
+
+
+type Posture
+    = Normal
+    | Battle
+
+
 {- The data structure for characters
 -}
 type alias Character =
     { name : String
+    , direction : Direction
+    , posture : Posture
     , x : Float
     , y : Float
+    , speed : Float
     }
+
+
+type MoveKind
+    = Follow ( Float, Float ) Float
+    | BySelf ( Float, Float ) Float
+    | Fake Direction
+    | None
 
 
 {- The data structure for movement
 -}
 type alias Movement =
     { name : String
-    , speed : Float
-    , targetX : Float
-    , targetY : Float
+    , posture : Posture
+    , movekind : MoveKind
     , id : Int
     , isMoving : Bool
     }
@@ -45,16 +66,18 @@ type alias InitData =
 defaultCharacter : Character
 defaultCharacter =
     { name = ""
+    , direction = Right
+    , posture = Normal
     , x = 0
     , y = 0
+    , speed = 0
     }
 
 defaultMovement : Movement
 defaultMovement =
     { name = ""
-    , speed = 0
-    , targetX = 0
-    , targetY = 0
+    , posture = Normal
+    , movekind = None
     , id = 0
     , isMoving = False
     }

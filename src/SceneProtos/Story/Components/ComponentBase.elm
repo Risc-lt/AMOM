@@ -37,12 +37,6 @@ type alias BaseData =
     }
 
 
-type alias Object =
-    { standingFigure : String
-    , movingSheet : String
-    }
-
-
 initBaseData : BaseData
 initBaseData =
     { curId = 0

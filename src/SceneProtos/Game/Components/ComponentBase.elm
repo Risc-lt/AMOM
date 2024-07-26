@@ -40,7 +40,7 @@ type InitMsg
     | SelfInit (List Self)
     | UIInit InterfaceMsg.InitData
     | InitDialogueMsg DialogueMsg.InitData
-    | TriggerInit (List TriggerConditions)
+    | TriggerInit (List ( TriggerConditions, Int ))
 
 
 type StatusMsg
@@ -74,7 +74,7 @@ type ComponentMsg
     | GameOver
     | BeginDialogue Int
     | CloseDialogue
-    | CheckIsTriggered (List TriggerConditions)
+    | CheckIsTriggered (List ( TriggerConditions, Int ))
     | Defeated
     | AddChar
     | PutBuff Buff Int

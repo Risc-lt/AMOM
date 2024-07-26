@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Interface.Model exposing (component)
 
 import Array exposing (get)
 import Canvas
+import Current exposing (Current)
 import Debug exposing (toString)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -20,8 +21,9 @@ import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
 import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (HealthStatus(..), TriggerConditions(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import String exposing (startsWith)
 
 
 type alias Data =
@@ -94,42 +96,43 @@ sendMsg data basedata =
             ( basedata.state, [] )
 
 
-checkOneTrigger : TriggerConditions -> Data -> BaseData -> Int
-checkOneTrigger trigger data basedata =
-    case trigger.side of
-        "Enemy" ->
-            if
-                (trigger.frameNum
-                    <= 0
-                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
-                    && trigger.gameState
-                    == toString basedata.state
-                )
-                    || (trigger.id == 101 && List.length data.enemies < 6)
-            then
-                trigger.id
+checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> Int
+checkOneTrigger ( trigger, id ) data basedata =
+    case trigger of
+        FrameTrigger num ->
+            if num <= 0 then
+                id
 
             else
                 -1
 
-        "Self" ->
-            if
-                trigger.frameNum
-                    <= 0
-                    && List.any (\x -> x.hp == trigger.hpTrigger) data.enemies
-                    && trigger.gameState
-                    == toString basedata.state
-            then
-                trigger.id
+        HpTrigger status side ->
+            let
+                hpCheck =
+                    if status == Half then
+                        \x -> x.hp <= x.extendValues.basicStatus.maxHp
+
+                    else
+                        \x -> x.hp <= 0
+            in
+            if side == "Enemy" && List.any hpCheck data.enemies then
+                id
+
+            else if side == "Self" && List.any hpCheck data.selfs then
+                id
 
             else
                 -1
 
-        _ ->
-            -1
+        StateTrigger state ->
+            if toString basedata.state == state then
+                id
+
+            else
+                -1
 
 
-handleCheckTrigger : Data -> BaseData -> List TriggerConditions -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
+handleCheckTrigger : Data -> BaseData -> List ( TriggerConditions, Int ) -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
 handleCheckTrigger data basedata triggers =
     let
         maybeTrigger =
@@ -152,15 +155,35 @@ updaterec env msg data basedata =
             let
                 newQueue =
                     getQueue list data.enemies
+
+                numDifference =
+                    if List.length newQueue < List.length data.queue then
+                        List.length newQueue - List.length data.queue - 1
+
+                    else
+                        0
             in
-            ( ( { data | selfs = list, queue = newQueue }, basedata ), [], env )
+            ( ( { data | selfs = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
+            , []
+            , env
+            )
 
         ChangeStatus (ChangeEnemies list) ->
             let
                 newQueue =
                     getQueue data.selfs list
+
+                numDifference =
+                    if List.length newQueue < List.length data.queue then
+                        List.length newQueue - List.length data.queue - 1
+
+                    else
+                        0
             in
-            ( ( { data | enemies = list, queue = newQueue }, basedata ), [], env )
+            ( ( { data | enemies = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
+            , []
+            , env
+            )
 
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )

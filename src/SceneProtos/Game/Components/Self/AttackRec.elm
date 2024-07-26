@@ -114,8 +114,8 @@ getSpecificNormalAttack self enemy isCritical =
     in
     floor <|
         (20
-            * toFloat self.attributes.strength
-            / toFloat enemy.attributes.constitution
+            * toFloat enemy.attributes.strength
+            / toFloat self.attributes.constitution
             * criticalHitRate
             * toFloat (100 + attackUp - defenceUp)
             / 100

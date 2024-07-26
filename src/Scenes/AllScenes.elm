@@ -15,7 +15,7 @@ import Dict
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
-import Scenes.Game.Model as Game
+import Scenes.Level1.Model as Level1
 import Scenes.Sample.Model as Sample
 
 
@@ -27,6 +27,6 @@ Store all the scenes with their name here.
 allScenes : AllScenes UserData SceneMsg
 allScenes =
     Dict.fromList
-        [ ( "Game", Game.scene )
-        , ( "Sample", Sample.scene )
+        [ ( "Sample", Sample.scene )
+        , ( "Level1", Level1.scene )
         ]

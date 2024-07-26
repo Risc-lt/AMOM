@@ -29,6 +29,7 @@ type Posture
 type alias Character =
     { name : String
     , direction : Direction
+    , posture : Posture
     , x : Float
     , y : Float
     , speed : Float
@@ -65,6 +66,7 @@ type alias InitData =
 defaultCharacter : Character
 defaultCharacter =
     { name = ""
+    , posture = Normal
     , direction = Right
     , x = 0
     , y = 0

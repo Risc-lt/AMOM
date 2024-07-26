@@ -86,11 +86,14 @@ updaterec env msg data basedata =
                             of
                                 Just movement ->
                                     case movement.movekind of 
-                                        Real ( _, _ ) speed ->
-                                            { c | speed = speed }
+                                        Real _ speed ->
+                                            { c | posture = movement.posture, speed = speed, isMoving = True }
 
-                                        _ ->
-                                            c
+                                        Fake _ ->
+                                            { c | posture = movement.posture, isMoving = True }
+
+                                        None ->
+                                            { c | posture = movement.posture, isMoving = False }
 
                                 _ ->
                                     c

@@ -83,11 +83,19 @@ handleMove ( movement, character ) =
 
 checkDestination : ( Movement, Character ) -> ( Movement, Character )
 checkDestination ( movement, character ) =
-    if character.x == movement.targetX && character.y == movement.targetY then
-        ( { movement | isMoving = False }, character )
+    case movement.movekind of
+        Real ( targetX, targetY ) _ ->
+            if character.x == targetX && character.y == targetY then
+                ( { movement | isMoving = False }, character )
 
-    else
-        ( movement, character )
+            else
+                ( movement, character )
+
+        None ->
+            ( { movement | isMoving = False }, character )
+
+        _ ->
+            ( movement, character )
 
 
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -106,7 +114,7 @@ updateHelper env _ data basedata =
         newPlots =
             List.map 
                 (\( m, c ) ->
-                    checkDestination <| handleMove ( m, c )
+                    checkDestination <| handleMove <| changeDirection ( m, c )
                 )
                 curPlots
 

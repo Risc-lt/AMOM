@@ -1,6 +1,66 @@
 module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 
 
+import Lib.Base exposing (SceneMsg)
+import Lib.UserData exposing (UserData)
+import Messenger.Base exposing (UserEvent(..))
+import Messenger.Component.Component exposing (ComponentUpdate)
+import Messenger.GeneralModel exposing (Msg(..))
+import Messenger.Render.Sprite exposing (renderSprite)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
+import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
+
+
+type alias Data =
+    InitData
+
+
+handleMove : ( Movement, Character ) -> ( Movement, Character )
+handleMove ( movement, character ) =
+    if movement.targetX > character.x then
+        if character.x + movement.speed > movement.targetX then
+            ( movement, { character | x = movement.targetX } )
+
+        else
+            ( movement, { character | x = character.x + movement.speed } )
+
+    else if movement.targetX < character.x then
+        if character.x - movement.speed < movement.targetX then
+            ( movement, { character | x = movement.targetX } )
+
+        else
+            ( movement, { character | x = character.x - movement.speed } )
+
+    else if movement.targetY > character.y then
+        if character.y + movement.speed > movement.targetY then
+            ( movement, { character | y = movement.targetY } )
+
+        else
+            ( movement, { character | y = character.y + movement.speed } )
+
+    else if movement.targetY < character.y then
+        if character.y - movement.speed < movement.targetY then
+            ( movement, { character | y = movement.targetY } )
+
+        else
+            ( movement, { character | y = character.y - movement.speed } )
+
+    else
+        ( movement, character )
+
+
+checkDestination : ( Movement, Character ) -> ( Movement, Character )
+checkDestination ( movement, character ) =
+    if character.x == movement.targetX && character.y == movement.targetY then
+        ( { movement | isMoving = False }, character )
+
+    else
+        ( movement, character )
+
+
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env evnt data basedata =
     let

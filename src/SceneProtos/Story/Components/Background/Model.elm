@@ -86,6 +86,9 @@ updaterec env msg data basedata =
             else
                 ( ( data, basedata ), [], env )
 
+        ChangeChars characters ->
+            followMove characters env evnt data basedata
+
         _ ->
             ( ( data, basedata ), [], env )
 

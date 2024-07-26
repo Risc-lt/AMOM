@@ -12,6 +12,8 @@ import SceneProtos.Story.Components.Background.Init exposing (InitData, Backgrou
 import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
 import SceneProtos.Story.Components.Background.Init exposing (MoveKind(..))
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (checkDestination)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
 
 
 type alias Data =
@@ -51,6 +53,31 @@ bySelfMove targetX targetY speed background =
     else
         background
 
+
+followMove : List Character -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+followMove characters env evnt data basedata =
+    let
+        target =
+            case data.curMove.movekind of
+                Follow name ->
+                    Maybe.withDefault defaultCharacter <|
+                        List.head <|
+                            List.filter (\c -> c.name == name) characters
+
+                _ ->
+                    defaultCharacter
+
+        curBack =
+            data.background
+
+        newBack =
+            if target.name /= "" then
+                { curBack | x = target.x + 50, y = target.y + 50 }
+
+            else
+                curBack
+    in
+    ( ( { data | background = newBack }, basedata ), [], ( env, False ) )
 
 checkDestination : Camera -> Float -> Float -> Background -> Camera
 checkDestination camera targetX targetY background =

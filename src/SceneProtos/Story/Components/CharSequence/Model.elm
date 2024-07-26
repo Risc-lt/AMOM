@@ -44,7 +44,13 @@ update env evnt data basedata =
     case evnt of
         Tick _ ->
             if basedata.isPlaying == True then
-                updateHelper env evnt data basedata
+                let
+                    ( ( newData, newBasedata ), newMsg, ( newEnv, newBlock ) ) =
+                        updateHelper env evnt data basedata
+                in
+                ( ( newData, newBasedata )
+                , Other ( "Background", ChangeChars newData.characters ) :: newMsg
+                , ( newEnv, newBlock ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )

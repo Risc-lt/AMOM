@@ -48,8 +48,33 @@ update env evnt data basedata =
                 let
                     curDia =
                         data.curDialogue
+
+                    maybeNextDia =
+                        List.head <|
+                            List.filter
+                                (\dia ->
+                                    dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                                )
+                                data.remainDiaList
+
+                    ( nextDia, msg ) =
+                        case maybeNextDia of
+                            Just dia ->
+                                ( { dia | isSpeaking = True }, [] )
+
+                            _ ->
+                                ( { curDia | isSpeaking = False }, [] )
+                    remainingDialogues =
+                        List.filter
+                            (\dia ->
+                                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                            )
+                            data.remainDiaList
                 in
-                ( ( { data | curDialogue = { curDia | isSpeaking = False } }, basedata ), [], ( env, False ) )
+                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
+                , msg
+                , ( env, False )
+                )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -66,10 +91,10 @@ updaterec env msg data basedata =
                 nextDialogue =
                     Maybe.withDefault defaultDialogue <|
                         List.head <|
-                            List.filter (\dia -> dia.id == id) data.remainDiaList
+                            List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 remainingDialogues =
-                    List.filter (\dia -> dia.id /= id) data.remainDiaList
+                    List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
             if nextDialogue.speaker /= "" then
                 ( ( { data

@@ -21,7 +21,7 @@ type alias Dialogue =
     , isSpeaking : Bool
     , content : List String
     , textPos : ( Float, Float )
-    , id : Int
+    , id : ( Int, Int )
     , timer : Int
     }
 
@@ -44,6 +44,6 @@ defaultDialogue =
         , isSpeaking = False
         , content = []
         , textPos = ( 720, 1320 )
-        , id = 0
+        , id = ( 0, 0 )
         , timer = 0
         }

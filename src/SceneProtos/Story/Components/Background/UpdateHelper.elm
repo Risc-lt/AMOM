@@ -50,13 +50,13 @@ bySelfMove targetX targetY speed background =
         background
 
 
-checkDestination : ( Movement, Character ) -> ( Movement, Character )
-checkDestination ( movement, character ) =
-    if character.x == movement.targetX && character.y == movement.targetY then
-        ( { movement | isMoving = False }, character )
+checkDestination : Float -> Float -> Background -> Bool
+checkDestination targetX targetY background =
+    if background.x == targetX && background.y == targetY then
+        True
 
     else
-        ( movement, character )
+        False
 
 
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

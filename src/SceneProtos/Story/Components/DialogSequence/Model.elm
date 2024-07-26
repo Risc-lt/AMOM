@@ -30,12 +30,14 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         DialogueInit deliver ->
-            deliver
+            ( deliver, 0 )
 
         _ ->
-            { curDialogue = defaultDialogue
-            , remainDiaList = []
-            }
+            ( { curDialogue = defaultDialogue
+              , remainDiaList = []
+              }
+            , 0
+            )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -62,18 +64,7 @@ updaterec env msg data basedata =
         BeginDialogue id ->
             let
                 nextDialogue =
-                    Maybe.withDefault
-                        { frameName = "dialogue_frame"
-                        , framePos = ( 0, 500 )
-                        , speaker = "head_magic"
-                        , speakerPos = ( -20, 680 )
-                        , font = "Comic Sans MS"
-                        , isSpeaking = False
-                        , content = [ "Hello!", "Thank you!" ]
-                        , textPos = ( 880, 800 )
-                        , id = 0
-                        }
-                    <|
+                    Maybe.withDefault defaultDialogue <|
                         List.head <|
                             List.filter (\dia -> dia.id == id) data.remainDiaList
 
@@ -89,7 +80,6 @@ updaterec env msg data basedata =
             , [ Other ( "Self", BeginDialogue id )
               , Other ( "Enemy", BeginDialogue id )
               ]
-                ++ otherMsg
             , env
             )
 
@@ -99,20 +89,17 @@ updaterec env msg data basedata =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.isSpeaking then
+    if data.curDialogue.isSpeaking then
         let
             lineHeight =
                 30
 
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data lineHeight) (List.indexedMap Tuple.pair data.content)
-
-            _ =
-                Debug.log "lineHeightView" lineHeight
+                List.map (\textWithIndex -> contentToView textWithIndex env data lineHeight) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.framePos ( 1980, 0 ) data.frameName
-             , renderSprite env.globalData.internalData [] data.speakerPos ( 1980, 0 ) data.speaker
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1980, 0 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 1980, 0 ) data.curDialogue.speaker
 
              --, renderTextWithColorCenter env.globalData.internalData 60 ( data.content data.textPos env) data.font Color.black data.textPos
              ]
@@ -129,7 +116,7 @@ view env data basedata =
 contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Float -> Canvas.Renderable
 contentToView ( index, text ) env data lineHeight =
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.font Color.black ( Tuple.first data.textPos, toFloat index * lineHeight + Tuple.second data.textPos )
+        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
         ]
 
 

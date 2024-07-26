@@ -1,7 +1,7 @@
 module SceneProtos.Story.Components.ComponentBase exposing (BaseData, CharAction(..), CharSequenceDeliver, ComponentMsg(..), ComponentTarget)
 
 import SceneProtos.Story.Components.Character.Init as Character
-import SceneProtos.Story.Components.Dialogue.Init as Dialogue
+import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 
 
 {-|
@@ -28,7 +28,7 @@ type alias ComponentTarget =
 {-| Component base data
 -}
 type alias BaseData =
-    ()
+    Int
 
 
 type CharAction

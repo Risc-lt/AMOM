@@ -88,60 +88,9 @@ update env evnt data basedata =
         newPlots =
             List.map 
                 (\( m, c ) ->
-                    if m.targetX > c.x then
-                        if c.x + m.speed > m.targetX then
-                            ( m, { c | x = m.targetX } )
-
-                        else
-                            ( m, { c | x = c.x + speed } )
-
-                    else if m.targetX < c.x then
-                        if c.x - m.speed < m.targetX then
-                            ( m, { c | x = m.targetX } )
-
-                        else
-                            ( m, { c | x = c.x - speed } )
-
-                    else if m.targetY > c.y then
-                        if c.y + m.speed > m.targetY then
-                            ( m, { c | y = m.targetY } )
-
-                        else
-                            ( m, { c | y = c.y + speed } )
-
-                    else if m.targetY < c.y then
-                        if c.y - m.speed < m.targetY then
-                            ( m, { c | y = m.targetY } )
-
-                        else
-                            ( m, { c | y = c.y - speed } )
-
-                    else
-                        ( m, c )
+                    handleMove ( m, c )
                 )
                 curPlots
-
-        _ =
-            Debug.log "newPosinUpdate" newPos
-
-        newCurrentFrame =
-            modBy 4 (data.currentFrame + 1) + 1
-
-        _ =
-            Debug.log "newCurrentFrameinUpdate" newCurrentFrame
-
-        newDestination =
-            if isReachedX data.position newPos data.destination && isReachedY data.position newPos data.destination then
-                data.destination
-
-            else
-                newPos
-
-        newTar =
-            data.nextTar
-
-        msgList =
-            List.map2 Tuple.pair newTar data.next
 
         newMsg =
             List.head data.next
@@ -159,12 +108,6 @@ update env evnt data basedata =
 
             else
                 ( ( { data | position = newPos, currentFrame = newCurrentFrame, destination = newDestination, action = newAct }, basedata ), List.map (\item -> Other item) msgList, ( env, False ) )
-
-        _ =
-            Debug.log "sendMsginUpdate" msgList
-
-        -- _ =
-        --    Debug.log "curentframe" newCurrentFrame
     in
     case evnt of
         Tick dt ->

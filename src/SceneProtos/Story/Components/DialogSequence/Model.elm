@@ -21,28 +21,13 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    { frameName : String
-    , framePos : ( Float, Float )
-    , speaker : String
-    , speakerPos : ( Float, Float )
-    , font : String
-    , isSpeaking : Bool
-    , content : List String
-    , textPos : ( Float, Float )
-    , nextTar : List String
-    , next : List ComponentMsg
-    , timer : Int
-    }
+    
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         NewDialogSequenceMsg deliver ->
-            let
-                _ =
-                    Debug.log "DiaInitMsg:" initMsg
-            in
             ( { frameName = "dialogue_frame"
               , framePos = ( 720, 0 )
               , speaker = deliver.speaker
@@ -59,10 +44,6 @@ init env initMsg =
             )
 
         _ ->
-            let
-                _ =
-                    Debug.log "DiaInitNothingMsg:" initMsg
-            in
             ( { frameName = "dialogue_frame"
               , framePos = ( 720, 0 )
               , speaker = "Bithif"

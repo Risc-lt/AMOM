@@ -2,7 +2,6 @@ module SceneProtos.Story.Components.ComponentBase exposing (BaseData, CharAction
 
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.Dialogue.Init as Dialogue
-import Scenes.Game.Components.ComponentBase exposing (ComponentMsg(..))
 
 
 {-|

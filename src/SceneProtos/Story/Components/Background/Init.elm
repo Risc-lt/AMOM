@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.Background.Init exposing 
     (InitData
-    , defaultCamera, defaultBackground, MoveKind(..), Background, Camera)
+    , defaultCamera, defaultBackground, Background, Camera)
 
 {-|
 
@@ -21,16 +21,12 @@ type alias Background =
     }
 
 
-type MoveKind
-    = Follow String
-    | BySelf ( Float, Float ) Float
-    | None
-
-
 {- The data structure for background movement
 -}
 type alias Camera =
-    { movekind : MoveKind
+    { targetX : Float
+    , targetY : Float
+    , speed : Float
     , isMoving : Bool
     , id : Int
     }
@@ -55,7 +51,9 @@ defaultBackground =
 
 defaultCamera : Camera
 defaultCamera =
-    { movekind = None
+    { targetX = 0
+    , targetY = 0
+    , speed = 0
     , isMoving = False
     , id = 0
     }

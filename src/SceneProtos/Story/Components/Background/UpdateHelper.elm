@@ -10,7 +10,6 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Background.Init exposing (InitData, Background, Camera)
 import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
-import SceneProtos.Story.Components.Background.Init exposing (MoveKind(..))
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (checkDestination)
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character)
 import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
@@ -54,35 +53,9 @@ bySelfMove targetX targetY speed background =
     else
         background
 
-
-followMove : List Character -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-followMove characters env evnt data basedata =
-    let
-        target =
-            case data.curMove.movekind of
-                Follow name ->
-                    Maybe.withDefault defaultCharacter <|
-                        List.head <|
-                            List.filter (\c -> c.name == name) characters
-
-                _ ->
-                    defaultCharacter
-
-        curBack =
-            data.background
-
-        newBack =
-            if target.name /= "" then
-                { curBack | x = target.x + 50, y = target.y + 50 }
-
-            else
-                curBack
-    in
-    ( ( { data | background = newBack }, basedata ), [], env )
-
-checkDestination : Camera -> Float -> Float -> Background -> Camera
-checkDestination camera targetX targetY background =
-    if background.x == targetX && background.y == targetY then
+checkDestination : Camera -> Background -> Camera
+checkDestination camera background =
+    if background.x == camera.targetX && background.y == camera.targetY then
         { camera | isMoving = False }
 
     else
@@ -93,20 +66,14 @@ updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 updateHelper env _ data basedata =
     let
         newBack =
-            case data.curMove.movekind of
-                BySelf ( targetX, targetY ) speed ->
-                    bySelfMove targetX targetY speed data.background
-
-                _ ->
-                    data.background
+            bySelfMove 
+                data.curMove.targetX 
+                data.curMove.targetY 
+                data.curMove.speed 
+                data.background
 
         newMove =
-            case data.curMove.movekind of
-                BySelf ( targetX, targetY ) _ ->
-                    checkDestination data.curMove targetX targetY newBack
-
-                _ ->
-                    data.curMove
+            checkDestination data.curMove newBack
 
         newState =
             newMove.isMoving

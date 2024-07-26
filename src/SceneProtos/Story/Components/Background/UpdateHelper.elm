@@ -10,6 +10,8 @@ import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentM
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Background.Init exposing (InitData, Background, Camera)
 import SceneProtos.Story.Components.Background.Init exposing (defaultCamera)
+import SceneProtos.Story.Components.Background.Init exposing (MoveKind(..))
+import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (checkDestination)
 
 
 type alias Data =
@@ -50,70 +52,37 @@ bySelfMove targetX targetY speed background =
         background
 
 
-checkDestination : Float -> Float -> Background -> Bool
-checkDestination targetX targetY background =
+checkDestination : Camera -> Float -> Float -> Background -> Camera
+checkDestination camera targetX targetY background =
     if background.x == targetX && background.y == targetY then
-        True
+        { camera | isMoving = False }
 
     else
-        False
+        camera
 
 
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env _ data basedata =
     let
-        curPlots =
-            List.map 
-                (\m -> 
-                    Tuple.pair m <|
-                        Maybe.withDefault defaultCharacter <|
-                            List.head <|
-                                List.filter (\c -> c.name == m.name) data.characters
-                )
-                <| List.filter (\m -> m.isMoving == True) data.curMove
+        newBack =
+            case data.curMove.movekind of
+                BySelf ( targetX, targetY ) speed ->
+                    bySelfMove targetX targetY speed data.background
 
-        newPlots =
-            List.map 
-                (\( m, c ) ->
-                    checkDestination <| handleMove ( m, c )
-                )
-                curPlots
+                _ ->
+                    data.background
 
-        newMoves =
-            List.map
-                (\m ->
-                    case
-                        List.head <|
-                            List.filter (\n -> n.name == m.name) <|
-                                List.map Tuple.first newPlots
-                    of
-                        Just movement ->
-                            movement
+        newMove =
+            case data.curMove.movekind of
+                BySelf ( targetX, targetY ) _ ->
+                    checkDestination data.curMove targetX targetY newBack
 
-                        _ ->
-                            m
-                )
-                data.curMove
-
-        newChars =
-            List.map
-                (\c ->
-                    case
-                        List.head <|
-                            List.filter (\n -> n.name == c.name) <|
-                                List.map Tuple.second newPlots
-                    of
-                        Just movement ->
-                            movement
-
-                        _ ->
-                            c
-                )
-                data.characters
+                _ ->
+                    data.curMove
 
         newState =
-            List.any (\m -> m.isMoving == True) newMoves
+            newMove.isMoving
     in
-    ( ( { data | characters = newChars, curMove = newMoves }, { basedata | isPlaying = not newState } )
+    ( ( { data | background = newBack, curMove = newMove }, { basedata | isPlaying = not newState } )
     , []
     , ( env, False ) )

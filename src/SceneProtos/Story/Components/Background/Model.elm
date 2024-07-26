@@ -13,16 +13,11 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.Background.Init exposing (InitData)
 
 
 type alias Data =
-    { backFigure : String
-    , position : ( Float, Float )
-    , destination : ( Float, Float )
-    , dx : Float
-    , dy : Float
-    , move : Bool
-    }
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData

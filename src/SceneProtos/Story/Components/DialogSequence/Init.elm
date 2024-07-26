@@ -37,9 +37,9 @@ type alias InitData =
 defaultDialogue : Dialogue
 defaultDialogue =
     { frameName = "dialogue_frame"
-        , framePos = ( 720, 0 )
+        , framePos = ( 0, 500 )
         , speaker = ""
-        , speakerPos = ( 720, 0 )
+        , speakerPos = ( -20, 680 )
         , font = "Comic Sans MS"
         , isSpeaking = False
         , content = []

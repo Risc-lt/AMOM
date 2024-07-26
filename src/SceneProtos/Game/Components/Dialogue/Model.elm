@@ -19,7 +19,6 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), BaseDa
 import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, emptyInitData)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 
 
 type alias Data =

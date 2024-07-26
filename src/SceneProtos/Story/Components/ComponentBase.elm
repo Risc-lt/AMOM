@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.ComponentBase exposing 
     (BaseData
-    , CharAction(..), ComponentMsg(..), ComponentTarget, initBaseData)
+    , ComponentMsg(..), ComponentTarget, initBaseData)
 
 import SceneProtos.Story.Components.Character.Init as Character
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
@@ -32,14 +32,6 @@ type alias BaseData =
     { curId : Int
     , isPlaying : Bool
     }
-
-
-type CharAction
-    = MoveLeft Float
-    | MoveUp Float
-    | MoveDown Float
-    | MoveRight Float
-    | Still
 
 
 type alias Object =

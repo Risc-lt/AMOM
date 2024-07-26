@@ -89,21 +89,27 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
+contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Canvas.Renderable
+contentToView ( index, text ) env data =
+    let
+        lineHeight =
+            72
+    in
+    Canvas.group []
+        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
+        ]
+
+
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     if data.curDialogue.isSpeaking then
         let
-            lineHeight =
-                30
-
             renderableTexts =
-                List.map (\textWithIndex -> contentToView textWithIndex env data lineHeight) (List.indexedMap Tuple.pair data.curDialogue.content)
+                List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1980, 0 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 1980, 0 ) data.curDialogue.speaker
-
-             --, renderTextWithColorCenter env.globalData.internalData 60 ( data.content data.textPos env) data.font Color.black data.textPos
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )
@@ -113,13 +119,6 @@ view env data basedata =
 
     else
         ( Canvas.empty, 0 )
-
-
-contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -> Data -> Float -> Canvas.Renderable
-contentToView ( index, text ) env data lineHeight =
-    Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
-        ]
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget

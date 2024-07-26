@@ -103,8 +103,8 @@ updateHelper env _ data basedata =
                             List.filter (\n -> n.name == c.name) <|
                                 List.map Tuple.second newPlots
                     of
-                        Just movement ->
-                            movement
+                        Just character ->
+                            character
 
                         _ ->
                             c

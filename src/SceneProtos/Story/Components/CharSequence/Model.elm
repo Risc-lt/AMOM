@@ -18,6 +18,8 @@ import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
+import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
+import SceneProtos.Story.Components.CharSequence.Init exposing (MoveKind(..))
 
 
 type alias Data =
@@ -73,10 +75,32 @@ updaterec env msg data basedata =
 
                 remainMove =
                     List.filter (\m -> m.id /= id) data.remainMove
+
+                newChars =
+                    List.map
+                        (\c ->
+                            case
+                                List.head <|
+                                    List.filter (\n -> n.name == c.name) <|
+                                        nextMove
+                            of
+                                Just movement ->
+                                    case movement.movekind of 
+                                        Fake direction ->
+                                            { c | direction = direction }
+
+                                        _ ->
+                                            c
+
+                                _ ->
+                                    c
+                        )
+                        data.characters
             in
             if List.length nextMove /= 0 then
                 ( ( { data
-                        | curMove = nextMove
+                        | characters = newChars
+                        , curMove = nextMove
                         , remainMove = remainMove
                     }
                 , { basedata | isPlaying = True }

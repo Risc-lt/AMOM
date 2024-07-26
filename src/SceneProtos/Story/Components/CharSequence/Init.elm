@@ -29,7 +29,6 @@ type Posture
 type alias Character =
     { name : String
     , direction : Direction
-    , posture : Posture
     , x : Float
     , y : Float
     , speed : Float
@@ -37,8 +36,7 @@ type alias Character =
 
 
 type MoveKind
-    = Follow ( Float, Float ) Float
-    | BySelf ( Float, Float ) Float
+    = Real ( Float, Float ) Float
     | Fake Direction
     | None
 
@@ -67,7 +65,6 @@ defaultCharacter : Character
 defaultCharacter =
     { name = ""
     , direction = Right
-    , posture = Normal
     , x = 0
     , y = 0
     , speed = 0

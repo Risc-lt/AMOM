@@ -6,12 +6,10 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..))
-import Messenger.Render.Sprite exposing (renderSprite)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.CharSequence.Init exposing (InitData, Character, Movement)
 import SceneProtos.Story.Components.CharSequence.Init exposing (defaultCharacter)
-import SceneProtos.Story.Components.CharSequence.Init exposing (defaultMovement)
 
 
 type alias Data =
@@ -62,7 +60,7 @@ checkDestination ( movement, character ) =
 
 
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-updateHelper env evnt data basedata =
+updateHelper env _ data basedata =
     let
         curPlots =
             List.map 

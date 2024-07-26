@@ -59,18 +59,6 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
-updatePos : ( Float, Float ) -> Float -> Float -> ( Float, Float )
-updatePos ( x, y ) dx dy =
-    let
-        newX =
-            x + dx
-
-        newY =
-            y + dy
-    in
-    ( newX, newY )
-
-
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     if data.visible then

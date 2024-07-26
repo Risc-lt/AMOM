@@ -1,6 +1,6 @@
 module SceneProtos.Story.Components.Background.Init exposing 
     (InitData
-    , defaultCamera, defaultBackground, MoveKind(..))
+    , defaultCamera, defaultBackground, MoveKind(..), Background, Camera)
 
 {-|
 

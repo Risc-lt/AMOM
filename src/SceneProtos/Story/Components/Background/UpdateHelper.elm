@@ -76,8 +76,15 @@ updateHelper env _ data basedata =
             checkDestination data.curMove newBack
 
         newState =
-            newMove.isMoving
+            not newMove.isMoving
+
+        newMsg =
+            if newState then
+                [ Other ( "Character", EndMove ) ]
+
+            else
+                []
     in
     ( ( { data | background = newBack, curMove = newMove }, { basedata | isPlaying = not newState } )
-    , []
+    , newMsg
     , ( env, False ) )

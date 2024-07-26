@@ -20,7 +20,6 @@ import SceneProtos.Game.Components.Self.Init exposing (Self)
 import SceneProtos.Game.Components.Special.Init exposing (Buff, Skill)
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions)
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
-import SceneProtos.Story.Components.Dialogue.Init exposing (CreateInitData)
 
 
 {-|

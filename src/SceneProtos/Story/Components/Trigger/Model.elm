@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Character.Model exposing (component)
+module SceneProtos.Story.Components.Trigger.Model exposing (..)
 
 {-| Component model
 
@@ -6,85 +6,73 @@ module SceneProtos.Story.Components.Character.Model exposing (component)
 
 -}
 
+import Bitwise exposing (or)
 import Canvas
+import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.SpriteSheet exposing (spriteSheetSize)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
+import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
-    { standingFigure : String
-    , movingSheet : String
-    , currentFrame : Int
-    , position : ( Float, Float )
-    , dx : Int
-    , dy : Int
-    , visible : Bool
-    }
+    Int
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
-    ( { standingFigure = "archer"
-      , movingSheet = "archer"
-      , currentFrame = 1
-      , position = ( 0, 0 )
-      , dx = 0
-      , dy = 0
-      , visible = False
-      }
-    , ()
-    )
+    case initMsg of
+        TriggerInit ->
+            ( 0, initBaseData )
+
+        _ ->
+            ( 0, initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    let
-        newPos =
-            Tuple.mapFirst ((+) (toFloat data.dx)) data.position
-                |> Tuple.mapSecond ((+) (toFloat data.dy))
-    in
-    ( ( data, basedata ), [], ( env, False ) )
+    case evnt of
+        Tick _ ->
+            if basedata.isPlaying == False then
+                ( ( data + 1, basedata )
+                , [ Other ( "Background", BeginPlot (data + 1) )
+                  , Other ( "Character", BeginPlot (data + 1) )
+                  , Other ( "Dialogue", BeginPlot (data + 1) )
+                  ]
+                , ( env, False )
+                )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
+
+        _ ->
+            ( ( data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
-    ( ( data, basedata ), [], env )
+    case msg of
+        BeginPlot _ ->
+            ( ( data, { basedata | isPlaying = True } ), [], env )
+
+        _ ->
+            ( ( data, basedata ), [], env )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.visible == True then
-        let
-            newSprite =
-                if data.dx /= 0 || data.dy /= 0 then
-                    data.movingSheet ++ String.fromInt data.currentFrame
-
-                else
-                    data.standingFigure
-        in
-        ( Canvas.group
-            []
-            [ renderSprite env.globalData.internalData [] data.position ( 150, 0 ) newSprite
-            ]
-        , 55
-        )
-
-    else
-        ( Canvas.empty, 55 )
-
-
-
--- z-index
+    ( Canvas.empty, 0 )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget
 matcher data basedata tar =
-    tar == "Character"
+    tar == "Trigger"
 
 
 componentcon : ConcreteUserComponent Data SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg

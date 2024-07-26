@@ -41,24 +41,18 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "background", "assets/character/background/background_1.jpg" )
-        , ( "Start", "assets/character/background/Start.jpg" )
+        [ ( "background", "assets/character/background/battle_background.jpg" )
         , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
         , ( "Wild Wolf", "assets/character/role/wolf.png" )
         , ( "Bulingze", "assets/character/role/magic.png" )
         , ( "Bruce", "assets/character/role/archer.png" )
         , ( "Bithif", "assets/character/role/pharmacist.png" )
         , ( "Wenderd", "assets/character/role/swordsman.png" )
-        , ( "head_archer", "assets/character/chartlet/newhead2.png" )
-        , ( "head_magic", "assets/character/chartlet/newhead.png" )
         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
         , ( "symbol_archer", "assets/character/chartlet/symbol_archer.png" )
         , ( "symbol_magic", "assets/character/chartlet/symbol_magic.png" )
         , ( "symbol_pharmacist", "assets/character/chartlet/symbol_fan.png" )
         , ( "symbol_swordsman", "assets/character/chartlet/symbol_sword.png" )
-        , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
-        , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
-        , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
         , ( "battle_background", "assets/character/background/battle_background.jpg" )
         , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
         , ( "head_bithif", "assets/character/role/role_1.jpg" )
@@ -195,4 +189,6 @@ The format is the same with `allTexture`.
 -}
 allAudio : Dict.Dict String String
 allAudio =
-    Dict.empty
+    Dict.fromList
+        [ ( "battle", "assets/audio/demo.ogg" )
+        ]

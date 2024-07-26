@@ -1,4 +1,4 @@
-module SceneProtos.Story.Main.Init exposing (InitData)
+module SceneProtos.Story.StoryLayer.Init exposing (InitData)
 
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent)

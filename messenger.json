@@ -8,13 +8,11 @@
             , "assets/character/role"
             , "assets/character/sprite_sheet"
             , "assets/character/buff"
-        ]
+        ],
+        "audio": []
     },
     "scenes": {
-        "SampleScene": [],
-        "Level1": [],
-        "Level2": [],
-        "Level3": []
+        "Level1": []
     },
     "sceneprotos": {
         "Game": {
@@ -34,20 +32,16 @@
             ]
         },
         "Story": {
-            "raw": false,
             "components": {
                 "Components": [
                     "Background",
-                    "Bithif",
-                    "Bruce",
-                    "Bulingze",
-                    "Character",
-                    "Dialogue",
-                    "Wenderd"
+                    "CharSequence",
+                    "DialogSequence",
+                    "Trigger"
                 ]
             },
             "layers": [
-                "Main"
+                "StoryLayer"
             ]
         }
     }

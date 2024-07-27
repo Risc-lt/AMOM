@@ -16,9 +16,10 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Special.Init exposing (Range(..), Skill, SpecialType(..))
+import SceneProtos.Game.Components.Special.Init exposing (Buff, Range(..), Skill, SpecialType(..))
 import SceneProtos.Game.Components.Special.Library exposing (magicWater, poison)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -36,6 +37,40 @@ renderOneBar y val upperBound valType color env =
             [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
         , renderTextWithColorCenter env.globalData.internalData 20 valType "Arial" Color.black ( 1650, y + 65 )
         , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Arial" Color.black ( 1850, y + 65 )
+        ]
+
+
+renderBuff : Buff -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderBuff buff env =
+    let
+        name =
+            case buff of
+                AttackUp _ ->
+                    "Brave"
+
+                DefenceUp _ ->
+                    "Solid"
+
+                SpeedUp _ ->
+                    "Acceleration"
+
+                SpeedDown _ ->
+                    "Retard"
+
+                HitRateUp _ ->
+                    "Concentration"
+
+                CriticalRateUp _ ->
+                    "Precision"
+
+                ExtraAttack ->
+                    "Bloodthirsty"
+
+                NoAction ->
+                    "Seal"
+    in
+    Canvas.group []
+        [ renderTextWithColorCenter env.globalData.internalData 20 name "Arial" Color.black ( 1675, 40 )
         ]
 
 

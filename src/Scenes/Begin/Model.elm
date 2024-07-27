@@ -32,8 +32,11 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
-            if x > 850 && x < 1060 && y > 430 && y < 580 then
+            if x > 860 && x < 1050 && y > 450 && y < 515 then
                 ( data, [ SOMChangeScene Nothing "Home" ], env )
+
+            else if x > 860 && x < 1050 && y > 540 && y < 595 then
+                ( data, [ SOMChangeScene Nothing "Instruction" ], env )
 
             else
                 ( data, [], env )

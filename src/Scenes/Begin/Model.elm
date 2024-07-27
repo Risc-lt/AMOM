@@ -11,6 +11,7 @@ import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Audio.Base exposing (AudioOption(..))
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Render.Sprite exposing (renderSprite)
@@ -29,17 +30,22 @@ init env msg =
 
 update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
-    if env.globalData.sceneStartFrame == 125 then
-        ( data, [ SOMChangeScene Nothing "Level1" ], env )
+    case msg of
+        MouseDown _ ( x, y ) ->
+            if x > 850 && x < 1060 && y > 430 && y < 580 then
+                ( data, [ SOMChangeScene Nothing "Level1" ], env )
 
-    else
-        ( data, [], env )
+            else
+                ( data, [], env )
+
+        _ ->
+            ( data, [], env )
 
 
 view : RawSceneView UserData Data
 view env data =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "background"
+        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
         ]
 
 

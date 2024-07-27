@@ -18,6 +18,7 @@ import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTrans
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithStyle)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 import Scenes.Begin.Model exposing (scene)
@@ -100,9 +101,21 @@ view env data =
                         renderSprite env.globalData.internalData [] ( scenePic.x - data.left, scenePic.y ) ( scenePic.w, scenePic.h ) scenePic.name
                 )
                 data.sceneQueue
+
+        textView =
+            let
+                content =
+                    case List.head (List.filter (\scenePic -> scenePic.id == data.curScene) data.sceneQueue) of
+                        Just scenePic ->
+                            scenePic.text
+
+                        Nothing ->
+                            ""
+            in
+            renderTextWithColorCenter env.globalData.internalData 40 content "Arial" Color.black ( 970, 900 )
     in
     Canvas.group []
-        (basicView ++ sceneView)
+        (basicView ++ sceneView ++ [ textView ])
 
 
 scenecon : MConcreteScene Data UserData SceneMsg

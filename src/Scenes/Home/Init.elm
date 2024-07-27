@@ -36,6 +36,7 @@ type alias ScenePic =
     , h : Float
     , id : Float
     , next : String
+    , text : String
     }
 
 
@@ -50,6 +51,7 @@ initData =
           , h = 400
           , id = 1
           , next = "Level1"
+          , text = "This is the dialogue before Battle 1."
           }
         , { name = "background"
           , x = 1320
@@ -58,6 +60,7 @@ initData =
           , h = 400
           , id = 2
           , next = "Level1"
+          , text = "This is the Battle 1."
           }
         , { name = "dialogue_1"
           , x = 1920
@@ -66,6 +69,7 @@ initData =
           , h = 400
           , id = 3
           , next = "Level1"
+          , text = "This is the dialogue after Battle 1."
           }
         , { name = "dialogue_2"
           , x = 2520
@@ -74,6 +78,7 @@ initData =
           , h = 400
           , id = 4
           , next = "Level1"
+          , text = "This is the dialogue before Battle 2."
           }
         , { name = "background"
           , x = 3120
@@ -82,6 +87,7 @@ initData =
           , h = 400
           , id = 5
           , next = "Level1"
+          , text = "This is the Battle 2."
           }
         , { name = "dialogue_2"
           , x = 3720
@@ -90,6 +96,7 @@ initData =
           , h = 400
           , id = 6
           , next = "Level1"
+          , text = "This is the dialogue after Battle 2."
           }
         , { name = "dialogue_3"
           , x = 4320
@@ -98,6 +105,7 @@ initData =
           , h = 400
           , id = 7
           , next = "Level1"
+          , text = "This is the dialogue before Battle 3."
           }
         , { name = "background"
           , x = 4920
@@ -106,6 +114,7 @@ initData =
           , h = 400
           , id = 8
           , next = "Level1"
+          , text = "This is the Battle 3."
           }
         , { name = "dialogue_3"
           , x = 5520
@@ -114,6 +123,7 @@ initData =
           , h = 400
           , id = 9
           , next = "Level1"
+          , text = "This is the dialogue after Battle 3."
           }
         ]
     , direction = Null

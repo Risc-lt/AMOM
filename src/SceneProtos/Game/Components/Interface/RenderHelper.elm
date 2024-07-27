@@ -75,7 +75,7 @@ renderBuff buffs env x y =
         buffViews =
             List.indexedMap
                 (\index name ->
-                    renderSprite env.globalData.internalData [] ( x + (toFloat index * 10), y ) ( 20, 20 ) name
+                    renderSprite env.globalData.internalData [] ( x + (toFloat index * 22), y ) ( 20, 20 ) name
                 )
                 nameList
     in
@@ -115,7 +115,7 @@ renderStatus self env =
             , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
             , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
             , renderOneBar (y + 40) self.energy 300 "En" Color.green env
-            , renderBuff self.buff env 1470 (toFloat y + 80)
+            , renderBuff self.buff env 1675 (toFloat y + 120)
             , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
             ]
 

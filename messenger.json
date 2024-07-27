@@ -3,16 +3,19 @@
     "template_repo": "https://github.com/linsyking/messenger-templates",
     "assets": {
         "character": [
-            "assets/character/background"
-            , "assets/character/chartlet"
-            , "assets/character/role"
-            , "assets/character/sprite_sheet"
-            , "assets/character/buff"
+            "assets/character/background",
+            "assets/character/chartlet",
+            "assets/character/role",
+            "assets/character/sprite_sheet",
+            "assets/character/buff"
         ],
         "audio": []
     },
     "scenes": {
-        "Level1": []
+        "Level1": [],
+        "Begin": {
+            "layers": []
+        }
     },
     "sceneprotos": {
         "Game": {

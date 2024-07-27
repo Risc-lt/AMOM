@@ -156,28 +156,85 @@ renderChangePosition env data basedata =
 
 renderPlayerTurn : Env cdata userdata -> String -> Renderable
 renderPlayerTurn env name =
+    let
+        ( x, y ) =
+            env.globalData.mousePos
+
+        select =
+            if x > 320 && x < 540 && y > 680 && y < 1080 then
+                "Attack"
+
+            else if x > 540 && x < 760 && y > 680 && y < 1080 then
+                "Defence"
+
+            else if x > 760 && x < 980 && y > 680 && y < 1080 then
+                "Special"
+
+            else if x > 980 && x < 1200 && y > 680 && y < 1080 then
+                "Magics"
+
+            else if x > 1200 && x < 1420 && y > 680 && y < 1080 then
+                "Items"
+
+            else
+                ""
+
+        selections =
+            List.map
+                (\str ->
+                    let
+                        amplify =
+                            if str == select || (str == "Skills" && select == "Special") then
+                                1.2
+
+                            else
+                                1.0
+
+                        pos =
+                            case str of
+                                "Attack" ->
+                                    ( 430, 880 )
+
+                                "Defence" ->
+                                    ( 650, 880 )
+
+                                "Special" ->
+                                    ( 870, 820 )
+
+                                "Skills" ->
+                                    ( 870, 930 )
+
+                                "Magics" ->
+                                    ( 1090, 880 )
+
+                                "Items" ->
+                                    ( 1310, 880 )
+
+                                _ ->
+                                    ( 0, 0 )
+                    in
+                    renderTextWithColorCenter env.globalData.internalData (60 * amplify) str "Comic Sans MS" Color.black pos
+                )
+                [ "Attack", "Defence", "Special", "Skills", "Magics", "Items" ]
+    in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
-        , Canvas.shapes
-            [ stroke Color.black ]
-            [ path (posToReal env.globalData.internalData ( 540, 680 ))
-                [ lineTo (posToReal env.globalData.internalData ( 540, 1080 ))
-                , moveTo (posToReal env.globalData.internalData ( 760, 680 ))
-                , lineTo (posToReal env.globalData.internalData ( 760, 1080 ))
-                , moveTo (posToReal env.globalData.internalData ( 980, 680 ))
-                , lineTo (posToReal env.globalData.internalData ( 980, 1080 ))
-                , moveTo (posToReal env.globalData.internalData ( 1200, 680 ))
-                , lineTo (posToReal env.globalData.internalData ( 1200, 1080 ))
-                ]
-            ]
-        , renderTextWithColorCenter env.globalData.internalData 60 "Attack" "Comic Sans MS" Color.black ( 430, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Defence" "Comic Sans MS" Color.black ( 650, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Special" "Comic Sans MS" Color.black ( 870, 820 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Skills" "Comic Sans MS" Color.black ( 870, 930 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Magics" "Comic Sans MS" Color.black ( 1090, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Items" "Comic Sans MS" Color.black ( 1310, 880 )
-        ]
+        (selections
+            ++ [ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
+               , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
+               , Canvas.shapes
+                    [ stroke Color.black ]
+                    [ path (posToReal env.globalData.internalData ( 540, 680 ))
+                        [ lineTo (posToReal env.globalData.internalData ( 540, 1080 ))
+                        , moveTo (posToReal env.globalData.internalData ( 760, 680 ))
+                        , lineTo (posToReal env.globalData.internalData ( 760, 1080 ))
+                        , moveTo (posToReal env.globalData.internalData ( 980, 680 ))
+                        , lineTo (posToReal env.globalData.internalData ( 980, 1080 ))
+                        , moveTo (posToReal env.globalData.internalData ( 1200, 680 ))
+                        , lineTo (posToReal env.globalData.internalData ( 1200, 1080 ))
+                        ]
+                    ]
+               ]
+        )
 
 
 renderTargetSelection : Env cdata userdata -> Data -> BaseData -> String -> Renderable

@@ -1,4 +1,4 @@
-module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, getX, initData)
+module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, getNext, getX, initData)
 
 import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (UserEvent(..))
@@ -35,6 +35,7 @@ type alias ScenePic =
     , w : Float
     , h : Float
     , id : Float
+    , next : String
     }
 
 
@@ -48,6 +49,7 @@ initData =
           , w = 500
           , h = 400
           , id = 1
+          , next = "Level1"
           }
         , { name = "background"
           , x = 1320
@@ -55,6 +57,7 @@ initData =
           , w = 500
           , h = 400
           , id = 2
+          , next = "Level1"
           }
         , { name = "dialogue_1"
           , x = 1920
@@ -62,6 +65,7 @@ initData =
           , w = 500
           , h = 400
           , id = 3
+          , next = "Level1"
           }
         , { name = "dialogue_2"
           , x = 2520
@@ -69,6 +73,7 @@ initData =
           , w = 500
           , h = 400
           , id = 4
+          , next = "Level1"
           }
         , { name = "background"
           , x = 3120
@@ -76,6 +81,7 @@ initData =
           , w = 500
           , h = 400
           , id = 5
+          , next = "Level1"
           }
         , { name = "dialogue_2"
           , x = 3720
@@ -83,6 +89,7 @@ initData =
           , w = 500
           , h = 400
           , id = 6
+          , next = "Level1"
           }
         , { name = "dialogue_3"
           , x = 4320
@@ -90,6 +97,7 @@ initData =
           , w = 500
           , h = 400
           , id = 7
+          , next = "Level1"
           }
         , { name = "background"
           , x = 4920
@@ -97,6 +105,7 @@ initData =
           , w = 500
           , h = 400
           , id = 8
+          , next = "Level1"
           }
         , { name = "dialogue_3"
           , x = 5520
@@ -104,6 +113,7 @@ initData =
           , w = 500
           , h = 400
           , id = 9
+          , next = "Level1"
           }
         ]
     , direction = Null
@@ -119,3 +129,13 @@ getX id sceneQueue =
 
         Nothing ->
             0
+
+
+getNext : Float -> List ScenePic -> String
+getNext id sceneQueue =
+    case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of
+        Just scenePic ->
+            scenePic.next
+
+        Nothing ->
+            "Level1"

@@ -85,3 +85,4 @@ assets/character/buff/Acceleration.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/buff/precision.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/role/role_2.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/role/role_4.jpg filter=lfs diff=lfs merge=lfs -text
+assets/character/background/instruction.jpg filter=lfs diff=lfs merge=lfs -text

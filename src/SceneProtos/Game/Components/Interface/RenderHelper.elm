@@ -34,8 +34,8 @@ renderOneBar y val upperBound valType color env =
         , Canvas.shapes
             [ stroke Color.black ]
             [ rect env.globalData.internalData ( 1675, y + 57.5 ) ( 150, 15 ) ]
-        , renderTextWithColorCenter env.globalData.internalData 20 valType "Arial" Color.black ( 1650, y + 65 )
-        , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Arial" Color.black ( 1850, y + 65 )
+        , renderTextWithColorCenter env.globalData.internalData 20 valType "Comic Sans MS" Color.black ( 1650, y + 65 )
+        , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Comic Sans MS" Color.black ( 1850, y + 65 )
         ]
 
 
@@ -116,7 +116,7 @@ renderStatus self env =
             , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
             , renderOneBar (y + 40) self.energy 300 "En" Color.green env
             , renderBuff self.buff env 1675 (toFloat y + 120)
-            , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
+            , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
             ]
 
     else
@@ -148,17 +148,17 @@ renderChangePosition env data basedata =
                 "Nobody chosen"
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 "Positon" "Arial" Color.black ( 160, 820 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Changing" "Arial" Color.black ( 160, 940 )
-        , renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 870, 880 )
+        [ renderTextWithColorCenter env.globalData.internalData 60 "Positon" "Comic Sans MS" Color.black ( 160, 820 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Changing" "Comic Sans MS" Color.black ( 160, 940 )
+        , renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 870, 880 )
         ]
 
 
 renderPlayerTurn : Env cdata userdata -> String -> Renderable
 renderPlayerTurn env name =
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 160, 820 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Arial" Color.black ( 160, 930 )
+        [ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
         , Canvas.shapes
             [ stroke Color.black ]
             [ path (posToReal env.globalData.internalData ( 540, 680 ))
@@ -171,12 +171,12 @@ renderPlayerTurn env name =
                 , lineTo (posToReal env.globalData.internalData ( 1200, 1080 ))
                 ]
             ]
-        , renderTextWithColorCenter env.globalData.internalData 60 "Attack" "Arial" Color.black ( 430, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Defence" "Arial" Color.black ( 650, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Special" "Arial" Color.black ( 870, 820 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Skills" "Arial" Color.black ( 870, 930 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Magics" "Arial" Color.black ( 1090, 880 )
-        , renderTextWithColorCenter env.globalData.internalData 60 "Items" "Arial" Color.black ( 1310, 880 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Attack" "Comic Sans MS" Color.black ( 430, 880 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Defence" "Comic Sans MS" Color.black ( 650, 880 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Special" "Comic Sans MS" Color.black ( 870, 820 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Skills" "Comic Sans MS" Color.black ( 870, 930 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Magics" "Comic Sans MS" Color.black ( 1090, 880 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "Items" "Comic Sans MS" Color.black ( 1310, 880 )
         ]
 
 
@@ -207,7 +207,7 @@ renderTargetSelection env data basedata name =
                         renderTextWithColorCenter env.globalData.internalData
                             60
                             x.name
-                            "Arial"
+                            "Comic Sans MS"
                             Color.black
                             ( toFloat (835 + (x.position - 1) // 3 * 390)
                             , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
@@ -221,7 +221,7 @@ renderTargetSelection env data basedata name =
                         renderTextWithColorCenter env.globalData.internalData
                             60
                             x.name
-                            "Arial"
+                            "Comic Sans MS"
                             Color.black
                             ( toFloat (1225 - (x.position - 1) // 3 * 390)
                             , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
@@ -230,8 +230,8 @@ renderTargetSelection env data basedata name =
                     remainEnemies
     in
     Canvas.group []
-        ([ renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 160, 820 )
-         , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Arial" Color.black ( 160, 930 )
+        ([ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
+         , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
          , Canvas.shapes
             [ stroke Color.black ]
             [ path (posToReal env.globalData.internalData ( 640, 680 ))
@@ -244,8 +244,8 @@ renderTargetSelection env data basedata name =
                 , lineTo (posToReal env.globalData.internalData ( 1420, 946.6 ))
                 ]
             ]
-         , renderTextWithColorCenter env.globalData.internalData 60 "Target" "Arial" Color.black ( 480, 820 )
-         , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Arial" Color.black ( 480, 930 )
+         , renderTextWithColorCenter env.globalData.internalData 60 "Target" "Comic Sans MS" Color.black ( 480, 820 )
+         , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Comic Sans MS" Color.black ( 480, 930 )
          ]
             ++ renderTargets
         )
@@ -296,22 +296,22 @@ renderChooseSkill env self name state =
                 targets
     in
     Canvas.group []
-        ([ renderTextWithColorCenter env.globalData.internalData 60 name "Arial" Color.black ( 160, 820 )
-         , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Arial" Color.black ( 160, 930 )
+        ([ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
+         , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
          , Canvas.shapes
             [ stroke Color.black ]
             [ path (posToReal env.globalData.internalData ( 640, 680 ))
                 [ lineTo (posToReal env.globalData.internalData ( 640, 1080 )) ]
             ]
-         , renderTextWithColorCenter env.globalData.internalData 60 prompt "Arial" Color.black ( 480, 820 )
-         , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Arial" Color.black ( 480, 930 )
+         , renderTextWithColorCenter env.globalData.internalData 60 prompt "Comic Sans MS" Color.black ( 480, 820 )
+         , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Comic Sans MS" Color.black ( 480, 930 )
          ]
             ++ List.map
                 (\x ->
                     renderTextWithColorStyle env.globalData.internalData
                         40
                         (.name <| Tuple.second x)
-                        "Arial"
+                        "Comic Sans MS"
                         Color.black
                         ""
                         ( 660
@@ -324,7 +324,7 @@ renderChooseSkill env self name state =
                     renderTextWithColorCenter env.globalData.internalData
                         40
                         (toString <| .cost <| Tuple.second x)
-                        "Arial"
+                        "Comic Sans MS"
                         Color.black
                         ( 1380
                         , toFloat (Tuple.first x * 88 + 748)

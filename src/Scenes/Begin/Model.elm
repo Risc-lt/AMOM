@@ -49,6 +49,9 @@ view : RawSceneView UserData Data
 view env data =
     Canvas.group []
         [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
+
+        -- , renderSprite env.globalData.internalData [] ( 860, 450 ) ( 190, 65 ) "start"
+        -- , renderSprite env.globalData.internalData [] ( 860, 540 ) ( 190, 55 ) "intro"
         ]
 
 

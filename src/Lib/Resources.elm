@@ -41,32 +41,49 @@ Example:
 allTexture : Dict String String
 allTexture =
     Dict.fromList
-        [ ( "background", "assets/character/background/battle_background.jpg" )
-        , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
-        , ( "Wild Wolf", "assets/character/role/wolf.png" )
-        , ( "Bulingze", "assets/character/role/magic.png" )
-        , ( "Bruce", "assets/character/role/archer.png" )
-        , ( "Bithif", "assets/character/role/pharmacist.png" )
-        , ( "Wenderd", "assets/character/role/swordsman.png" )
-        , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
-        , ( "symbol_archer", "assets/character/chartlet/symbol_archer.png" )
-        , ( "symbol_magic", "assets/character/chartlet/symbol_magic.png" )
-        , ( "symbol_pharmacist", "assets/character/chartlet/symbol_fan.png" )
-        , ( "symbol_swordsman", "assets/character/chartlet/symbol_sword.png" )
-        , ( "battle_background", "assets/character/background/battle_background.jpg" )
-        , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
-        , ( "head_bithif", "assets/character/role/role_1.jpg" )
-        , ( "head_bruce", "assets/character/role/role_4.jpg" )
-        , ( "head_bulingze", "assets/character/role/role_2.jpg" )
-        , ( "head_wenderd", "assets/character/role/role_3.jpg" )
-        , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
-        , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
-        , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
-        , ( "instruction", "assets/character/background/instruction.jpg" )
-        , ( "begin", "assets/character/background/Start.jpg" )
-        , ( "button_1", "assets/character/chartlet/button_1.png" )
-        , ( "button_2", "assets/character/chartlet/button_2.png" )
-        ]
+        ([ ( "background", "assets/character/background/battle_background.jpg" )
+         , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
+         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
+         , ( "battle_background", "assets/character/background/battle_background.jpg" )
+         , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
+         , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
+         , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
+         , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
+         , ( "instruction", "assets/character/background/instruction.jpg" )
+         , ( "begin", "assets/character/background/Start.jpg" )
+         , ( "button_1", "assets/character/chartlet/button_1.png" )
+         , ( "button_2", "assets/character/chartlet/button_2.png" )
+         ]
+            ++ chacaterTexture
+            ++ bufferTexture
+        )
+
+
+chacaterTexture : List ( String, String )
+chacaterTexture =
+    [ ( "Wild Wolf", "assets/character/role/wolf.png" )
+    , ( "Bulingze", "assets/character/role/magic.png" )
+    , ( "Bruce", "assets/character/role/archer.png" )
+    , ( "Bithif", "assets/character/role/pharmacist.png" )
+    , ( "Wenderd", "assets/character/role/swordsman.png" )
+    , ( "head_bithif", "assets/character/role/role_1.jpg" )
+    , ( "head_bruce", "assets/character/role/role_4.jpg" )
+    , ( "head_bulingze", "assets/character/role/role_2.jpg" )
+    , ( "head_wenderd", "assets/character/role/role_3.jpg" )
+    ]
+
+
+bufferTexture : List ( String, String )
+bufferTexture =
+    [ ( "Brave", "assets/character/buff/Brave.jpg" )
+    , ( "Solid", "assets/character/buff/Solid.jpg" )
+    , ( "Acceleration", "assets/character/buff/Acceleration.jpg" )
+    , ( "Retard", "assets/character/buff/Retard.jpg" )
+    , ( "Concentration", "assets/character/buff/Concentration.jpg" )
+    , ( "Precision", "assets/character/buff/Precision.jpg" )
+    , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.jpg" )
+    , ( "Seal", "assets/character/buff/Seal.jpg" )
+    ]
 
 
 {-| Add all your sprite sheets here.

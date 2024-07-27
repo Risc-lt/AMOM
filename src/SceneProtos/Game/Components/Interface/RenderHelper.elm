@@ -16,10 +16,9 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), initBaseData)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Special.Init exposing (Buff, Range(..), Skill, SpecialType(..))
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
 import SceneProtos.Game.Components.Special.Library exposing (magicWater, poison)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 
 
 type alias Data =
@@ -40,38 +39,47 @@ renderOneBar y val upperBound valType color env =
         ]
 
 
-renderBuff : Buff -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderBuff buff env =
+renderBuff : List ( Buff, Int ) -> Messenger.Base.Env SceneCommonData UserData -> Float -> Float -> Canvas.Renderable
+renderBuff buffs env x y =
     let
-        name =
-            case buff of
-                AttackUp _ ->
-                    "Brave"
+        nameList =
+            List.map
+                (\( buff, _ ) ->
+                    case buff of
+                        AttackUp _ ->
+                            "Brave"
 
-                DefenceUp _ ->
-                    "Solid"
+                        DefenceUp _ ->
+                            "Solid"
 
-                SpeedUp _ ->
-                    "Acceleration"
+                        SpeedUp _ ->
+                            "Acceleration"
 
-                SpeedDown _ ->
-                    "Retard"
+                        SpeedDown _ ->
+                            "Retard"
 
-                HitRateUp _ ->
-                    "Concentration"
+                        HitRateUp _ ->
+                            "Concentration"
 
-                CriticalRateUp _ ->
-                    "Precision"
+                        CriticalRateUp _ ->
+                            "Precision"
 
-                ExtraAttack ->
-                    "Bloodthirsty"
+                        ExtraAttack ->
+                            "Bloodthirsty"
 
-                NoAction ->
-                    "Seal"
+                        NoAction ->
+                            "Seal"
+                )
+                buffs
+
+        buffViews =
+            List.indexedMap
+                (\index name ->
+                    renderSprite env.globalData.internalData [] ( x + (toFloat index * 10), y ) ( 20, 20 ) name
+                )
+                nameList
     in
-    Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 20 name "Arial" Color.black ( 1675, 40 )
-        ]
+    Canvas.group [] buffViews
 
 
 renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
@@ -107,6 +115,7 @@ renderStatus self env =
             , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
             , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
             , renderOneBar (y + 40) self.energy 300 "En" Color.green env
+            , renderBuff self.buff env 1470 (toFloat y + 80)
             , renderTextWithColorStyle env.globalData.internalData 20 self.name "Arial" color "" ( 1675, y + 27.5 )
             ]
 

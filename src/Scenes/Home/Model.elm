@@ -1,4 +1,4 @@
-module Scenes.Begin.Model exposing (..)
+module Scenes.Home.Model exposing (scene)
 
 {-| Scene configuration module
 
@@ -33,7 +33,7 @@ update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
             if x > 850 && x < 1060 && y > 430 && y < 580 then
-                ( data, [ SOMChangeScene Nothing "Home" ], env )
+                ( data, [ SOMChangeScene Nothing "Level1" ], env )
 
             else
                 ( data, [], env )
@@ -45,7 +45,7 @@ update env msg data =
 view : RawSceneView UserData Data
 view env data =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
+        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "instruction"
         ]
 
 

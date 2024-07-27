@@ -18,6 +18,9 @@
         },
         "Home": {
             "layers": []
+        },
+        "Instruction": {
+            "layers": []
         }
     },
     "sceneprotos": {

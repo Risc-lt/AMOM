@@ -129,15 +129,6 @@ view env data =
 
         basicView =
             [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
-
-            -- , Canvas.shapes [ stroke Color.black ]
-            --     [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
-            --     , path (posToReal env.globalData.internalData ( 0, 680 ))
-            --         [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
-            --         , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
-            --         , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
-            --         ]
-            --     ]
             , viewComponents env data.components
             , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
             , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )

@@ -148,9 +148,16 @@ updateHelper env _ data basedata =
                 data.characters
 
         newState =
-            List.any (\m -> m.isMoving == True) newMoves
+            List.all (\m -> m.isMoving == False) newMoves
+
+        newMsg =
+            if newState then
+                [ Other ( "Trigger", PlotDone 2 ) ]
+
+            else
+                []
     in
     ( ( { data | characters = newChars, curMove = newMoves }, { basedata | isPlaying = not newState } )
-    , []
+    , newMsg
     , ( env, False )
     )

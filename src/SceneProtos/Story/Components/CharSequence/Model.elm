@@ -100,7 +100,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 2 ) ]
                 , env
                 )
 

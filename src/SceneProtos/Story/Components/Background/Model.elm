@@ -16,6 +16,7 @@ import SceneProtos.Story.Components.Background.Init exposing (InitData, defaultB
 import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import Messenger.GeneralModel exposing (Msg(..))
 
 
 type alias Data =
@@ -78,7 +79,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 1 ) ]
                 , env
                 )
 

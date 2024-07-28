@@ -77,7 +77,7 @@ updateHelper env _ data basedata =
 
         newMsg =
             if newState then
-                [ Other ( "Character", EndMove ) ]
+                [ Other ( "Character", EndMove ), Other ( "Trigger", PlotDone 1 ) ]
 
             else
                 []

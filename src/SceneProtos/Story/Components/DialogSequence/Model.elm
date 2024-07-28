@@ -62,7 +62,7 @@ update env evnt data basedata =
                                 ( { dia | isSpeaking = True }, [] )
 
                             _ ->
-                                ( { curDia | isSpeaking = False }, [] )
+                                ( { curDia | isSpeaking = False }, [ Other ( "Trigger", PlotDone 3 ) ] )
 
                     remainingDialogues =
                         List.filter
@@ -103,7 +103,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 3 ) ]
                 , env
                 )
 

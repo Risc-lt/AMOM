@@ -463,7 +463,7 @@ handleMove list env evnt data basedata =
         longRange =
             data.name == "Bruce"
 
-        ( newX, runFlag ) =
+        newX =
             if
                 basedata.state
                     == PlayerAttack True
@@ -472,10 +472,10 @@ handleMove list env evnt data basedata =
                     && not longRange
             then
                 if data.x > 670 then
-                    ( data.x - 5, True )
+                    data.x - 5
 
                 else
-                    ( 670, False )
+                    670
 
             else if
                 basedata.state
@@ -486,13 +486,20 @@ handleMove list env evnt data basedata =
                     == Counter
             then
                 if data.x < returnX then
-                    ( data.x + 5, True )
+                    data.x + 5
 
                 else
-                    ( returnX, False )
+                    returnX
 
             else
-                ( data.x, False )
+                data.x
+
+        runFlag =
+            if newX == 670 || newX == returnX then
+                False
+
+            else
+                True
 
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then

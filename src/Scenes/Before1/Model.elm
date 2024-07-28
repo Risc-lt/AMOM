@@ -35,9 +35,6 @@ init env msg =
 initData : Env () UserData -> Maybe SceneMsg -> InitData SceneMsg
 initData env msg =
     let
-        time =
-            Time.posixToMillis env.globalData.currentTimeStamp
-
         backgroundInit =
             { backFigure = "Background"
             , x = 0

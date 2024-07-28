@@ -81,6 +81,9 @@ updaterec env msg data basedata =
                                         Real _ speed ->
                                             { c | posture = movement.posture, speed = speed, isMoving = True }
 
+                                        Follow _ speed ->
+                                            { c | posture = movement.posture, speed = speed, isMoving = True }
+
                                         Fake _ ->
                                             { c | posture = movement.posture, isMoving = True }
 

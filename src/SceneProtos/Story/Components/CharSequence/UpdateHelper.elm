@@ -14,6 +14,38 @@ type alias Data =
     InitData
 
 
+changePosition : Float -> Float -> Character -> Character
+changePosition targetX targetY character =
+    case character.direction of
+                Left ->
+                    if character.x + character.speed > targetX then
+                        { character | x = targetX }
+
+                    else
+                        { character | x = character.x + character.speed }
+
+                Right ->
+                    if character.x - character.speed < targetX then
+                        { character | x = targetX }
+
+                    else
+                        { character | x = character.x - character.speed }
+
+                Down ->
+                    if character.y + character.speed > targetY then
+                        { character | y = targetY }
+
+                    else
+                        { character | y = character.y + character.speed }
+
+                Up ->
+                    if character.y - character.speed < targetY then
+                        { character | y = targetY }
+
+                    else
+                        { character | y = character.y - character.speed }
+
+
 changeDirection : ( Movement, Character ) -> ( Movement, Character )
 changeDirection ( movement, character ) =
     case movement.movekind of
@@ -36,7 +68,7 @@ changeDirection ( movement, character ) =
         Fake direction ->
             ( movement, { character | direction = direction } )
 
-        None ->
+        _ ->
             ( movement, character )
 
 
@@ -44,34 +76,10 @@ handleMove : ( Movement, Character ) -> ( Movement, Character )
 handleMove ( movement, character ) =
     case movement.movekind of
         Real ( targetX, targetY ) _ ->
-            case character.direction of
-                Left ->
-                    if character.x + character.speed > targetX then
-                        ( movement, { character | x = targetX } )
+            ( movement, changePosition targetX targetY character )
 
-                    else
-                        ( movement, { character | x = character.x + character.speed } )
-
-                Right ->
-                    if character.x - character.speed < targetX then
-                        ( movement, { character | x = targetX } )
-
-                    else
-                        ( movement, { character | x = character.x - character.speed } )
-
-                Down ->
-                    if character.y + character.speed > targetY then
-                        ( movement, { character | y = targetY } )
-
-                    else
-                        ( movement, { character | y = character.y + character.speed } )
-
-                Up ->
-                    if character.y - character.speed < targetY then
-                        ( movement, { character | y = targetY } )
-
-                    else
-                        ( movement, { character | y = character.y - character.speed } )
+        Follow ( targetX, targetY ) _ ->
+            ( movement, changePosition targetX targetY character )
 
         _ ->
             ( movement, character )

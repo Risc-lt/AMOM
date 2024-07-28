@@ -42,6 +42,7 @@ type alias Character =
 
 type MoveKind
     = Real ( Float, Float ) Float
+    | Follow ( Float, Float ) Float
     | Fake Direction
     | None
 

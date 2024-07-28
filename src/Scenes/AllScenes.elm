@@ -19,6 +19,7 @@ import Dict
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
+import Scenes.After1.Model as After1
 import Scenes.Before1.Model as Before1
 import Scenes.Level1.Model as Level1
 
@@ -33,6 +34,7 @@ allScenes =
     Dict.fromList
         [ ( "Before1", Before1.scene )
         , ( "Level1", Level1.scene )
+        , ( "After1", After1.scene )
 
         {- , ( "Level2", Level2.scene )
            , ( "Level3", Level3.scene )

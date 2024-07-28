@@ -22,7 +22,7 @@ backgroundInitData : InitData
 backgroundInitData =
     { background =
         { backFigure = "dialogue_1"
-        , x = 439
+        , x = -439
         , y = -300
         }
     , curMove = defaultCamera

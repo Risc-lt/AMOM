@@ -29,7 +29,7 @@ type alias Dialogue =
     , content : List String
     , textPos : ( Float, Float )
     , id : ( Int, Int )
-    , alpha : Int
+    , alpha : Float
     }
 
 

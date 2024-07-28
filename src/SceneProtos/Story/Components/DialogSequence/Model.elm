@@ -40,6 +40,44 @@ init env initMsg =
             )
 
 
+updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+updateHelper env evnt data basedata =
+    let
+        curDia =
+            data.curDialogue
+
+        maybeNextDia =
+            List.head <|
+                List.filter
+                    (\dia ->
+                        dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                    )
+                    data.remainDiaList
+
+        ( nextDia, newBasedata, msg ) =
+            case maybeNextDia of
+                Just dia ->
+                    ( { dia | state = Appear }, basedata, [] )
+
+                _ ->
+                    ( { curDia | state = NoDialogue }
+                    , { basedata | isPlaying = False }
+                    , [ Other ( "Trigger", PlotDone 3 ) ] 
+                    )
+
+        remainingDialogues =
+            List.filter
+                (\dia ->
+                    dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                )
+                data.remainDiaList
+    in
+    ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, newBasedata )
+    , msg
+    , ( env, False )
+    )
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
@@ -88,11 +126,23 @@ update env evnt data basedata =
                 curDia = 
                     data.curDialogue
 
-                newData =
+                newDia =
                     case data.curDialogue.state of
                         Appear ->
-                            if data.curDialogue.alpha + 0.1 < 1 then
-                                { data | curDialogue = { curDia |  }
+                            if curDia.alpha + 0.1 < 1 then
+                                { curDia | alpha = curDia.alpha + 0.1 }
+                            else
+                                { curDia | alpha = 1 }
+
+                        Disappear ->
+                            if curDia.alpha - 0.1 > 0 then
+                                { curDia | alpha = curDia.alpha - 0.1 }
+
+                            else
+                                { curDia | alpha = 0 }
+
+                        _ ->
+                            curDia
             in
             ( ( data, basedata ), [], ( env, False ) )
 

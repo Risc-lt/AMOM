@@ -71,6 +71,7 @@ chacaterTexture =
     , ( "head_bruce", "assets/character/role/role_4.jpg" )
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
+    , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
     ]
 
 
@@ -117,10 +118,9 @@ allSpriteSheets =
                 (\x ->
                     let
                         basic =
-                          { realStartPoint = ( 0, 0 )
-                          , realSize = ( 64, 64 )
-                          }
-                            
+                            { realStartPoint = ( 0, 0 )
+                            , realSize = ( 64, 64 )
+                            }
                     in
                     ( toString x
                     , { basic | realStartPoint = ( 64 * x, 0 ) }
@@ -128,23 +128,31 @@ allSpriteSheets =
                 )
                 (List.map toFloat (List.range 0 17))
           )
-        , ( "Bulingze" 
-          , List.map
-                (\x ->
-                    let
-                        basic =
-                          { realStartPoint = ( 0, 0 )
-                          , realSize = ( 64, 64 )
-                          }
-                            
-                    in
-                    ( toString x
-                    , { basic | realStartPoint = ( 64 * x, 0 ) }
+        , ( "BulingzeSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
                     )
-                )
-                (List.map toFloat (List.range 0 8))
+                    playerSize
           )
         ]
+
+
+playerSize : List Int
+playerSize =
+    [ 4
+    , 4
+    ]
 
 
 

@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Self.Model exposing (component)
 
 import Canvas exposing (empty)
 import Canvas.Settings exposing (fill, stroke)
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -255,8 +256,23 @@ updaterec env msg data basedata =
 
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
+    let
+        gd =
+            env.globalData
+
+        rate =
+            300
+
+        currentAct x =
+            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
+    in
     if char.hp /= 0 then
-        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.name
+        renderSprite
+            env.globalData.internalData
+            [ imageSmoothing False ]
+            ( char.x, char.y )
+            ( 100, 100 )
+            (char.name ++ "Sheet.0/" ++ currentAct 4)
 
     else
         empty

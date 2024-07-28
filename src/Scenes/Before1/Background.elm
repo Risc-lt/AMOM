@@ -12,6 +12,9 @@ begin =
     genCamera -639 -300 8 2
 
 
+wolf
+
+
 genCamera : Float -> Float -> Float -> Int -> Camera
 genCamera targetX targetY speed id =
     { defaultCamera

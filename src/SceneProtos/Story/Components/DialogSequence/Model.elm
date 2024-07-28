@@ -83,40 +83,21 @@ update env evnt data basedata =
     case evnt of
         KeyDown key ->
             if key == 13 then
-                let
-                    curDia =
-                        data.curDialogue
+                if data.curDialogue.state == IsSpeaking then
+                    let
+                        curDia =
+                            data.curDialogue
 
-                    maybeNextDia =
-                        List.head <|
-                            List.filter
-                                (\dia ->
-                                    dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                                )
-                                data.remainDiaList
+                        newDia =
+                            { curDia | state = Disappear }
+                    in
+                    ( ( { data | curDialogue = newDia }, basedata )
+                    , []
+                    , ( env, False )
+                    )
 
-                    ( nextDia, newBasedata, msg ) =
-                        case maybeNextDia of
-                            Just dia ->
-                                ( { dia | isSpeaking = True }, basedata, [] )
-
-                            _ ->
-                                ( { curDia | isSpeaking = False }
-                                , { basedata | isPlaying = False }
-                                , [ Other ( "Trigger", PlotDone 3 ) ] 
-                                )
-
-                    remainingDialogues =
-                        List.filter
-                            (\dia ->
-                                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                            )
-                            data.remainDiaList
-                in
-                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, newBasedata )
-                , msg
-                , ( env, False )
-                )
+                else
+                    ( ( data, basedata ), [], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -132,19 +113,30 @@ update env evnt data basedata =
                             if curDia.alpha + 0.1 < 1 then
                                 { curDia | alpha = curDia.alpha + 0.1 }
                             else
-                                { curDia | alpha = 1 }
+                                { curDia | alpha = 1, state = IsSpeaking }
 
                         Disappear ->
                             if curDia.alpha - 0.1 > 0 then
                                 { curDia | alpha = curDia.alpha - 0.1 }
 
                             else
-                                { curDia | alpha = 0 }
+                                { curDia | alpha = 0, state = NoDialogue }
 
                         _ ->
                             curDia
             in
-            ( ( data, basedata ), [], ( env, False ) )
+            if curDia /= newDia then
+                if newDia.state == IsSpeaking then
+                    ( ( { data | curDialogue = newDia }, basedata ), [], ( env, False ) )
+
+                else if newDia.state == NoDialogue then
+                    updateHelper env evnt data basedata
+                
+                else
+                    ( ( data, basedata ), [], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -165,7 +157,7 @@ updaterec env msg data basedata =
             in
             if nextDialogue.speaker /= "" then
                 ( ( { data
-                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        | curDialogue = { nextDialogue | state = Appear }
                         , remainDiaList = remainingDialogues
                     }
                   , { basedata | isPlaying = True }
@@ -203,7 +195,7 @@ contentToView ( index, text ) env data =
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.curDialogue.isSpeaking then
+    if data.curDialogue.state /= NoDialogue then
         let
             renderableTexts =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)

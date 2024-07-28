@@ -18,8 +18,8 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
-import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import SceneProtos.Story.Components.Trigger.Init exposing (InitData)
+import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 type alias Data =
@@ -67,7 +67,7 @@ updaterec env msg data basedata =
                 newPlot =
                     List.filter (\i -> i /= id) data.curPlot
 
-                newBasedata = 
+                newBasedata =
                     if List.length newPlot == 0 then
                         { basedata | isPlaying = False }
 

@@ -14,15 +14,16 @@ import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (Env)
 import Messenger.Scene.RawScene exposing (RawSceneProtoLevelInit, RawSceneUpdate, RawSceneView)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
-import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.Background.Model as Background
 import SceneProtos.Story.Components.CharSequence.Model as Character
+import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
 import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
-import Scenes.Before1.Characters exposing (charInitData)
 import Scenes.Before1.Background exposing (backgroundInitData)
+import Scenes.Before1.Characters exposing (charInitData)
+import Scenes.Before1.Dialogues exposing (dialogueInitData)
 
 
 type alias Data =
@@ -44,11 +45,13 @@ initData env msg =
             charInitData
 
         dialogueInit =
-            
+            dialogueInitData
     in
     { objects =
         [ Background.component (BackgroundInit <| backgroundInit)
         , Character.component (CharInit <| charInit)
+        , Dialogue.component (DialogueInit <| dialogueInit)
+        , Trigger.component TriggerInit
         ]
     , level = "Before1"
     }

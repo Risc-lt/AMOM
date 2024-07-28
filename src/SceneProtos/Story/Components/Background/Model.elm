@@ -11,12 +11,12 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.Background.Init exposing (InitData, defaultBackground, defaultCamera)
 import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import Messenger.GeneralModel exposing (Msg(..))
 
 
 type alias Data =

@@ -17,33 +17,33 @@ type alias Data =
 changePosition : Float -> Float -> Character -> Character
 changePosition targetX targetY character =
     case character.direction of
-                Left ->
-                    if character.x + character.speed > targetX then
-                        { character | x = targetX }
+        Left ->
+            if character.x + character.speed > targetX then
+                { character | x = targetX }
 
-                    else
-                        { character | x = character.x + character.speed }
+            else
+                { character | x = character.x + character.speed }
 
-                Right ->
-                    if character.x - character.speed < targetX then
-                        { character | x = targetX }
+        Right ->
+            if character.x - character.speed < targetX then
+                { character | x = targetX }
 
-                    else
-                        { character | x = character.x - character.speed }
+            else
+                { character | x = character.x - character.speed }
 
-                Down ->
-                    if character.y + character.speed > targetY then
-                        { character | y = targetY }
+        Down ->
+            if character.y + character.speed > targetY then
+                { character | y = targetY }
 
-                    else
-                        { character | y = character.y + character.speed }
+            else
+                { character | y = character.y + character.speed }
 
-                Up ->
-                    if character.y - character.speed < targetY then
-                        { character | y = targetY }
+        Up ->
+            if character.y - character.speed < targetY then
+                { character | y = targetY }
 
-                    else
-                        { character | y = character.y - character.speed }
+            else
+                { character | y = character.y - character.speed }
 
 
 changeDirection : ( Movement, Character ) -> ( Movement, Character )

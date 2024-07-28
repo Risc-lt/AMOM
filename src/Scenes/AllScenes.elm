@@ -19,8 +19,8 @@ import Dict
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
-import Scenes.Level1.Model as Level1
 import Scenes.Before1.Model as Before1
+import Scenes.Level1.Model as Level1
 
 
 {-| All Scenes

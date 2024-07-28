@@ -153,7 +153,18 @@ view env data basedata =
     ( Canvas.group [] <|
         List.map
             (\c ->
-                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 140, 0 ) c.name
+                let
+                    name =
+                        if
+                            List.any (\n -> String.endsWith n c.name)
+                                [ "1", "2", "3", "4", "5", "6" ]
+                        then
+                            String.dropRight 1 c.name
+
+                        else
+                            c.name
+                in
+                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 140, 0 ) name
             )
             data.characters
     , 2

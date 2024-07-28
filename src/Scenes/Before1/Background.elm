@@ -17,6 +17,11 @@ followLeft =
     genCamera 0 -300 8 10
 
 
+wolfRight : Camera
+wolfRight =
+    genCamera -639 -300 8 12
+
+
 genCamera : Float -> Float -> Float -> Int -> Camera
 genCamera targetX targetY speed id =
     { defaultCamera
@@ -39,5 +44,6 @@ backgroundInitData =
     , remainMove =
         [ followRight
         , followLeft
+        , wolfRight
         ]
     }

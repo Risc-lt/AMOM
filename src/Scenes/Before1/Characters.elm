@@ -14,6 +14,12 @@ characters =
     , genCharacter "Bulingze" Battle Right -380 490
     , genCharacter "Bruce" Battle Right -620 350
     , genCharacter "Bithif" Battle Right -860 490
+    , genCharacter "Wild Wolf1" Battle Right -140 350
+    , genCharacter "Wild Wolf2" Battle Right -210 490
+    , genCharacter "Wild Wolf3" Battle Right -290 350
+    , genCharacter "Wild Wolf4" Battle Right -360 520
+    , genCharacter "Wild Wolf5" Battle Right -500 420
+    , genCharacter "Wild Wolf6" Battle Right -620 350
     ]
 
 
@@ -217,6 +223,67 @@ followLeft =
     ]
 
 
+wolfAppear : List Movement
+wolfAppear =
+    let
+        move1 =
+            Real ( 910, 350 ) 8
+
+        move2 =
+            Real ( 840, 490 ) 8
+
+        move3 =
+            Real ( 760, 350 ) 8
+
+        move4 =
+            Real ( 690, 520 ) 8
+
+        move5 =
+            Real ( 550, 420 ) 8
+
+        move6 =
+            Real ( 430, 350 ) 8
+    in
+    [ genMove "Wild Wolf1" Battle move1 11
+    , genMove "Wild Wolf2" Battle move2 11
+    , genMove "Wild Wolf3" Battle move3 11
+    , genMove "Wild Wolf4" Battle move4 11
+    , genMove "Wild Wolf5" Battle move5 11
+    , genMove "Wild Wolf6" Battle move6 11
+    ]
+
+
+wolfRight : List Movement
+wolfRight =
+    let
+        wolfMove =
+            Fake Right
+
+        wenderdMove =
+            Follow ( 1660, 350 ) 8
+
+        bulingzeMove =
+            Follow ( 1420, 350 ) 8
+
+        bruceMove =
+            Follow ( 1660, 490 ) 8
+
+        bithifMove =
+            Follow ( 1420, 490 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 12
+    , genMove "Bulingze" Battle bulingzeMove 12
+    , genMove "Bruce" Battle bruceMove 12
+    , genMove "Bithif" Battle bithifMove 12
+    , genMove "Wild Wolf1" Battle wolfMove 12
+    , genMove "Wild Wolf2" Battle wolfMove 12
+    , genMove "Wild Wolf3" Battle wolfMove 12
+    , genMove "Wild Wolf4" Battle wolfMove 12
+    , genMove "Wild Wolf5" Battle wolfMove 12
+    , genMove "Wild Wolf6" Battle wolfMove 12
+    ]
+
+
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -242,4 +309,6 @@ charInitData =
             ++ throughStone4
             ++ throughStone5
             ++ followLeft
+            ++ wolfAppear
+            ++ wolfRight
     }

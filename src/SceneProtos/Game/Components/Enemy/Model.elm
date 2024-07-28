@@ -235,7 +235,11 @@ renderEnemy enemy env =
                 [ Canvas.empty ]
 
         enemyView =
-            renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
+            if enemy.isRunning then
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
+
+            else
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
     in
     if enemy.hp == 0 then
         Canvas.empty

@@ -41,6 +41,7 @@ type alias Enemy =
     , buff : List ( Buff, Int )
     , state : State
     , curHurt : String
+    , isRunning : Bool
     }
 
 
@@ -98,6 +99,7 @@ emptyInitData time =
             , skills = []
             , state = Waiting
             , curHurt = ""
+            , isRunning = False
             }
         )
         [ 7, 8, 9 ]
@@ -123,6 +125,7 @@ emptyInitData time =
                 , skills = []
                 , state = Waiting
                 , curHurt = ""
+                , isRunning = False
                 }
             )
             [ 10, 11, 12 ]
@@ -152,6 +155,7 @@ defaultEnemy =
     , skills = []
     , state = Waiting
     , curHurt = ""
+    , isRunning = False
     }
 
 
@@ -188,4 +192,5 @@ genDefaultEnemy id =
     , skills = []
     , state = Waiting
     , curHurt = ""
+    , isRunning = False
     }

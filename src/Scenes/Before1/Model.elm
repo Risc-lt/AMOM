@@ -22,6 +22,7 @@ import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
 import Scenes.Before1.Characters exposing (charInitData)
+import Scenes.Before1.Background exposing (backgroundInitData)
 
 
 type alias Data =
@@ -37,13 +38,13 @@ initData : Env () UserData -> Maybe SceneMsg -> InitData SceneMsg
 initData env msg =
     let
         backgroundInit =
-            { backFigure = "Background"
-            , x = 0
-            , y = 0
-            }
+            backgroundInitData
 
         charInit =
             charInitData
+
+        dialogueInit =
+            
     in
     { objects =
         [ Background.component (BackgroundInit <| backgroundInit)

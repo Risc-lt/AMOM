@@ -20,6 +20,7 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.Level1.Model as Level1
+import Scenes.Before1.Model as Before1
 
 
 {-| All Scenes
@@ -30,7 +31,8 @@ Store all the scenes with their name here.
 allScenes : AllScenes UserData SceneMsg
 allScenes =
     Dict.fromList
-        [ ( "Level1", Level1.scene )
+        [ ( "Before1", Before1.scene )
+        , ( "Level1", Level1.scene )
 
         {- , ( "Level2", Level2.scene )
            , ( "Level3", Level3.scene )

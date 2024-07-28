@@ -14,7 +14,7 @@ followRight =
 
 followLeft : Camera
 followLeft =
-    genCamera 0 -300 8 5
+    genCamera 0 -300 8 6
 
 
 genCamera : Float -> Float -> Float -> Int -> Camera

@@ -44,7 +44,7 @@ type MoveKind
     = Real ( Float, Float ) Float
     | Follow ( Float, Float ) Float
     | Fake Direction
-    | None
+    | None Direction
 
 
 
@@ -85,7 +85,7 @@ defaultMovement : Movement
 defaultMovement =
     { name = ""
     , posture = Normal
-    , movekind = None
+    , movekind = None Right
     , id = 0
     , isMoving = False
     }

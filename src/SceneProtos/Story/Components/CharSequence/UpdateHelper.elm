@@ -84,8 +84,8 @@ changeDirection ( movement, character ) =
         Fake direction ->
             ( movement, { character | direction = direction } )
 
-        _ ->
-            ( movement, character )
+        None direction ->
+            ( movement, { character | direction = direction } )
 
 
 handleMove : ( Movement, Character ) -> ( Movement, Character )
@@ -111,7 +111,14 @@ checkDestination ( movement, character ) =
             else
                 ( movement, character )
 
-        None ->
+        Follow ( targetX, targetY ) _ ->
+            if character.x == targetX && character.y == targetY then
+                ( { movement | isMoving = False }, character )
+
+            else
+                ( movement, character )
+
+        None _ ->
             ( { movement | isMoving = False }, character )
 
         _ ->

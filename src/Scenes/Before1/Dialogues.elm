@@ -15,7 +15,7 @@ start =
             , "Stay alert and pay attention to your surroundings."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 1 )
+    genDialogue "head_wenderd" content ( 5, 1 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

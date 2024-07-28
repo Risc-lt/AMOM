@@ -5,6 +5,7 @@ module Scenes.Before1.Characters exposing (..)
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
+import Scenes.Level1.Characters exposing (bulingze)
 
 
 characters : List Character
@@ -61,20 +62,21 @@ followRight =
     , genMove "Bithif" Battle movekind 2
     ]
 
+
 bySelfRight : List Movement
 bySelfRight =
     let
         wenderdMove =
-            Real ( 910, 490 ) 8
+            Real ( 1100, 490 ) 8
 
         bulingzeMove =
-            Real ( 770, 490 ) 8
+            Real ( 960, 490 ) 8
 
         bruceMove =
-            Real ( 570, 350 ) 8
+            Real ( 760, 350 ) 8
 
         bithifMove =
-            Real ( 330, 490 ) 8
+            Real ( 520, 490 ) 8
     in
     [ genMove "Wenderd" Battle wenderdMove 3
     , genMove "Bulingze" Battle bulingzeMove 3
@@ -87,16 +89,16 @@ throughStone1 : List Movement
 throughStone1 =
     let
         wenderdMove =
-            Real ( 1390, 490 ) 8
+            Real ( 1580, 490 ) 8
 
         bulingzeMove =
-            Real ( 1250, 490 ) 8
+            Real ( 1420, 470 ) 8
 
         bruceMove =
-            Real ( 910, 490 ) 8
+            Real ( 1100, 490 ) 8
 
         bithifMove =
-            Real ( 770, 490 ) 8
+            Real ( 960, 490 ) 8
     in
     [ genMove "Wenderd" Battle wenderdMove 4
     , genMove "Bulingze" Battle bulingzeMove 4
@@ -109,7 +111,7 @@ throughStone2 : List Movement
 throughStone2 =
     let
         wenderdMove =
-            Real ( 1660, 440 ) 8
+            Real ( 1660, 450 ) 8
 
         bulingzeMove =
             Real ( 1420, 350 ) 8
@@ -127,13 +129,92 @@ throughStone2 =
     ]
 
 
-followLeft : Movement
+throughStone3 : List Movement
+throughStone3 =
+    let
+        wenderdMove =
+            Real ( 1660, 350 ) 8
+
+        bulingzeMove =
+            None Left
+
+        bruceMove =
+            Real ( 1320, 490 ) 8
+
+        bithifMove =
+            Real ( 1180, 490 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 6
+    , genMove "Bulingze" Battle bulingzeMove 6
+    , genMove "Bruce" Battle bruceMove 6
+    , genMove "Bithif" Battle bithifMove 6
+    ]
+
+
+throughStone4 : List Movement
+throughStone4 =
+    let
+        wenderdMove =
+            None Right
+
+        bulingzeMove =
+            None Left
+
+        bruceMove =
+            Real ( 1560, 490 ) 8
+
+        bithifMove =
+            Real ( 1420, 490 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 7
+    , genMove "Bulingze" Battle bulingzeMove 7
+    , genMove "Bruce" Battle bruceMove 7
+    , genMove "Bithif" Battle bithifMove 7
+    ]
+
+
+throughStone5 : List Movement
+throughStone5 =
+    let
+        wenderdMove =
+            None Right
+
+        bulingzeMove =
+            None Left
+
+        bruceMove =
+            Real ( 1660, 490 ) 8
+
+        bithifMove =
+            None Left
+    in
+    [ genMove "Wenderd" Battle wenderdMove 8
+    , genMove "Bulingze" Battle bulingzeMove 8
+    , genMove "Bruce" Battle bruceMove 8
+    , genMove "Bithif" Battle bithifMove 8
+    ]
+
+
+followLeft : List Movement
 followLeft =
     let
-        movekind =
+        wenderdMove =
             Follow ( 2299, 350 ) 8
+
+        bulingzeMove =
+            Follow ( 2059, 350 ) 8
+
+        bruceMove =
+            Follow ( 2299, 490 ) 8
+
+        bithifMove =
+            Follow ( 2059, 490 ) 8
     in
-    genMove "Wenderd" Battle movekind 6
+    [ genMove "Wenderd" Battle wenderdMove 10
+    , genMove "Bulingze" Battle bulingzeMove 10
+    , genMove "Bruce" Battle bruceMove 10
+    , genMove "Bithif" Battle bithifMove 10
+    ]
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement
@@ -149,13 +230,16 @@ genMove name posture movekind id =
 
 charInitData : InitData
 charInitData =
-    { characters = [ wenderd ]
+    { characters = characters
     , curMove = []
     , remainMove =
-        [ begin
-        , followRight
-        , bySelfRight
-        , throughStone
-        , followLeft
-        ]
+        begin
+            ++ followRight
+            ++ bySelfRight
+            ++ throughStone1
+            ++ throughStone2
+            ++ throughStone3
+            ++ throughStone4
+            ++ throughStone5
+            ++ followLeft
     }

@@ -146,7 +146,7 @@ view env data =
 
         background =
             [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "battleframe"
-            , renderSprite env.globalData.internalData [] ( 20, 20 ) ( 1400, 680 ) "background"
+            , renderSprite env.globalData.internalData [] ( 20, 20 ) ( 1400, 660 ) "background"
             ]
 
         outComeView =

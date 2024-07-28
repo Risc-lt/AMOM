@@ -223,14 +223,14 @@ renderPlayerTurn env name =
                , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
                , Canvas.shapes
                     [ stroke Color.black ]
-                    [ path (posToReal env.globalData.internalData ( 540, 680 ))
-                        [ lineTo (posToReal env.globalData.internalData ( 540, 1080 ))
-                        , moveTo (posToReal env.globalData.internalData ( 760, 680 ))
-                        , lineTo (posToReal env.globalData.internalData ( 760, 1080 ))
-                        , moveTo (posToReal env.globalData.internalData ( 980, 680 ))
-                        , lineTo (posToReal env.globalData.internalData ( 980, 1080 ))
-                        , moveTo (posToReal env.globalData.internalData ( 1200, 680 ))
-                        , lineTo (posToReal env.globalData.internalData ( 1200, 1080 ))
+                    [ path (posToReal env.globalData.internalData ( 540, 715 ))
+                        [ lineTo (posToReal env.globalData.internalData ( 540, 1060 ))
+                        , moveTo (posToReal env.globalData.internalData ( 760, 715 ))
+                        , lineTo (posToReal env.globalData.internalData ( 760, 1060 ))
+                        , moveTo (posToReal env.globalData.internalData ( 980, 715 ))
+                        , lineTo (posToReal env.globalData.internalData ( 980, 1060 ))
+                        , moveTo (posToReal env.globalData.internalData ( 1200, 715 ))
+                        , lineTo (posToReal env.globalData.internalData ( 1200, 1060 ))
                         ]
                     ]
                ]
@@ -291,10 +291,10 @@ renderTargetSelection env data basedata name =
          , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
          , Canvas.shapes
             [ stroke Color.black ]
-            [ path (posToReal env.globalData.internalData ( 640, 680 ))
-                [ lineTo (posToReal env.globalData.internalData ( 640, 1080 ))
-                , moveTo (posToReal env.globalData.internalData ( 1030, 680 ))
-                , lineTo (posToReal env.globalData.internalData ( 1030, 1080 ))
+            [ path (posToReal env.globalData.internalData ( 640, 715 ))
+                [ lineTo (posToReal env.globalData.internalData ( 640, 1060 ))
+                , moveTo (posToReal env.globalData.internalData ( 1030, 715 ))
+                , lineTo (posToReal env.globalData.internalData ( 1030, 1060 ))
                 , moveTo (posToReal env.globalData.internalData ( 640, 813.3 ))
                 , lineTo (posToReal env.globalData.internalData ( 1420, 813.3 ))
                 , moveTo (posToReal env.globalData.internalData ( 640, 946.6 ))
@@ -357,8 +357,8 @@ renderChooseSkill env self name state =
          , renderTextWithColorCenter env.globalData.internalData 60 "Turn" "Comic Sans MS" Color.black ( 160, 930 )
          , Canvas.shapes
             [ stroke Color.black ]
-            [ path (posToReal env.globalData.internalData ( 640, 680 ))
-                [ lineTo (posToReal env.globalData.internalData ( 640, 1080 )) ]
+            [ path (posToReal env.globalData.internalData ( 640, 715 ))
+                [ lineTo (posToReal env.globalData.internalData ( 640, 1060 )) ]
             ]
          , renderTextWithColorCenter env.globalData.internalData 60 prompt "Comic Sans MS" Color.black ( 480, 820 )
          , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Comic Sans MS" Color.black ( 480, 930 )
@@ -439,6 +439,6 @@ renderAction env data basedata =
     Canvas.group []
         [ Canvas.shapes
             [ stroke Color.black ]
-            [ path (posToReal env.globalData.internalData ( 320, 680 )) [ lineTo (posToReal env.globalData.internalData ( 320, 1080 )) ] ]
+            [ path (posToReal env.globalData.internalData ( 320, 715 )) [ lineTo (posToReal env.globalData.internalData ( 320, 1060 )) ] ]
         , actionBar
         ]

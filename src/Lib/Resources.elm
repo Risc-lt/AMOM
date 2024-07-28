@@ -42,7 +42,7 @@ allTexture : Dict String String
 allTexture =
     Dict.fromList
         [ ( "background", "assets/character/background/battle_background.jpg" )
-        , ( "Fight_frame", "assets/character/chartlet/battleframe.png" )
+        , ( "Fight_frame", "assets/character/chartlet/battleframe_1.png" )
         , ( "Wild Wolf", "assets/character/role/wolf.png" )
         , ( "Bulingze", "assets/character/role/magic.png" )
         , ( "Bruce", "assets/character/role/archer.png" )

@@ -12,7 +12,7 @@ module SceneProtos.Story.Components.DialogSequence.Init exposing (..)
 {- The data sturcture for dialogues -}
 
 
-type DialogueState 
+type DialogueState
     = IsSpeaking
     | Appear
     | Disappear

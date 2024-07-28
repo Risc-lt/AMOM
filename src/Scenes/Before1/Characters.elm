@@ -45,9 +45,18 @@ bySelfRight : Movement
 bySelfRight =
     let
         movekind =
-            Real ( 1120, 390 ) 8
+            Real ( 1120, 500 ) 8
     in
     genMove "Wenderd" Battle movekind 3
+
+
+followLeft : Movement
+followLeft =
+    let
+        movekind =
+            Follow ( 1759, 500 ) 8
+    in
+    genMove "Wenderd" Battle movekind 5
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement
@@ -69,5 +78,6 @@ charInitData =
         [ begin
         , followRight
         , bySelfRight
+        , followLeft
         ]
     }

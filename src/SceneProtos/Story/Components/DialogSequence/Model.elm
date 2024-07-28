@@ -8,6 +8,7 @@ module SceneProtos.Story.Components.DialogSequence.Model exposing (component)
 
 import Bitwise exposing (or)
 import Canvas
+import Canvas.Settings.Advanced exposing (alpha)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -17,9 +18,8 @@ import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (DialogueState(..), InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (DialogueState(..))
 
 
 type alias Data =
@@ -62,7 +62,7 @@ updateHelper env evnt data basedata =
                 _ ->
                     ( { curDia | state = NoDialogue }
                     , { basedata | isPlaying = False }
-                    , [ Other ( "Trigger", PlotDone 3 ) ] 
+                    , [ Other ( "Trigger", PlotDone 3 ) ]
                     )
 
         remainingDialogues =
@@ -104,20 +104,21 @@ update env evnt data basedata =
 
         Tick _ ->
             let
-                curDia = 
+                curDia =
                     data.curDialogue
 
                 newDia =
-                    case data.curDialogue.state of
+                    case curDia.state of
                         Appear ->
-                            if curDia.alpha + 0.1 < 1 then
-                                { curDia | alpha = curDia.alpha + 0.1 }
+                            if curDia.alpha + 0.04 < 1 then
+                                { curDia | alpha = curDia.alpha + 0.04 }
+
                             else
                                 { curDia | alpha = 1, state = IsSpeaking }
 
                         Disappear ->
-                            if curDia.alpha - 0.1 > 0 then
-                                { curDia | alpha = curDia.alpha - 0.1 }
+                            if curDia.alpha - 0.04 > 0 then
+                                { curDia | alpha = curDia.alpha - 0.04 }
 
                             else
                                 { curDia | alpha = 0, state = NoDialogue }
@@ -126,14 +127,11 @@ update env evnt data basedata =
                             curDia
             in
             if curDia /= newDia then
-                if newDia.state == IsSpeaking then
-                    ( ( { data | curDialogue = newDia }, basedata ), [], ( env, False ) )
-
-                else if newDia.state == NoDialogue then
+                if newDia.state == NoDialogue then
                     updateHelper env evnt data basedata
-                
+
                 else
-                    ( ( data, basedata ), [], ( env, False ) )
+                    ( ( { data | curDialogue = newDia }, basedata ), [], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -200,7 +198,7 @@ view env data basedata =
             renderableTexts =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
-        ( Canvas.group []
+        ( Canvas.group [ alpha data.curDialogue.alpha ]
             ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1880, 400 ) data.curDialogue.frameName
              , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 346, 0 ) data.curDialogue.speaker
              ]

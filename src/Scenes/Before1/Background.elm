@@ -7,12 +7,14 @@ module Scenes.Before1.Background exposing (..)
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
 
 
-begin : Camera
-begin =
+followRight : Camera
+followRight =
     genCamera -639 -300 8 2
 
 
-wolf
+followLeft : Camera
+followLeft =
+    genCamera 0 -300 8 5
 
 
 genCamera : Float -> Float -> Float -> Int -> Camera
@@ -35,6 +37,7 @@ backgroundInitData =
         }
     , curMove = defaultCamera
     , remainMove =
-        [ begin
+        [ followRight
+        , followLeft
         ]
     }

@@ -65,6 +65,22 @@ changeDirection ( movement, character ) =
             else
                 ( movement, character )
 
+        Follow ( targetX, targetY ) _ ->
+            if targetX > character.x then
+                ( movement, { character | direction = Right } )
+
+            else if targetX < character.x then
+                ( movement, { character | direction = Left } )
+
+            else if targetY > character.y then
+                ( movement, { character | direction = Down } )
+
+            else if targetY < character.y then
+                ( movement, { character | direction = Up } )
+
+            else
+                ( movement, character )
+
         Fake direction ->
             ( movement, { character | direction = direction } )
 

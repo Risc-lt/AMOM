@@ -21,6 +21,7 @@ import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
 import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
+import Scenes.Before1.Characters exposing (charInitData)
 
 
 type alias Data =
@@ -42,13 +43,13 @@ initData env msg =
             }
 
         charInit =
-            selfInitData <| time
+            charInitData
     in
     { objects =
         [ Background.component (BackgroundInit <| backgroundInit)
         , Character.component (CharInit <| charInit)
         ]
-    , level = "Level1"
+    , level = "Before1"
     }
 
 

@@ -9,7 +9,7 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 
 wenderd : Character
 wenderd =
-    genCharacter "Wenderd" Battle Right 0 0
+    genCharacter "Wenderd" Battle Right 0 490
 
 
 genCharacter : String -> Posture -> Direction -> Float -> Float -> Character

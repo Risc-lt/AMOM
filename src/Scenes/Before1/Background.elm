@@ -21,7 +21,7 @@ genCamera targetX targetY speed id =
 backgroundInitData : InitData
 backgroundInitData =
     { background =
-        { backFigure = "background"
+        { backFigure = "dialogue_1"
         , x = 0
         , y = 0
         }

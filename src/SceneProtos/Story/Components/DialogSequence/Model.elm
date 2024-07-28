@@ -15,7 +15,7 @@ import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
@@ -118,10 +118,19 @@ contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -
 contentToView ( index, text ) env data =
     let
         lineHeight =
-            72
+            60
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
+        [ renderTextWithColorStyle
+            env.globalData.internalData
+            40
+            text
+            data.curDialogue.font
+            (Color.rgb255 207 207 207)
+            ""
+            ( Tuple.first data.curDialogue.textPos
+            , toFloat index * lineHeight + Tuple.second data.curDialogue.textPos
+            )
         ]
 
 
@@ -133,9 +142,8 @@ view env data basedata =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1920, 400 ) data.curDialogue.frameName
-
-             {- , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker -}
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1880, 400 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 346, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

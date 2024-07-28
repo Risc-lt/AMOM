@@ -463,7 +463,7 @@ handleMove list env evnt data basedata =
         longRange =
             data.name == "Bruce"
 
-        newX =
+        ( newX, runFlag ) =
             if
                 basedata.state
                     == PlayerAttack True
@@ -472,10 +472,10 @@ handleMove list env evnt data basedata =
                     && not longRange
             then
                 if data.x > 670 then
-                    data.x - 5
+                    ( data.x - 5, True )
 
                 else
-                    670
+                    ( 670, False )
 
             else if
                 basedata.state
@@ -486,13 +486,13 @@ handleMove list env evnt data basedata =
                     == Counter
             then
                 if data.x < returnX then
-                    data.x + 5
+                    ( data.x + 5, True )
 
                 else
-                    returnX
+                    ( returnX, False )
 
             else
-                data.x
+                ( data.x, False )
 
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
@@ -544,7 +544,7 @@ handleMove list env evnt data basedata =
             else
                 []
     in
-    ( ( { newData | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
+    ( ( { newData | x = newX, isRunning = runFlag }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

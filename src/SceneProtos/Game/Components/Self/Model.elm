@@ -275,6 +275,14 @@ renderChar char basedata env =
                 ( 100, 100 )
                 char.name
 
+        else if char.isRunning then
+            renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( char.x, char.y )
+                ( 100, 100 )
+                (char.name ++ "Sheet.1/" ++ currentAct 4)
+
         else
             renderSprite
                 env.globalData.internalData

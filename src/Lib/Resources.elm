@@ -59,6 +59,8 @@ allTexture =
         , ( "head_bruce", "assets/character/role/role_4.jpg" )
         , ( "head_bulingze", "assets/character/role/role_2.jpg" )
         , ( "head_wenderd", "assets/character/role/role_3.jpg" )
+        , ( "dialogue_1","assets/character/background/dialogue_1.jpg")
+        , ( "dialogue_2","assets/character/background/dialogue_2.jpg")
         ]
 
 

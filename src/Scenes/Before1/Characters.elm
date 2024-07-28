@@ -5,7 +5,6 @@ module Scenes.Before1.Characters exposing (..)
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
-import Scenes.Level1.Characters exposing (bulingze)
 
 
 characters : List Character

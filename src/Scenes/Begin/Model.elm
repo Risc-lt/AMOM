@@ -48,21 +48,10 @@ update env msg data =
 
 view : RawSceneView UserData Data
 view env data =
-    let
-        gd =
-            env.globalData
-
-        rate =
-            300
-
-        currentAct x =
-            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
-    in
     Canvas.group []
         [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
         , renderSprite env.globalData.internalData [] ( 860, 450 ) ( 190, 65 ) "button_1"
         , renderSprite env.globalData.internalData [] ( 860, 540 ) ( 190, 55 ) "button_2"
-        , renderSprite env.globalData.internalData [ imageSmoothing False ] ( 100, 200 ) ( 100, 100 ) ("BulingzeSheet.0/" ++ currentAct 4)
         ]
 
 

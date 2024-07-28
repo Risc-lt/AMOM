@@ -72,6 +72,8 @@ chacaterTexture =
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
     , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
+    , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
+    , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     ]
 
 
@@ -143,16 +145,53 @@ allSpriteSheets =
                         <|
                             List.range 0 colsize
                     )
-                    playerSize
+                    (playerSize "BulingzeSheet")
+          )
+        , ( "BruceSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "BruceSheet")
+          )
+        , ( "BithifSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "BithifSheet")
           )
         ]
 
 
-playerSize : List Int
-playerSize =
-    [ 4
-    , 4
-    ]
+playerSize : String -> List Int
+playerSize name =
+    case name of
+        "BruceSheet" ->
+            [ 4, 5 ]
+
+        _ ->
+            [ 4, 4 ]
 
 
 

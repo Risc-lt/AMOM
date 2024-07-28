@@ -128,7 +128,7 @@ allSpriteSheets =
                     , { basic | realStartPoint = ( 64 * x, 0 ) }
                     )
                 )
-                (List.map toFloat (List.range 0 17))
+                (List.map toFloat (List.range 1 17))
           )
         , ( "BulingzeSheet"
           , List.concat <|

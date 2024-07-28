@@ -151,7 +151,7 @@ defaultEnemy =
     , buff = []
     , skills = []
     , state = Waiting
-    , curHurt = "Fire Ball"
+    , curHurt = ""
     }
 
 

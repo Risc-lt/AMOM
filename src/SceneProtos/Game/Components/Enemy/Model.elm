@@ -72,8 +72,30 @@ update env evnt data basedata =
                             x
                     )
                     data
+
+            newData2 =
+                List.map
+                    (\x ->
+                        if x.curHurt /= "" then
+                            let
+                                remainNum =
+                                    modBy (300 * 17) env.globalData.sceneStartTime // 300
+
+                                newName =
+                                    if remainNum == 0 then
+                                        ""
+
+                                    else
+                                        x.curHurt
+                            in
+                            { x | curHurt = newName }
+
+                        else
+                            x
+                    )
+                    newData
         in
-        ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
+        ( ( newData2, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData2) ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -207,7 +229,7 @@ renderEnemy enemy env =
 
         skillView =
             if enemy.curHurt /= "" then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.curHurt ++ "./" ++ currentAct 17) ]
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.curHurt ++ "." ++ currentAct 17) ]
 
             else
                 [ Canvas.empty ]

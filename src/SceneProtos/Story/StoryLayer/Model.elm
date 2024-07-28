@@ -43,6 +43,9 @@ handleComponentMsg env compmsg data =
         SOMMsg som ->
             ( data, [ Parent <| SOMMsg som ], env )
 
+        OtherMsg Over ->
+            ( data, [], env )
+
         _ ->
             ( data, [], env )
 

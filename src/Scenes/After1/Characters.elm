@@ -50,9 +50,18 @@ checkWolf : List Movement
 checkWolf =
     let
         move =
-            Real ( 1020, 405 ) 2
+            Real ( 1020, 405 ) 1.5
     in
     [ genMove "Wenderd" Normal move 3 ]
+
+
+turn : List Movement
+turn =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Wenderd" Normal move 4 ]
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement
@@ -73,4 +82,5 @@ charInitData =
     , remainMove =
         begin
             ++ checkWolf
+            ++ turn
     }

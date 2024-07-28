@@ -13,14 +13,13 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
-import Messenger.GeneralModel exposing (Msg(..))
+import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.Components.Trigger.Init exposing (InitData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import Messenger.GeneralModel exposing (MsgBase(..))
 
 
 type alias Data =
@@ -44,18 +43,17 @@ update env evnt data basedata =
             if data.id == data.overId then
                 ( ( data, basedata ), [ Parent <| OtherMsg <| Over ], ( env, False ) )
 
-            else
-                if basedata.isPlaying == False then
-                    ( ( { data | id = data.id + 1 }, basedata )
-                    , [ Other ( "Background", BeginPlot (data.id + 1) )
-                    , Other ( "Character", BeginPlot (data.id + 1) )
-                    , Other ( "Dialogue", BeginPlot (data.id + 1) )
-                    ]
-                    , ( env, False )
-                    )
+            else if basedata.isPlaying == False then
+                ( ( { data | id = data.id + 1 }, basedata )
+                , [ Other ( "Background", BeginPlot (data.id + 1) )
+                  , Other ( "Character", BeginPlot (data.id + 1) )
+                  , Other ( "Dialogue", BeginPlot (data.id + 1) )
+                  ]
+                , ( env, False )
+                )
 
-                else
-                    ( ( data, basedata ), [], ( env, False ) )
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

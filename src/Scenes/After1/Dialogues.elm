@@ -38,7 +38,7 @@ fear =
             , "There were so many wolves in this pack."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 1 )
+    genDialogue "head_wenderd" content ( 5, 1 )
 
 
 agree : Dialogue
@@ -50,7 +50,7 @@ agree =
             , "We need to do more preparation next time."
             ]
     in
-    genDialogue "head_bruce" content ( 4, 2 )
+    genDialogue "head_bruce" content ( 5, 2 )
 
 
 checkWolf : Dialogue
@@ -61,7 +61,7 @@ checkWolf =
             , "Look at their fur, they should be worth a lot of money if sold."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 3 )
+    genDialogue "head_wenderd" content ( 5, 3 )
 
 
 remind : Dialogue
@@ -73,7 +73,7 @@ remind =
             , "guild to prove our work results."
             ]
     in
-    genDialogue "head_bulingze" content ( 4, 4 )
+    genDialogue "head_bulingze" content ( 5, 4 )
 
 
 explain : Dialogue
@@ -85,7 +85,7 @@ explain =
             , "Those people are just too greedy."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 5 )
+    genDialogue "head_wenderd" content ( 5, 5 )
 
 
 silence : Dialogue
@@ -96,7 +96,7 @@ silence =
             , "Well..."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 6 )
+    genDialogue "head_wenderd" content ( 5, 6 )
 
 
 recall : Dialogue
@@ -108,7 +108,7 @@ recall =
             , "before we came here."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 7 )
+    genDialogue "head_wenderd" content ( 5, 7 )
 
 
 sad : Dialogue
@@ -119,7 +119,7 @@ sad =
             , "..."
             ]
     in
-    genDialogue "head_bithif" content ( 4, 8 )
+    genDialogue "head_bithif" content ( 5, 8 )
 
 
 refuse : Dialogue
@@ -130,7 +130,7 @@ refuse =
             , "...We can't. Not until my research is complete."
             ]
     in
-    genDialogue "head_bruce" content ( 4, 9 )
+    genDialogue "head_bruce" content ( 5, 9 )
 
 
 end : Dialogue
@@ -141,7 +141,7 @@ end =
             , "I know, I know, so let's get this over with and get back."
             ]
     in
-    genDialogue "head_wenderd" content ( 4, 10 )
+    genDialogue "head_wenderd" content ( 5, 10 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

@@ -381,10 +381,10 @@ updateOne env evnt data basedata =
             let
                 returnX =
                     if data.position <= 9 then
-                        230
+                        235
 
                     else
-                        100
+                        105
 
                 newData =
                     if data.x <= returnX then

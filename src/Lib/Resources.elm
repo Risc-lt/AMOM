@@ -207,7 +207,7 @@ allSpriteSheets =
                         List.map
                             (\col ->
                                 ( String.fromInt row ++ "/" ++ String.fromInt col
-                                , { realStartPoint = ( 74 * toFloat col, 74 * toFloat row )
+                                , { realStartPoint = ( 78 * toFloat col, 78 * toFloat row )
                                   , realSize = ( 74, 74 )
                                   }
                                 )

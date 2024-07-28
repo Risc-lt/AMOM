@@ -40,6 +40,17 @@ find =
     genDialogue "head_bruce" content ( 9, 3 )
 
 
+prepare : Dialogue
+prepare =
+    let
+        content =
+            [ "Wenderd:"
+            , "Be careful everyone, prepare to fight!"
+            ]
+    in
+    genDialogue "head_wenderd" content ( 13, 1 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -56,5 +67,6 @@ dialogueInitData =
         [ alert
         , reply
         , find
+        , prepare
         ]
     }

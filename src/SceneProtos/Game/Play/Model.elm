@@ -129,18 +129,24 @@ view env data =
 
         basicView =
             [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
-            , Canvas.shapes [ stroke Color.black ]
-                [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
-                , path (posToReal env.globalData.internalData ( 0, 680 ))
-                    [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
-                    , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
-                    , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
-                    ]
-                ]
+
+            -- , Canvas.shapes [ stroke Color.black ]
+            --     [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
+            --     , path (posToReal env.globalData.internalData ( 0, 680 ))
+            --         [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
+            --         , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
+            --         , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
+            --         ]
+            --     ]
             , viewComponents env data.components
             , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
             , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )
             , renderTextWithColorCenter env.globalData.internalData 30 "Attacks are possible to miss" "Arial" Color.black ( 1680, 1030 )
+            ]
+
+        background =
+            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "battleframe"
+            , renderSprite env.globalData.internalData [] ( 20, 20 ) ( 1400, 680 ) "background"
             ]
 
         outComeView =
@@ -152,7 +158,7 @@ view env data =
             else
                 Canvas.group
                     []
-                    basicView
+                    (background ++ basicView)
     in
     outComeView
 

@@ -42,13 +42,13 @@ allTexture : Dict String String
 allTexture =
     Dict.fromList
         [ ( "background", "assets/character/background/battle_background.jpg" )
-        , ( "Fight_frame", "assets/character/chartlet/Fight_frame_1.jpg" )
+        , ( "Fight_frame", "assets/character/chartlet/battleframe.png" )
         , ( "Wild Wolf", "assets/character/role/wolf.png" )
         , ( "Bulingze", "assets/character/role/magic.png" )
         , ( "Bruce", "assets/character/role/archer.png" )
         , ( "Bithif", "assets/character/role/pharmacist.png" )
         , ( "Wenderd", "assets/character/role/swordsman.png" )
-        , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
+        , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.jpg" )
         , ( "symbol_archer", "assets/character/chartlet/symbol_archer.png" )
         , ( "symbol_magic", "assets/character/chartlet/symbol_magic.png" )
         , ( "symbol_pharmacist", "assets/character/chartlet/symbol_fan.png" )

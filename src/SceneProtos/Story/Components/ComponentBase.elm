@@ -25,6 +25,7 @@ type ComponentMsg
     | BackgroundInit Background.InitData
     | TriggerInit
     | EndMove
+    | PlotDone Int
     | NullComponentMsg
 
 

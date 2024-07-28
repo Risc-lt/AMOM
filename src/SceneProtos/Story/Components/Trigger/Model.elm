@@ -19,20 +19,21 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.Trigger.Init exposing (InitData)
 
 
 type alias Data =
-    Int
+    InitData
 
 
 init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         TriggerInit ->
-            ( 0, initBaseData )
+            ( { id = 0, curPlot = [] }, initBaseData )
 
         _ ->
-            ( 0, initBaseData )
+            ( { id = 0, curPlot = [] }, initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -40,10 +41,10 @@ update env evnt data basedata =
     case evnt of
         Tick _ ->
             if basedata.isPlaying == False then
-                ( ( data + 1, basedata )
-                , [ Other ( "Background", BeginPlot (data + 1) )
-                  , Other ( "Character", BeginPlot (data + 1) )
-                  , Other ( "Dialogue", BeginPlot (data + 1) )
+                ( ( { data | id = data.id + 1 }, basedata )
+                , [ Other ( "Background", BeginPlot (data.id + 1) )
+                  , Other ( "Character", BeginPlot (data.id + 1) )
+                  , Other ( "Dialogue", BeginPlot (data.id + 1) )
                   ]
                 , ( env, False )
                 )
@@ -58,8 +59,22 @@ update env evnt data basedata =
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
-        BeginPlot _ ->
-            ( ( data, { basedata | isPlaying = True } ), [], env )
+        BeginPlot id ->
+            ( ( { data | curPlot = id :: data.curPlot }, { basedata | isPlaying = True } ), [], env )
+
+        PlotDone id ->
+            let
+                newPlot =
+                    List.filter (\i -> i /= id) data.curPlot
+
+                newBasedata = 
+                    if List.length newPlot == 0 then
+                        { basedata | isPlaying = False }
+
+                    else
+                        basedata
+            in
+            ( ( { data | curPlot = newPlot }, newBasedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

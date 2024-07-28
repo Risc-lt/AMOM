@@ -40,6 +40,7 @@ type alias Enemy =
     , extendValues : ExtendValue
     , buff : List ( Buff, Int )
     , state : State
+    , curHurt : String
     }
 
 
@@ -96,6 +97,7 @@ emptyInitData time =
             , buff = []
             , skills = []
             , state = Waiting
+            , curHurt = ""
             }
         )
         [ 7, 8, 9 ]
@@ -120,6 +122,7 @@ emptyInitData time =
                 , buff = []
                 , skills = []
                 , state = Waiting
+                , curHurt = ""
                 }
             )
             [ 10, 11, 12 ]
@@ -148,6 +151,7 @@ defaultEnemy =
     , buff = []
     , skills = []
     , state = Waiting
+    , curHurt = "Fire Ball"
     }
 
 
@@ -183,4 +187,5 @@ genDefaultEnemy id =
     , buff = []
     , skills = []
     , state = Waiting
+    , curHurt = ""
     }

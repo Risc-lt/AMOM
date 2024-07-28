@@ -46,7 +46,7 @@ allTexture =
          , ( "battleframe", "assets/character/chartlet/battleframe.png" )
          , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
          , ( "battle_background", "assets/character/background/battle_background.jpg" )
-         , ( "fire_ball", "assets/character/sprite_sheet/fireball_sprite.png" )
+         , ( "Fire Ball", "assets/character/sprite_sheet/Fire Ball.png" )
          , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
          , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
@@ -115,7 +115,7 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [ ( "fire_ball"
+        [ ( "Fire Ball"
           , List.map
                 (\x ->
                     let

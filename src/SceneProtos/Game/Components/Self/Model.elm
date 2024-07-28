@@ -284,12 +284,15 @@ renderChar char basedata env =
                 (char.name ++ "Sheet.1/" ++ currentAct 4)
 
         else
-            renderSprite
-                env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
-                ( 100, 100 )
-                (char.name ++ "Sheet.0/" ++ currentAct 4)
+            Canvas.group []
+                [ renderSprite
+                    env.globalData.internalData
+                    [ imageSmoothing False ]
+                    ( char.x, char.y )
+                    ( 100, 100 )
+                    (char.name ++ "Sheet.0/" ++ currentAct 4)
+                -- , renderSprite env.globalData.internalData [ imageSmoothing False ] ( char.x, char.y ) ( 100, 100 ) ("Fire Ball" ++ "./" ++ currentAct 17)
+                ]
 
     else
         empty

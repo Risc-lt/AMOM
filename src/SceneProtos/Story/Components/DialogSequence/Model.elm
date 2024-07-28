@@ -19,6 +19,7 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (DialogueState(..))
 
 
 type alias Data =
@@ -56,13 +57,16 @@ update env evnt data basedata =
                                 )
                                 data.remainDiaList
 
-                    ( nextDia, msg ) =
+                    ( nextDia, newBasedata, msg ) =
                         case maybeNextDia of
                             Just dia ->
-                                ( { dia | isSpeaking = True }, [] )
+                                ( { dia | isSpeaking = True }, basedata, [] )
 
                             _ ->
-                                ( { curDia | isSpeaking = False }, [ Other ( "Trigger", PlotDone 3 ) ] )
+                                ( { curDia | isSpeaking = False }
+                                , { basedata | isPlaying = False }
+                                , [ Other ( "Trigger", PlotDone 3 ) ] 
+                                )
 
                     remainingDialogues =
                         List.filter
@@ -71,13 +75,26 @@ update env evnt data basedata =
                             )
                             data.remainDiaList
                 in
-                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
+                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, newBasedata )
                 , msg
                 , ( env, False )
                 )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
+
+        Tick _ ->
+            let
+                curDia = 
+                    data.curDialogue
+
+                newData =
+                    case data.curDialogue.state of
+                        Appear ->
+                            if data.curDialogue.alpha + 0.1 < 1 then
+                                { data | curDialogue = { curDia |  }
+            in
+            ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

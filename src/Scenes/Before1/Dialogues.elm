@@ -12,10 +12,10 @@ start =
     let
         content =
             [ "Wenderd:"
-            , "I'm done with my movement."
+            , "Stay alert and pay attention to your surroundings."
             ]
     in
-    genDialogue "head_wenderd" content ( 2, 1 )
+    genDialogue "head_wenderd" content ( 4, 1 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

@@ -9,7 +9,7 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 
 wenderd : Character
 wenderd =
-    genCharacter "Wenderd" Battle Right 0 490
+    genCharacter "Wenderd" Battle Right 0 390
 
 
 genCharacter : String -> Posture -> Direction -> Float -> Float -> Character
@@ -27,9 +27,27 @@ begin : Movement
 begin =
     let
         movekind =
-            Real ( 910, 490 ) 5
+            Real ( 910, 390 ) 8
     in
     genMove "Wenderd" Battle movekind 1
+
+
+followRight : Movement
+followRight =
+    let
+        movekind =
+            Fake Right
+    in
+    genMove "Wenderd" Battle movekind 2
+
+
+bySelfRight : Movement
+bySelfRight =
+    let
+        movekind =
+            Real ( 1120, 390 ) 8
+    in
+    genMove "Wenderd" Battle movekind 3
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement
@@ -47,5 +65,9 @@ charInitData : InitData
 charInitData =
     { characters = [ wenderd ]
     , curMove = []
-    , remainMove = [ begin ]
+    , remainMove =
+        [ begin
+        , followRight
+        , bySelfRight
+        ]
     }

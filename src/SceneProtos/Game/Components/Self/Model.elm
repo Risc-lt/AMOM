@@ -267,15 +267,7 @@ renderChar char basedata env =
             String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
     in
     if char.hp /= 0 then
-        if char.name == "Wenderd" then
-            renderSprite
-                env.globalData.internalData
-                []
-                ( char.x, char.y )
-                ( 100, 100 )
-                char.name
-
-        else if char.isRunning then
+        if char.isRunning then
             renderSprite
                 env.globalData.internalData
                 [ imageSmoothing False ]

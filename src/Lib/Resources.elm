@@ -74,6 +74,8 @@ chacaterTexture =
     , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
     , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
+    , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
+    , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
     ]
 
 
@@ -181,6 +183,40 @@ allSpriteSheets =
                     )
                     (playerSize "BithifSheet")
           )
+        , ( "WenderdSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "WenderdSheet")
+          )
+        , ( "Wild WolfSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 74 * toFloat col, 74 * toFloat row )
+                                  , realSize = ( 74, 74 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "Wild WolfSheet")
+          )
         ]
 
 
@@ -189,6 +225,9 @@ playerSize name =
     case name of
         "BruceSheet" ->
             [ 4, 5 ]
+
+        "Wild WolfSheet" ->
+            [ 2, 3 ]
 
         _ ->
             [ 4, 4 ]

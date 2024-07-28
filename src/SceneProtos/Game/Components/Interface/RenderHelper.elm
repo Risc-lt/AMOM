@@ -2,6 +2,7 @@ module SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)
+import Charge exposing (ampereHours)
 import Color
 import Debug exposing (toString)
 import Lib.Base exposing (SceneMsg)
@@ -275,8 +276,34 @@ renderTargetSelection env data basedata name =
             else
                 List.map
                     (\x ->
+                        let
+                            ( mouseX, mouseY ) =
+                                env.globalData.mousePos
+
+                            amplify =
+                                if
+                                    mouseX
+                                        > toFloat (1225 - (x.position - 1) // 3 * 390)
+                                        - 100
+                                        && mouseX
+                                        < toFloat (1225 - (x.position - 1) // 3 * 390)
+                                        + 100
+                                        && mouseY
+                                        > toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
+                                        * 133.3
+                                        + 700
+                                        && mouseY
+                                        < toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
+                                        * 133.3
+                                        + 800
+                                then
+                                    1.2
+
+                                else
+                                    1.0
+                        in
                         renderTextWithColorCenter env.globalData.internalData
-                            60
+                            (60 * amplify)
                             x.name
                             "Comic Sans MS"
                             Color.black
@@ -351,6 +378,44 @@ renderChooseSkill env self name state =
 
             else
                 targets
+
+        skillView =
+            List.map
+                (\x ->
+                    let
+                        ( mouseX, mouseY ) =
+                            env.globalData.mousePos
+
+                        amplify =
+                            if mouseX > 640 && mouseX < 900 && mouseY > toFloat (Tuple.first x * 88 + 728) && mouseY < toFloat (Tuple.first x * 88 + 816) then
+                                1.2
+
+                            else
+                                1.0
+                    in
+                    renderTextWithColorStyle env.globalData.internalData
+                        (40 * amplify)
+                        (.name <| Tuple.second x)
+                        "Comic Sans MS"
+                        Color.black
+                        ""
+                        ( 660
+                        , toFloat (Tuple.first x * 88 + 728)
+                        )
+                )
+                skills
+                ++ List.map
+                    (\x ->
+                        renderTextWithColorCenter env.globalData.internalData
+                            40
+                            (toString <| .cost <| Tuple.second x)
+                            "Comic Sans MS"
+                            Color.black
+                            ( 1380
+                            , toFloat (Tuple.first x * 88 + 748)
+                            )
+                    )
+                    skills
     in
     Canvas.group []
         ([ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
@@ -363,31 +428,7 @@ renderChooseSkill env self name state =
          , renderTextWithColorCenter env.globalData.internalData 60 prompt "Comic Sans MS" Color.black ( 480, 820 )
          , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Comic Sans MS" Color.black ( 480, 930 )
          ]
-            ++ List.map
-                (\x ->
-                    renderTextWithColorStyle env.globalData.internalData
-                        40
-                        (.name <| Tuple.second x)
-                        "Comic Sans MS"
-                        Color.black
-                        ""
-                        ( 660
-                        , toFloat (Tuple.first x * 88 + 728)
-                        )
-                )
-                skills
-            ++ List.map
-                (\x ->
-                    renderTextWithColorCenter env.globalData.internalData
-                        40
-                        (toString <| .cost <| Tuple.second x)
-                        "Comic Sans MS"
-                        Color.black
-                        ( 1380
-                        , toFloat (Tuple.first x * 88 + 748)
-                        )
-                )
-                skills
+            ++ skillView
         )
 
 

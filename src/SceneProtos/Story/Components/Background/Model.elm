@@ -98,7 +98,7 @@ view env data basedata =
         ( data.background.x, data.background.y )
         ( 1920, 1080 )
         data.background.backFigure
-    , 3
+    , 1
     )
 
 

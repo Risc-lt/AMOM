@@ -156,7 +156,7 @@ view env data basedata =
     ( Canvas.group [] <|
         List.map
             (\c ->
-                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 100, 0 ) c.name
+                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 140, 0 ) c.name
             )
             data.characters
     , 2

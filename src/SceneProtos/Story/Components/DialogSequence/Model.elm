@@ -133,12 +133,13 @@ view env data basedata =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1920, 400 ) data.curDialogue.frameName
+
+             {- , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker -}
              ]
                 ++ renderableTexts
             )
-        , 1
+        , 3
         )
 
     else

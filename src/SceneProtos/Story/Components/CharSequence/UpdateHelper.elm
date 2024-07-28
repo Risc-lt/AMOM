@@ -17,14 +17,14 @@ type alias Data =
 changePosition : Float -> Float -> Character -> Character
 changePosition targetX targetY character =
     case character.direction of
-        Left ->
+        Right ->
             if character.x + character.speed > targetX then
                 { character | x = targetX }
 
             else
                 { character | x = character.x + character.speed }
 
-        Right ->
+        Left ->
             if character.x - character.speed < targetX then
                 { character | x = targetX }
 

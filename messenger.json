@@ -12,7 +12,9 @@
         "audio": []
     },
     "scenes": {
-        "Level1": []
+        "Before1": [],
+        "Level1": [],
+        "After1": []
     },
     "sceneprotos": {
         "Game": {

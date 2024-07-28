@@ -495,7 +495,10 @@ handleMove list env evnt data basedata =
                 data.x
 
         runFlag =
-            if newX == 670 || newX == returnX then
+            if longRange && basedata.state == TargetSelection Attack then
+                True
+
+            else if newX == 670 || newX == returnX then
                 False
 
             else

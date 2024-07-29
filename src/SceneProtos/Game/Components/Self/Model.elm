@@ -162,23 +162,58 @@ update env evnt data basedata =
                 else
                     posChanged
 
+            newData2 =
+                List.map
+                    (\x ->
+                        if x.isAttacked then
+                            let
+                                remainNum =
+                                    modBy (300 * 3) env.globalData.sceneStartTime // 300
+
+                                attackFlag =
+                                    if remainNum == 0 then
+                                        not x.isAttacked
+
+                                    else
+                                        x.isAttacked
+                            in
+                            { x | isAttacked = attackFlag }
+
+                        else
+                            x
+                    )
+                    newData
+
             interfaceMsg =
-                [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
+                [ Other ( "Interface", ChangeStatus (ChangeSelfs newData2) ) ]
         in
-        ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+        ( ( newData2, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+
+
+getAttacked : Data -> Int -> Data
+getAttacked data position =
+    List.map
+        (\x ->
+            if x.position == position then
+                { x | isAttacked = True }
+
+            else
+                x
+        )
+        data
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Action (EnemyNormal enemy position) ->
-            handleAttack enemy position env msg data basedata
+            handleAttack enemy position env msg (getAttacked data position) basedata
 
         Action StartCounter ->
             ( ( data, { basedata | state = PlayerAttack False } ), [], env )
 
         Action (EnemySkill enemy skill position) ->
-            handleSkill enemy skill position env msg data basedata
+            handleSkill enemy skill position env msg (getAttacked data position) basedata
 
         Action (PlayerSkill self skill position) ->
             handleSkill
@@ -254,8 +289,8 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
-renderChar : Self -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderChar char basedata env =
+renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderChar char env =
     let
         gd =
             env.globalData
@@ -267,7 +302,15 @@ renderChar char basedata env =
             String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
     in
     if char.hp /= 0 then
-        if char.isRunning then
+        if char.isAttacked then
+            renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( char.x, char.y )
+                ( 100, 100 )
+                (char.name ++ "Sheet.1/1")
+
+        else if char.isRunning then
             renderSprite
                 env.globalData.internalData
                 [ imageSmoothing False ]
@@ -309,7 +352,7 @@ view env data basedata =
     let
         basicView =
             List.map
-                (\x -> renderChar x basedata env)
+                (\x -> renderChar x env)
                 data
 
         regionView =

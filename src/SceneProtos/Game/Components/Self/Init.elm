@@ -42,6 +42,7 @@ type alias Self =
     , buff : List ( Buff, Int )
     , state : State
     , isRunning : Bool
+    , isAttacked : Bool
     }
 
 
@@ -100,6 +101,7 @@ emptyInitData time =
             ]
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bruce"
       , x = 1100
@@ -124,6 +126,7 @@ emptyInitData time =
             ]
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1100
@@ -138,6 +141,7 @@ emptyInitData time =
       , skills = []
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bulingze"
       , x = 1220
@@ -162,6 +166,7 @@ emptyInitData time =
             ]
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bithif"
       , x = 1220
@@ -188,6 +193,7 @@ emptyInitData time =
             ]
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1220
@@ -202,6 +208,7 @@ emptyInitData time =
       , skills = []
       , state = Waiting
       , isRunning = False
+      , isAttacked = False
       }
     ]
 
@@ -223,4 +230,5 @@ defaultSelf =
     , skills = []
     , state = Waiting
     , isRunning = False
+    , isAttacked = False
     }

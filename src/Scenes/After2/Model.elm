@@ -1,4 +1,4 @@
-module Scenes.Before2.Model exposing (..)
+module Scenes.After2.Model exposing (..)
 
 {-|
 
@@ -21,9 +21,9 @@ import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
 import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
-import Scenes.Before2.Background exposing (backgroundInitData)
-import Scenes.Before2.Characters exposing (charInitData)
-import Scenes.Before2.Dialogues exposing (dialogueInitData)
+import Scenes.After2.Background exposing (backgroundInitData)
+import Scenes.After2.Characters exposing (charInitData)
+import Scenes.After2.Dialogues exposing (dialogueInitData)
 
 
 type alias Data =
@@ -51,9 +51,9 @@ initData env msg =
         [ Background.component (BackgroundInit <| backgroundInit)
         , Character.component (CharInit <| charInit)
         , Dialogue.component (DialogueInit <| dialogueInit)
-        , Trigger.component (TriggerInit <| 18)
+        , Trigger.component (TriggerInit <| 10)
         ]
-    , level = "Before2"
+    , level = "After2"
     }
 
 

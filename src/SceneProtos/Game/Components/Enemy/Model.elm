@@ -18,9 +18,9 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import SceneProtos.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
-import SceneProtos.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
+import SceneProtos.Game.Components.Enemy.AttackRec exposing (handleAttack, handleSkill)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, genDefaultEnemy)
+import SceneProtos.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import SceneProtos.Game.Components.Self.Init exposing (defaultSelf)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
@@ -228,36 +228,32 @@ renderEnemy enemy env =
         currentAct x =
             String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
 
-        skillView =
-            if enemy.curHurt /= "" then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x - 50, enemy.y ) ( 100, 100 ) enemy.name ]
-
-            else
-                [ Canvas.empty ]
-
         enemyView =
             if enemy.curHurt /= "" then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x - 50, enemy.y ) ( 100, 100 ) enemy.name ]
+                -- render the picture with 30 degrees rotating
+                Canvas.group []
+                    [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1")
+                    ]
 
             else if enemy.isRunning then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3) ]
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
 
             else
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2) ]
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
     in
     if enemy.hp == 0 then
         Canvas.empty
 
     else
         Canvas.group []
-            (Canvas.shapes
+            [ Canvas.shapes
                 [ fill Color.red ]
                 [ rect env.globalData.internalData
                     ( enemy.x, enemy.y )
                     ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
                 ]
-                :: enemyView
-            )
+            , enemyView
+            ]
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

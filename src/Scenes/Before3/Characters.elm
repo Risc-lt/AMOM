@@ -14,6 +14,12 @@ characters =
     , genCharacter "Bruce" Normal Up 880 -650
     , genCharacter "Bithif" Normal Up 900 -530
     , genCharacter "Cavalry" Normal Left 890 -400
+    , genCharacter "Swordsman1" Battle Up 890 1080
+    , genCharacter "Swordsman2" Battle Up 890 1210
+    , genCharacter "Magician1" Battle Up 890 1340
+    , genCharacter "Magician2" Battle Up 890 1470
+    , genCharacter "Therapist1" Battle Up 890 1600
+    , genCharacter "Therapist2" Battle Up 890 1730
     ]
 
 
@@ -94,6 +100,58 @@ gather =
     ]
 
 
+turn : List Movement
+turn =
+    let
+        wenderdMove =
+            None Right
+
+        bulingzeMove =
+            None Left
+
+        bruceMove =
+            None Right
+
+        bithifMove =
+            None Left
+
+        cavalryMove =
+            None Right
+    in
+    [ genMove "Wenderd" Normal wenderdMove 4
+    , genMove "Bulingze" Normal bulingzeMove 4
+    , genMove "Bruce" Normal bruceMove 4
+    , genMove "Bithif" Normal bithifMove 4
+    , genMove "Cavalry" Normal cavalryMove 4
+    ]
+
+
+check : List Movement
+check =
+    let
+        wenderdMove =
+            Follow ( 830, -480 ) 8
+
+        bulingzeMove =
+            Follow ( 960, -490 ) 8
+
+        bruceMove =
+            Follow ( 800, -610 ) 8
+
+        bithifMove =
+            Follow ( 1050, -600 ) 8
+
+        cavalryMove =
+            Follow ( 910, -610 ) 8
+    in
+    [ genMove "Wenderd" Normal wenderdMove 6
+    , genMove "Bulingze" Normal bulingzeMove 6
+    , genMove "Bruce" Normal bruceMove 6
+    , genMove "Bithif" Normal bithifMove 6
+    , genMove "Cavalry" Normal cavalryMove 6
+    ]
+
+
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -113,4 +171,6 @@ charInitData =
         begin
             ++ followDown
             ++ gather
+            ++ turn
+            ++ check
     }

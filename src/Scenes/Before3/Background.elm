@@ -9,7 +9,12 @@ import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, 
 
 followDown : Camera
 followDown =
-    genCamera 0 -1500 5 2
+    genCamera 0 -1000 5 2
+
+
+check : Camera
+check =
+    genCamera 0 -2000 8 6
 
 
 genCamera : Float -> Float -> Float -> Int -> Camera
@@ -35,5 +40,6 @@ backgroundInitData =
     , curMove = defaultCamera
     , remainMove =
         [ followDown
+        , check
         ]
     }

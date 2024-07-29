@@ -50,7 +50,7 @@ allTexture =
          , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
          , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
-         , ( "instruction", "assets/character/background/instruction.jpg" )
+         , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
          , ( "button_1", "assets/character/chartlet/button_1.png" )
          , ( "button_2", "assets/character/chartlet/button_2.png" )

@@ -17,7 +17,6 @@ import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.Begin.Model as Begin
 import Scenes.Home.Model as Home
-import Scenes.Instruction.Model as Instruction
 import Scenes.Level1.Model as Level1
 
 
@@ -32,5 +31,4 @@ allScenes =
         [ ( "Level1", Level1.scene )
         , ( "Begin", Begin.scene )
         , ( "Home", Home.scene )
-        , ( "Instruction", Instruction.scene )
         ]

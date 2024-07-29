@@ -62,7 +62,7 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 1."
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_2"
           , x = 1920
           , y = 300
           , w = 500
@@ -71,7 +71,7 @@ initData =
           , next = "Level1"
           , text = "This is the dialogue after Battle 1."
           }
-        , { name = "dialogue_2"
+        , { name = "dialogue_3"
           , x = 2520
           , y = 300
           , w = 500
@@ -89,7 +89,7 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 2."
           }
-        , { name = "dialogue_2"
+        , { name = "dialogue_4"
           , x = 3720
           , y = 300
           , w = 500

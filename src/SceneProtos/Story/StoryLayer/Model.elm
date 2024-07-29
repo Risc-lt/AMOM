@@ -91,8 +91,7 @@ view : LayerView SceneCommonData UserData Data
 view env data =
     Canvas.group
         []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "dialogue_3"
-        , viewComponents env data.components
+        [ viewComponents env data.components
         ]
 
 

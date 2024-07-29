@@ -9,11 +9,11 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 
 characters : List Character
 characters =
-    [ genCharacter "Wenderd" Battle Up 1060 1080
-    , genCharacter "Bulingze" Battle Up 1260 1280
-    , genCharacter "Bruce" Battle Up 1200 1080
-    , genCharacter "Bithif" Battle Up 1060 1280
-    , genCharacter "Cavalry" Battle Left -300 400
+    [ genCharacter "Wenderd" Normal Up 890 -140
+    , genCharacter "Bulingze" Normal Up 890 -270
+    , genCharacter "Bruce" Normal Up 890 -650
+    , genCharacter "Bithif" Normal Up 890 -530
+    , genCharacter "Cavalry" Normal Left 890 -400
     ]
 
 
@@ -32,21 +32,25 @@ begin : List Movement
 begin =
     let
         wenderdMove =
-            Real ( 1060, 760 ) 8
+            Real ( 890, 520 ) 5
 
         bulingzeMove =
-            Real ( 1260, 900 ) 8
+            Real ( 890, 390 ) 5
 
         bruceMove =
-            Real ( 1200, 760 ) 8
+            Real ( 890, 0 ) 5
 
         bithifMove =
-            Real ( 1060, 900 ) 8
+            Real ( 890, 130 ) 5
+
+        cavalryMove =
+            Real ( 890, 260 ) 5
     in
-    [ genMove "Wenderd" Battle wenderdMove 1
-    , genMove "Bulingze" Battle bulingzeMove 1
-    , genMove "Bruce" Battle bruceMove 1
-    , genMove "Bithif" Battle bithifMove 1
+    [ genMove "Wenderd" Normal wenderdMove 1
+    , genMove "Bulingze" Normal bulingzeMove 1
+    , genMove "Bruce" Normal bruceMove 1
+    , genMove "Bithif" Normal bithifMove 1
+    , genMove "Cavalry" Normal cavalryMove 1
     ]
 
 

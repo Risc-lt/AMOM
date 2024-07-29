@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Enemy.Model exposing (component)
 
 import Canvas
 import Canvas.Settings exposing (fill)
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -71,8 +72,30 @@ update env evnt data basedata =
                             x
                     )
                     data
+
+            newData2 =
+                List.map
+                    (\x ->
+                        if x.curHurt /= "" then
+                            let
+                                remainNum =
+                                    modBy (300 * 17) env.globalData.sceneStartTime // 300
+
+                                newName =
+                                    if remainNum == 0 then
+                                        ""
+
+                                    else
+                                        x.curHurt
+                            in
+                            { x | curHurt = newName }
+
+                        else
+                            x
+                    )
+                    newData
         in
-        ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
+        ( ( newData2, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData2) ) :: msg, ( newEnv, flag ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -85,7 +108,19 @@ updaterec env msg data basedata =
             ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
-            handleSkill self skill position env msg data basedata
+            let
+                newData =
+                    List.map
+                        (\x ->
+                            if x.position == position then
+                                { x | curHurt = skill.name }
+
+                            else
+                                x
+                        )
+                        data
+            in
+            handleSkill self skill position env msg newData basedata
 
         Action (EnemySkill enemy skill position) ->
             handleSkill
@@ -182,19 +217,45 @@ updaterec env msg data basedata =
 
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
+    let
+        gd =
+            env.globalData
+
+        rate =
+            300
+
+        currentAct x =
+            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
+
+        skillView =
+            if enemy.curHurt /= "" then
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.curHurt ++ "." ++ currentAct 17) ]
+
+            else
+                [ Canvas.empty ]
+
+        enemyView =
+            if enemy.isRunning then
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
+
+            else
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
+    in
     if enemy.hp == 0 then
         Canvas.empty
 
     else
         Canvas.group []
-            [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) enemy.name
-            , Canvas.shapes
+            ([ enemyView
+             , Canvas.shapes
                 [ fill Color.red ]
                 [ rect env.globalData.internalData
                     ( enemy.x, enemy.y )
                     ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
                 ]
-            ]
+             ]
+                ++ skillView
+            )
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

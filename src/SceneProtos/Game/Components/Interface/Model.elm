@@ -15,7 +15,7 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Messenger.Scene.Scene exposing (SceneOutputMsg)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
@@ -47,8 +47,12 @@ init env initMsg =
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
-        Tick _ ->
-            ( ( data, basedata ), [], ( env, False ) )
+        KeyDown key ->
+            if key == 27 then
+                ( ( data, basedata ), [ Parent (SOMMsg (SOMChangeScene Nothing "Home")) ], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

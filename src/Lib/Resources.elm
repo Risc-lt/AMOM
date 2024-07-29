@@ -77,6 +77,10 @@ chacaterTexture =
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
     , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
+    , ( "EnemySheet_1", "assets/character/sprite_sheet/EnemySheet_1.png")
+    , ( "EnemySheet_2", "assets/character/sprite_sheet/EnemySheet_2.png")
+    , ( "EnemySheet_3", "assets/character/sprite_sheet/EnemySheet_3.png")
+    , ( "SwordwomanSheet", "assets/character/sprite_sheet/SwordwomanSheet.png")
     ]
 
 

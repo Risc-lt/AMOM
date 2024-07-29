@@ -16,6 +16,7 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.After1.Model as After1
+import Scenes.After2.Model as After2
 import Scenes.Before1.Model as Before1
 import Scenes.Before2.Model as Before2
 import Scenes.Begin.Model as Begin
@@ -36,6 +37,7 @@ allScenes =
         , ( "Level1", Level1.scene )
         , ( "After1", After1.scene )
         , ( "Before2", Before2.scene )
+        , ( "After2", After2.scene )
         , ( "Begin", Begin.scene )
         , ( "Home", Home.scene )
         , ( "Instruction", Instruction.scene )

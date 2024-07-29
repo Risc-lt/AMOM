@@ -17,7 +17,7 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
-import Messenger.Render.Shape exposing (rect)
+import Messenger.Render.Shape exposing (circle, rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithStyle)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
@@ -55,14 +55,14 @@ update env msg data =
                 , env
                 )
 
-            else if x > 1800 && x < 1900 && y > 1000 && y < 1100 then
+            else if x > 1450 && x < 1550 && y > 880 && y < 980 then
                 if data.curScene < 9 then
                     ( { data | direction = Right }, [], env )
 
                 else
                     ( data, [], env )
 
-            else if x > 0 && x < 100 && y > 1000 && y < 1100 then
+            else if x > 400 && x < 500 && y > 880 && y < 980 then
                 if data.curScene > 1 then
                     ( { data | direction = Left }, [], env )
 
@@ -102,10 +102,10 @@ view env data =
             [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
             , Canvas.shapes
                 [ fill (Color.rgba 0 0 0 0.7) ]
-                [ rect env.globalData.internalData ( 1800, 1000 ) ( 100, 100 ) ]
+                [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
             , Canvas.shapes
                 [ fill (Color.rgba 0 0 0 0.7) ]
-                [ rect env.globalData.internalData ( 0, 1000 ) ( 100, 100 ) ]
+                [ circle env.globalData.internalData ( 450, 930 ) 50 ]
             ]
 
         sceneView =
@@ -129,7 +129,12 @@ view env data =
                         Nothing ->
                             ""
             in
-            renderTextWithColorCenter env.globalData.internalData 40 content "Arial" Color.black ( 970, 900 )
+            Canvas.group []
+                [ Canvas.shapes
+                    [ fill (Color.rgba 0 0 0 0.7) ]
+                    [ rect env.globalData.internalData ( 500, 850 ) ( 950, 150 ) ]
+                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 900 )
+                ]
     in
     Canvas.group []
         (basicView ++ sceneView ++ [ textView ])

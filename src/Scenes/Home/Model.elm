@@ -14,6 +14,7 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (UserEvent(..))
+import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Render.Shape exposing (rect)
@@ -36,7 +37,23 @@ update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
             if x > 850 && x < 1060 && y > 430 && y < 580 then
-                ( data, [ SOMChangeScene Nothing (getNext data.curScene data.sceneQueue) ], env )
+                ( data
+                , [ SOMLoadGC
+                        (genGC
+                            (InitOption
+                                (genTransition
+                                    ( fadeOutBlack, Duration.seconds 2 )
+                                    ( fadeInBlack, Duration.seconds 2 )
+                                    Nothing
+                                )
+                                ( getNext data.curScene data.sceneQueue, Nothing )
+                                True
+                            )
+                            Nothing
+                        )
+                  ]
+                , env
+                )
 
             else if x > 1800 && x < 1900 && y > 1000 && y < 1100 then
                 if data.curScene < 9 then

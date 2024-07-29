@@ -35,7 +35,7 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
-            if x > 850 && x < 1060 && y > 430 && y < 580 then
+            if x > 720 && x < 1220 && y > 300 && y < 700 then
                 ( data, [ SOMChangeScene Nothing (getNext data.curScene data.sceneQueue) ], env )
 
             else if x > 1800 && x < 1900 && y > 1000 && y < 1100 then

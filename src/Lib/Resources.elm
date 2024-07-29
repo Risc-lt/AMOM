@@ -44,12 +44,13 @@ allTexture =
     Dict.fromList
         ([ ( "background", "assets/character/background/battle_background.jpg" )
          , ( "battleframe", "assets/character/chartlet/battleframe.png" )
-         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
+         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.jpg" )
          , ( "battle_background", "assets/character/background/battle_background.jpg" )
          , ( "Fire Ball", "assets/character/sprite_sheet/Fire Ball.png" )
          , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
          , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
+         , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "instruction", "assets/character/background/instruction.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
          , ( "button_1", "assets/character/chartlet/button_1.png" )
@@ -77,10 +78,10 @@ chacaterTexture =
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
     , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
-    , ( "EnemySheet_1", "assets/character/sprite_sheet/EnemySheet_1.png")
-    , ( "EnemySheet_2", "assets/character/sprite_sheet/EnemySheet_2.png")
-    , ( "EnemySheet_3", "assets/character/sprite_sheet/EnemySheet_3.png")
-    , ( "SwordwomanSheet", "assets/character/sprite_sheet/SwordwomanSheet.png")
+    , ( "EnemySheet_1", "assets/character/sprite_sheet/EnemySheet_1.png" )
+    , ( "EnemySheet_2", "assets/character/sprite_sheet/EnemySheet_2.png" )
+    , ( "EnemySheet_3", "assets/character/sprite_sheet/EnemySheet_3.png" )
+    , ( "SwordwomanSheet", "assets/character/sprite_sheet/SwordwomanSheet.png" )
     ]
 
 

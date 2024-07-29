@@ -1,4 +1,4 @@
-module Scenes.Before2.Background exposing (..)
+module Scenes.Before3.Background exposing (..)
 
 {-
    background data
@@ -34,8 +34,8 @@ backgroundInitData =
         { backFigure = "dialogue_1"
         , x = -639
         , y = -300
-        , w = 2559
-        , h = 1380
+        , w = 1920
+        , h = 0
         }
     , curMove = defaultCamera
     , remainMove =

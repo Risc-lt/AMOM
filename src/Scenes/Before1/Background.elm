@@ -39,6 +39,8 @@ backgroundInitData =
         { backFigure = "dialogue_1"
         , x = 0
         , y = -300
+        , w = 2559
+        , h = 1380
         }
     , curMove = defaultCamera
     , remainMove =

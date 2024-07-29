@@ -96,7 +96,7 @@ view env data basedata =
         env.globalData.internalData
         []
         ( data.background.x, data.background.y )
-        ( 2559, 1380 )
+        ( data.background.w, data.background.h )
         data.background.backFigure
     , 1
     )

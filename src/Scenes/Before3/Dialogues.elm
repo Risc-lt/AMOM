@@ -72,7 +72,7 @@ query =
         content =
             [ "Wenderd:"
             , "People from the Mainland Magic Association just interrupt"
-            , "others casually?" 
+            , "others casually?"
             ]
     in
     genDialogue "head_wenderd" content ( 16, 1 )
@@ -100,6 +100,31 @@ complain =
     in
     genDialogue "head_bulingze" content ( 16, 3 )
 
+
+confused : Dialogue
+confused =
+    let
+        content =
+            [ "Bruce:"
+            , "Wait, this is the territory of the Magic Towers anyway."
+            , "Why would these people chase us here?"
+            ]
+    in
+    genDialogue "head_bruce" content ( 16, 4 )
+
+
+remind : Dialogue
+remind =
+    let
+        content =
+            [ "Wenderd:"
+            , "Anyway, get ready for the battle."
+            , "They have plenty of people, so be careful."
+            ]
+    in
+    genDialogue "head_wenderd" content ( 16, 5 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -113,5 +138,15 @@ dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        []
+        [ discribe
+        , thank
+        , ask
+        , explain
+        , interrupt
+        , query
+        , decline
+        , complain
+        , confused
+        , remind
+        ]
     }

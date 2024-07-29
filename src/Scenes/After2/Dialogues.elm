@@ -241,6 +241,24 @@ dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ 
+        [ amaze
+        , affirm
+        , groan
+        , surprise
+        , complain
+        , ask
+        , silence1
+        , confused
+        , hungry
+        , prevent
+        , apologize
+        , comfort
+        , sad
+        , persuade
+        , hesitate
+        , repeat
+        , astounded
+        , silence2
+        , end
         ]
     }

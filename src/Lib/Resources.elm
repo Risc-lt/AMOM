@@ -83,6 +83,7 @@ chacaterTexture =
     , ( "SwordwomanSheet", "assets/character/sprite_sheet/SwordwomanSheet.png")
     , ( "BossSheet", "assets/character/sprite_sheet/BossSheet.png")
     , ( "head_enemy", "assets/character/role/head_enemy.jpg")
+    , ( "head_boss", "assets/character/role/head_boss.jpg")
     ]
 
 

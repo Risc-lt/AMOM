@@ -27,6 +27,5 @@ backgroundInitData =
         }
     , curMove = defaultCamera
     , remainMove =
-        [ 
-        ]
+        []
     }

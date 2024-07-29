@@ -20,6 +20,5 @@ dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ 
-        ]
+        []
     }

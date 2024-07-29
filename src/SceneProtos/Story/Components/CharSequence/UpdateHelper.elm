@@ -106,7 +106,7 @@ checkDestination ( movement, character ) =
     case movement.movekind of
         Real ( targetX, targetY ) _ ->
             if character.x == targetX && character.y == targetY then
-                ( { movement | isMoving = False }, character )
+                ( { movement | isMoving = False }, { character | isMoving = False } )
 
             else
                 ( movement, character )

@@ -81,6 +81,8 @@ chacaterTexture =
     , ( "EnemySheet_2", "assets/character/sprite_sheet/EnemySheet_2.png")
     , ( "EnemySheet_3", "assets/character/sprite_sheet/EnemySheet_3.png")
     , ( "SwordwomanSheet", "assets/character/sprite_sheet/SwordwomanSheet.png")
+    , ( "BossSheet", "assets/character/sprite_sheet/BossSheet.png")
+    , ( "head_enemy", "assets/character/role/head_enemy.jpg")
     ]
 
 

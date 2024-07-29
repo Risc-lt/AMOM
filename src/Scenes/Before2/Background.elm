@@ -7,6 +7,11 @@ module Scenes.Before2.Background exposing (..)
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
 
 
+followRight : Camera
+followRight =
+    genCamera 0 -300 8 5
+
+
 genCamera : Float -> Float -> Float -> Int -> Camera
 genCamera targetX targetY speed id =
     { defaultCamera
@@ -27,5 +32,6 @@ backgroundInitData =
         }
     , curMove = defaultCamera
     , remainMove =
-        []
+        [ followRight
+        ]
     }

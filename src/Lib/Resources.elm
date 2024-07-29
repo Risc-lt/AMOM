@@ -63,6 +63,7 @@ allTexture =
         , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
         , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
         , ( "dialogue_3", "assets/character/background/dialogue_3_1.jpg" )
+        , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
         ]
 
 

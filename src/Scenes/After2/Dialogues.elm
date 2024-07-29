@@ -74,7 +74,59 @@ sad =
     genDialogue "head_bithif" content ( 1, 6 )
 
 
+ask : Dialogue
+ask =
+    let
+        content =
+            [ "Bulingze:"
+            , "Is he dead now?"
+            ]
+    in
+    genDialogue "head_bulingze" content ( 3, 1 )
 
+
+silence : Dialogue
+silence =
+    let
+        content =
+            [ "Wenderd:"
+            , "..."
+            ]
+    in
+    genDialogue "head_wenderd" content ( 3, 2 )
+
+
+confused : Dialogue
+confused =
+    let
+        content =
+            [ "Bulingze:"
+            , "Wenderd?"
+            ]
+    in
+    genDialogue "head_bulingze" content ( 3, 3 )
+
+
+hungry : Dialogue
+hungry =
+    let
+        content =
+            [ "Wenderd:"
+            , "Blood... Smells good..."
+            ]
+    in
+    genDialogue "head_wenderd" content ( 3, 4 )
+
+
+prevent : Dialogue
+prevent =
+    let
+        content =
+            [ "Bruce:"
+            , "Don't! Wenderd!"
+            ]
+    in
+    genDialogue "head_bruce" content ( 3, 5 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

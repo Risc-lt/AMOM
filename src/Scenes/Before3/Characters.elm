@@ -185,6 +185,9 @@ enemyAppear =
 arrange1 : List Movement
 arrange1 =
     let
+        move1 =
+            None Right
+
         move2 =
             Real ( 990, 420 ) 8
 
@@ -200,7 +203,8 @@ arrange1 =
         move6 =
             Real ( 890, 840 ) 8
     in
-    [ genMove "Swordsman2" Battle move2 8
+    [ genMove "Swordsman1" Battle move1 8
+    , genMove "Swordsman2" Battle move2 8
     , genMove "Magician1" Battle move3 8
     , genMove "Magician2" Battle move4 8
     , genMove "Therapist1" Battle move5 8
@@ -234,6 +238,58 @@ arrange2 =
     ]
 
 
+arrange3 : List Movement
+arrange3 =
+    let
+        move2 =
+            Real ( 1060, 330 ) 8
+
+        move3 =
+            Real ( 730, 450 ) 8
+
+        move4 =
+            Real ( 890, 550 ) 8
+
+        move5 =
+            Real ( 990, 520 ) 8
+
+        move6 =
+            Real ( 890, 680 ) 8
+    in
+    [ genMove "Swordsman2" Battle move2 10
+    , genMove "Magician1" Battle move3 10
+    , genMove "Magician2" Battle move4 10
+    , genMove "Therapist1" Battle move5 10
+    , genMove "Therapist2" Battle move6 10
+    ]
+
+
+arrange4 : List Movement
+arrange4 =
+    let
+        move2 =
+            None Left
+
+        move3 =
+            None Right
+
+        move4 =
+            None Left
+
+        move5 =
+            Real ( 990, 490 ) 8
+
+        move6 =
+            Real ( 760, 640 ) 8
+    in
+    [ genMove "Swordsman2" Battle move2 11
+    , genMove "Magician1" Battle move3 11
+    , genMove "Magician2" Battle move4 11
+    , genMove "Therapist1" Battle move5 11
+    , genMove "Therapist2" Battle move6 11
+    ]
+
+
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -258,4 +314,6 @@ charInitData =
             ++ enemyAppear
             ++ arrange1
             ++ arrange2
+            ++ arrange3
+            ++ arrange4
     }

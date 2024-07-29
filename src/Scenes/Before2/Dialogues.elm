@@ -48,7 +48,7 @@ decline =
             , "It's okay, I can handle it. This is our biggest deal yet."
             ]
     in
-    genDialogue "head_wenderd" content ( 3, 4 ) 
+    genDialogue "head_wenderd" content ( 3, 4 )
 
 
 remind : Dialogue
@@ -71,7 +71,42 @@ charge =
             , "Let's go!"
             ]
     in
-    genDialogue "head_wenderd" content ( 7, 1 ) 
+    genDialogue "head_wenderd" content ( 7, 1 )
+
+
+see : Dialogue
+see =
+    let
+        content =
+            [ "Concert:"
+            , "Look guys, let me guess what you're looking for."
+            , "Ah..."
+            ]
+    in
+    genDialogue "head_cavalry" content ( 17, 1 )
+
+
+guess : Dialogue
+guess =
+    let
+        content =
+            [ "Concert:"
+            , "You are mercenaries, right?"
+            , "It seems that I am your target tonight."
+            ]
+    in
+    genDialogue "head_cavalry" content ( 17, 2 )
+
+
+care : Dialogue
+care =
+    let
+        content =
+            [ "Wenderd:"
+            , "Be careful, this guy looks tough."
+            ]
+    in
+    genDialogue "head_wenderd" content ( 17, 3 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
@@ -87,5 +122,14 @@ dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        []
+        [ feel
+        , ask
+        , agree
+        , decline
+        , remind
+        , charge
+        , see
+        , guess
+        , care
+        ]
     }

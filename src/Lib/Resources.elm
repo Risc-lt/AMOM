@@ -73,6 +73,7 @@ chacaterTexture =
     , ( "head_bruce", "assets/character/role/role_4.jpg" )
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
+    , ( "head_cavalry", "assets/character/role/role_5.jpg" )
     , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
     , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )

@@ -79,7 +79,7 @@ update env evnt data basedata =
                         if x.curHurt /= "" then
                             let
                                 remainNum =
-                                    modBy (300 * 17) env.globalData.sceneStartTime // 300
+                                    modBy (300 * 3) env.globalData.sceneStartTime // 300
 
                                 newName =
                                     if remainNum == 0 then
@@ -98,29 +98,30 @@ update env evnt data basedata =
         ( ( newData2, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData2) ) :: msg, ( newEnv, flag ) )
 
 
+addCurHurt : Data -> Int -> Data
+addCurHurt data position =
+    List.map
+        (\x ->
+            if x.position == position then
+                { x | curHurt = "Hurted" }
+
+            else
+                x
+        )
+        data
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Action (PlayerNormal self position) ->
-            handleAttack self position env msg data basedata
+            handleAttack self position env msg (addCurHurt data position) basedata
 
         Action StartCounter ->
             ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
-            let
-                newData =
-                    List.map
-                        (\x ->
-                            if x.position == position then
-                                { x | curHurt = skill.name }
-
-                            else
-                                x
-                        )
-                        data
-            in
-            handleSkill self skill position env msg newData basedata
+            handleSkill self skill position env msg (addCurHurt data position) basedata
 
         Action (EnemySkill enemy skill position) ->
             handleSkill
@@ -229,32 +230,33 @@ renderEnemy enemy env =
 
         skillView =
             if enemy.curHurt /= "" then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.curHurt ++ "." ++ currentAct 17) ]
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x - 50, enemy.y ) ( 100, 100 ) enemy.name ]
 
             else
                 [ Canvas.empty ]
 
         enemyView =
-            if enemy.isRunning then
-                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
+            if enemy.curHurt /= "" then
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x - 50, enemy.y ) ( 100, 100 ) enemy.name ]
+
+            else if enemy.isRunning then
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3) ]
 
             else
-                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2) ]
     in
     if enemy.hp == 0 then
         Canvas.empty
 
     else
         Canvas.group []
-            ([ enemyView
-             , Canvas.shapes
+            (Canvas.shapes
                 [ fill Color.red ]
                 [ rect env.globalData.internalData
                     ( enemy.x, enemy.y )
                     ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
                 ]
-             ]
-                ++ skillView
+                :: enemyView
             )
 
 

@@ -17,8 +17,8 @@ characters =
     , genCharacter "Swordsman1" Battle Up 890 1080
     , genCharacter "Swordsman2" Battle Up 890 1210
     , genCharacter "Magician1" Battle Up 890 1340
-    , genCharacter "Magician2" Battle Up 890 1470
-    , genCharacter "Therapist1" Battle Up 890 1600
+    , genCharacter "Magician2" Battle Up 890 1600
+    , genCharacter "Therapist1" Battle Up 890 1470
     , genCharacter "Therapist2" Battle Up 890 1730
     ]
 
@@ -152,6 +152,36 @@ check =
     ]
 
 
+enemyAppear : List Movement
+enemyAppear =
+    let
+        move1 =
+            Real ( 890, 290 ) 8
+
+        move2 =
+            Real ( 890, 420 ) 8
+
+        move3 =
+            Real ( 890, 550 ) 8
+
+        move4 =
+            Real ( 890, 810 ) 8
+
+        move5 =
+            Real ( 890, 680 ) 8
+
+        move6 =
+            Real ( 890, 940 ) 8
+    in
+    [ genMove "Swordsman1" Battle move1 7
+    , genMove "Swordsman2" Battle move2 7
+    , genMove "Magician1" Battle move3 7
+    , genMove "Magician2" Battle move4 7
+    , genMove "Therapist1" Battle move5 7
+    , genMove "Therapist2" Battle move6 7
+    ]
+
+
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -173,4 +203,5 @@ charInitData =
             ++ gather
             ++ turn
             ++ check
+            ++ enemyAppear
     }

@@ -244,6 +244,74 @@ allSpriteSheets =
                     )
                     (playerSize "Wild WolfSheet")
           )
+        , ( "ConcertSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 70 * toFloat col, 70 * toFloat row )
+                                  , realSize = ( 70, 70 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "ConcertSheet")
+          )
+        , ( "SwordsmanSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "SwordsmanSheet")
+          )
+        , ( "MagicianSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "MagicianSheet")
+          )
+        , ( "TherapistSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "TherapistSheet")
+          )
         ]
 
 

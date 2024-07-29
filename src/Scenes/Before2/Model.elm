@@ -53,7 +53,7 @@ initData env msg =
         , Dialogue.component (DialogueInit <| dialogueInit)
         , Trigger.component (TriggerInit <| 14)
         ]
-    , level = "Before1"
+    , level = "Before2"
     }
 
 

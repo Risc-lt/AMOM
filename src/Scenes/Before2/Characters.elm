@@ -125,21 +125,57 @@ charge1 : List Movement
 charge1 =
     let
         wenderdMove =
-            Real ( 1060, 760 ) 8
+            Real ( 1259, 760 ) 8
 
         bulingzeMove =
-            Real ( 1260, 900 ) 8
+            Real ( 1599, 760 ) 8
 
         bruceMove =
-            Real ( 1200, 760 ) 8
-
-        bithifMove =
-            Real ( 1060, 900 ) 8
+            Real ( 1399, 760 ) 8
     in
     [ genMove "Wenderd" Battle wenderdMove 8
     , genMove "Bulingze" Battle bulingzeMove 8
     , genMove "Bruce" Battle bruceMove 8
-    , genMove "Bithif" Battle bithifMove 8
+    ]
+
+
+charge2 : List Movement
+charge2 =
+    let
+        wenderdMove =
+            Real ( 989, 760 ) 8
+
+        bulingzeMove =
+            Real ( 1329, 760 ) 8
+
+        bruceMove =
+            Real ( 1129, 760 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 9
+    , genMove "Bulingze" Battle bulingzeMove 9
+    , genMove "Bruce" Battle bruceMove 9
+    ]
+
+
+charge3 : List Movement
+charge3 =
+    let
+        wenderdMove =
+            Real ( 859, 760 ) 8
+
+        bulingzeMove =
+            Real ( 1189, 760 ) 8
+
+        bruceMove =
+            Real ( 989, 760 ) 8
+
+        bithifMove =
+            Real ( 1399, 760 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 10
+    , genMove "Bulingze" Battle bulingzeMove 10
+    , genMove "Bruce" Battle bruceMove 10
+    , genMove "Bithif" Battle bithifMove 10
     ]
 
 
@@ -164,4 +200,7 @@ charInitData =
             ++ turnLeft
             ++ followRight
             ++ concertLeft
+            ++ charge1
+            ++ charge2
+            ++ charge3
     }

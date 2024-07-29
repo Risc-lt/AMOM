@@ -179,6 +179,72 @@ charge3 =
     ]
 
 
+charge4 : List Movement
+charge4 =
+    let
+        wenderdMove =
+            Real ( 859, 400 ) 8
+
+        bulingzeMove =
+            Real ( 989, 600 ) 8
+
+        bruceMove =
+            Real ( 859, 530 ) 8
+
+        bithifMove =
+            Real ( 1039, 760 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 11
+    , genMove "Bulingze" Battle bulingzeMove 11
+    , genMove "Bruce" Battle bruceMove 11
+    , genMove "Bithif" Battle bithifMove 11
+    ]
+
+
+charge5 : List Movement
+charge5 =
+    let
+        wenderdMove =
+            Real ( 729, 400 ) 8
+
+        bulingzeMove =
+            Real ( 989, 470 ) 8
+
+        bruceMove =
+            Real ( 859, 400 ) 8
+
+        bithifMove =
+            Real ( 909, 760 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 12
+    , genMove "Bulingze" Battle bulingzeMove 12
+    , genMove "Bruce" Battle bruceMove 12
+    , genMove "Bithif" Battle bithifMove 12
+    ]
+
+
+charge6 : List Movement
+charge6 =
+    let
+        wenderdMove =
+            Real ( 659, 400 ) 8
+
+        bulingzeMove =
+            Real ( 919, 470 ) 8
+
+        bruceMove =
+            Real ( 859, 330 ) 8
+
+        bithifMove =
+            Real ( 839, 760 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 13
+    , genMove "Bulingze" Battle bulingzeMove 13
+    , genMove "Bruce" Battle bruceMove 13
+    , genMove "Bithif" Battle bithifMove 13
+    ]
+
+
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -203,4 +269,7 @@ charInitData =
             ++ charge1
             ++ charge2
             ++ charge3
+            ++ charge4
+            ++ charge5
+            ++ charge6
     }

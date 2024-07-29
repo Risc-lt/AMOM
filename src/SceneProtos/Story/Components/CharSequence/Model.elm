@@ -158,8 +158,11 @@ renderChar char basedata env =
         gd =
             env.globalData
 
-        rate =
-            300
+        stillRate =
+            400
+
+        moveRate =
+            floor (1000 / char.speed)
 
         name =
             if
@@ -171,16 +174,31 @@ renderChar char basedata env =
             else
                 char.name
 
-        currentAct x =
-            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
+        x =
+            if name == "Wild Wolf" then
+                if char.isMoving then
+                    3
+
+                else
+                    2
+
+            else
+                4
+
+        currentAct =
+            if char.isMoving then
+                String.fromInt (modBy (moveRate * x) gd.sceneStartTime // moveRate)
+
+            else
+                String.fromInt (modBy (stillRate * x) gd.sceneStartTime // stillRate)
     in
     if char.isMoving then
         renderSprite
             env.globalData.internalData
             [ imageSmoothing False ]
             ( char.x, char.y )
-            ( 100, 100 )
-            (name ++ "Sheet.1/" ++ currentAct 4)
+            ( 140, 140 )
+            (name ++ "Sheet.1/" ++ currentAct)
 
     else
         Canvas.group []
@@ -188,8 +206,8 @@ renderChar char basedata env =
                 env.globalData.internalData
                 [ imageSmoothing False ]
                 ( char.x, char.y )
-                ( 100, 100 )
-                (char.name ++ "Sheet.0/" ++ currentAct 4)
+                ( 140, 140 )
+                (name ++ "Sheet.0/" ++ currentAct)
             ]
 
 

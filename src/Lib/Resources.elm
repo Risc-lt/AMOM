@@ -79,13 +79,13 @@ chacaterTexture =
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
     , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
-    , ( "SwordsmanSheet", "assets/character/sprite_sheet/SwordsmanSheet.png")
-    , ( "MagicianSheet", "assets/character/sprite_sheet/MagicianSheet.png")
-    , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png")
-    , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png")
-    , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png")
-    , ( "head_magicorg", "assets/character/role/head_magicorg.jpg")
-    , ( "head_concert", "assets/character/role/head_concert.jpg")
+    , ( "SwordsmanSheet", "assets/character/sprite_sheet/SwordsmanSheet.png" )
+    , ( "MagicianSheet", "assets/character/sprite_sheet/MagicianSheet.png" )
+    , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png" )
+    , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png" )
+    , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png" )
+    , ( "head_magicorg", "assets/character/role/head_magicorg.jpg" )
+    , ( "head_concert", "assets/character/role/head_concert.jpg" )
     ]
 
 

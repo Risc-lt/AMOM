@@ -83,7 +83,7 @@ see =
             , "Ah..."
             ]
     in
-    genDialogue "head_cavalry" content ( 17, 1 )
+    genDialogue "head_concert" content ( 17, 1 )
 
 
 guess : Dialogue
@@ -95,7 +95,7 @@ guess =
             , "It seems that I am your target tonight."
             ]
     in
-    genDialogue "head_cavalry" content ( 17, 2 )
+    genDialogue "head_concert" content ( 17, 2 )
 
 
 care : Dialogue

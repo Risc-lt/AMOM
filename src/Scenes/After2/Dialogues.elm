@@ -37,7 +37,7 @@ groan =
             , "Hmm... so sad..."
             ]
     in
-    genDialogue "head_cavalry" content ( 1, 3 )
+    genDialogue "head_concert" content ( 1, 3 )
 
 
 surprise : Dialogue
@@ -60,7 +60,7 @@ complain =
             , "but lost to you... the most... despicable creatures."
             ]
     in
-    genDialogue "head_cavalry" content ( 1, 5 )
+    genDialogue "head_concert" content ( 1, 5 )
 
 
 sad : Dialogue

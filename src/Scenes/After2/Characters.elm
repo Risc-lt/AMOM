@@ -13,7 +13,7 @@ characters =
     , genCharacter "Bulingze" Battle Right 1270 550
     , genCharacter "Bruce" Battle Right 1400 350
     , genCharacter "Bithif" Battle Right 1400 490
-    , genCharacter "Cavalry" Normal Left 890 480
+    , genCharacter "Concert" Normal Left 890 480
     ]
 
 

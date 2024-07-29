@@ -13,7 +13,7 @@ characters =
     , genCharacter "Bulingze" Battle Up 1260 1280
     , genCharacter "Bruce" Battle Up 1200 1080
     , genCharacter "Bithif" Battle Up 1060 1280
-    , genCharacter "Cavalry" Battle Left -300 400
+    , genCharacter "Concert" Battle Left -300 400
     ]
 
 
@@ -108,7 +108,7 @@ followRight =
     , genMove "Bulingze" Battle bulingzeMove 5
     , genMove "Bruce" Battle bruceMove 5
     , genMove "Bithif" Battle bithifMove 5
-    , genMove "Cavalry" Battle concertMove 5
+    , genMove "Concert" Battle concertMove 5
     ]
 
 
@@ -118,7 +118,7 @@ concertLeft =
         concertMove =
             Real ( -150, 400 ) 2
     in
-    [ genMove "Cavalry" Battle concertMove 6 ]
+    [ genMove "Concert" Battle concertMove 6 ]
 
 
 charge1 : List Movement
@@ -267,7 +267,7 @@ charge7 =
     , genMove "Bulingze" Battle bulingzeMove 14
     , genMove "Bruce" Battle bruceMove 14
     , genMove "Bithif" Battle bithifMove 14
-    , genMove "Cavalry" Battle concertMove 14
+    , genMove "Concert" Battle concertMove 14
     ]
 
 
@@ -284,7 +284,7 @@ charge8 =
     , genMove "Bulingze" Battle move 15
     , genMove "Bruce" Battle move 15
     , genMove "Bithif" Battle move 15
-    , genMove "Cavalry" Battle concertMove 15
+    , genMove "Concert" Battle concertMove 15
     ]
 
 
@@ -310,7 +310,7 @@ charge9 =
     , genMove "Bulingze" Battle bulingzeMove 16
     , genMove "Bruce" Battle bruceMove 16
     , genMove "Bithif" Battle bithifMove 16
-    , genMove "Cavalry" Battle concertMove 16
+    , genMove "Concert" Battle concertMove 16
     ]
 
 

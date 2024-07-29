@@ -494,6 +494,16 @@ handleMove list env evnt data basedata =
             else
                 data.x
 
+        runFlag =
+            if longRange && basedata.state == TargetSelection Attack then
+                True
+
+            else if newX == 670 || newX == returnX then
+                False
+
+            else
+                True
+
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
                 if basedata.side == PlayerSide then
@@ -544,7 +554,7 @@ handleMove list env evnt data basedata =
             else
                 []
     in
-    ( ( { newData | x = newX }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
+    ( ( { newData | x = newX, isRunning = runFlag }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
 
 
 updateOne : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

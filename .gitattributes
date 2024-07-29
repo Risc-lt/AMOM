@@ -91,3 +91,4 @@ assets/character/chartlet/battleframe_1.png filter=lfs diff=lfs merge=lfs -text
 assets/character/role/role_5.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/background/dialogue_3_1.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/background/dialogue_4.jpg filter=lfs diff=lfs merge=lfs -text
+assets/character/background/levelselect.jpg filter=lfs diff=lfs merge=lfs -text

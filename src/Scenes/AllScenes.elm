@@ -11,16 +11,15 @@ Record all the scenes here
 
 -}
 
-{- import Scenes.Level2.Model as Level2
-   import Scenes.Level3.Model as Level3
--}
-
 import Dict
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.After1.Model as After1
 import Scenes.Before1.Model as Before1
+import Scenes.Begin.Model as Begin
+import Scenes.Home.Model as Home
+import Scenes.Instruction.Model as Instruction
 import Scenes.Level1.Model as Level1
 
 
@@ -35,8 +34,7 @@ allScenes =
         [ ( "Before1", Before1.scene )
         , ( "Level1", Level1.scene )
         , ( "After1", After1.scene )
-
-        {- , ( "Level2", Level2.scene )
-           , ( "Level3", Level3.scene )
-        -}
+        , ( "Begin", Begin.scene )
+        , ( "Home", Home.scene )
+        , ( "Instruction", Instruction.scene )
         ]

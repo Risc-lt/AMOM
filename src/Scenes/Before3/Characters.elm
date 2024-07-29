@@ -274,19 +274,93 @@ arrange4 =
             None Right
 
         move4 =
-            None Left
+            None Right
 
         move5 =
             Real ( 990, 490 ) 8
 
         move6 =
-            Real ( 760, 640 ) 8
+            Real ( 890, 650 ) 8
     in
     [ genMove "Swordsman2" Battle move2 11
     , genMove "Magician1" Battle move3 11
     , genMove "Magician2" Battle move4 11
     , genMove "Therapist1" Battle move5 11
     , genMove "Therapist2" Battle move6 11
+    ]
+
+
+arrange5 : List Movement
+arrange5 =
+    let
+        move5 =
+            None Left
+
+        move6 =
+            Real ( 760, 580 ) 8
+    in
+    [ genMove "Therapist1" Battle move5 12
+    , genMove "Therapist2" Battle move6 12
+    ]
+
+
+arrange6 : List Movement
+arrange6 =
+    let
+        move6 =
+            None Right
+    in
+    [ genMove "Therapist2" Battle move6 13
+    ]
+
+
+followUp : List Movement
+followUp =
+    let
+        wenderdMove =
+            Follow ( 830, 520 ) 8
+
+        bulingzeMove =
+            Follow ( 960, 510 ) 8
+
+        bruceMove =
+            Follow ( 800, 390 ) 8
+
+        bithifMove =
+            Follow ( 1050, 400 ) 8
+
+        cavalryMove =
+            Follow ( 910, 390 ) 8
+
+        move1 =
+            Follow ( 890, 1290 ) 8
+
+        move2 =
+            Follow ( 1060, 1330 ) 8
+
+        move3 =
+            Follow ( 730, 1450 ) 8
+
+        move4 =
+            Follow ( 890, 1550 ) 8
+
+        move5 =
+            Follow ( 990, 1490 ) 8
+
+        move6 =
+            Follow ( 760, 1580 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 15
+    , genMove "Bulingze" Battle bulingzeMove 15
+    , genMove "Bruce" Battle bruceMove 15
+    , genMove "Bithif" Battle bithifMove 15
+    , genMove "Cavalry" Battle cavalryMove 15
+    , genMove "Swordsman1" Battle move1 15
+    , genMove "Swordsman2" Battle move2 15
+    , genMove "Magician1" Battle move3 15
+    , genMove "Magician2" Battle move4 15
+    , genMove "Therapist1" Battle move5 15
+    , genMove "Therapist2" Battle move6 15
     ]
 
 
@@ -316,4 +390,7 @@ charInitData =
             ++ arrange2
             ++ arrange3
             ++ arrange4
+            ++ arrange5
+            ++ arrange6
+            ++ followUp
     }

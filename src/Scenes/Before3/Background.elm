@@ -17,6 +17,11 @@ check =
     genCamera 0 -2000 8 6
 
 
+followUp : Camera
+followUp =
+    genCamera 0 -1000 8 15
+
+
 genCamera : Float -> Float -> Float -> Int -> Camera
 genCamera targetX targetY speed id =
     { defaultCamera
@@ -41,5 +46,6 @@ backgroundInitData =
     , remainMove =
         [ followDown
         , check
+        , followUp
         ]
     }

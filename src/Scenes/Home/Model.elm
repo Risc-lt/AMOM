@@ -82,7 +82,7 @@ view : RawSceneView UserData Data
 view env data =
     let
         basicView =
-            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "background"
+            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
             , Canvas.shapes
                 [ fill (Color.rgba 0 0 0 0.7) ]
                 [ rect env.globalData.internalData ( 1800, 1000 ) ( 100, 100 ) ]

@@ -88,3 +88,4 @@ assets/character/role/role_4.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/chartlet/battleframe.png filter=lfs diff=lfs merge=lfs -text
 assets/character/chartlet/dialogue_frame.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/chartlet/battleframe_1.png filter=lfs diff=lfs merge=lfs -text
+assets/character/role/role_5.jpg filter=lfs diff=lfs merge=lfs -text

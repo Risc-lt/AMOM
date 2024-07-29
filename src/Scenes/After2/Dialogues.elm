@@ -253,6 +253,7 @@ dialogueInitData =
         , prevent
         , apologize
         , comfort
+        , collapse
         , sad
         , persuade
         , hesitate

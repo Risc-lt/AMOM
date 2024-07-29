@@ -9,7 +9,7 @@ import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, 
 
 followRight : Camera
 followRight =
-    genCamera 0 -300 8 5
+    genCamera -300 -300 8 5
 
 
 genCamera : Float -> Float -> Float -> Int -> Camera

@@ -13,7 +13,7 @@ characters =
     , genCharacter "Bulingze" Battle Up 1260 1280
     , genCharacter "Bruce" Battle Up 1200 1080
     , genCharacter "Bithif" Battle Up 1060 1280
-    , genCharacter "Cavalry" Battle Left -500 490
+    , genCharacter "Cavalry" Battle Left -300 400
     ]
 
 
@@ -90,25 +90,56 @@ followRight : List Movement
 followRight =
     let
         wenderdMove =
-            Follow ( 1699, 760 ) 8
+            Follow ( 1399, 760 ) 8
 
         bulingzeMove =
-            Follow ( 1899, 900 ) 8
+            Follow ( 1599, 900 ) 8
 
         bruceMove =
-            Follow ( 1839, 760 ) 8
+            Follow ( 1539, 760 ) 8
 
         bithifMove =
-            Follow ( 1699, 900 ) 8
+            Follow ( 1399, 900 ) 8
 
         concertMove =
-            Follow ( 139, 490 ) 8
+            Follow ( 39, 400 ) 8
     in
     [ genMove "Wenderd" Battle wenderdMove 5
     , genMove "Bulingze" Battle bulingzeMove 5
     , genMove "Bruce" Battle bruceMove 5
     , genMove "Bithif" Battle bithifMove 5
     , genMove "Cavalry" Battle concertMove 5
+    ]
+
+
+concertLeft : List Movement
+concertLeft =
+    let
+        concertMove =
+            Real ( -150, 400 ) 2
+    in
+    [ genMove "Cavalry" Battle concertMove 6 ]
+
+
+charge1 : List Movement
+charge1 =
+    let
+        wenderdMove =
+            Real ( 1060, 760 ) 8
+
+        bulingzeMove =
+            Real ( 1260, 900 ) 8
+
+        bruceMove =
+            Real ( 1200, 760 ) 8
+
+        bithifMove =
+            Real ( 1060, 900 ) 8
+    in
+    [ genMove "Wenderd" Battle wenderdMove 8
+    , genMove "Bulingze" Battle bulingzeMove 8
+    , genMove "Bruce" Battle bruceMove 8
+    , genMove "Bithif" Battle bithifMove 8
     ]
 
 
@@ -132,4 +163,5 @@ charInitData =
             ++ turnRight
             ++ turnLeft
             ++ followRight
+            ++ concertLeft
     }

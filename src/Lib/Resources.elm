@@ -206,6 +206,23 @@ allSpriteSheets =
                     )
                     (playerSize "WenderdSheet")
           )
+        , ( "CavalrySheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "CavalrySheet")
+          )
         , ( "Wild WolfSheet"
           , List.concat <|
                 List.indexedMap

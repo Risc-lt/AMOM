@@ -16,7 +16,7 @@ ask =
             , "against the Mainland Magic Association?"
             ]
     in
-    genDialogue "head_wenderd" content ( 1, 1 )
+    genDialogue "head_magicorg" content ( 1, 1 )
 
 
 threaten : Dialogue
@@ -28,7 +28,7 @@ threaten =
             , "behind our actions."
             ]
     in
-    genDialogue "head_wenderd" content ( 1, 2 )
+    genDialogue "head_magicorg" content ( 1, 2 )
 
 
 silence : Dialogue
@@ -67,6 +67,41 @@ remind =
     genDialogue "head_wenderd" content ( 1, 5 )
 
 
+complain : Dialogue
+complain =
+    let
+        content =
+            [ "Wenderd:"
+            , "Damn, there are too many enemies. There is"
+            , "no way to break through."
+            ]
+    in
+    genDialogue "head_wenderd" content ( 2, 1 )
+
+
+prepare : Dialogue
+prepare =
+    let
+        content =
+            [ "Cavalry:"
+            , "There is only one way! Give me some more time!"
+            ]
+    in
+    genDialogue "head_cavalry" content ( 2, 2 )
+
+
+panic : Dialogue
+panic =
+    let
+        content =
+            [ "White Robe Man:"
+            , "Catch her! She's trying to use teleportation"
+            , "magic to escape!"
+            ]
+    in
+    genDialogue "head_magicorg" content ( 2, 3 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -80,7 +115,13 @@ dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ 
+        [ ask
+        , threaten
+        , silence
+        , decline
+        , complain
+        , prepare
+        , panic
         ]
     }
 

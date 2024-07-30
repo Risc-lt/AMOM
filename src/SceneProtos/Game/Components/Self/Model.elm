@@ -286,6 +286,22 @@ updaterec env msg data basedata =
         CloseDialogue ->
             ( ( data, { basedata | isStopped = False } ), [], env )
 
+        PutBuff buff num ->
+            ( ( List.map 
+                    (\x -> 
+                        if x.name == "Cavalry" then 
+                            { x | buff = x.buff ++ [ ( buff, num ) ] } 
+
+                        else 
+                            x
+                    ) 
+                    data
+              , basedata 
+              )
+            , []
+            , env 
+            )
+
         _ ->
             ( ( data, basedata ), [], env )
 

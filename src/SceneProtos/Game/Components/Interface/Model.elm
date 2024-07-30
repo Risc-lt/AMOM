@@ -109,45 +109,57 @@ sendMsg data basedata =
             ( basedata.state, [] )
 
 
-checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> Int
+checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> ( Int, Bool )
 checkOneTrigger ( trigger, id ) data basedata =
     case trigger of
         FrameTrigger num ->
             if num <= 0 then
-                id
+                ( id, False )
 
             else
-                -1
+                ( -1, False )
 
         StateTrigger state ->
             if toString basedata.state == state then
-                id
+                ( id, False )
 
             else
-                -1
+                ( -1, False )
 
         DieTrigger ->
-            if List.length data.enemies /= 6 then
-                id
+            if List.any (\s -> s.hp /= 0 && s.name == "Cavalry") data.selfs then
+                if List.length data.enemies /= 6 then
+                    ( id, False )
+
+                else
+                    ( -1, False )
 
             else
-                -1
+                ( id, True )
 
 
 handleCheckTrigger : Data -> BaseData -> List ( TriggerConditions, Int ) -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
 handleCheckTrigger data basedata triggers =
     let
-        maybeTrigger =
-            List.filter (\x -> x /= -1) <|
-                List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
+        ( maybeTrigger, isOver ) =
+            List.unzip <|
+                List.filter (\( x, _ ) -> x /= -1) <|
+                    List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
 
-        msg =
+        successMsg =
             List.map (\x -> Other ( "Dialogue", BeginDialogue x )) maybeTrigger
 
         deleteTriggerMsg =
             List.map (\x -> Other ( "StoryTrigger", BeginDialogue x )) maybeTrigger
+
+        gameOverMsg =
+            if List.member True isOver then
+                [ Other ( "Self", Defeated ) ]
+
+            else
+                []
     in
-    msg ++ deleteTriggerMsg
+    successMsg ++ deleteTriggerMsg ++ gameOverMsg
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

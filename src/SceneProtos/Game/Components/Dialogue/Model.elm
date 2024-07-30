@@ -97,7 +97,7 @@ updaterec env msg data basedata =
                             [ Other ( "Enemy", AddChar ) ]
 
                         102 ->
-                            [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
+                            [ Other ( "Self", PutBuff NoAction 100 ) ]
 
                         _ ->
                             []

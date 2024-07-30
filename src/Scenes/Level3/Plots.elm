@@ -78,7 +78,7 @@ complain =
             , "no way to break through."
             ]
     in
-    genDialogue "head_wenderd" content ( 2, 1 )
+    genDialogue "head_wenderd" content ( 102, 1 )
 
 
 prepare : Dialogue
@@ -89,7 +89,7 @@ prepare =
             , "There is only one way! Give me some more time!"
             ]
     in
-    genDialogue "head_cavalry" content ( 2, 2 )
+    genDialogue "head_cavalry" content ( 102, 2 )
 
 
 panic : Dialogue
@@ -101,7 +101,7 @@ panic =
             , "magic to escape!"
             ]
     in
-    genDialogue "head_magicorg" content ( 2, 3 )
+    genDialogue "head_magicorg" content ( 102, 3 )
 
 
 success : Dialogue
@@ -147,7 +147,7 @@ askTrigger =
 
 complainTrigger : ( TriggerConditions, Int )
 complainTrigger =
-    ( FrameTrigger 30, 2 )
+    ( FrameTrigger 30, 102 )
 
 
 successTrigger : ( TriggerConditions, Int )

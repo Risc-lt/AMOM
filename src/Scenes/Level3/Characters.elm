@@ -11,6 +11,125 @@ import SceneProtos.Game.Components.Special.Init exposing (Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
 
 
+wenderd : Int -> Self
+wenderd time =
+    let
+        baseAttributes =
+            { strength = 56
+            , dexterity = 34
+            , constitution = 42
+            , intelligence = 28
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 1
+        time
+        "Wenderd"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , airBlade
+        , doubleStrike
+        , { poison | cost = 1 }
+        ]
+
+
+bruce : Int -> Self
+bruce time =
+    let
+        baseAttributes =
+            { strength = 35
+            , dexterity = 55
+            , constitution = 30
+            , intelligence = 40
+            }
+
+        baseEleResistance =
+            { waterResistance = 20
+            , fireResistance = 10
+            , airResistance = 10
+            , earthResistance = 10
+            }
+    in
+    genSelf 2
+        time
+        "Bruce"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , scatterShot
+        , frostArrow
+        , frostImpact
+        , { poison | cost = 1 }
+        ]
+
+
+bulingze : Int -> Self
+bulingze time =
+    let
+        baseAttributes =
+            { strength = 28
+            , dexterity = 35
+            , constitution = 32
+            , intelligence = 65
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 20
+            , airResistance = 10
+            , earthResistance = 10
+            }
+    in
+    genSelf 4
+        time
+        "Bulingze"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , fireBall
+        , inspirationOfFire
+        , { magicWater | cost = 1 }
+        ]
+
+
+bithif : Int -> Self
+bithif time =
+    let
+        baseAttributes =
+            { strength = 34
+            , dexterity = 40
+            , constitution = 36
+            , intelligence = 50
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 5
+        time
+        "Bithif"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , compounding
+        , magicTransformation
+        , whirlwindAccelaration
+        , { magicWater | cost = 1 }
+        , { poison | cost = 1 }
+        ]
+
+
 genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self
 genSelf position time name baseAttributes baseEleResistance skills =
     { defaultSelf

@@ -66,7 +66,9 @@ bruce time =
         , scatterShot
         , frostArrow
         , frostImpact
+        , iceRing
         , { poison | cost = 1 }
+        , { magicWater | cost = 1 }
         ]
 
 
@@ -95,6 +97,8 @@ bulingze time =
         [ arcaneBeam
         , fireBall
         , inspirationOfFire
+        , blindness
+        , { poison | cost = 1 }
         , { magicWater | cost = 1 }
         ]
 
@@ -116,7 +120,7 @@ bithif time =
             , earthResistance = 10
             }
     in
-    genSelf 5
+    genSelf 6
         time
         "Bithif"
         baseAttributes
@@ -125,8 +129,40 @@ bithif time =
         , compounding
         , magicTransformation
         , whirlwindAccelaration
+        , gale
         , { magicWater | cost = 1 }
         , { poison | cost = 1 }
+        , { restorationPotion | cost = 1 }
+        ]
+
+
+cavalry : Int -> Self
+cavalry time =
+    let
+        baseAttributes =
+            { strength = 40
+            , dexterity = 30
+            , constitution = 34
+            , intelligence = 56
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 5
+        time
+        "Cavalry"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , whirlwindAccelaration
+        , lightningSpell
+        , chainLightning
+        , blessingOfAir
         ]
 
 
@@ -174,6 +210,7 @@ selfInitData time =
             , bruce time
             , bulingze time
             , bithif time
+            , cavalry time
             ]
     in
     List.filter

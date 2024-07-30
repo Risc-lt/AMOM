@@ -23,6 +23,7 @@ import SceneProtos.Game.Components.Self.AttackRec exposing (findMin, getHurt, ha
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Self.UpdateOne exposing (updateOne)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import Time exposing (posixToMillis)
 
 
 type alias Data =
@@ -168,10 +169,10 @@ update env evnt data basedata =
                         if x.isAttacked then
                             let
                                 remainNum =
-                                    modBy (300 * 2) env.globalData.sceneStartTime // 300
+                                    posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
 
                                 attackFlag =
-                                    if remainNum == 0 then
+                                    if remainNum >= 100 then
                                         not x.isAttacked
 
                                     else
@@ -207,13 +208,13 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         Action (EnemyNormal enemy position) ->
-            handleAttack enemy position env msg (getAttacked data position) basedata
+            handleAttack enemy position env msg (getAttacked data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action StartCounter ->
             ( ( data, { basedata | state = PlayerAttack False } ), [], env )
 
         Action (EnemySkill enemy skill position) ->
-            handleSkill enemy skill position env msg (getAttacked data position) basedata
+            handleSkill enemy skill position env msg (getAttacked data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action (PlayerSkill self skill position) ->
             handleSkill

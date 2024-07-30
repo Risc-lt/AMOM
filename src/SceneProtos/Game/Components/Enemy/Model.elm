@@ -23,6 +23,7 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaul
 import SceneProtos.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import SceneProtos.Game.Components.Self.Init exposing (defaultSelf)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import Time exposing (Posix, posixToMillis)
 
 
 type alias Data =
@@ -79,10 +80,10 @@ update env evnt data basedata =
                         if x.curHurt /= "" then
                             let
                                 remainNum =
-                                    modBy (300 * 2) env.globalData.sceneStartTime // 300
+                                    posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
 
                                 newName =
-                                    if remainNum == 0 then
+                                    if remainNum >= 100 then
                                         ""
 
                                     else
@@ -115,13 +116,13 @@ updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentT
 updaterec env msg data basedata =
     case msg of
         Action (PlayerNormal self position) ->
-            handleAttack self position env msg (addCurHurt data position) basedata
+            handleAttack self position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action StartCounter ->
             ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
-            handleSkill self skill position env msg (addCurHurt data position) basedata
+            handleSkill self skill position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action (EnemySkill enemy skill position) ->
             handleSkill

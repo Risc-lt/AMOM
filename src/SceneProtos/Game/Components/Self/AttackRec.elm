@@ -438,18 +438,17 @@ handleSkill enemy skill position env msg data basedata =
             skillRec enemy skill env data position basedata
 
         newData =
-            List.map (\s -> checkBuff s) <|
-                List.map
-                    (\x ->
-                        Maybe.withDefault x <|
-                            List.head <|
-                                List.filter
-                                    (\e ->
-                                        x.position == e.position
-                                    )
-                                    newSelfs
-                    )
-                    data
+            List.map
+                (\x ->
+                    Maybe.withDefault x <|
+                        List.head <|
+                            List.filter
+                                (\e ->
+                                    x.position == e.position
+                                )
+                                newSelfs
+                )
+                data
 
         remainNum =
             List.map (\x -> x.position) <|
@@ -462,6 +461,9 @@ handleSkill enemy skill position env msg data basedata =
 
             else
                 [ Other ( "Enemy", CharDie remainNum ) ]
+
+        skillname =
+            Debug.log "name" skill.name
     in
     ( ( newData, { basedata | selfNum = remainNum } )
     , dieMsg ++ [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]

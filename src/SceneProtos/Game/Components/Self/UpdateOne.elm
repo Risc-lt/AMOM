@@ -49,8 +49,18 @@ handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserDat
 handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
-            ( ( data, { basedata | state = PlayerTurn, side = EnemySide } )
-            , [ Other ( "Interface", SwitchTurn 0 ) ]
+            let
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) list
+                        )
+                        basedata.selfNum
+            in
+            ( ( data, { basedata | state = PlayerTurn, selfNum = newNum, side = EnemySide } )
+            , [ Other ( "Enemy", CharDie newNum ), Other ( "Interface", SwitchTurn 0 ) ]
             , ( env, False )
             )
 

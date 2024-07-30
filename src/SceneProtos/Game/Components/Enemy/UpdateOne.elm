@@ -276,7 +276,14 @@ handleSpecial skill env evnt data basedata =
                     0
 
         newState =
-            if skill.range == Ally && List.member newPosition basedata.enemyNum then
+            if
+                skill.range
+                    == Ally
+                    && List.member newPosition basedata.enemyNum
+                    || skill.range
+                    /= Ally
+                    && List.member position basedata.selfNum
+            then
                 PlayerTurn
 
             else
@@ -336,9 +343,12 @@ handleSpecial skill env evnt data basedata =
 
             else
                 data
+
+        skillname =
+            Debug.log "name" skill.name
     in
-    ( ( newData, { basedata | curEnemy = position, state = newState } )
-    , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+    ( ( newData, { basedata | curSelf = position, state = newState } )
+    , skillMsg
     , ( env, False )
     )
 

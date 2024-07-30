@@ -37,8 +37,17 @@ init env initMsg =
             let
                 ( firstdata, firstBaseData ) =
                     initUI initData initBaseData
+
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) firstdata.enemies
+                        )
+                        firstBaseData.enemyNum
             in
-            ( firstdata, firstBaseData )
+            ( firstdata, { firstBaseData | enemyNum = newNum } )
 
         _ ->
             ( defaultUI, initBaseData )

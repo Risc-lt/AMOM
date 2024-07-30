@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Interface.Sequence exposing (..)
 
 import Canvas
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Lib.UserData exposing (UserData)
 import Messenger.Base
 import Messenger.Render.Sprite exposing (renderSprite)
@@ -201,7 +202,14 @@ renderQueue env initData =
             sortCharByQueue allChars initData.queue
     in
     List.map2
-        (\x index -> renderSprite env.globalData.internalData [] ( 900 + index * 50, 600 ) ( 50, 50 ) x)
+        (\x index ->
+            renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( 900 + index * 50, 600 )
+                ( 50, 50 )
+                (x ++ "Sheet.0/1")
+        )
         sortedData
     <|
         List.map toFloat

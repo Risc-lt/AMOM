@@ -34,7 +34,17 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         Init (EnemyInit initData) ->
-            ( initData, initBaseData )
+            let
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) initData
+                        )
+                        initBaseData.enemyNum
+            in
+            ( initData, { initBaseData | enemyNum = newNum } )
 
         _ ->
             ( [], initBaseData )
@@ -157,8 +167,16 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
+            let
+                newNum =
+                    if basedata.state == GameBegin then
+                        [ Other ( "Self", CharDie basedata.enemyNum ) ]
+
+                    else
+                        []
+            in
             if state == PlayerTurn then
-                ( ( data, { basedata | state = state, side = PlayerSide } ), [], env )
+                ( ( data, { basedata | state = state, side = PlayerSide } ), newNum, env )
 
             else
                 ( ( data, { basedata | state = state } ), [], env )

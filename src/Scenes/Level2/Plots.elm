@@ -233,12 +233,12 @@ amazeTrigger =
 
 weakTrigger : ( TriggerConditions, Int )
 weakTrigger =
-    ( FrameTrigger 10, 1 )
+    ( FrameTrigger 10, 2 )
 
 
 badTrigger : ( TriggerConditions, Int )
 badTrigger =
-    ( FrameTrigger 15, 1 )
+    ( FrameTrigger 15, 3 )
 
 
 triggerInitData : List ( TriggerConditions, Int )

@@ -197,15 +197,15 @@ updaterec env msg data basedata =
         AddChar ->
             let
                 emptySlot =
-                    Maybe.withDefault -1 <|
-                        List.head <|
-                            List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
+                    List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
 
                 newEnemy =
-                    genDefaultEnemy emptySlot
+                    List.map 
+                        (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp) 
+                        emptySlot
 
                 newData =
-                    newEnemy :: data
+                    newEnemy ++ data
             in
             ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], env )
 

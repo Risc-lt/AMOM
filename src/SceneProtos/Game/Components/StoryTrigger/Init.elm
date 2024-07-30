@@ -1,6 +1,6 @@
 module SceneProtos.Game.Components.StoryTrigger.Init exposing
     ( InitData
-    , HealthStatus(..), TriggerConditions(..), defaultTrigger
+    , TriggerConditions(..), defaultTrigger
     )
 
 {-|
@@ -19,17 +19,13 @@ type alias InitData =
     List ( TriggerConditions, Int )
 
 
-type HealthStatus
-    = Half
-    | Zero
-
-
 {-| The conditions that trigger the story
 -}
 type TriggerConditions
     = FrameTrigger Int
-    | HpTrigger HealthStatus String
+    | HpTrigger
     | StateTrigger String
+    | DieTrigger
 
 
 {-| The initial data for the StroryTrigger component

@@ -160,8 +160,8 @@ defaultEnemy =
 
 
 {-| -}
-genDefaultEnemy : Int -> Enemy
-genDefaultEnemy id =
+genDefaultEnemy : Int -> Int -> Enemy
+genDefaultEnemy time id =
     { name = "Wild Wolf"
     , x =
         if id >= 7 && id <= 9 then

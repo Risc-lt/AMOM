@@ -64,7 +64,7 @@ updaterec env msg data basedata =
             let
                 newData =
                     List.filter
-                        (\( _, i ) -> i /= id)
+                        (\( _, i ) -> i /= id || i == 101)
                         data
             in
             ( ( newData, basedata ), [], env )

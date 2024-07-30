@@ -92,11 +92,11 @@ updaterec env msg data basedata =
                             List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 otherMsg =
-                    case nextDialogue.id of
-                        ( 101, _ ) ->
+                    case id of
+                        101 ->
                             [ Other ( "Enemy", AddChar ) ]
 
-                        ( 102, _ ) ->
+                        102 ->
                             [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
 
                         _ ->
@@ -105,18 +105,22 @@ updaterec env msg data basedata =
                 remainingDialogues =
                     List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
-            ( ( { data
-                    | curDialogue = { nextDialogue | isSpeaking = True }
-                    , remainDiaList = remainingDialogues
-                }
-              , basedata
-              )
-            , [ Other ( "Self", BeginDialogue id )
-              , Other ( "Enemy", BeginDialogue id )
-              ]
-                ++ otherMsg
-            , env
-            )
+            if nextDialogue.speaker == "" then
+                ( ( data, basedata ), otherMsg, env )
+
+            else
+                ( ( { data
+                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        , remainDiaList = remainingDialogues
+                    }
+                , basedata
+                )
+                , [ Other ( "Self", BeginDialogue id )
+                , Other ( "Enemy", BeginDialogue id )
+                ]
+                    ++ otherMsg
+                , env
+                )
 
         _ ->
             ( ( data, basedata ), [], env )

@@ -326,7 +326,15 @@ getEffect enemy skill env target basedata =
                 getSpecificMagicalAttack target enemy skill
 
             else
-                skill.effect.hp
+                if 
+                    (skill.name == "Poison" 
+                        || skill.name == "Restoration Potion") 
+                        && target.name /= "Cavalry" 
+                then
+                    -skill.effect.hp
+
+                else
+                    skill.effect.hp
 
         mpChange =
             skill.effect.mp

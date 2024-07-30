@@ -298,7 +298,7 @@ restorationPotion : Skill
 restorationPotion =
     { kind = Item
     , name = "Restoration Potion"
-    , effect = { defaultEffect | hp = 80 }
+    , effect = { defaultEffect | hp = -80 }
     , buff = []
     , range = Ally
     , element = None
@@ -324,7 +324,7 @@ poison : Skill
 poison =
     { kind = Item
     , name = "Poison"
-    , effect = { defaultEffect | hp = -80 }
+    , effect = { defaultEffect | hp = 80 }
     , buff = []
     , range = Ally
     , element = None

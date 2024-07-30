@@ -18,6 +18,7 @@ import Messenger.Scene.Scene exposing (AllScenes)
 import Scenes.After1.Model as After1
 import Scenes.After2.Model as After2
 import Scenes.After3.Model as After3
+import Scenes.After4.Model as After4
 import Scenes.Before1.Model as Before1
 import Scenes.Before2.Model as Before2
 import Scenes.Before3.Model as Before3
@@ -42,6 +43,7 @@ allScenes =
         , ( "After2", After2.scene )
         , ( "Before3", Before3.scene )
         , ( "After3", After3.scene )
+        , ( "After4", After4.scene )
         , ( "Begin", Begin.scene )
         , ( "Home", Home.scene )
         , ( "Instruction", Instruction.scene )

@@ -22,7 +22,7 @@ backgroundInitData : InitData
 backgroundInitData =
     { background =
         { backFigure = "dialogue_4"
-        , x = 100
+        , x = -237
         , y = 0
         , w = 2157
         , h = 1080

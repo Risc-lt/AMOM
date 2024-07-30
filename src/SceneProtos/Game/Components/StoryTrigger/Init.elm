@@ -23,7 +23,6 @@ type alias InitData =
 -}
 type TriggerConditions
     = FrameTrigger Int
-    | HpTrigger
     | StateTrigger String
     | DieTrigger
 

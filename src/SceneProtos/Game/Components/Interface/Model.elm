@@ -110,17 +110,6 @@ checkOneTrigger ( trigger, id ) data basedata =
             else
                 -1
 
-        HpTrigger ->
-            let
-                hpCheck =
-                    \x -> x.hp <= x.extendValues.basicStatus.maxHp
-            in
-            if List.any hpCheck data.enemies then
-                id
-
-            else
-                -1
-
         StateTrigger state ->
             if toString basedata.state == state then
                 id

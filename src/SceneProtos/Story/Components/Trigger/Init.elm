@@ -11,4 +11,7 @@ module SceneProtos.Story.Components.Trigger.Init exposing (..)
 
 
 type alias InitData =
-    Int
+    { id : Int
+    , curPlot : List Int
+    , overId : Int
+    }

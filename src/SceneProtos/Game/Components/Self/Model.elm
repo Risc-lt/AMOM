@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Self.Model exposing (component)
 
 import Canvas exposing (empty)
 import Canvas.Settings exposing (fill, stroke)
+import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -22,6 +23,7 @@ import SceneProtos.Game.Components.Self.AttackRec exposing (findMin, getHurt, ha
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Self.UpdateOne exposing (updateOne)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import Time exposing (posixToMillis)
 
 
 type alias Data =
@@ -161,23 +163,58 @@ update env evnt data basedata =
                 else
                     posChanged
 
+            newData2 =
+                List.map
+                    (\x ->
+                        if x.isAttacked then
+                            let
+                                remainNum =
+                                    posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
+
+                                attackFlag =
+                                    if remainNum >= 100 then
+                                        not x.isAttacked
+
+                                    else
+                                        x.isAttacked
+                            in
+                            { x | isAttacked = attackFlag }
+
+                        else
+                            x
+                    )
+                    newData
+
             interfaceMsg =
-                [ Other ( "Interface", ChangeStatus (ChangeSelfs newData) ) ]
+                [ Other ( "Interface", ChangeStatus (ChangeSelfs newData2) ) ]
         in
-        ( ( newData, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+        ( ( newData2, newBasedata ), posMsg ++ interfaceMsg ++ msg, ( newEnv, flag ) )
+
+
+getAttacked : Data -> Int -> Data
+getAttacked data position =
+    List.map
+        (\x ->
+            if x.position == position then
+                { x | isAttacked = True }
+
+            else
+                x
+        )
+        data
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Action (EnemyNormal enemy position) ->
-            handleAttack enemy position env msg data basedata
+            handleAttack enemy position env msg (getAttacked data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action StartCounter ->
             ( ( data, { basedata | state = PlayerAttack False } ), [], env )
 
         Action (EnemySkill enemy skill position) ->
-            handleSkill enemy skill position env msg data basedata
+            handleSkill enemy skill position env msg (getAttacked data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action (PlayerSkill self skill position) ->
             handleSkill
@@ -255,8 +292,42 @@ updaterec env msg data basedata =
 
 renderChar : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderChar char env =
+    let
+        gd =
+            env.globalData
+
+        rate =
+            300
+
+        currentAct x =
+            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
+    in
     if char.hp /= 0 then
-        renderSprite env.globalData.internalData [] ( char.x, char.y ) ( 100, 100 ) char.name
+        if char.isAttacked then
+            renderSprite
+                env.globalData.internalData
+                [ [ rotate (30 * pi / 180) ] |> transform ]
+                ( char.x + 40, char.y - 30 )
+                ( 100, 100 )
+                (char.name ++ "Sheet.1/2")
+
+        else if char.isRunning then
+            renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( char.x, char.y )
+                ( 100, 100 )
+                (char.name ++ "Sheet.1/" ++ currentAct 4)
+
+        else
+            Canvas.group []
+                [ renderSprite
+                    env.globalData.internalData
+                    [ imageSmoothing False ]
+                    ( char.x, char.y )
+                    ( 100, 100 )
+                    (char.name ++ "Sheet.0/" ++ currentAct 4)
+                ]
 
     else
         empty

@@ -19,6 +19,8 @@ type alias Background =
     { backFigure : String
     , x : Float
     , y : Float
+    , w : Float
+    , h : Float
     }
 
 
@@ -49,6 +51,8 @@ defaultBackground =
     { backFigure = ""
     , x = 0
     , y = 0
+    , w = 0
+    , h = 0
     }
 
 

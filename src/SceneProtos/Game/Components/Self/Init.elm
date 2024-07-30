@@ -41,6 +41,8 @@ type alias Self =
     , skills : List Skill
     , buff : List ( Buff, Int )
     , state : State
+    , isRunning : Bool
+    , isAttacked : Bool
     }
 
 
@@ -98,6 +100,8 @@ emptyInitData time =
             , arcaneBeam
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bruce"
       , x = 1100
@@ -121,6 +125,8 @@ emptyInitData time =
             , arcaneBeam
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1100
@@ -134,6 +140,8 @@ emptyInitData time =
       , buff = []
       , skills = []
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bulingze"
       , x = 1220
@@ -157,6 +165,8 @@ emptyInitData time =
             , fireBall
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bithif"
       , x = 1220
@@ -182,6 +192,8 @@ emptyInitData time =
             , { magicWater | cost = 1 }
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1220
@@ -195,6 +207,8 @@ emptyInitData time =
       , buff = []
       , skills = []
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     ]
 
@@ -215,4 +229,6 @@ defaultSelf =
     , buff = []
     , skills = []
     , state = Waiting
+    , isRunning = False
+    , isAttacked = False
     }

@@ -378,20 +378,35 @@ updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarg
 updateOne env evnt data basedata =
     case evnt of
         Tick _ ->
+            let
+                returnX =
+                    if data.position <= 9 then
+                        235
+
+                    else
+                        105
+
+                newData =
+                    if data.x <= returnX then
+                        { data | isRunning = False }
+
+                    else
+                        { data | isRunning = True }
+            in
             if data.state == Rest && basedata.side == EnemySide then
-                ( ( data, { basedata | state = PlayerTurn } )
+                ( ( newData, { basedata | state = PlayerTurn } )
                 , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
                 , ( env, False )
                 )
 
-            else if List.any (\( b, _ ) -> b == NoAction) data.buff then
-                ( ( { data | buff = getNewBuff data.buff, state = Rest }, { basedata | state = PlayerTurn } )
+            else if List.any (\( b, _ ) -> b == NoAction) newData.buff then
+                ( ( { newData | buff = getNewBuff newData.buff, state = Rest }, { basedata | state = PlayerTurn } )
                 , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
                 , ( env, False )
                 )
 
             else
-                handleTurn env evnt data basedata
+                handleTurn env evnt newData basedata
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )

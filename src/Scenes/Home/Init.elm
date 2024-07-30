@@ -95,7 +95,7 @@ initData =
           , w = 500
           , h = 400
           , id = 6
-          , next = "Level1"
+          , next = "After2"
           , text = "This is the dialogue after Battle 2."
           }
         , { name = "dialogue_3"
@@ -104,7 +104,7 @@ initData =
           , w = 500
           , h = 400
           , id = 7
-          , next = "Level1"
+          , next = "Before3"
           , text = "This is the dialogue before Battle 3."
           }
         , { name = "background"
@@ -122,7 +122,7 @@ initData =
           , w = 500
           , h = 400
           , id = 9
-          , next = "Level1"
+          , next = "After3"
           , text = "This is the dialogue after Battle 3."
           }
         ]

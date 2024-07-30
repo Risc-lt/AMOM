@@ -22,6 +22,7 @@ type SpecialType
 type alias Effect =
     { hp : Int
     , mp : Int
+    , energy : Int
     }
 
 
@@ -73,6 +74,7 @@ defaultEffect : Effect
 defaultEffect =
     { hp = 0
     , mp = 0
+    , energy = 0
     }
 
 

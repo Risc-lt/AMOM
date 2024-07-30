@@ -331,6 +331,9 @@ getEffect enemy skill env target basedata =
         mpChange =
             skill.effect.mp
 
+        energyChange =
+            skill.effect.energy
+
         newBuff =
             case List.head skill.buff of
                 Nothing ->
@@ -343,6 +346,7 @@ getEffect enemy skill env target basedata =
         { target
             | hp = target.hp - hpChange
             , mp = target.mp - mpChange
+            , energy = target.energy - energyChange
             , buff = newBuff ++ target.buff
         }
 

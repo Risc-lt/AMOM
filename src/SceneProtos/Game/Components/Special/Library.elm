@@ -1,16 +1,7 @@
 module SceneProtos.Game.Components.Special.Library exposing (..)
 
-{-| Skill library
-
-@docs scatterShot
-@docs airBlade
-@docs compounding
-@docs arcaneBeam
-@docs fireBall
-@docs restorationPotion
-@docs magicWater
-@docs poison
-
+{- 
+    Skill library
 -}
 
 import SceneProtos.Game.Components.Special.Init exposing (..)

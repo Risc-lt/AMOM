@@ -8,7 +8,7 @@ module SceneProtos.Game.Components.Enemy.Model exposing (component)
 
 import Canvas
 import Canvas.Settings exposing (fill)
-import Canvas.Settings.Advanced exposing (imageSmoothing)
+import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -18,11 +18,12 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import SceneProtos.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
-import SceneProtos.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
+import SceneProtos.Game.Components.Enemy.AttackRec exposing (handleAttack, handleSkill)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, genDefaultEnemy)
+import SceneProtos.Game.Components.Enemy.UpdateOne exposing (updateOne)
 import SceneProtos.Game.Components.Self.Init exposing (defaultSelf)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import Time exposing (Posix, posixToMillis)
 
 
 type alias Data =
@@ -79,10 +80,10 @@ update env evnt data basedata =
                         if x.curHurt /= "" then
                             let
                                 remainNum =
-                                    modBy (300 * 17) env.globalData.sceneStartTime // 300
+                                    posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
 
                                 newName =
-                                    if remainNum == 0 then
+                                    if remainNum >= 100 then
                                         ""
 
                                     else
@@ -98,29 +99,30 @@ update env evnt data basedata =
         ( ( newData2, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData2) ) :: msg, ( newEnv, flag ) )
 
 
+addCurHurt : Data -> Int -> Data
+addCurHurt data position =
+    List.map
+        (\x ->
+            if x.position == position then
+                { x | curHurt = "Hurted" }
+
+            else
+                x
+        )
+        data
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Action (PlayerNormal self position) ->
-            handleAttack self position env msg data basedata
+            handleAttack self position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action StartCounter ->
             ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
-            let
-                newData =
-                    List.map
-                        (\x ->
-                            if x.position == position then
-                                { x | curHurt = skill.name }
-
-                            else
-                                x
-                        )
-                        data
-            in
-            handleSkill self skill position env msg newData basedata
+            handleSkill self skill position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action (EnemySkill enemy skill position) ->
             handleSkill
@@ -227,15 +229,14 @@ renderEnemy enemy env =
         currentAct x =
             String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
 
-        skillView =
-            if enemy.curHurt /= "" then
-                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.curHurt ++ "." ++ currentAct 17) ]
-
-            else
-                [ Canvas.empty ]
-
         enemyView =
-            if enemy.isRunning then
+            if enemy.curHurt /= "" then
+                -- render the picture with 30 degrees rotating
+                Canvas.group []
+                    [ renderSprite env.globalData.internalData [ [ rotate (-30 * pi / 180) ] |> transform ] ( enemy.x - 30, enemy.y + 20 ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1")
+                    ]
+
+            else if enemy.isRunning then
                 renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
 
             else
@@ -246,16 +247,14 @@ renderEnemy enemy env =
 
     else
         Canvas.group []
-            ([ enemyView
-             , Canvas.shapes
+            [ Canvas.shapes
                 [ fill Color.red ]
                 [ rect env.globalData.internalData
                     ( enemy.x, enemy.y )
                     ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
                 ]
-             ]
-                ++ skillView
-            )
+            , enemyView
+            ]
 
 
 view : ComponentView SceneCommonData UserData Data BaseData

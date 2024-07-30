@@ -62,7 +62,7 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 1."
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_2"
           , x = 1920
           , y = 300
           , w = 500
@@ -71,7 +71,7 @@ initData =
           , next = "After1"
           , text = "This is the dialogue after Battle 1."
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_3"
           , x = 2520
           , y = 300
           , w = 500
@@ -89,13 +89,13 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 2."
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_4"
           , x = 3720
           , y = 300
           , w = 500
           , h = 400
           , id = 6
-          , next = "Level1"
+          , next = "After2"
           , text = "This is the dialogue after Battle 2."
           }
         , { name = "dialogue_3"
@@ -104,7 +104,7 @@ initData =
           , w = 500
           , h = 400
           , id = 7
-          , next = "Level1"
+          , next = "Before3"
           , text = "This is the dialogue before Battle 3."
           }
         , { name = "background"
@@ -122,7 +122,7 @@ initData =
           , w = 500
           , h = 400
           , id = 9
-          , next = "Level1"
+          , next = "After3"
           , text = "This is the dialogue after Battle 3."
           }
         ]

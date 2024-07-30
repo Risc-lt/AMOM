@@ -114,7 +114,7 @@ type alias BaseData =
     , curEnemy : Int
     , side : ActionSide
     , isStopped : Bool
-    , amplifiedRate : Float
+    , timestamp : Int
     }
 
 
@@ -127,5 +127,5 @@ initBaseData =
     , curEnemy = 0
     , side = PlayerSide
     , isStopped = False
-    , amplifiedRate = 1
+    , timestamp = 1
     }

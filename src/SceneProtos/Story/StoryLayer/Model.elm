@@ -9,6 +9,7 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 -}
 
 import Canvas
+import Color
 import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
@@ -18,16 +19,13 @@ import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
 import Messenger.GlobalComponents.Transition.Model exposing (genSequentialTransitionSOM)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
-import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeIn, fadeInBlack, fadeOut, fadeOutBlack)
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
-import Color
-import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeOut)
-import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeIn)
 
 
 type alias Data =

@@ -46,15 +46,11 @@ allTexture =
          , ( "battleframe", "assets/character/chartlet/battleframe.png" )
          , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.jpg" )
          , ( "battle_background", "assets/character/background/battle_background.jpg" )
-         , ( "Fire Ball", "assets/character/sprite_sheet/Fire Ball.png" )
          , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
          , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
          , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
-         , ( "instruction", "assets/character/background/instruction.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
-         , ( "button_1", "assets/character/chartlet/button_1.png" )
-         , ( "button_2", "assets/character/chartlet/button_2.png" )
          , ( "levelselect", "assets/character/background/levelselect.jpg" )
          ]
             ++ chacaterTexture
@@ -127,22 +123,7 @@ Example:
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
     Dict.fromList
-        [ ( "Fire Ball"
-          , List.map
-                (\x ->
-                    let
-                        basic =
-                            { realStartPoint = ( 0, 0 )
-                            , realSize = ( 64, 64 )
-                            }
-                    in
-                    ( toString x
-                    , { basic | realStartPoint = ( 64 * x, 0 ) }
-                    )
-                )
-                (List.map toFloat (List.range 1 17))
-          )
-        , ( "BulingzeSheet"
+        [ ( "BulingzeSheet"
           , List.concat <|
                 List.indexedMap
                     (\row colsize ->

@@ -130,7 +130,6 @@ bithif time =
         ]
 
 
-
 genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self
 genSelf position time name baseAttributes baseEleResistance skills =
     { defaultSelf
@@ -189,6 +188,39 @@ selfInitData time =
         ++ selfs
 
 
+concert : Int -> Enemy
+concert time =
+    let
+        baseAttributes =
+            { strength = 55
+            , dexterity = 50
+            , constitution = 45
+            , intelligence = 60
+            }
+
+        baseEleResistance =
+            { waterResistance = 20
+            , fireResistance = 30
+            , airResistance = 20
+            , earthResistance = 30
+            }
+    in
+    genEnemy 8
+        time
+        "Concert"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , airBlade
+        , fieryThrust
+        , fireBall
+        , mudSwamp
+        , stoneSkin
+        , { magicWater | cost = 1 }
+        , { restorationPotion | cost = 1 }
+        ]
+
+
 genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
 genEnemy position time name baseAttributes baseEleResistance skills =
     { defaultEnemy
@@ -229,7 +261,7 @@ enemyInitData time =
                 (List.range 1 6)
 
         enemies =
-            wolves time
+            [ concert time ]
     in
     List.filter
         (\d ->

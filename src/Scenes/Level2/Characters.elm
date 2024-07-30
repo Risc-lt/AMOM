@@ -192,10 +192,10 @@ concert : Int -> Enemy
 concert time =
     let
         baseAttributes =
-            { strength = 55
-            , dexterity = 50
-            , constitution = 45
-            , intelligence = 60
+            { strength = 60
+            , dexterity = 45
+            , constitution = 50
+            , intelligence = 65
             }
 
         baseEleResistance =

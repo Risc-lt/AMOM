@@ -42,7 +42,27 @@ plaint =
     genDialogue "head_concert" content ( 1, 3 )
 
 
+weak : Dialogue
+weak =
+    let
+        content =
+            [ "Wenderd:"
+            , "His weakness is air. Use your magics, Bithif!"
+            ]
+    in
+    genDialogue "head_wenderd" content ( 2, 1 )
 
+
+confused1 : Dialogue
+confused1 =
+    let
+        content =
+            [ "Concert:"
+            , "It's strange, you seem to have fangs in your mouth."
+            , "Are you from the desert races?"
+            ]
+    in
+    genDialogue "head_concert" content ( 2, 2 )
 
 
 bad : Dialogue
@@ -53,7 +73,7 @@ bad =
             , "Hmm... So bad now."
             ]
     in
-    genDialogue "head_wenderd" content ( 2, 1 )
+    genDialogue "head_wenderd" content ( 3, 1 )
 
 
 worry : Dialogue
@@ -64,19 +84,88 @@ worry =
             , "Wenderd! Are you all right?"
             ]
     in
-    genDialogue "head_bruce" content ( 2, 2 )
+    genDialogue "head_bruce" content ( 3, 2 )
 
 
-confused : Dialogue
-confused =
+confused2 : Dialogue
+confused2 =
     let
         content =
             [ "Concert:"
-            , "I think I've heard of you guys, 'Nightfall Knights'." 
-            , "I didn't expect we'd actually fight each other."
+            , "I seem to have seen a look as hungry as"
+            , "yours somewhere before."
             ]
     in
-    genDialogue "head_concert" content ( 2, 2 )
+    genDialogue "head_concert" content ( 3, 3 )
+
+
+understand : Dialogue
+understand =
+    let
+        content =
+            [ "Concert:"
+            , "Ah, I see. Well, well, well..."
+            ]
+    in
+    genDialogue "head_concert" content ( 3, 4 )
+
+
+guess : Dialogue
+guess =
+    let
+        content =
+            [ "Concert:"
+            , "You are vampires, aren't you? "
+            , "Those man-eating monsters, "
+            , "the remnants of an evil race left on the ground."
+            ]
+    in
+    genDialogue "head_concert" content ( 3, 5 )
+
+
+surprise : Dialogue
+surprise =
+    let
+        content =
+            [ "Bruce:"
+            , "!!!"
+            ]
+    in
+    genDialogue "head_bruce" content ( 3, 6 )
+
+
+silence : Dialogue
+silence =
+    let
+        content =
+            [ "Bithif:"
+            , "..."
+            ]
+    in
+    genDialogue "head_bruce" content ( 3, 7 )
+
+
+provoke : Dialogue
+provoke =
+    let
+        content =
+            [ "Concert:"
+            , "I guessed right, didn't I? Tell me,"
+            , "how many people have you killed, huh?"
+            ]
+    in
+    genDialogue "head_concert" content ( 3, 8 )
+
+
+counter : Dialogue
+counter =
+    let
+        content =
+            [ "Bulingze:"
+            , "Shut up! We're better than you!"
+            ]
+    in
+    genDialogue "head_bulingze" content ( 3, 9 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

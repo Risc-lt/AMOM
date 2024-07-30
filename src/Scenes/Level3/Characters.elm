@@ -159,7 +159,7 @@ cavalry time =
         baseAttributes
         baseEleResistance
         [ arcaneBeam
-        , whirlwindAccelaration
+        , airBlade
         , lightningSpell
         , chainLightning
         , blessingOfAir
@@ -291,7 +291,7 @@ therapist time =
             , earthResistance = 10
             }
     in
-    [ genEnemy 12 time "Magician" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
+    [ genEnemy 12 time "Therapist" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
 
 
 genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy

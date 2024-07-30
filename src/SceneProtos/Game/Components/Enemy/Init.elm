@@ -13,9 +13,9 @@ module SceneProtos.Game.Components.Enemy.Init exposing
 -}
 
 import SceneProtos.Game.Components.GenAttributes exposing (..)
+import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
-import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 
 
 {-| Character state
@@ -172,22 +172,22 @@ genDefaultEnemy time id =
                 1 ->
                     ( "Swordsman"
                     , { strength = 35
-                    , dexterity = 30
-                    , constitution = 35
-                    , intelligence = 40
-                    }
+                      , dexterity = 30
+                      , constitution = 35
+                      , intelligence = 40
+                      }
                     , [ arcaneBeam
-                      , lightningSpell 
+                      , lightningSpell
                       ]
                     )
 
                 2 ->
                     ( "Magician"
                     , { strength = 25
-                    , dexterity = 30
-                    , constitution = 35
-                    , intelligence = 50
-                    }
+                      , dexterity = 30
+                      , constitution = 35
+                      , intelligence = 50
+                      }
                     , [ arcaneBeam
                       , lightningSpell
                       , chainLightning
@@ -197,10 +197,10 @@ genDefaultEnemy time id =
                 _ ->
                     ( "Therapist"
                     , { strength = 30
-                    , dexterity = 30
-                    , constitution = 35
-                    , intelligence = 45
-                    }
+                      , dexterity = 30
+                      , constitution = 35
+                      , intelligence = 45
+                      }
                     , [ arcaneBeam
                       , lightningSpell
                       , cure

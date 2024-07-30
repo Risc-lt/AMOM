@@ -58,9 +58,15 @@ update env evnt data basedata =
                                 ( { dia | isSpeaking = True }, [] )
 
                             _ ->
-                                ( { curDia | isSpeaking = False }
-                                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
-                                )
+                                if curDia.id == ( 103, 1 ) then
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Enemy", Defeated ) ]
+                                    )
+
+                                else
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                                    )
 
                     remainingDialogues =
                         List.filter

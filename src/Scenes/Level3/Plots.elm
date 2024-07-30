@@ -1,12 +1,12 @@
 module Scenes.Level3.Plots exposing (..)
+
 {-
    All plot data
 -}
 
+import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..), Gamestate(..))
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
-import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..))
-import SceneProtos.Game.Components.ComponentBase exposing (Gamestate(..))
 
 
 ask : Dialogue
@@ -112,7 +112,7 @@ success =
             , "Ok! Success!"
             ]
     in
-    genDialogue "head_cavalry" content ( 3, 1 )
+    genDialogue "head_cavalry" content ( 103, 1 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
@@ -152,7 +152,7 @@ complainTrigger =
 
 successTrigger : ( TriggerConditions, Int )
 successTrigger =
-    ( FrameTrigger 50, 3 )
+    ( FrameTrigger 50, 103 )
 
 
 dieTrigger : ( TriggerConditions, Int )

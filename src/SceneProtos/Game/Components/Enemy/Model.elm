@@ -230,7 +230,7 @@ updaterec env msg data basedata =
             in
             ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
             , [ Other ( "Self", CharDie newNum ) ]
-            , env 
+            , env
             )
 
         _ ->

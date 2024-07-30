@@ -206,7 +206,7 @@ renderQueue env initData =
             renderSprite
                 env.globalData.internalData
                 [ imageSmoothing False ]
-                ( 900 + index * 50, 600 )
+                ( 850 + index * 50, 600 )
                 ( 50, 50 )
                 (x ++ "Sheet.0/1")
         )

@@ -287,19 +287,19 @@ updaterec env msg data basedata =
             ( ( data, { basedata | isStopped = False } ), [], env )
 
         PutBuff buff num ->
-            ( ( List.map 
-                    (\x -> 
-                        if x.name == "Cavalry" then 
-                            { x | buff = x.buff ++ [ ( buff, num ) ] } 
+            ( ( List.map
+                    (\x ->
+                        if x.name == "Cavalry" then
+                            { x | buff = x.buff ++ [ ( buff, num ) ] }
 
-                        else 
+                        else
                             x
-                    ) 
+                    )
                     data
-              , basedata 
+              , basedata
               )
             , []
-            , env 
+            , env
             )
 
         _ ->

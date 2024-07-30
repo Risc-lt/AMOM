@@ -11,6 +11,7 @@ import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
+import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.Background.Init exposing (InitData, defaultBackground, defaultCamera)
 import SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
@@ -78,7 +79,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 1 ) ]
                 , env
                 )
 
@@ -95,9 +96,9 @@ view env data basedata =
         env.globalData.internalData
         []
         ( data.background.x, data.background.y )
-        ( 1920, 1080 )
+        ( data.background.w, data.background.h )
         data.background.backFigure
-    , 3
+    , 1
     )
 
 

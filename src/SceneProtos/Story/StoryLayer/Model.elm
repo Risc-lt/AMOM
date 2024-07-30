@@ -9,17 +9,25 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 -}
 
 import Canvas
+import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
+import Messenger.GlobalComponents.Transition.Model exposing (genSequentialTransitionSOM)
+import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
+import Color
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeOut)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeIn)
 
 
 type alias Data =
@@ -42,6 +50,49 @@ handleComponentMsg env compmsg data =
     case compmsg of
         SOMMsg som ->
             ( data, [ Parent <| SOMMsg som ], env )
+
+        OtherMsg Over ->
+            let
+                nextScene =
+                    case env.globalData.currentScene of
+                        "Before1" ->
+                            "Level1"
+
+                        "Before2" ->
+                            "Level2"
+
+                        "Before3" ->
+                            "Level3"
+
+                        "After1" ->
+                            "Before2"
+
+                        "After2" ->
+                            "Before3"
+
+                        "After3" ->
+                            "After4"
+
+                        _ ->
+                            ""
+
+                color =
+                    if nextScene == "After3" then
+                        Color.white
+
+                    else
+                        Color.black
+            in
+            ( data
+            , [ Parent <|
+                    SOMMsg <|
+                        genSequentialTransitionSOM
+                            ( fadeOut color, Duration.seconds 1.5 )
+                            ( fadeIn color, Duration.seconds 1.5 )
+                            ( nextScene, Nothing )
+              ]
+            , env
+            )
 
         _ ->
             ( data, [], env )
@@ -88,8 +139,7 @@ view : LayerView SceneCommonData UserData Data
 view env data =
     Canvas.group
         []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "dialogue_3"
-        , viewComponents env data.components
+        [ viewComponents env data.components
         ]
 
 

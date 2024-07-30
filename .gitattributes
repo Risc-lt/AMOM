@@ -99,3 +99,4 @@ assets/character/sprite_sheet/EnemySheet_1.png filter=lfs diff=lfs merge=lfs -te
 assets/character/role/head_enemy.jpg filter=lfs diff=lfs merge=lfs -text
 assets/character/sprite_sheet/BossSheet.png filter=lfs diff=lfs merge=lfs -text
 assets/character/role/head_boss.jpg filter=lfs diff=lfs merge=lfs -text
+assets/character/buff/Bleed.jpg filter=lfs diff=lfs merge=lfs -text

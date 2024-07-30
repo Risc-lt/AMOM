@@ -8,7 +8,7 @@ module SceneProtos.Game.Components.Enemy.Model exposing (component)
 
 import Canvas
 import Canvas.Settings exposing (fill)
-import Canvas.Settings.Advanced exposing (imageSmoothing)
+import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -79,7 +79,7 @@ update env evnt data basedata =
                         if x.curHurt /= "" then
                             let
                                 remainNum =
-                                    modBy (300 * 3) env.globalData.sceneStartTime // 300
+                                    modBy (300 * 2) env.globalData.sceneStartTime // 300
 
                                 newName =
                                     if remainNum == 0 then
@@ -232,7 +232,7 @@ renderEnemy enemy env =
             if enemy.curHurt /= "" then
                 -- render the picture with 30 degrees rotating
                 Canvas.group []
-                    [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1")
+                    [ renderSprite env.globalData.internalData [ [ rotate (-30 * pi / 180) ] |> transform ] ( enemy.x - 30, enemy.y + 20 ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1")
                     ]
 
             else if enemy.isRunning then

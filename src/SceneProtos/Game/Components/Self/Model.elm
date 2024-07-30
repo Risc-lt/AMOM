@@ -8,7 +8,7 @@ module SceneProtos.Game.Components.Self.Model exposing (component)
 
 import Canvas exposing (empty)
 import Canvas.Settings exposing (fill, stroke)
-import Canvas.Settings.Advanced exposing (imageSmoothing)
+import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -168,7 +168,7 @@ update env evnt data basedata =
                         if x.isAttacked then
                             let
                                 remainNum =
-                                    modBy (300 * 3) env.globalData.sceneStartTime // 300
+                                    modBy (300 * 2) env.globalData.sceneStartTime // 300
 
                                 attackFlag =
                                     if remainNum == 0 then
@@ -305,10 +305,10 @@ renderChar char env =
         if char.isAttacked then
             renderSprite
                 env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
+                [ [ rotate (30 * pi / 180) ] |> transform ]
+                ( char.x + 40, char.y - 30 )
                 ( 100, 100 )
-                (char.name ++ "Sheet.1/1")
+                (char.name ++ "Sheet.1/2")
 
         else if char.isRunning then
             renderSprite

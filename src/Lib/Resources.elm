@@ -95,6 +95,7 @@ bufferTexture =
     , ( "Precision", "assets/character/buff/Precision.jpg" )
     , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.jpg" )
     , ( "Seal", "assets/character/buff/Seal.jpg" )
+    , ( "Bleed", "assets/character/buff/Bleed.jpg")
     ]
 
 

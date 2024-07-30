@@ -34,7 +34,17 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         Init (EnemyInit initData) ->
-            ( initData, initBaseData )
+            let
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) initData
+                        )
+                        initBaseData.enemyNum
+            in
+            ( initData, { initBaseData | enemyNum = newNum } )
 
         _ ->
             ( [], initBaseData )
@@ -157,8 +167,16 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
+            let
+                newNum =
+                    if basedata.state == GameBegin then
+                        [ Other ( "Self", CharDie basedata.enemyNum ) ]
+
+                    else
+                        []
+            in
             if state == PlayerTurn then
-                ( ( data, { basedata | state = state, side = PlayerSide } ), [], env )
+                ( ( data, { basedata | state = state, side = PlayerSide } ), newNum, env )
 
             else
                 ( ( data, { basedata | state = state } ), [], env )
@@ -197,21 +215,23 @@ updaterec env msg data basedata =
         AddChar ->
             let
                 emptySlot =
-                    Maybe.withDefault -1 <|
-                        List.head <|
-                            List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
+                    List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
 
                 newEnemy =
-                    genDefaultEnemy emptySlot
+                    List.map
+                        (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp)
+                        emptySlot
 
                 newData =
-                    newEnemy :: data
-            in
-            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], env )
+                    newEnemy ++ data
 
-        PutBuff buff num ->
-            -- Add buff to all enemies
-            ( ( List.map (\x -> { x | buff = x.buff ++ [ ( buff, num ) ] }) data, basedata ), [], env )
+                newNum =
+                    List.map (\e -> e.position) newData
+            in
+            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
+            , [ Other ( "Self", CharDie newNum ) ]
+            , env
+            )
 
         _ ->
             ( ( data, basedata ), [], env )

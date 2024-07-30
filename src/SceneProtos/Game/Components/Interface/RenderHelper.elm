@@ -2,6 +2,7 @@ module SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Charge exposing (ampereHours)
 import Color
 import Debug exposing (toString)
@@ -70,6 +71,9 @@ renderBuff buffs env x y =
 
                         NoAction ->
                             "Seal"
+
+                        LoseHp ->
+                            "Bleed"
                 )
                 buffs
 
@@ -101,7 +105,7 @@ renderStatus self env =
                     670
 
                 _ ->
-                    0
+                    880
 
         color =
             if self.hp == 0 then
@@ -112,7 +116,7 @@ renderStatus self env =
     in
     if self.name /= "" then
         Canvas.group []
-            [ renderSprite env.globalData.internalData [] ( 1470, y ) ( 160, 160 ) self.name
+            [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( 1470, y ) ( 160, 160 ) (self.name ++ "Sheet.0/1")
             , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
             , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
             , renderOneBar (y + 40) self.energy 300 "En" Color.green env

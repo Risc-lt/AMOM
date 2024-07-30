@@ -2,11 +2,12 @@ module SceneProtos.Game.Components.Self.UpdateOne exposing (..)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (UserEvent(..))
+import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
+import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
@@ -48,8 +49,18 @@ handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserDat
 handleKeyDown key list env evnt data basedata =
     case key of
         13 ->
-            ( ( data, { basedata | state = PlayerTurn, side = EnemySide } )
-            , [ Other ( "Interface", SwitchTurn 0 ) ]
+            let
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) list
+                        )
+                        basedata.selfNum
+            in
+            ( ( data, { basedata | state = PlayerTurn, selfNum = newNum, side = EnemySide } )
+            , [ Other ( "Enemy", CharDie newNum ), Other ( "Interface", SwitchTurn 0 ) ]
             , ( env, False )
             )
 
@@ -74,11 +85,13 @@ handleCompounding skill env evnt data basedata =
 
             else
                 { skill | cost = 1 } :: data.skills
+
+        newBuff =
+            checkBuff data
     in
     ( ( checkStorage <|
-            { data
-                | buff = getNewBuff data.buff
-                , skills = newItem
+            { newBuff
+                | skills = newItem
                 , energy = data.energy - 100
                 , state = Rest
             }
@@ -165,13 +178,28 @@ handleChooseSkill x y env evnt data basedata =
         if skill.cost <= storage && skill.name /= "" then
             case skill.range of
                 Oneself ->
-                    ( ( data, { basedata | state = Compounding } )
-                    , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
-                    , ( env, False )
-                    )
+                    if skill.name == "Compounding" then
+                        ( ( data, { basedata | state = Compounding } )
+                        , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
+                        , ( env, False )
+                        )
+
+                    else
+                        let
+                            newBuff =
+                                checkBuff newData
+                        in
+                        ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
+                        , [ Other ( "Self", Action (PlayerSkill data skill data.position) ) ]
+                        , ( env, False )
+                        )
 
                 AllFront ->
-                    ( ( { newData | buff = getNewBuff newData.buff, state = Rest }, { basedata | state = EnemyTurn } )
+                    let
+                        newBuff =
+                            checkBuff newData
+                    in
+                    ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
                     , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                     , ( env, False )
                     )
@@ -375,7 +403,8 @@ handleMouseDown x y env evnt data basedata =
 
                 newData =
                     if action == EnemyTurn then
-                        { data | buff = ( DefenceUp 50, 1 ) :: getNewBuff data.buff, state = Rest }
+                        checkBuff <|
+                            { data | buff = ( DefenceUp 50, 2 ) :: data.buff, state = Rest }
 
                     else
                         data
@@ -507,10 +536,14 @@ handleMove list env evnt data basedata =
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
                 if basedata.side == PlayerSide then
-                    { data | buff = getNewBuff data.buff, state = Rest }
+                    let
+                        newBuff =
+                            checkBuff data
+                    in
+                    { newBuff | state = Rest }
 
                 else
-                    { data | buff = getNewBuff data.buff }
+                    checkBuff data
 
             else
                 data
@@ -563,6 +596,12 @@ updateOne list env evnt data basedata =
         Tick _ ->
             if data.state == Rest && basedata.side == PlayerSide then
                 ( ( data, { basedata | state = EnemyTurn } )
+                , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
+                , ( env, False )
+                )
+
+            else if List.any (\( b, _ ) -> b == NoAction) data.buff then
+                ( ( checkBuff data, { basedata | state = EnemyTurn } )
                 , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
                 , ( env, False )
                 )

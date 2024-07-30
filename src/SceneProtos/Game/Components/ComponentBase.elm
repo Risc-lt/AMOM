@@ -122,7 +122,7 @@ initBaseData : BaseData
 initBaseData =
     { state = GameBegin
     , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
-    , selfNum = [ 1, 2, 4, 5 ]
+    , selfNum = [ 1, 2, 3, 4, 5, 6 ]
     , curSelf = 0
     , curEnemy = 0
     , side = PlayerSide

@@ -1,4 +1,4 @@
-module Scenes.Level1.Characters exposing (..)
+module Scenes.Level2.Characters exposing (..)
 
 {-
    All character data
@@ -15,10 +15,10 @@ wenderd : Int -> Self
 wenderd time =
     let
         baseAttributes =
-            { strength = 40
-            , dexterity = 25
-            , constitution = 35
-            , intelligence = 20
+            { strength = 48
+            , dexterity = 30
+            , constitution = 38
+            , intelligence = 24
             }
 
         baseEleResistance =
@@ -35,6 +35,8 @@ wenderd time =
         baseEleResistance
         [ arcaneBeam
         , airBlade
+        , doubleStrike
+        , { poison | cost = 1 }
         ]
 
 
@@ -42,10 +44,10 @@ bruce : Int -> Self
 bruce time =
     let
         baseAttributes =
-            { strength = 25
-            , dexterity = 40
-            , constitution = 25
-            , intelligence = 30
+            { strength = 30
+            , dexterity = 46
+            , constitution = 28
+            , intelligence = 36
             }
 
         baseEleResistance =
@@ -62,6 +64,9 @@ bruce time =
         baseEleResistance
         [ arcaneBeam
         , scatterShot
+        , frostArrow
+        , frostImpact
+        , { poison | cost = 1 }
         ]
 
 
@@ -69,10 +74,10 @@ bulingze : Int -> Self
 bulingze time =
     let
         baseAttributes =
-            { strength = 20
-            , dexterity = 30
-            , constitution = 25
-            , intelligence = 45
+            { strength = 24
+            , dexterity = 33
+            , constitution = 28
+            , intelligence = 55
             }
 
         baseEleResistance =
@@ -89,6 +94,8 @@ bulingze time =
         baseEleResistance
         [ arcaneBeam
         , fireBall
+        , inspirationOfFire
+        , { magicWater | cost = 1 }
         ]
 
 
@@ -96,10 +103,10 @@ bithif : Int -> Self
 bithif time =
     let
         baseAttributes =
-            { strength = 25
-            , dexterity = 30
-            , constitution = 30
-            , intelligence = 35
+            { strength = 30
+            , dexterity = 36
+            , constitution = 32
+            , intelligence = 42
             }
 
         baseEleResistance =
@@ -116,6 +123,8 @@ bithif time =
         baseEleResistance
         [ arcaneBeam
         , compounding
+        , magicTransformation
+        , whirlwindAccelaration
         , { magicWater | cost = 1 }
         , { poison | cost = 1 }
         ]
@@ -179,28 +188,37 @@ selfInitData time =
         ++ selfs
 
 
-wolves : Int -> List Enemy
-wolves time =
+concert : Int -> Enemy
+concert time =
     let
         baseAttributes =
-            { strength = 35
-            , dexterity = 40
-            , constitution = 25
-            , intelligence = 10
+            { strength = 60
+            , dexterity = 45
+            , constitution = 50
+            , intelligence = 65
             }
 
         baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 8
-            , airResistance = 15
-            , earthResistance = 15
+            { waterResistance = 20
+            , fireResistance = 30
+            , airResistance = 20
+            , earthResistance = 30
             }
     in
-    List.map
-        (\p ->
-            genEnemy p time "Wild Wolf" baseAttributes baseEleResistance []
-        )
-        (List.range 7 12)
+    genEnemy 8
+        time
+        "Concert"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , airBlade
+        , fieryThrust
+        , fireBall
+        , mudSwamp
+        , stoneSkin
+        , { magicWater | cost = 1 }
+        , { restorationPotion | cost = 1 }
+        ]
 
 
 genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
@@ -243,7 +261,7 @@ enemyInitData time =
                 (List.range 7 12)
 
         enemies =
-            wolves time
+            [ concert time ]
     in
     List.filter
         (\d ->

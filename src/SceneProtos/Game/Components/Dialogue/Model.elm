@@ -58,9 +58,15 @@ update env evnt data basedata =
                                 ( { dia | isSpeaking = True }, [] )
 
                             _ ->
-                                ( { curDia | isSpeaking = False }
-                                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
-                                )
+                                if curDia.id == ( 103, 1 ) then
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Enemy", Defeated ) ]
+                                    )
+
+                                else
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                                    )
 
                     remainingDialogues =
                         List.filter
@@ -92,12 +98,12 @@ updaterec env msg data basedata =
                             List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 otherMsg =
-                    case nextDialogue.id of
-                        ( 101, _ ) ->
+                    case id of
+                        101 ->
                             [ Other ( "Enemy", AddChar ) ]
 
-                        ( 102, _ ) ->
-                            [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
+                        102 ->
+                            [ Other ( "Self", PutBuff NoAction 100 ) ]
 
                         _ ->
                             []
@@ -105,18 +111,22 @@ updaterec env msg data basedata =
                 remainingDialogues =
                     List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
-            ( ( { data
-                    | curDialogue = { nextDialogue | isSpeaking = True }
-                    , remainDiaList = remainingDialogues
-                }
-              , basedata
-              )
-            , [ Other ( "Self", BeginDialogue id )
-              , Other ( "Enemy", BeginDialogue id )
-              ]
-                ++ otherMsg
-            , env
-            )
+            if nextDialogue.speaker == "" then
+                ( ( data, basedata ), otherMsg, env )
+
+            else
+                ( ( { data
+                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        , remainDiaList = remainingDialogues
+                    }
+                  , basedata
+                  )
+                , [ Other ( "Self", BeginDialogue id )
+                  , Other ( "Enemy", BeginDialogue id )
+                  ]
+                    ++ otherMsg
+                , env
+                )
 
         _ ->
             ( ( data, basedata ), [], env )

@@ -53,6 +53,19 @@ checkStatus self =
     energyCheck
 
 
+checkBuff : Self -> Self
+checkBuff data =
+    let
+        newData =
+            if List.any (\( b, _ ) -> b == LoseHp) data.buff then
+                checkStatus <| { data | hp = data.hp - 10 }
+
+            else
+                data
+    in
+    { newData | buff = getNewBuff data.buff }
+
+
 normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self
 normalAttackDemage self enemy env =
     let
@@ -276,7 +289,7 @@ getSpecificMagicalAttack self enemy skill =
         element =
             if skill.name == "Arcane Beam" then
                 case enemy.name of
-                    "Kunzite" ->
+                    "Concert" ->
                         Fire
 
                     _ ->
@@ -312,11 +325,25 @@ getEffect enemy skill env target basedata =
             if skill.kind == Magic then
                 getSpecificMagicalAttack target enemy skill
 
+            else if
+                (skill.name
+                    == "Poison"
+                    || skill.name
+                    == "Restoration Potion"
+                )
+                    && target.name
+                    /= "Cavalry"
+            then
+                -skill.effect.hp
+
             else
                 skill.effect.hp
 
         mpChange =
             skill.effect.mp
+
+        energyChange =
+            skill.effect.energy
 
         newBuff =
             case List.head skill.buff of
@@ -330,6 +357,7 @@ getEffect enemy skill env target basedata =
         { target
             | hp = target.hp - hpChange
             , mp = target.mp - mpChange
+            , energy = target.energy - energyChange
             , buff = newBuff ++ target.buff
         }
 

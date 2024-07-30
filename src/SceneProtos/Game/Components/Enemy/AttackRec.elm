@@ -408,7 +408,17 @@ skillRec self skill env data position basedata =
             else
                 targets
     in
-    List.map (\t -> getEffect self skill env t basedata) newTargets
+    case skill.range of
+        OneTheOther effect ->
+            (List.map (\t -> getEffect self skill env t basedata) <|
+                List.filter (\t -> t.position == position) newTargets
+            )
+                ++ (List.map (\t -> getEffect self { skill | buff = [], effect = effect } env t basedata) <|
+                        List.filter (\t -> t.position /= position) newTargets
+                   )
+
+        _ ->
+            List.map (\t -> getEffect self skill env t basedata) newTargets
 
 
 handleSkill : Self -> Skill -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData

@@ -5,7 +5,7 @@ module Scenes.Level1.Plots exposing (..)
 -}
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (HealthStatus(..), TriggerConditions(..))
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
 
 
 start : Dialogue

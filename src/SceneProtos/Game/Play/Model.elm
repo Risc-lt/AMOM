@@ -130,9 +130,6 @@ view env data =
         basicView =
             [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
             , viewComponents env data.components
-            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
-            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )
-            , renderTextWithColorCenter env.globalData.internalData 30 "Attacks are possible to miss" "Arial" Color.black ( 1680, 1030 )
             ]
 
         background =

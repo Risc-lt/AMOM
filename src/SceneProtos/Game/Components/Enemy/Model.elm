@@ -224,8 +224,14 @@ updaterec env msg data basedata =
 
                 newData =
                     newEnemy ++ data
+
+                newNum =
+                    List.map (\e -> e.position) newData
             in
-            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], env )
+            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
+            , [ Other ( "Self", CharDie newNum ) ]
+            , env 
+            )
 
         _ ->
             ( ( data, basedata ), [], env )

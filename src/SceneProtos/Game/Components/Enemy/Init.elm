@@ -15,6 +15,7 @@ module SceneProtos.Game.Components.Enemy.Init exposing
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 
 
 {-| Character state
@@ -162,35 +163,48 @@ defaultEnemy =
 {-| -}
 genDefaultEnemy : Int -> Int -> Enemy
 genDefaultEnemy time id =
-    { name = "Wild Wolf"
-    , x =
-        if id >= 7 && id <= 9 then
-            230
+    let
+        random =
+            genRandomNum 1 3 time
 
-        else
-            100
-    , y =
-        if id >= 7 && id <= 9 then
-            toFloat (160 + 130 * (id - 7))
+        ( name, baseAttributes, skills ) =
+            case random of
+                1 ->
+                    ( "Swordsman"
+                    , { strength = 35
+                    , dexterity = 30
+                    , constitution = 35
+                    , intelligence = 40
+                    }
+                    , [ arcaneBeam
+                      , lightningSpell 
+                      ]
+                    )
 
-        else
-            toFloat (160 + 130 * (id - 10))
-    , position = id
-    , hp = genHp baseAttributes
-    , mp = genMp baseAttributes
-    , energy = 0
-    , attributes = baseAttributes
-    , extendValues =
-        genExtendValues
-            baseAttributes
-            10
-            baseEleResistance.waterResistance
-            baseEleResistance.fireResistance
-            baseEleResistance.airResistance
-            baseEleResistance.earthResistance
-    , buff = []
-    , skills = []
-    , state = Waiting
-    , curHurt = ""
-    , isRunning = False
-    }
+                2 ->
+                    ( "Magician"
+                    , { strength = 25
+                    , dexterity = 30
+                    , constitution = 35
+                    , intelligence = 50
+                    }
+                    , [ arcaneBeam
+                      , lightningSpell
+                      , chainLightning
+                      ]
+                    )
+
+                _ ->
+                    ( "Therapist"
+                    , { strength = 30
+                    , dexterity = 30
+                    , constitution = 35
+                    , intelligence = 45
+                    }
+                    , [ arcaneBeam
+                      , lightningSpell
+                      , cure
+                      , whirlwindAccelaration
+                      ]
+                    )
+    in

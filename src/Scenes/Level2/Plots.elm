@@ -226,7 +226,24 @@ dialogueInitData =
     }
 
 
+amazeTrigger : ( TriggerConditions, Int )
+amazeTrigger =
+    ( FrameTrigger 5, 1 )
+
+
+weakTrigger : ( TriggerConditions, Int )
+weakTrigger =
+    ( FrameTrigger 10, 1 )
+
+
+badTrigger : ( TriggerConditions, Int )
+badTrigger =
+    ( FrameTrigger 15, 1 )
+
+
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
-    [ 
+    [ amazeTrigger
+    , weakTrigger
+    , badTrigger
     ]

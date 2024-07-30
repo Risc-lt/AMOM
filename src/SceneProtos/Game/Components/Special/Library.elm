@@ -173,6 +173,19 @@ iceRing =
     }
 
 
+cure : Skill
+cure =
+    { kind = Magic
+    , name = "Cure"
+    , effect = { defaultEffect | hp = -50 }
+    , buff = []
+    , range = Ally
+    , element = Water
+    , cost = 12
+    , lasting = 0
+    }
+
+
 fireBall : Skill
 fireBall =
     { kind = Magic
@@ -209,6 +222,84 @@ blindness =
     , element = Fire
     , cost = 18
     , lasting = 2
+    }
+
+
+whirlwindAccelaration : Skill
+whirlwindAccelaration =
+    { kind = Magic
+    , name = "Whirlwind Acceleration"
+    , effect = defaultEffect
+    , buff = [ SpeedUp 10 ]
+    , range = Ally
+    , element = Air
+    , cost = 3
+    , lasting = 2
+    }
+
+
+lightningSpell : Skill
+lightningSpell =
+    { kind = Magic
+    , name = "Lightning Spell"
+    , effect = { defaultEffect | hp = 32 }
+    , buff = []
+    , range = One
+    , element = Air
+    , cost = 11
+    , lasting = 0
+    }
+
+
+chainLightning : Skill
+chainLightning =
+    { kind = Magic
+    , name = "Chain Lighting"
+    , effect = { defaultEffect | hp = 29 }
+    , buff = []
+    , range = Chain
+    , element = Air
+    , cost = 16
+    , lasting = 0
+    }
+
+
+blessingOfAir : Skill
+blessingOfAir =
+    { kind = Magic
+    , name = "Blessing of Air"
+    , effect = defaultEffect
+    , buff = [ HitRateUp 10, CriticalRateUp 60 ]
+    , range = Ally
+    , element = Air
+    , cost = 8
+    , lasting = 2
+    }
+
+
+mudSwamp : Skill
+mudSwamp =
+    { kind = Magic
+    , name = "Mud Swamp"
+    , effect = defaultEffect
+    , buff = [ SpeedDown 5 ]
+    , range = AllEnemy
+    , element = Earth
+    , cost = 10
+    , lasting = 3
+    }
+
+
+stoneSkin : Skill
+stoneSkin =
+    { kind = Magic
+    , name = "Stone Skin"
+    , effect = defaultEffect
+    , buff = [ DefenceUp 60 ]
+    , range = Ally
+    , element = Earth
+    , cost = 7
+    , lasting = 3
     }
 
 

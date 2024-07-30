@@ -95,6 +95,45 @@ compounding =
     }
 
 
+magicTransformation : Skill
+magicTransformation =
+    { kind = SpecialSkill
+    , name = "Magic Transformation"
+    , effect = { defaultEffect | mp = 16 }
+    , buff = []
+    , range = Ally
+    , element = None
+    , cost = 100
+    , lasting = 0
+    }
+
+
+gale : Skill
+gale =
+    { kind = SpecialSkill
+    , name = "Gale"
+    , effect = defaultEffect
+    , buff = [ SpeedDown 10 ]
+    , range = AllFront
+    , element = Air
+    , cost = 100
+    , lasting = 2
+    }
+
+
+fieryThrust : Skill
+fieryThrust =
+    { kind = SpecialSkill
+    , name = "Fiery Thrust"
+    , effect = defaultEffect
+    , buff = [ LoseHp ]
+    , range = PenetrateOne
+    , element = Fire
+    , cost = 200
+    , lasting = 2
+    }
+
+
 arcaneBeam : Skill
 arcaneBeam =
     { kind = Magic

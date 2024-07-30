@@ -1,4 +1,4 @@
-module Scenes.After3.Model exposing (..)
+module Scenes.After4.Model exposing (..)
 
 {-|
 
@@ -21,9 +21,9 @@ import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
 import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
-import Scenes.After3.Background exposing (backgroundInitData)
-import Scenes.After3.Characters exposing (charInitData)
-import Scenes.After3.Dialogues exposing (dialogueInitData)
+import Scenes.After4.Background exposing (backgroundInitData)
+import Scenes.After4.Characters exposing (charInitData)
+import Scenes.After4.Dialogues exposing (dialogueInitData)
 
 
 type alias Data =
@@ -53,7 +53,7 @@ initData env msg =
         , Dialogue.component (DialogueInit <| dialogueInit)
         , Trigger.component (TriggerInit <| 17)
         ]
-    , level = "After3"
+    , level = "After4"
     }
 
 

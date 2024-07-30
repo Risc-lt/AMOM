@@ -12,10 +12,21 @@ remind =
     let
         content =
             [ "Cavalry:"
-            , "OK, thank you. I'll pay you the rest then."
+            , "Watch out!"
             ]
     in
     genDialogue "head_cavalry" content ( 1, 1 )
+
+
+interrupt : Dialogue
+interrupt =
+    let
+        content =
+            [ "White Robe Man:"
+            , "Damn!"
+            ]
+    in
+    genDialogue "head_magicorg" content ( 1, 2 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
@@ -30,5 +41,8 @@ genDialogue speaker content id =
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue
-    , remainDiaList = []
+    , remainDiaList =
+        [ remind
+        , interrupt
+        ]
     }

@@ -276,7 +276,7 @@ getSpecificMagicalAttack self enemy skill =
         element =
             if skill.name == "Arcane Beam" then
                 case enemy.name of
-                    "Kunzite" ->
+                    "Concert" ->
                         Fire
 
                     _ ->

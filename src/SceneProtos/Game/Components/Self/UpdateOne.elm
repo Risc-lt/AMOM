@@ -11,6 +11,7 @@ import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import SceneProtos.Game.Components.Self.AttackRec exposing (checkStatus)
 
 
 type alias Data =
@@ -42,6 +43,19 @@ checkStorage data =
                 energyCheck.skills
     in
     { energyCheck | skills = itemCheck }
+
+
+checkBuff : Data -> Data
+checkBuff data =
+    let
+        newData = 
+            if List.any (\(b, _) -> b == Bleed) data.buff then
+                checkStatus <| { data | hp = data.hp - 10 }
+
+            else
+                data
+    in
+    { newData | buff = getNewBuff data.buff }
 
 
 handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -507,10 +521,14 @@ handleMove list env evnt data basedata =
         newData =
             if basedata.state == PlayerReturn False && newX >= returnX then
                 if basedata.side == PlayerSide then
-                    { data | buff = getNewBuff data.buff, state = Rest }
+                    let
+                        newBuff = 
+                            checkBuff data
+                    in
+                    { newBuff | state = Rest }
 
                 else
-                    { data | buff = getNewBuff data.buff }
+                    checkBuff data
 
             else
                 data

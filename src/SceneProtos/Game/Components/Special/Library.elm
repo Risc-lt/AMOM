@@ -69,6 +69,19 @@ airBlade =
     }
 
 
+doubleStrike : Skill
+doubleStrike =
+    { kind = SpecialSkill
+    , name = "Double Strike"
+    , effect = defaultEffect
+    , buff = [ ExtraAttack ]
+    , range = Oneself
+    , element = None
+    , cost = 100
+    , lasting = 2
+    }
+
+
 compounding : Skill
 compounding =
     { kind = SpecialSkill

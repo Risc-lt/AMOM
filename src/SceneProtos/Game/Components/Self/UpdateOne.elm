@@ -11,7 +11,8 @@ import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Game.Components.Self.AttackRec exposing (checkStatus)
+import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
+import Messenger.Base exposing (Env)
 
 
 type alias Data =
@@ -45,19 +46,6 @@ checkStorage data =
     { energyCheck | skills = itemCheck }
 
 
-checkBuff : Data -> Data
-checkBuff data =
-    let
-        newData = 
-            if List.any (\(b, _) -> b == LoseHp) data.buff then
-                checkStatus <| { data | hp = data.hp - 10 }
-
-            else
-                data
-    in
-    { newData | buff = getNewBuff data.buff }
-
-
 handleKeyDown : Int -> List Data -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleKeyDown key list env evnt data basedata =
     case key of
@@ -88,11 +76,13 @@ handleCompounding skill env evnt data basedata =
 
             else
                 { skill | cost = 1 } :: data.skills
+
+        newBuff =
+            checkBuff data
     in
     ( ( checkStorage <|
-            { data
-                | buff = getNewBuff data.buff
-                , skills = newItem
+            { newBuff
+                | skills = newItem
                 , energy = data.energy - 100
                 , state = Rest
             }
@@ -179,13 +169,28 @@ handleChooseSkill x y env evnt data basedata =
         if skill.cost <= storage && skill.name /= "" then
             case skill.range of
                 Oneself ->
-                    ( ( data, { basedata | state = Compounding } )
-                    , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
-                    , ( env, False )
-                    )
+                    if skill.name == "Compounding" then
+                        ( ( data, { basedata | state = Compounding } )
+                        , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
+                        , ( env, False )
+                        )
+
+                    else
+                        let
+                            newBuff =
+                                checkBuff newData
+                        in
+                        ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
+                        , [ Other ( "Self", Action (PlayerSkill data skill data.position) ) ]
+                        , ( env, False )
+                        )
 
                 AllFront ->
-                    ( ( { newData | buff = getNewBuff newData.buff, state = Rest }, { basedata | state = EnemyTurn } )
+                    let
+                        newBuff =
+                            checkBuff newData
+                    in
+                    ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
                     , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
                     , ( env, False )
                     )
@@ -389,7 +394,8 @@ handleMouseDown x y env evnt data basedata =
 
                 newData =
                     if action == EnemyTurn then
-                        { data | buff = ( DefenceUp 50, 1 ) :: getNewBuff data.buff, state = Rest }
+                        checkBuff <|
+                            { data | buff = ( DefenceUp 50, 2 ) :: data.buff, state = Rest }
 
                     else
                         data
@@ -580,7 +586,7 @@ updateOne list env evnt data basedata =
     case evnt of
         Tick _ ->
             if data.state == Rest && basedata.side == PlayerSide then
-                ( ( data, { basedata | state = EnemyTurn } )
+                ( ( checkBuff data, { basedata | state = EnemyTurn } )
                 , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
                 , ( env, False )
                 )

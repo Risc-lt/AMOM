@@ -53,6 +53,19 @@ checkStatus self =
     energyCheck
 
 
+checkBuff : Self -> Self
+checkBuff data =
+    let
+        newData = 
+            if List.any (\(b, _) -> b == LoseHp) data.buff then
+                checkStatus <| { data | hp = data.hp - 10 }
+
+            else
+                data
+    in
+    { newData | buff = getNewBuff data.buff }
+
+
 normalAttackDemage : Self -> Enemy -> Messenger.Base.Env SceneCommonData UserData -> Self
 normalAttackDemage self enemy env =
     let
@@ -410,17 +423,18 @@ handleSkill enemy skill position env msg data basedata =
             skillRec enemy skill env data position basedata
 
         newData =
-            List.map
-                (\x ->
-                    Maybe.withDefault x <|
-                        List.head <|
-                            List.filter
-                                (\e ->
-                                    x.position == e.position
-                                )
-                                newSelfs
-                )
-                data
+            List.map (\s -> checkBuff s) <|
+                List.map
+                    (\x ->
+                        Maybe.withDefault x <|
+                            List.head <|
+                                List.filter
+                                    (\e ->
+                                        x.position == e.position
+                                    )
+                                    newSelfs
+                    )
+                    data
 
         remainNum =
             List.map (\x -> x.position) <|

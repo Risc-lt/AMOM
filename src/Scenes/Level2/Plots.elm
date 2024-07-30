@@ -6,6 +6,7 @@ module Scenes.Level2.Plots exposing (..)
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
+import SubstanceAmount exposing (gigamoles)
 
 
 amaze : Dialogue
@@ -168,6 +169,30 @@ counter =
     genDialogue "head_bulingze" content ( 3, 9 )
 
 
+abuse : Dialogue
+abuse =
+    let
+        content =
+            [ "Concert:"
+            , "Don't compare me to evil creatures like you."
+            , "I am still a human after all, not a monster."
+            ]
+    in
+    genDialogue "head_concert" content ( 3, 10 )
+
+
+scorn : Dialogue
+scorn =
+    let
+        content =
+            [ "Concert:"
+            , "Killing you is probably one of the few"
+            , "good things I have done."
+            ]
+    in
+    genDialogue "head_concert" content ( 3, 11 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -181,7 +206,22 @@ dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [
+        [ amaze
+        , appreciate
+        , plaint
+        , weak
+        , confused1
+        , bad
+        , worry
+        , confused2
+        , understand
+        , guess
+        , surprise
+        , silence
+        , provoke
+        , counter
+        , abuse
+        , scorn
         ]
     }
 

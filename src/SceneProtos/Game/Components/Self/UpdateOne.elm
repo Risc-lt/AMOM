@@ -586,6 +586,12 @@ updateOne list env evnt data basedata =
     case evnt of
         Tick _ ->
             if data.state == Rest && basedata.side == PlayerSide then
+                ( ( data, { basedata | state = EnemyTurn } )
+                , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
+                , ( env, False )
+                )
+
+            else if List.any (\( b, _ ) -> b == NoAction) data.buff then
                 ( ( checkBuff data, { basedata | state = EnemyTurn } )
                 , [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
                 , ( env, False )

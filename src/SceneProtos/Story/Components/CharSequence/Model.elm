@@ -7,6 +7,7 @@ module SceneProtos.Story.Components.CharSequence.Model exposing (component)
 -}
 
 import Canvas
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -81,10 +82,13 @@ updaterec env msg data basedata =
                                         Real _ speed ->
                                             { c | posture = movement.posture, speed = speed, isMoving = True }
 
+                                        Follow _ speed ->
+                                            { c | posture = movement.posture, speed = speed, isMoving = False }
+
                                         Fake _ ->
                                             { c | posture = movement.posture, isMoving = True }
 
-                                        None ->
+                                        None _ ->
                                             { c | posture = movement.posture, isMoving = False }
 
                                 _ ->
@@ -100,7 +104,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 2 ) ]
                 , env
                 )
 
@@ -148,12 +152,71 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
+renderChar : Character -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderChar char basedata env =
+    let
+        gd =
+            env.globalData
+
+        stillRate =
+            400
+
+        moveRate =
+            floor (1000 / char.speed)
+
+        name =
+            if
+                List.any (\n -> String.endsWith n char.name)
+                    [ "1", "2", "3", "4", "5", "6" ]
+            then
+                String.dropRight 1 char.name
+
+            else
+                char.name
+
+        x =
+            if name == "Wild Wolf" then
+                if char.isMoving then
+                    3
+
+                else
+                    2
+
+            else
+                4
+
+        currentAct =
+            if char.isMoving then
+                String.fromInt (modBy (moveRate * x) gd.sceneStartTime // moveRate)
+
+            else
+                String.fromInt (modBy (stillRate * x) gd.sceneStartTime // stillRate)
+    in
+    if char.isMoving then
+        renderSprite
+            env.globalData.internalData
+            [ imageSmoothing False ]
+            ( char.x, char.y )
+            ( 140, 140 )
+            (name ++ "Sheet.1/" ++ currentAct)
+
+    else
+        Canvas.group []
+            [ renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( char.x, char.y )
+                ( 140, 140 )
+                (name ++ "Sheet.0/" ++ currentAct)
+            ]
+
+
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     ( Canvas.group [] <|
         List.map
             (\c ->
-                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 100, 0 ) c.name
+                renderChar c basedata env
             )
             data.characters
     , 2

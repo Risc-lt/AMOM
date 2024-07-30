@@ -8,6 +8,7 @@ module SceneProtos.Story.Components.DialogSequence.Model exposing (component)
 
 import Bitwise exposing (or)
 import Canvas
+import Canvas.Settings.Advanced exposing (alpha)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -15,9 +16,9 @@ import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (InitData, defaultDialogue)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (DialogueState(..), InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
@@ -39,42 +40,98 @@ init env initMsg =
             )
 
 
+updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+updateHelper env evnt data basedata =
+    let
+        curDia =
+            data.curDialogue
+
+        maybeNextDia =
+            List.head <|
+                List.filter
+                    (\dia ->
+                        dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                    )
+                    data.remainDiaList
+
+        ( nextDia, newBasedata, msg ) =
+            case maybeNextDia of
+                Just dia ->
+                    ( { dia | state = Appear }, basedata, [] )
+
+                _ ->
+                    ( { curDia | state = NoDialogue }
+                    , { basedata | isPlaying = False }
+                    , [ Other ( "Trigger", PlotDone 3 ) ]
+                    )
+
+        remainingDialogues =
+            List.filter
+                (\dia ->
+                    dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+                )
+                data.remainDiaList
+    in
+    ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, newBasedata )
+    , msg
+    , ( env, False )
+    )
+
+
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
         KeyDown key ->
             if key == 13 then
-                let
-                    curDia =
-                        data.curDialogue
+                if data.curDialogue.state == IsSpeaking then
+                    let
+                        curDia =
+                            data.curDialogue
 
-                    maybeNextDia =
-                        List.head <|
-                            List.filter
-                                (\dia ->
-                                    dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                                )
-                                data.remainDiaList
+                        newDia =
+                            { curDia | state = Disappear }
+                    in
+                    ( ( { data | curDialogue = newDia }, basedata )
+                    , []
+                    , ( env, False )
+                    )
 
-                    ( nextDia, msg ) =
-                        case maybeNextDia of
-                            Just dia ->
-                                ( { dia | isSpeaking = True }, [] )
+                else
+                    ( ( data, basedata ), [], ( env, False ) )
 
-                            _ ->
-                                ( { curDia | isSpeaking = False }, [] )
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
-                    remainingDialogues =
-                        List.filter
-                            (\dia ->
-                                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                            )
-                            data.remainDiaList
-                in
-                ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, basedata )
-                , msg
-                , ( env, False )
-                )
+        Tick _ ->
+            let
+                curDia =
+                    data.curDialogue
+
+                newDia =
+                    case curDia.state of
+                        Appear ->
+                            if curDia.alpha + 0.04 < 1 then
+                                { curDia | alpha = curDia.alpha + 0.04 }
+
+                            else
+                                { curDia | alpha = 1, state = IsSpeaking }
+
+                        Disappear ->
+                            if curDia.alpha - 0.04 > 0 then
+                                { curDia | alpha = curDia.alpha - 0.04 }
+
+                            else
+                                { curDia | alpha = 0, state = NoDialogue }
+
+                        _ ->
+                            curDia
+            in
+            if curDia /= newDia then
+                if newDia.state == NoDialogue then
+                    updateHelper env evnt data basedata
+
+                else
+                    ( ( { data | curDialogue = newDia }, basedata ), [], ( env, False ) )
 
             else
                 ( ( data, basedata ), [], ( env, False ) )
@@ -98,12 +155,12 @@ updaterec env msg data basedata =
             in
             if nextDialogue.speaker /= "" then
                 ( ( { data
-                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        | curDialogue = { nextDialogue | state = Appear }
                         , remainDiaList = remainingDialogues
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 3 ) ]
                 , env
                 )
 
@@ -118,27 +175,36 @@ contentToView : ( Int, String ) -> Messenger.Base.Env SceneCommonData UserData -
 contentToView ( index, text ) env data =
     let
         lineHeight =
-            72
+            60
     in
     Canvas.group []
-        [ renderTextWithColorCenter env.globalData.internalData 60 text data.curDialogue.font Color.black ( Tuple.first data.curDialogue.textPos, toFloat index * lineHeight + Tuple.second data.curDialogue.textPos )
+        [ renderTextWithColorStyle
+            env.globalData.internalData
+            40
+            text
+            data.curDialogue.font
+            (Color.rgb255 207 207 207)
+            ""
+            ( Tuple.first data.curDialogue.textPos
+            , toFloat index * lineHeight + Tuple.second data.curDialogue.textPos
+            )
         ]
 
 
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
-    if data.curDialogue.isSpeaking then
+    if data.curDialogue.state /= NoDialogue then
         let
             renderableTexts =
                 List.map (\textWithIndex -> contentToView textWithIndex env data) (List.indexedMap Tuple.pair data.curDialogue.content)
         in
-        ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 0 ) data.curDialogue.speaker
+        ( Canvas.group [ alpha data.curDialogue.alpha ]
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1880, 400 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 346, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )
-        , 1
+        , 3
         )
 
     else

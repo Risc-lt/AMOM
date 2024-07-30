@@ -23,8 +23,10 @@ type ComponentMsg
     | DialogueInit Dialogue.InitData
     | CharInit Character.InitData
     | BackgroundInit Background.InitData
-    | TriggerInit
+    | TriggerInit Int
     | EndMove
+    | PlotDone Int
+    | Over
     | NullComponentMsg
 
 

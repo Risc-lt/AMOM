@@ -44,17 +44,18 @@ allTexture =
     Dict.fromList
         ([ ( "background", "assets/character/background/battle_background.jpg" )
          , ( "battleframe", "assets/character/chartlet/battleframe.png" )
-         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.png" )
+         , ( "dialogue_frame", "assets/character/chartlet/dialogue_frame.jpg" )
          , ( "battle_background", "assets/character/background/battle_background.jpg" )
          , ( "Fire Ball", "assets/character/sprite_sheet/Fire Ball.png" )
          , ( "dialogue_1", "assets/character/background/dialogue_1.jpg" )
          , ( "dialogue_2", "assets/character/background/dialogue_2.jpg" )
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
+         , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "instruction", "assets/character/background/instruction.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
          , ( "button_1", "assets/character/chartlet/button_1.png" )
          , ( "button_2", "assets/character/chartlet/button_2.png" )
-         , ( "levelselect", "assets/character/background/levelselect.jpg")
+         , ( "levelselect", "assets/character/background/levelselect.jpg" )
          ]
             ++ chacaterTexture
             ++ bufferTexture
@@ -72,11 +73,19 @@ chacaterTexture =
     , ( "head_bruce", "assets/character/role/role_4.jpg" )
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
+    , ( "head_cavalry", "assets/character/role/role_5.jpg" )
     , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
     , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
     , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
+    , ( "SwordsmanSheet", "assets/character/sprite_sheet/SwordsmanSheet.png" )
+    , ( "MagicianSheet", "assets/character/sprite_sheet/MagicianSheet.png" )
+    , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png" )
+    , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png" )
+    , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png" )
+    , ( "head_magicorg", "assets/character/role/head_magicorg.jpg" )
+    , ( "head_concert", "assets/character/role/head_concert.jpg" )
     ]
 
 
@@ -201,6 +210,23 @@ allSpriteSheets =
                     )
                     (playerSize "WenderdSheet")
           )
+        , ( "CavalrySheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "CavalrySheet")
+          )
         , ( "Wild WolfSheet"
           , List.concat <|
                 List.indexedMap
@@ -217,6 +243,74 @@ allSpriteSheets =
                             List.range 0 colsize
                     )
                     (playerSize "Wild WolfSheet")
+          )
+        , ( "ConcertSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 70 * toFloat col, 70 * toFloat row )
+                                  , realSize = ( 70, 70 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "ConcertSheet")
+          )
+        , ( "SwordsmanSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "SwordsmanSheet")
+          )
+        , ( "MagicianSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "MagicianSheet")
+          )
+        , ( "TherapistSheet"
+          , List.concat <|
+                List.indexedMap
+                    (\row colsize ->
+                        List.map
+                            (\col ->
+                                ( String.fromInt row ++ "/" ++ String.fromInt col
+                                , { realStartPoint = ( 64 * toFloat col, 64 * toFloat row )
+                                  , realSize = ( 64, 64 )
+                                  }
+                                )
+                            )
+                        <|
+                            List.range 0 colsize
+                    )
+                    (playerSize "TherapistSheet")
           )
         ]
 

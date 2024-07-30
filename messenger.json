@@ -12,7 +12,14 @@
         "audio": []
     },
     "scenes": {
+        "Before1": [],
         "Level1": [],
+        "After1": [],
+        "Before2": [],
+        "After2": [],
+        "Before3": [],
+        "After3": [],
+        "After4": [],
         "Begin": {
             "layers": []
         },

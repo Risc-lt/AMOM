@@ -12,17 +12,24 @@ module SceneProtos.Story.Components.DialogSequence.Init exposing (..)
 {- The data sturcture for dialogues -}
 
 
+type DialogueState
+    = IsSpeaking
+    | Appear
+    | Disappear
+    | NoDialogue
+
+
 type alias Dialogue =
     { frameName : String
     , framePos : ( Float, Float )
     , speaker : String
     , speakerPos : ( Float, Float )
     , font : String
-    , isSpeaking : Bool
+    , state : DialogueState
     , content : List String
     , textPos : ( Float, Float )
     , id : ( Int, Int )
-    , timer : Int
+    , alpha : Float
     }
 
 
@@ -37,13 +44,13 @@ type alias InitData =
 defaultDialogue : Dialogue
 defaultDialogue =
     { frameName = "dialogue_frame"
-    , framePos = ( 0, 500 )
+    , framePos = ( 20, 660 )
     , speaker = ""
-    , speakerPos = ( -20, 680 )
+    , speakerPos = ( 38, 681 )
     , font = "Comic Sans MS"
-    , isSpeaking = False
+    , state = NoDialogue
     , content = []
-    , textPos = ( 720, 1320 )
+    , textPos = ( 415, 700 )
     , id = ( 0, 0 )
-    , timer = 0
+    , alpha = 0
     }

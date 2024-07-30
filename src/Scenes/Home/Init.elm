@@ -50,7 +50,7 @@ initData =
           , w = 500
           , h = 400
           , id = 1
-          , next = "Level1"
+          , next = "Before1"
           , text = "This is the dialogue before Battle 1."
           }
         , { name = "background"
@@ -68,16 +68,16 @@ initData =
           , w = 500
           , h = 400
           , id = 3
-          , next = "Level1"
+          , next = "After1"
           , text = "This is the dialogue after Battle 1."
           }
-        , { name = "dialogue_2"
+        , { name = "dialogue_1"
           , x = 2520
           , y = 300
           , w = 500
           , h = 400
           , id = 4
-          , next = "Level1"
+          , next = "Before2"
           , text = "This is the dialogue before Battle 2."
           }
         , { name = "background"
@@ -89,7 +89,7 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 2."
           }
-        , { name = "dialogue_2"
+        , { name = "dialogue_1"
           , x = 3720
           , y = 300
           , w = 500
@@ -116,7 +116,7 @@ initData =
           , next = "Level1"
           , text = "This is the Battle 3."
           }
-        , { name = "dialogue_3"
+        , { name = "dialogue_4"
           , x = 5520
           , y = 300
           , w = 500

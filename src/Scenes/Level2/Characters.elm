@@ -258,7 +258,7 @@ enemyInitData time =
                 (\p ->
                     genEnemy p time "" defaultAttributes defaultEleResistance []
                 )
-                (List.range 1 6)
+                (List.range 7 12)
 
         enemies =
             [ concert time ]

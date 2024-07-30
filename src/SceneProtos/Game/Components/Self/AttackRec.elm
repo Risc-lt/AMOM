@@ -461,9 +461,6 @@ handleSkill enemy skill position env msg data basedata =
 
             else
                 [ Other ( "Enemy", CharDie remainNum ) ]
-
-        skillname =
-            Debug.log "name" skill.name
     in
     ( ( newData, { basedata | selfNum = remainNum } )
     , dieMsg ++ [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]

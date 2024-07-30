@@ -9,11 +9,11 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 
 characters : List Character
 characters =
-    [ genCharacter "Wenderd" Normal Up 890 -140
-    , genCharacter "Bulingze" Normal Up 900 -270
-    , genCharacter "Bruce" Normal Up 880 -650
-    , genCharacter "Bithif" Normal Up 900 -530
-    , genCharacter "Cavalry" Normal Left 890 -400
+    [ genCharacter "Wenderd" Normal Down 890 -140
+    , genCharacter "Bulingze" Normal Down 900 -270
+    , genCharacter "Bruce" Normal Down 880 -650
+    , genCharacter "Bithif" Normal Down 900 -530
+    , genCharacter "Cavalry" Normal Down 890 -400
     , genCharacter "Swordsman1" Battle Up 890 1080
     , genCharacter "Swordsman2" Battle Up 890 1210
     , genCharacter "Magician1" Battle Up 890 1340

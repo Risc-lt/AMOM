@@ -138,12 +138,38 @@ arcaneBeam : Skill
 arcaneBeam =
     { kind = Magic
     , name = "Arcane Beam"
-    , effect = { defaultEffect | hp = 40 }
+    , effect = { defaultEffect | hp = 20 }
     , buff = []
     , range = One
     , element = None
-    , cost = 4
+    , cost = 5
     , lasting = 0
+    }
+
+
+frostImpact : Skill
+frostImpact =
+    { kind = Magic
+    , name = "Frost Impact"
+    , effect = { defaultEffect | hp = 28 }
+    , buff = [ SpeedDown 5 ]
+    , range = One
+    , element = Water
+    , cost = 11
+    , lasting = 1
+    }
+
+
+iceRing : Skill
+iceRing =
+    { kind = Magic
+    , name = "Ice Ring"
+    , effect = defaultEffect
+    , buff = [ NoAction ]
+    , range = OneTheOther { defaultEffect | hp = 22 }
+    , element = Water
+    , cost = 16
+    , lasting = 1
     }
 
 
@@ -151,12 +177,38 @@ fireBall : Skill
 fireBall =
     { kind = Magic
     , name = "Fire Ball"
-    , effect = { defaultEffect | hp = 40 }
+    , effect = { defaultEffect | hp = 42 }
     , buff = []
     , range = Region
     , element = Fire
-    , cost = 12
+    , cost = 13
     , lasting = 0
+    }
+
+
+inspirationOfFire : Skill
+inspirationOfFire =
+    { kind = Magic
+    , name = "Inspiration of Fire"
+    , effect = defaultEffect
+    , buff = [ AttackUp 70 ]
+    , range = Ally
+    , element = Fire
+    , cost = 9
+    , lasting = 2
+    }
+
+
+blindness : Skill
+blindness =
+    { kind = Magic
+    , name = "Blindness"
+    , effect = defaultEffect
+    , buff = [ NoAction ]
+    , range = One
+    , element = Fire
+    , cost = 18
+    , lasting = 2
     }
 
 

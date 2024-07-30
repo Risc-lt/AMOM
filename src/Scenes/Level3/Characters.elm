@@ -163,6 +163,7 @@ cavalry time =
         , lightningSpell
         , chainLightning
         , blessingOfAir
+        , { restorationPotion | cost = 1 }
         ]
 
 
@@ -253,10 +254,10 @@ magician : Int -> List Enemy
 magician time =
     let
         baseAttributes =
-            { strength = 35
+            { strength = 25
             , dexterity = 30
             , constitution = 35
-            , intelligence = 40
+            , intelligence = 50
             }
 
         baseEleResistance =
@@ -277,10 +278,10 @@ therapist : Int -> List Enemy
 therapist time =
     let
         baseAttributes =
-            { strength = 35
+            { strength = 30
             , dexterity = 30
             , constitution = 35
-            , intelligence = 40
+            , intelligence = 45
             }
 
         baseEleResistance =

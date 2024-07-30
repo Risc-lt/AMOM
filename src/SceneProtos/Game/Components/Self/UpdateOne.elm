@@ -49,7 +49,7 @@ checkBuff : Data -> Data
 checkBuff data =
     let
         newData = 
-            if List.any (\(b, _) -> b == Bleed) data.buff then
+            if List.any (\(b, _) -> b == LoseHp) data.buff then
                 checkStatus <| { data | hp = data.hp - 10 }
 
             else

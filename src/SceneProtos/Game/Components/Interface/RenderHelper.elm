@@ -70,6 +70,9 @@ renderBuff buffs env x y =
 
                         NoAction ->
                             "Seal"
+
+                        LoseHp ->
+                            "Bleed"
                 )
                 buffs
 

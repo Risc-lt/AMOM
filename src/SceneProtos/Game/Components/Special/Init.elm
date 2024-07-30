@@ -54,7 +54,7 @@ type Buff
     | CriticalRateUp Int
     | ExtraAttack
     | NoAction
-    | Bleed
+    | LoseHp
 
 
 type alias Skill =

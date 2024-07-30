@@ -34,12 +34,25 @@ scatterShot : Skill
 scatterShot =
     { kind = SpecialSkill
     , name = "Scatter Shot"
-    , effect = { defaultEffect | hp = 30 }
+    , effect = { defaultEffect | hp = 40 }
     , buff = []
     , range = AllFront
     , element = None
     , cost = 100
     , lasting = 0
+    }
+
+
+frostArrow : Skill
+frostArrow =
+    { kind = SpecialSkill
+    , name = "Frost Arrow"
+    , effect = { defaultEffect | hp = 30 }
+    , buff = [ NoAction ]
+    , range = One
+    , element = Water
+    , cost = 100
+    , lasting = 1
     }
 
 

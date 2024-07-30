@@ -225,6 +225,74 @@ selfInitData time =
         ++ selfs
 
 
+swordsman : Int -> List Enemy
+swordsman time =
+    let
+        baseAttributes =
+            { strength = 35
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 40
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    List.map
+        (\p ->
+            genEnemy p time "Swordsman" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell ]
+        )
+        (List.range 7 9)
+
+
+magician : Int -> List Enemy
+magician time =
+    let
+        baseAttributes =
+            { strength = 35
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 40
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    List.map
+        (\p ->
+            genEnemy p time "Magician" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, chainLightning ]
+        )
+        (List.range 10 11)
+
+
+therapist : Int -> List Enemy
+therapist time =
+    let
+        baseAttributes =
+            { strength = 35
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 40
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    [ genEnemy 12 time "Magician" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
+
+
 genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
 genEnemy position time name baseAttributes baseEleResistance skills =
     { defaultEnemy
@@ -265,7 +333,9 @@ enemyInitData time =
                 (List.range 7 12)
 
         enemies =
-            [ concert time ]
+            swordsman time
+                ++ magician time
+                ++ therapist time
     in
     List.filter
         (\d ->

@@ -167,7 +167,7 @@ genDefaultEnemy time id =
         random =
             genRandomNum 1 3 time
 
-        ( name, baseAttributes, skills ) =
+        ( name, attributes, skills ) =
             case random of
                 1 ->
                     ( "Swordsman"
@@ -208,3 +208,26 @@ genDefaultEnemy time id =
                       ]
                     )
     in
+    { defaultEnemy
+        | name = name
+        , x =
+            if id <= 9 then
+                230
+
+            else
+                100
+        , y = toFloat (160 + 130 * (id - (id - 7) // 3 * 3 - 7))
+        , position = id
+        , hp = genHp attributes
+        , mp = genMp attributes
+        , attributes = attributes
+        , extendValues =
+            genExtendValues
+                attributes
+                (time + id)
+                10
+                10
+                20
+                10
+        , skills = skills
+    }

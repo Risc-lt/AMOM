@@ -5,6 +5,8 @@ module Scenes.Level3.Plots exposing (..)
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
+import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..))
+import SceneProtos.Game.Components.ComponentBase exposing (Gamestate(..))
 
 
 ask : Dialogue
@@ -102,6 +104,17 @@ panic =
     genDialogue "head_magicorg" content ( 2, 3 )
 
 
+success : Dialogue
+success =
+    let
+        content =
+            [ "Cavalry:"
+            , "Ok! Success!"
+            ]
+    in
+    genDialogue "head_cavalry" content ( 3, 1 )
+
+
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -122,11 +135,35 @@ dialogueInitData =
         , complain
         , prepare
         , panic
+        , success
         ]
     }
 
 
+askTrigger : ( TriggerConditions, Int )
+askTrigger =
+    ( StateTrigger "GameBegin", 1 )
+
+
+complainTrigger : ( TriggerConditions, Int )
+complainTrigger =
+    ( FrameTrigger 30, 2 )
+
+
+successTrigger : ( TriggerConditions, Int )
+successTrigger =
+    ( FrameTrigger 50, 3 )
+
+
+dieTrigger : ( TriggerConditions, Int )
+dieTrigger =
+    ( DieTrigger, 101 )
+
+
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
-    [ 
+    [ askTrigger
+    , complainTrigger
+    , successTrigger
+    , dieTrigger
     ]

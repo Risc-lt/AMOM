@@ -56,8 +56,8 @@ checkStatus self =
 checkBuff : Self -> Self
 checkBuff data =
     let
-        newData = 
-            if List.any (\(b, _) -> b == LoseHp) data.buff then
+        newData =
+            if List.any (\( b, _ ) -> b == LoseHp) data.buff then
                 checkStatus <| { data | hp = data.hp - 10 }
 
             else
@@ -325,16 +325,19 @@ getEffect enemy skill env target basedata =
             if skill.kind == Magic then
                 getSpecificMagicalAttack target enemy skill
 
-            else
-                if 
-                    (skill.name == "Poison" 
-                        || skill.name == "Restoration Potion") 
-                        && target.name /= "Cavalry" 
-                then
-                    -skill.effect.hp
+            else if
+                (skill.name
+                    == "Poison"
+                    || skill.name
+                    == "Restoration Potion"
+                )
+                    && target.name
+                    /= "Cavalry"
+            then
+                -skill.effect.hp
 
-                else
-                    skill.effect.hp
+            else
+                skill.effect.hp
 
         mpChange =
             skill.effect.mp

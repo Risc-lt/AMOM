@@ -200,8 +200,8 @@ updaterec env msg data basedata =
                     List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
 
                 newEnemy =
-                    List.map 
-                        (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp) 
+                    List.map
+                        (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp)
                         emptySlot
 
                 newData =

@@ -1,7 +1,7 @@
 module SceneProtos.Game.Components.Special.Library exposing (..)
 
-{- 
-    Skill library
+{-
+   Skill library
 -}
 
 import SceneProtos.Game.Components.Special.Init exposing (..)

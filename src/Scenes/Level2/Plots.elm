@@ -36,7 +36,7 @@ plaint =
     let
         content =
             [ "Concert:"
-            , "I think I've heard of you guys, 'Nightfall Knights'." 
+            , "I think I've heard of you guys, 'Nightfall Knights'."
             , "I didn't expect we'd actually fight each other."
             ]
     in

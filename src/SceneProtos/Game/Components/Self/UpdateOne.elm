@@ -2,17 +2,16 @@ module SceneProtos.Game.Components.Self.UpdateOne exposing (..)
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (UserEvent(..))
+import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentUpdate)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), StatusMsg(..))
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
+import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
-import Messenger.Base exposing (Env)
 
 
 type alias Data =
@@ -528,7 +527,7 @@ handleMove list env evnt data basedata =
             if basedata.state == PlayerReturn False && newX >= returnX then
                 if basedata.side == PlayerSide then
                     let
-                        newBuff = 
+                        newBuff =
                             checkBuff data
                     in
                     { newBuff | state = Rest }

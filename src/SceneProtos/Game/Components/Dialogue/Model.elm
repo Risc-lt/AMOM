@@ -113,11 +113,11 @@ updaterec env msg data basedata =
                         | curDialogue = { nextDialogue | isSpeaking = True }
                         , remainDiaList = remainingDialogues
                     }
-                , basedata
-                )
+                  , basedata
+                  )
                 , [ Other ( "Self", BeginDialogue id )
-                , Other ( "Enemy", BeginDialogue id )
-                ]
+                  , Other ( "Enemy", BeginDialogue id )
+                  ]
                     ++ otherMsg
                 , env
                 )

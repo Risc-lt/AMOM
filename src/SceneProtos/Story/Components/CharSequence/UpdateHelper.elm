@@ -14,36 +14,36 @@ type alias Data =
     InitData
 
 
+detectDistance : Float -> Bool -> Float -> Float -> Float
+detectDistance target flag speed pos =
+    if flag then
+        if pos + speed > target then
+            target
+
+        else
+            pos + speed
+
+    else if pos - speed < target then
+        target
+
+    else
+        pos - speed
+
+
 changePosition : Float -> Float -> Character -> Character
 changePosition targetX targetY character =
     case character.direction of
         Right ->
-            if character.x + character.speed > targetX then
-                { character | x = targetX }
-
-            else
-                { character | x = character.x + character.speed }
+            { character | x = detectDistance targetX True character.speed character.x }
 
         Left ->
-            if character.x - character.speed < targetX then
-                { character | x = targetX }
-
-            else
-                { character | x = character.x - character.speed }
+            { character | x = detectDistance targetX False character.speed character.x }
 
         Down ->
-            if character.y + character.speed > targetY then
-                { character | y = targetY }
-
-            else
-                { character | y = character.y + character.speed }
+            { character | y = detectDistance targetY True character.speed character.y }
 
         Up ->
-            if character.y - character.speed < targetY then
-                { character | y = targetY }
-
-            else
-                { character | y = character.y - character.speed }
+            { character | y = detectDistance targetY False character.speed character.y }
 
 
 changeDirection : ( Movement, Character ) -> ( Movement, Character )

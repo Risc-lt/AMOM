@@ -122,11 +122,6 @@ updaterec env msg data =
 view : LayerView SceneCommonData UserData Data
 view env data =
     let
-        result =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
-            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
-            ]
-
         basicView =
             [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
             , viewComponents env data.components
@@ -138,15 +133,9 @@ view env data =
             ]
 
         outComeView =
-            if env.commonData.gameover then
-                Canvas.group
-                    []
-                    (basicView ++ result)
-
-            else
-                Canvas.group
-                    []
-                    (background ++ basicView)
+            Canvas.group
+                []
+                (background ++ basicView)
     in
     outComeView
 

@@ -12,8 +12,8 @@ import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
-oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
-oneChar time str dex con int water fire air earth name skills =
+oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
+oneChar time pos str dex con int water fire air earth name skills =
     let
         baseAttributes =
             { strength = str
@@ -29,7 +29,7 @@ oneChar time str dex con int water fire air earth name skills =
             , earthResistance = earth
             }
     in
-    genSelf 1
+    genSelf pos
         time
         name
         baseAttributes
@@ -39,25 +39,25 @@ oneChar time str dex con int water fire air earth name skills =
 
 wenderd : Int -> Self
 wenderd time =
-    oneChar time 48 30 38 24 10 10 20 10 "Wenderd" <|
+    oneChar time 1 48 30 38 24 10 10 20 10 "Wenderd" <|
         [ arcaneBeam, airBlade, doubleStrike, { poison | cost = 1 } ]
 
 
 bruce : Int -> Self
 bruce time =
-    oneChar time 30 46 28 36 20 10 10 10 "Bruce" <|
+    oneChar time 2 30 46 28 36 20 10 10 10 "Bruce" <|
         [ arcaneBeam, scatterShot, frostArrow, frostImpact, { poison | cost = 1 } ]
 
 
 bulingze : Int -> Self
 bulingze time =
-    oneChar time 24 33 28 55 10 20 10 10 "Bulingze" <|
+    oneChar time 4 24 33 28 55 10 20 10 10 "Bulingze" <|
         [ arcaneBeam, fireBall, inspirationOfFire, { magicWater | cost = 1 } ]
 
 
 bithif : Int -> Self
 bithif time =
-    oneChar time 30 36 32 42 10 10 20 10 "Bithif" <|
+    oneChar time 5 30 36 32 42 10 10 20 10 "Bithif" <|
         [ arcaneBeam, compounding, magicTransformation, whirlwindAccelaration, { magicWater | cost = 1 }, { poison | cost = 1 } ]
 
 

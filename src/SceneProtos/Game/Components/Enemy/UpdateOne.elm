@@ -165,8 +165,8 @@ handleMove env evnt data basedata =
     ( ( { newData | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
-checkMagicAndSpeSkill : (Skill -> Bool) -> Data -> Bool
-checkMagicAndSpeSkill func data =
+checkMgSsAndIt : (Skill -> Bool) -> Data -> Bool
+checkMgSsAndIt func data =
     (List.length <| List.filter func data.skills) /= 0
 
 
@@ -175,32 +175,26 @@ checkMagicAndSpeSkill func data =
 chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 chooseAction env evnt data basedata =
     let
-        hasMagic =
-            if checkMagicAndSpeSkill (\s -> s.kind == Magic && s.cost <= data.mp) data then
-                [ EnemyAttack, ChooseMagic ]
+        hasItem =
+            if checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp) data then
+                if checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data then
+                    if
+                        checkMgSsAndIt (\s -> s.kind == Item) data
+                            && data.hp
+                            < data.extendValues.basicStatus.maxHp
+                            && data.mp
+                            < data.extendValues.basicStatus.maxMp
+                    then
+                        [ ChooseItem, ChooseSpeSkill, EnemyAttack, ChooseMagic ]
+
+                    else
+                        [ ChooseSpeSkill, EnemyAttack, ChooseMagic ]
+
+                else
+                    [ EnemyAttack, ChooseMagic ]
 
             else
                 [ EnemyAttack ]
-
-        hasSpeSkill =
-            if checkMagicAndSpeSkill (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data then
-                ChooseSpeSkill :: hasMagic
-
-            else
-                hasMagic
-
-        hasItem =
-            if
-                checkMagicAndSpeSkill (\s -> s.kind == Item) data
-                    && data.hp
-                    < data.extendValues.basicStatus.maxHp
-                    && data.mp
-                    < data.extendValues.basicStatus.maxMp
-            then
-                ChooseItem :: hasSpeSkill
-
-            else
-                hasSpeSkill
 
         index =
             Time.posixToMillis env.globalData.currentTimeStamp

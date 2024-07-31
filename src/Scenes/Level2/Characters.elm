@@ -159,37 +159,6 @@ genEnemy position time name baseAttributes baseEleResistance skills =
     enemy
 
 
-{-| Init data for selfs
--}
-selfInitData : Int -> List Self
-selfInitData time =
-    let
-        default =
-            List.map
-                (\p ->
-                    genSelf p time "" defaultAttributes defaultEleResistance []
-                )
-                (List.range 1 6)
-
-        selfs =
-            [ wenderd time
-            , bruce time
-            , bulingze time
-            , bithif time
-            ]
-    in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
-                )
-                selfs
-        )
-        default
-        ++ selfs
-
-
 concert : Int -> Enemy
 concert time =
     let
@@ -223,28 +192,75 @@ concert time =
         ]
 
 
+initData : Int -> ( List Self, List Enemy )
+initData time =
+    let
+        default =
+            List.map
+                (\p ->
+                    ( genSelf p time "" defaultAttributes defaultEleResistance []
+                    , genEnemy (p + 6) time "" defaultAttributes defaultEleResistance []
+                    )
+                )
+                (List.range 1 6)
+
+        ( defaultSelfs, defaultEnemies ) =
+            List.unzip default
+
+        selfs =
+            [ wenderd time
+            , bruce time
+            , bulingze time
+            , bithif time
+            ]
+
+        enemies =
+            [ concert time ]
+
+        resSelfs =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        selfs
+                )
+                defaultSelfs
+                ++ selfs
+
+        resEnemies =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        enemies
+                )
+                defaultEnemies
+                ++ enemies
+    in
+    ( resSelfs, resEnemies )
+
+
+{-| Init data for selfs
+-}
+selfInitData : Int -> List Self
+selfInitData time =
+    let
+        ( selfs, _ ) =
+            initData time
+    in
+    selfs
+
+
 {-| Init data for selfs
 -}
 enemyInitData : Int -> List Enemy
 enemyInitData time =
     let
-        default =
-            List.map
-                (\p ->
-                    genEnemy p time "" defaultAttributes defaultEleResistance []
-                )
-                (List.range 7 12)
-
-        enemies =
-            [ concert time ]
+        ( _, enemies ) =
+            initData time
     in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
-                )
-                enemies
-        )
-        default
-        ++ enemies
+    enemies

@@ -28,24 +28,29 @@ defaultChatactor =
     }
 
 
+calculateApUp : List ( Buff, Int ) -> Int
+calculateApUp buff =
+    List.sum <|
+        List.map
+            (\( b, _ ) ->
+                case b of
+                    SpeedUp value ->
+                        value
+
+                    SpeedDown value ->
+                        -value
+
+                    _ ->
+                        0
+            )
+            buff
+
+
 convertSelfToCharactor : Self -> Charactor
 convertSelfToCharactor self =
     let
         apUp =
-            List.sum <|
-                List.map
-                    (\( b, _ ) ->
-                        case b of
-                            SpeedUp value ->
-                                value
-
-                            SpeedDown value ->
-                                -value
-
-                            _ ->
-                                0
-                    )
-                    self.buff
+            calculateApUp self.buff
     in
     { name = self.name
     , position = self.position
@@ -57,20 +62,7 @@ convertEnemyToCharactor : Enemy -> Charactor
 convertEnemyToCharactor enemy =
     let
         apUp =
-            List.sum <|
-                List.map
-                    (\( b, _ ) ->
-                        case b of
-                            SpeedUp value ->
-                                value
-
-                            SpeedDown value ->
-                                -value
-
-                            _ ->
-                                0
-                    )
-                    enemy.buff
+            calculateApUp enemy.buff
     in
     { name = enemy.name
     , position = enemy.position

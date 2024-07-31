@@ -204,25 +204,16 @@ genDialogue speaker content id =
 
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
+    let
+        list1 =
+            [ amaze, appreciate, plaint, weak, confused1, bad, worry ]
+
+        list2 =
+            [ confused2, understand, guess, surprise, silence, provoke, counter, abuse, scorn ]
+    in
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ amaze
-        , appreciate
-        , plaint
-        , weak
-        , confused1
-        , bad
-        , worry
-        , confused2
-        , understand
-        , guess
-        , surprise
-        , silence
-        , provoke
-        , counter
-        , abuse
-        , scorn
-        ]
+        list1 ++ list2
     }
 
 

@@ -4,6 +4,7 @@ module SceneProtos.Game.Components.Self.UpdateOne2 exposing
     , handleTargetSelection
     )
 
+import Array exposing (get)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -13,10 +14,101 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), Action
 import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
 import SceneProtos.Game.Components.Self.UpdateOne exposing (Data, checkStorage, handleChooseSkill)
-import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), SpecialType(..))
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
 import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+
+
+{-| Check the position of the target
+-}
+checkPosition : Float -> Float -> Int
+checkPosition x y =
+    if x > 640 && x < 1030 && y > 680 && y < 813.3 then
+        10
+
+    else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
+        11
+
+    else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
+        12
+
+    else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
+        7
+
+    else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
+        8
+
+    else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
+        9
+
+    else
+        0
+
+
+{-| Get the new position of the target
+-}
+getNewPos : Int -> Int
+getNewPos pos =
+    case pos of
+        7 ->
+            4
+
+        8 ->
+            5
+
+        9 ->
+            6
+
+        10 ->
+            1
+
+        11 ->
+            2
+
+        12 ->
+            3
+
+        _ ->
+            0
+
+
+{-| Update the data
+-}
+updateData : Data -> BaseData -> Gamestate -> List Skill -> Data
+updateData data basedata newState newItem =
+    if basedata.state /= newState then
+        case basedata.state of
+            TargetSelection (Skills skill) ->
+                if skill.kind == SpecialSkill then
+                    checkStorage <|
+                        { data
+                            | energy = data.energy - skill.cost
+                            , buff = getNewBuff data.buff
+                            , state = Rest
+                        }
+
+                else if skill.kind == Magic then
+                    checkStorage <|
+                        { data
+                            | mp = data.mp - skill.cost
+                            , buff = getNewBuff data.buff
+                            , state = Rest
+                        }
+
+                else
+                    checkStorage <|
+                        { data
+                            | skills = newItem
+                            , buff = getNewBuff data.buff
+                            , state = Rest
+                        }
+
+            _ ->
+                data
+
+    else
+        data
 
 
 {-| The initial data for the StroryTrigger component
@@ -25,49 +117,10 @@ handleTargetSelection : Float -> Float -> ComponentUpdate SceneCommonData Data U
 handleTargetSelection x y env evnt data basedata =
     let
         position =
-            if x > 640 && x < 1030 && y > 680 && y < 813.3 then
-                10
-
-            else if x > 640 && x < 1030 && y > 813.3 && y < 946.6 then
-                11
-
-            else if x > 640 && x < 1030 && y > 946.6 && y < 1080 then
-                12
-
-            else if x > 1030 && x < 1420 && y > 680 && y < 813.3 then
-                7
-
-            else if x > 1030 && x < 1420 && y > 813.3 && y < 946.6 then
-                8
-
-            else if x > 1030 && x < 1420 && y > 946.6 && y < 1080 then
-                9
-
-            else
-                0
+            checkPosition x y
 
         newPosition =
-            case position of
-                7 ->
-                    4
-
-                8 ->
-                    5
-
-                9 ->
-                    6
-
-                10 ->
-                    1
-
-                11 ->
-                    2
-
-                12 ->
-                    3
-
-                _ ->
-                    0
+            getNewPos position
 
         melee =
             data.name /= "Bruce"
@@ -142,38 +195,7 @@ handleTargetSelection x y env evnt data basedata =
                     data.skills
 
         newData =
-            if basedata.state /= newState then
-                case basedata.state of
-                    TargetSelection (Skills skill) ->
-                        if skill.kind == SpecialSkill then
-                            checkStorage <|
-                                { data
-                                    | energy = data.energy - skill.cost
-                                    , buff = getNewBuff data.buff
-                                    , state = Rest
-                                }
-
-                        else if skill.kind == Magic then
-                            checkStorage <|
-                                { data
-                                    | mp = data.mp - skill.cost
-                                    , buff = getNewBuff data.buff
-                                    , state = Rest
-                                }
-
-                        else
-                            checkStorage <|
-                                { data
-                                    | skills = newItem
-                                    , buff = getNewBuff data.buff
-                                    , state = Rest
-                                }
-
-                    _ ->
-                        data
-
-            else
-                data
+            updateData data basedata newState newItem
     in
     ( ( newData, { basedata | curEnemy = position, state = newState } )
     , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]

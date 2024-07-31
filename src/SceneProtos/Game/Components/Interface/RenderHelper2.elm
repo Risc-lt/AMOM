@@ -12,8 +12,38 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseD
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), SpecialType(..))
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
 import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison)
+
+
+{-| Check if the mouse is on the target
+-}
+checkAmplify : Float -> Float -> Float -> Float -> Float -> Float -> Float
+checkAmplify mouseX mouseY x1 x2 y1 y2 =
+    if mouseX > x1 && mouseX < x2 && mouseY > y1 && mouseY < y2 then
+        1.2
+
+    else
+        1.0
+
+
+{-| Render the targets
+-}
+renderOne : Float -> Float -> Float -> Float -> Env cdata userdata -> String -> Renderable
+renderOne x1 x2 y1 y2 env name =
+    let
+        ( mouseX, mouseY ) =
+            env.globalData.mousePos
+
+        amplify =
+            checkAmplify mouseX mouseY x1 x2 y1 y2
+    in
+    renderTextWithColorCenter env.globalData.internalData
+        (60 * amplify)
+        name
+        "Comic Sans MS"
+        Color.black
+        ( (x1 + x2) / 2, (y1 + y2) / 2 )
 
 
 {-| Render the targets
@@ -23,54 +53,26 @@ renderTargets flag env remainSelfs remainEnemies =
     if flag then
         List.map
             (\x ->
-                renderTextWithColorCenter env.globalData.internalData
-                    60
+                renderOne
+                    (toFloat (1225 - (x.position - 1) // 3 * 390) - 100)
+                    (toFloat (1225 - (x.position - 1) // 3 * 390) + 100)
+                    (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 700)
+                    (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 800)
+                    env
                     x.name
-                    "Comic Sans MS"
-                    Color.black
-                    ( toFloat (835 + (x.position - 1) // 3 * 390)
-                    , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
-                    )
             )
             remainSelfs
 
     else
         List.map
             (\x ->
-                let
-                    ( mouseX, mouseY ) =
-                        env.globalData.mousePos
-
-                    amplify =
-                        if
-                            mouseX
-                                > toFloat (1225 - (x.position - 1) // 3 * 390)
-                                - 100
-                                && mouseX
-                                < toFloat (1225 - (x.position - 1) // 3 * 390)
-                                + 100
-                                && mouseY
-                                > toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
-                                * 133.3
-                                + 700
-                                && mouseY
-                                < toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
-                                * 133.3
-                                + 800
-                        then
-                            1.2
-
-                        else
-                            1.0
-                in
-                renderTextWithColorCenter env.globalData.internalData
-                    (60 * amplify)
+                renderOne
+                    (toFloat (1225 - (x.position - 1) // 3 * 390) - 100)
+                    (toFloat (1225 - (x.position - 1) // 3 * 390) + 100)
+                    (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 700)
+                    (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 800)
+                    env
                     x.name
-                    "Comic Sans MS"
-                    Color.black
-                    ( toFloat (1225 - (x.position - 1) // 3 * 390)
-                    , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
-                    )
             )
             remainEnemies
 
@@ -122,6 +124,48 @@ renderTargetSelection env data basedata name =
         )
 
 
+{-| Render the skill view
+-}
+renderSkillView : Env cdata userdata -> List ( Int, Skill ) -> List Renderable
+renderSkillView env skills =
+    List.map
+        (\x ->
+            let
+                ( mouseX, mouseY ) =
+                    env.globalData.mousePos
+
+                amplify =
+                    if mouseX > 640 && mouseX < 900 && mouseY > toFloat (Tuple.first x * 88 + 728) && mouseY < toFloat (Tuple.first x * 88 + 816) then
+                        1.2
+
+                    else
+                        1.0
+            in
+            renderTextWithColorStyle env.globalData.internalData
+                (40 * amplify)
+                (.name <| Tuple.second x)
+                "Comic Sans MS"
+                Color.black
+                ""
+                ( 660
+                , toFloat (Tuple.first x * 88 + 728)
+                )
+        )
+        skills
+        ++ List.map
+            (\x ->
+                renderTextWithColorCenter env.globalData.internalData
+                    40
+                    (toString <| .cost <| Tuple.second x)
+                    "Comic Sans MS"
+                    Color.black
+                    ( 1380
+                    , toFloat (Tuple.first x * 88 + 748)
+                    )
+            )
+            skills
+
+
 {-| Render the choose skill
 -}
 renderChooseSkill : Env cdata userdata -> Self -> String -> Gamestate -> Renderable
@@ -169,42 +213,7 @@ renderChooseSkill env self name state =
                 targets
 
         skillView =
-            List.map
-                (\x ->
-                    let
-                        ( mouseX, mouseY ) =
-                            env.globalData.mousePos
-
-                        amplify =
-                            if mouseX > 640 && mouseX < 900 && mouseY > toFloat (Tuple.first x * 88 + 728) && mouseY < toFloat (Tuple.first x * 88 + 816) then
-                                1.2
-
-                            else
-                                1.0
-                    in
-                    renderTextWithColorStyle env.globalData.internalData
-                        (40 * amplify)
-                        (.name <| Tuple.second x)
-                        "Comic Sans MS"
-                        Color.black
-                        ""
-                        ( 660
-                        , toFloat (Tuple.first x * 88 + 728)
-                        )
-                )
-                skills
-                ++ List.map
-                    (\x ->
-                        renderTextWithColorCenter env.globalData.internalData
-                            40
-                            (toString <| .cost <| Tuple.second x)
-                            "Comic Sans MS"
-                            Color.black
-                            ( 1380
-                            , toFloat (Tuple.first x * 88 + 748)
-                            )
-                    )
-                    skills
+            renderSkillView env skills
     in
     Canvas.group []
         ([ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )

@@ -116,7 +116,27 @@ handleCompounding skill env evnt data basedata =
     )
 
 
-{-| The initial data for the StroryTrigger component
+{-| Check the index of the skill
+-}
+checkIndex : Float -> Float -> Int
+checkIndex x y =
+    if x > 640 && x < 1420 && y > 728 && y < 768 then
+        1
+
+    else if x > 640 && x < 1420 && y > 816 && y < 856 then
+        2
+
+    else if x > 640 && x < 1420 && y > 904 && y < 944 then
+        3
+
+    else if x > 640 && x < 1420 && y > 992 && y < 1032 then
+        4
+
+    else
+        0
+
+
+{-| Handle choose skill
 -}
 handleChooseSkill : Float -> Float -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleChooseSkill x y env evnt data basedata =
@@ -159,20 +179,7 @@ handleChooseSkill x y env evnt data basedata =
                 targets
 
         index =
-            if x > 640 && x < 1420 && y > 728 && y < 768 then
-                1
-
-            else if x > 640 && x < 1420 && y > 816 && y < 856 then
-                2
-
-            else if x > 640 && x < 1420 && y > 904 && y < 944 then
-                3
-
-            else if x > 640 && x < 1420 && y > 992 && y < 1032 then
-                4
-
-            else
-                0
+            checkIndex x y
 
         skill =
             if index /= 0 then
@@ -191,43 +198,50 @@ handleChooseSkill x y env evnt data basedata =
                 checkStorage <| { data | mp = data.mp - skill.cost }
     in
     if basedata.state /= Compounding then
-        if skill.cost <= storage && skill.name /= "" then
-            case skill.range of
-                Oneself ->
-                    if skill.name == "Compounding" then
-                        ( ( data, { basedata | state = Compounding } )
-                        , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
-                        , ( env, False )
-                        )
+        handeleNotCompounding storage newData skill env evnt data basedata
 
-                    else
-                        let
-                            newBuff =
-                                checkBuff newData
-                        in
-                        ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
-                        , [ Other ( "Self", Action (PlayerSkill data skill data.position) ) ]
-                        , ( env, False )
-                        )
+    else
+        handleCompounding skill env evnt data basedata
 
-                AllFront ->
+
+{-| Handle the case when the skill is not compounding
+-}
+handeleNotCompounding : Int -> Data -> Skill -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handeleNotCompounding storage newData skill env evnt data basedata =
+    if skill.cost <= storage && skill.name /= "" then
+        case skill.range of
+            Oneself ->
+                if skill.name == "Compounding" then
+                    ( ( data, { basedata | state = Compounding } )
+                    , [ Other ( "Interface", ChangeStatus (ChangeState Compounding) ) ]
+                    , ( env, False )
+                    )
+
+                else
                     let
                         newBuff =
                             checkBuff newData
                     in
                     ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
-                    , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
+                    , [ Other ( "Self", Action (PlayerSkill data skill data.position) ) ]
                     , ( env, False )
                     )
 
-                _ ->
-                    ( ( data, { basedata | state = TargetSelection (Skills skill) } )
-                    , [ Other ( "Interface", ChangeStatus (ChangeState (TargetSelection (Skills skill))) ) ]
-                    , ( env, False )
-                    )
+            AllFront ->
+                let
+                    newBuff =
+                        checkBuff newData
+                in
+                ( ( { newBuff | state = Rest }, { basedata | state = EnemyTurn } )
+                , [ Other ( "Enemy", Action (PlayerSkill data skill 0) ) ]
+                , ( env, False )
+                )
 
-        else
-            ( ( data, basedata ), [], ( env, False ) )
+            _ ->
+                ( ( data, { basedata | state = TargetSelection (Skills skill) } )
+                , [ Other ( "Interface", ChangeStatus (ChangeState (TargetSelection (Skills skill))) ) ]
+                , ( env, False )
+                )
 
     else
-        handleCompounding skill env evnt data basedata
+        ( ( data, basedata ), [], ( env, False ) )

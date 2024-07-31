@@ -89,8 +89,35 @@ bulingze time =
 -}
 bithif : Int -> Self
 bithif time =
-    oneChar time 5 30 42 36 50 10 10 20 10 "Bithif" <|
-        [ arcaneBeam, compounding, magicTransformation, whirlwindAccelaration, gale, { magicWater | cost = 1 }, { poison | cost = 1 }, { restorationPotion | cost = 1 } ]
+    let
+        baseAttributes =
+            { strength = 34
+            , dexterity = 40
+            , constitution = 36
+            , intelligence = 50
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 6
+        time
+        "Bithif"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , compounding
+        , magicTransformation
+        , whirlwindAccelaration
+        , gale
+        , { magicWater | cost = 1 }
+        , { poison | cost = 1 }
+        , { restorationPotion | cost = 1 }
+        ]
 
 
 {-| Cavalry base attributes

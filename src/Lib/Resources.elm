@@ -284,10 +284,6 @@ playerSize name =
             [ 4, 4 ]
 
 
-
---Dict.empty
-
-
 {-| All audio assets.
 
 The format is the same with `allTexture`.

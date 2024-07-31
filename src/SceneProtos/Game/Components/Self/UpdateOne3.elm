@@ -12,11 +12,52 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), Action
 import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Self.UpdateOne exposing (Data, handleKeyDown)
-import SceneProtos.Game.Components.Self.UpdateOne2 exposing (handleBack, handleMouseDown)
+import SceneProtos.Game.Components.Self.UpdateOne2 exposing (handleMouseDown)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), SpecialType(..))
 import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+
+
+{-| The initial data for the StroryTrigger component
+-}
+handleBack : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleBack env evnt data basedata =
+    let
+        newState =
+            case basedata.state of
+                TargetSelection Attack ->
+                    PlayerTurn
+
+                TargetSelection (Skills skill) ->
+                    if skill.kind == Magic then
+                        ChooseMagic
+
+                    else if skill.kind == SpecialSkill then
+                        ChooseSpeSkill
+
+                    else
+                        ChooseItem
+
+                ChooseMagic ->
+                    PlayerTurn
+
+                ChooseSpeSkill ->
+                    PlayerTurn
+
+                ChooseItem ->
+                    PlayerTurn
+
+                Compounding ->
+                    ChooseSpeSkill
+
+                _ ->
+                    basedata.state
+    in
+    ( ( data, { basedata | state = newState } )
+    , [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+    , ( env, False )
+    )
 
 
 {-| The initial data for the StroryTrigger component

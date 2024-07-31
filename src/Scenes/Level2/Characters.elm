@@ -12,123 +12,53 @@ import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
-wenderd : Int -> Self
-wenderd time =
+oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
+oneChar time str dex con int water fire air earth name skills =
     let
         baseAttributes =
-            { strength = 48
-            , dexterity = 30
-            , constitution = 38
-            , intelligence = 24
+            { strength = str
+            , dexterity = dex
+            , constitution = con
+            , intelligence = int
             }
 
         baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
+            { waterResistance = water
+            , fireResistance = fire
+            , airResistance = air
+            , earthResistance = earth
             }
     in
     genSelf 1
         time
-        "Wenderd"
+        name
         baseAttributes
         baseEleResistance
-        [ arcaneBeam
-        , airBlade
-        , doubleStrike
-        , { poison | cost = 1 }
-        ]
+        skills
+
+
+wenderd : Int -> Self
+wenderd time =
+    oneChar time 48 30 38 24 10 10 20 10 "Wenderd" <|
+        [ arcaneBeam, airBlade, doubleStrike, { poison | cost = 1 } ]
 
 
 bruce : Int -> Self
 bruce time =
-    let
-        baseAttributes =
-            { strength = 30
-            , dexterity = 46
-            , constitution = 28
-            , intelligence = 36
-            }
-
-        baseEleResistance =
-            { waterResistance = 20
-            , fireResistance = 10
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 2
-        time
-        "Bruce"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , scatterShot
-        , frostArrow
-        , frostImpact
-        , { poison | cost = 1 }
-        ]
+    oneChar time 30 46 28 36 20 10 10 10 "Bruce" <|
+        [ arcaneBeam, scatterShot, frostArrow, frostImpact, { poison | cost = 1 } ]
 
 
 bulingze : Int -> Self
 bulingze time =
-    let
-        baseAttributes =
-            { strength = 24
-            , dexterity = 33
-            , constitution = 28
-            , intelligence = 55
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 20
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 4
-        time
-        "Bulingze"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , fireBall
-        , inspirationOfFire
-        , { magicWater | cost = 1 }
-        ]
+    oneChar time 24 33 28 55 10 20 10 10 "Bulingze" <|
+        [ arcaneBeam, fireBall, inspirationOfFire, { magicWater | cost = 1 } ]
 
 
 bithif : Int -> Self
 bithif time =
-    let
-        baseAttributes =
-            { strength = 30
-            , dexterity = 36
-            , constitution = 32
-            , intelligence = 42
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    genSelf 5
-        time
-        "Bithif"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , compounding
-        , magicTransformation
-        , whirlwindAccelaration
-        , { magicWater | cost = 1 }
-        , { poison | cost = 1 }
-        ]
+    oneChar time 30 36 32 42 10 10 20 10 "Bithif" <|
+        [ arcaneBeam, compounding, magicTransformation, whirlwindAccelaration, { magicWater | cost = 1 }, { poison | cost = 1 } ]
 
 
 genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self

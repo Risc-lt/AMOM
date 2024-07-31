@@ -1,4 +1,14 @@
-module SceneProtos.Game.Components.Special.Library2 exposing (..)
+module SceneProtos.Game.Components.Special.Library2 exposing
+    ( blessingOfAir
+    , chainLightning
+    , energyWater
+    , lightningSpell
+    , magicWater
+    , mudSwamp
+    , poison
+    , restorationPotion
+    , stoneSkin
+    )
 
 {-
    Skill library 2
@@ -7,6 +17,8 @@ module SceneProtos.Game.Components.Special.Library2 exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (..)
 
 
+{-| Skill: Mud Swamp
+-}
 mudSwamp : Skill
 mudSwamp =
     { kind = Magic
@@ -20,6 +32,8 @@ mudSwamp =
     }
 
 
+{-| Skill: Stone Skin
+-}
 stoneSkin : Skill
 stoneSkin =
     { kind = Magic
@@ -33,6 +47,8 @@ stoneSkin =
     }
 
 
+{-| Skill: Restoration Potion
+-}
 restorationPotion : Skill
 restorationPotion =
     { kind = Item
@@ -46,6 +62,8 @@ restorationPotion =
     }
 
 
+{-| Skill: Magic Water
+-}
 magicWater : Skill
 magicWater =
     { kind = Item
@@ -59,6 +77,8 @@ magicWater =
     }
 
 
+{-| Skill: Poison
+-}
 poison : Skill
 poison =
     { kind = Item
@@ -72,6 +92,8 @@ poison =
     }
 
 
+{-| Skill: Energy Water
+-}
 energyWater : Skill
 energyWater =
     { kind = Item
@@ -82,4 +104,49 @@ energyWater =
     , element = None
     , cost = 0
     , lasting = 0
+    }
+
+
+{-| Skill: Lightning Spell
+-}
+lightningSpell : Skill
+lightningSpell =
+    { kind = Magic
+    , name = "Lightning Spell"
+    , effect = { defaultEffect | hp = 32 }
+    , buff = []
+    , range = One
+    , element = Air
+    , cost = 11
+    , lasting = 0
+    }
+
+
+{-| Skill: Chain Lighting
+-}
+chainLightning : Skill
+chainLightning =
+    { kind = Magic
+    , name = "Chain Lighting"
+    , effect = { defaultEffect | hp = 29 }
+    , buff = []
+    , range = Chain
+    , element = Air
+    , cost = 16
+    , lasting = 0
+    }
+
+
+{-| Skill: Blessing of Air
+-}
+blessingOfAir : Skill
+blessingOfAir =
+    { kind = Magic
+    , name = "Blessing of Air"
+    , effect = defaultEffect
+    , buff = [ HitRateUp 10, CriticalRateUp 60 ]
+    , range = Ally
+    , element = Air
+    , cost = 8
+    , lasting = 2
     }

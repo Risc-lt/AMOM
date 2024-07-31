@@ -113,31 +113,33 @@ renderBasicView env data =
         ( x, y ) =
             env.globalData.mousePos
 
-        rightButton =
+        button =
             if x > 1450 && x < 1550 && y > 880 && y < 980 then
-                renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
+                [ renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
+                , renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+                ]
+
+            else if x > 400 && x < 500 && y > 880 && y < 980 then
+                [ renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
+                , renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+                ]
 
             else
-                renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
-
-        leftButton =
-            if x > 400 && x < 500 && y > 880 && y < 980 then
-                renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
-
-            else
-                renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+                [ renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+                , renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+                ]
     in
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
-        , Canvas.shapes
+        ([ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
+         , Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]
             [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
-        , rightButton
-        , Canvas.shapes
+         , Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]
             [ circle env.globalData.internalData ( 450, 930 ) 50 ]
-        , leftButton
-        ]
+         ]
+            ++ button
+        )
 
 
 view : RawSceneView UserData Data

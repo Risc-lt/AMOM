@@ -76,37 +76,37 @@ update env evnt data basedata =
             newData =
                 List.map
                     (\x ->
-                        if x.position == basedata.curEnemy then
-                            newEnemy
+                        let
+                            updatedEnemy =
+                                if x.position == basedata.curEnemy then
+                                    newEnemy
 
-                        else
-                            x
+                                else
+                                    x
+
+                            updatedHurt =
+                                if updatedEnemy.curHurt /= "" then
+                                    let
+                                        remainNum =
+                                            posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
+
+                                        newName =
+                                            if remainNum >= 100 then
+                                                ""
+
+                                            else
+                                                updatedEnemy.curHurt
+                                    in
+                                    { updatedEnemy | curHurt = newName }
+
+                                else
+                                    updatedEnemy
+                        in
+                        updatedHurt
                     )
                     data
-
-            newData2 =
-                List.map
-                    (\x ->
-                        if x.curHurt /= "" then
-                            let
-                                remainNum =
-                                    posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
-
-                                newName =
-                                    if remainNum >= 100 then
-                                        ""
-
-                                    else
-                                        x.curHurt
-                            in
-                            { x | curHurt = newName }
-
-                        else
-                            x
-                    )
-                    newData
         in
-        ( ( newData2, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData2) ) :: msg, ( newEnv, flag ) )
+        ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
 
 
 addCurHurt : Data -> Int -> Data
@@ -186,10 +186,7 @@ updaterec env msg data basedata =
 
         SwitchTurn pos ->
             if List.any (\e -> e.position == pos && e.hp /= 0) data then
-                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos, side = EnemySide } )
-                , []
-                , env
-                )
+                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos, side = EnemySide } ), [], env )
 
             else
                 ( ( data, basedata )
@@ -222,13 +219,10 @@ updaterec env msg data basedata =
                         (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp)
                         emptySlot
 
-                newData =
-                    newEnemy ++ data
-
                 newNum =
-                    List.map (\e -> e.position) newData
+                    List.map (\e -> e.position) (newEnemy ++ data)
             in
-            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
+            ( ( newEnemy ++ data, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
             , [ Other ( "Self", CharDie newNum ) ]
             , env
             )
@@ -240,21 +234,13 @@ updaterec env msg data basedata =
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
     let
-        gd =
-            env.globalData
-
-        rate =
-            300
-
         currentAct x =
-            String.fromInt (modBy (rate * x) gd.sceneStartTime // rate)
+            String.fromInt (modBy (300 * x) env.globalData.sceneStartTime // 300)
 
         enemyView =
             if enemy.curHurt /= "" then
-                -- render the picture with 30 degrees rotating
                 Canvas.group []
-                    [ renderSprite env.globalData.internalData [ [ rotate (-30 * pi / 180) ] |> transform ] ( enemy.x - 30, enemy.y + 20 ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1")
-                    ]
+                    [ renderSprite env.globalData.internalData [ [ rotate (-30 * pi / 180) ] |> transform ] ( enemy.x - 30, enemy.y + 20 ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1") ]
 
             else if enemy.isRunning then
                 renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
@@ -285,10 +271,7 @@ view env data basedata =
                 (\x -> renderEnemy x env)
                 data
     in
-    ( Canvas.group []
-        basicView
-    , 1
-    )
+    ( Canvas.group [] basicView, 1 )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget

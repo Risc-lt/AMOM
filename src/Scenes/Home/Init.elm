@@ -1,4 +1,4 @@
-module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, getNext, getX, initData)
+module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 
 import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (UserEvent(..))
@@ -131,21 +131,11 @@ initData =
     }
 
 
-getX : Float -> List ScenePic -> Float
-getX id sceneQueue =
+get : Float -> List ScenePic -> ( Float, String )
+get id sceneQueue =
     case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of
         Just scenePic ->
-            scenePic.x
+            ( scenePic.x, scenePic.next )
 
         Nothing ->
-            0
-
-
-getNext : Float -> List ScenePic -> String
-getNext id sceneQueue =
-    case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of
-        Just scenePic ->
-            scenePic.next
-
-        Nothing ->
-            "Level1"
+            ( 0, "Level1" )

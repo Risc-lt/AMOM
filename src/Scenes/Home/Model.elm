@@ -23,7 +23,7 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 import Scenes.Begin.Model exposing (scene)
-import Scenes.Home.Init exposing (Data, Direction(..), getNext, getX, initData)
+import Scenes.Home.Init exposing (Data, Direction(..), get, initData)
 import String exposing (right)
 
 
@@ -36,6 +36,10 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
+            let
+                ( _, next ) =
+                    get data.curScene data.sceneQueue
+            in
             if x > 850 && x < 1060 && y > 430 && y < 580 then
                 ( data
                 , [ SOMLoadGC
@@ -46,7 +50,7 @@ update env msg data =
                                     ( fadeInBlack, Duration.seconds 2 )
                                     Nothing
                                 )
-                                ( getNext data.curScene data.sceneQueue, Nothing )
+                                ( next, Nothing )
                                 True
                             )
                             Nothing
@@ -75,14 +79,22 @@ update env msg data =
         Tick _ ->
             case data.direction of
                 Right ->
-                    if data.left >= getX (data.curScene + 1) data.sceneQueue - 720 then
+                    let
+                        ( pos, _ ) =
+                            get (data.curScene + 1) data.sceneQueue
+                    in
+                    if data.left >= pos - 720 then
                         ( { data | direction = Null, curScene = data.curScene + 1 }, [], env )
 
                     else
                         ( { data | left = data.left + 100 }, [], env )
 
                 Left ->
-                    if data.left <= getX (data.curScene - 1) data.sceneQueue - 720 then
+                    let
+                        ( pos, _ ) =
+                            get (data.curScene - 1) data.sceneQueue
+                    in
+                    if data.left <= pos - 720 then
                         ( { data | direction = Null, curScene = data.curScene - 1 }, [], env )
 
                     else

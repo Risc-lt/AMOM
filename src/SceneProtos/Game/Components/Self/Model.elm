@@ -21,7 +21,7 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), Action
 import SceneProtos.Game.Components.Enemy.Init exposing (defaultEnemy)
 import SceneProtos.Game.Components.Self.AttackRec2 exposing (handleAttack, handleSkill)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Self.UpdateOne exposing (updateOne)
+import SceneProtos.Game.Components.Self.UpdateOne3 exposing (updateOne)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import Time exposing (posixToMillis)
 

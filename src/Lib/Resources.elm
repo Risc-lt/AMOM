@@ -59,12 +59,7 @@ allTexture =
 
 chacaterTexture : List ( String, String )
 chacaterTexture =
-    [ ( "Wild Wolf", "assets/character/role/wolf.png" )
-    , ( "Bulingze", "assets/character/role/magic.png" )
-    , ( "Bruce", "assets/character/role/archer.png" )
-    , ( "Bithif", "assets/character/role/pharmacist.png" )
-    , ( "Wenderd", "assets/character/role/swordsman.png" )
-    , ( "head_bithif", "assets/character/role/role_1.jpg" )
+    [ ( "head_bithif", "assets/character/role/role_1.jpg" )
     , ( "head_bruce", "assets/character/role/role_4.jpg" )
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
@@ -86,15 +81,15 @@ chacaterTexture =
 
 bufferTexture : List ( String, String )
 bufferTexture =
-    [ ( "Brave", "assets/character/buff/Brave.jpg" )
-    , ( "Solid", "assets/character/buff/Solid.jpg" )
-    , ( "Acceleration", "assets/character/buff/Acceleration.jpg" )
-    , ( "Retard", "assets/character/buff/Retard.jpg" )
-    , ( "Concentration", "assets/character/buff/Concentration.jpg" )
-    , ( "Precision", "assets/character/buff/Precision.jpg" )
-    , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.jpg" )
-    , ( "Seal", "assets/character/buff/Seal.jpg" )
-    , ( "Bleed", "assets/character/buff/Bleed.jpg" )
+    [ ( "Brave", "assets/character/buff/Brave.png" )
+    , ( "Solid", "assets/character/buff/Solid.png" )
+    , ( "Acceleration", "assets/character/buff/Acceleration.png" )
+    , ( "Retard", "assets/character/buff/Retard.png" )
+    , ( "Concentration", "assets/character/buff/Concentration.png" )
+    , ( "Precision", "assets/character/buff/Precision.png" )
+    , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.png" )
+    , ( "Seal", "assets/character/buff/Seal.png" )
+    , ( "Bleed", "assets/character/buff/Bleed.png" )
     ]
 
 

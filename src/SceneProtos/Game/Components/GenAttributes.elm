@@ -1,4 +1,28 @@
-module SceneProtos.Game.Components.GenAttributes exposing (..)
+module SceneProtos.Game.Components.GenAttributes exposing
+    ( Attribute
+    , BasicStatus
+    , EleResistance
+    , ExtendValue
+    , RatioValues
+    , defaultAttributes
+    , defaultBasicStatus
+    , defaultEleResistance
+    , defaultExtendValues
+    , defaultRatioValues
+    , genActionPoints
+    , genAvoidRate
+    , genBasicStatus
+    , genCounterRate
+    , genCriticalHitRate
+    , genEleResistence
+    , genExtendValues
+    , genHp
+    , genMagicalHitRate
+    , genMp
+    , genNormalHitRate
+    , genRatioValues
+    , genSpecificResistance
+    )
 
 import SceneProtos.Game.Components.GenRandom exposing (..)
 
@@ -52,16 +76,22 @@ type alias EleResistance =
     }
 
 
+{-| Generate the HP of the character
+-}
 genHp : Attribute -> Int
 genHp attributes =
     attributes.constitution * 5 + attributes.strength
 
 
+{-| Generate the MP of the character
+-}
 genMp : Attribute -> Int
 genMp attributes =
     attributes.intelligence
 
 
+{-| Generate the basic status of the character
+-}
 genBasicStatus : Attribute -> BasicStatus
 genBasicStatus attributes =
     { maxHp = genHp attributes
@@ -69,6 +99,8 @@ genBasicStatus attributes =
     }
 
 
+{-| Generate the action points of the character
+-}
 genActionPoints : Attribute -> Int -> Int
 genActionPoints attributes time =
     let
@@ -78,21 +110,29 @@ genActionPoints attributes time =
     genRandomNum 1 upperBound time
 
 
+{-| Generate the avoid rate of the character
+-}
 genAvoidRate : Attribute -> Int
 genAvoidRate attributes =
     attributes.dexterity
 
 
+{-| Generate the normal hit rate of the character
+-}
 genNormalHitRate : Attribute -> Int
 genNormalHitRate attributes =
     60 + attributes.dexterity + attributes.intelligence
 
 
+{-| Generate the magical hit rate of the character
+-}
 genMagicalHitRate : Attribute -> Int
 genMagicalHitRate attributes =
     80 + attributes.intelligence
 
 
+{-| Generate the critical hit rate of the character
+-}
 genCriticalHitRate : Int
 genCriticalHitRate =
     10
@@ -113,11 +153,15 @@ genRatioValues attributes =
     }
 
 
+{-| Generate the specific resistance of the character
+-}
 genSpecificResistance : Int -> Attribute -> Int
 genSpecificResistance baseResistance attributes =
     baseResistance + attributes.intelligence
 
 
+{-| Generate the elemental resistance of the character
+-}
 genEleResistence : Attribute -> Int -> Int -> Int -> Int -> EleResistance
 genEleResistence attributes water fire air earth =
     { waterResistance = genSpecificResistance water attributes
@@ -127,6 +171,8 @@ genEleResistence attributes water fire air earth =
     }
 
 
+{-| Generate the extend values of the character
+-}
 genExtendValues : Attribute -> Int -> Int -> Int -> Int -> Int -> ExtendValue
 genExtendValues attributes time water fire air earth =
     { basicStatus = genBasicStatus attributes
@@ -136,6 +182,8 @@ genExtendValues attributes time water fire air earth =
     }
 
 
+{-| Default attributes
+-}
 defaultAttributes : Attribute
 defaultAttributes =
     { strength = 0
@@ -145,6 +193,8 @@ defaultAttributes =
     }
 
 
+{-| Default basic status
+-}
 defaultBasicStatus : BasicStatus
 defaultBasicStatus =
     { maxHp = 0
@@ -152,6 +202,8 @@ defaultBasicStatus =
     }
 
 
+{-| Default ratio values
+-}
 defaultRatioValues : RatioValues
 defaultRatioValues =
     { avoidRate = 0
@@ -162,6 +214,8 @@ defaultRatioValues =
     }
 
 
+{-| Default elemental resistance
+-}
 defaultEleResistance : EleResistance
 defaultEleResistance =
     { waterResistance = 0
@@ -171,6 +225,8 @@ defaultEleResistance =
     }
 
 
+{-| Default extend values
+-}
 defaultExtendValues : ExtendValue
 defaultExtendValues =
     { basicStatus = defaultBasicStatus

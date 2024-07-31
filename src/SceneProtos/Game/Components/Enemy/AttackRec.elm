@@ -1,6 +1,18 @@
-module SceneProtos.Game.Components.Enemy.AttackRec exposing (..)
+module SceneProtos.Game.Components.Enemy.AttackRec exposing
+    ( Data
+    , attackRec
+    , checkStatus
+    , findMin
+    , getEffect
+    , getHurt
+    , getSpecificMagicalAttack
+    , getSpecificNormalAttack
+    , handleAttack
+    , handleSkill
+    , normalAttackDemage
+    , skillRec
+    )
 
-import Energy exposing (Energy)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -16,10 +28,14 @@ import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import Time
 
 
+{-| The data used to initialize the scene
+-}
 type alias Data =
     List Enemy
 
 
+{-| The conditions that trigger the story
+-}
 checkStatus : Enemy -> Enemy
 checkStatus enemy =
     let
@@ -54,6 +70,8 @@ checkStatus enemy =
     energyCheck
 
 
+{-| The initial data for the StroryTrigger component
+-}
 normalAttackDemage : Enemy -> Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy
 normalAttackDemage enemy self env =
     let
@@ -77,6 +95,8 @@ normalAttackDemage enemy self env =
         { enemy | hp = enemy.hp - damage, energy = newEnergy }
 
 
+{-| The initial data for the StroryTrigger component
+-}
 getSpecificNormalAttack : Enemy -> Self -> Bool -> Int
 getSpecificNormalAttack enemy self isCritical =
     let
@@ -123,6 +143,8 @@ getSpecificNormalAttack enemy self isCritical =
         )
 
 
+{-| The initial data for the StroryTrigger component
+-}
 getHurt : Self -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> ( Enemy, Bool )
 getHurt self env enemy =
     let
@@ -156,6 +178,8 @@ getHurt self env enemy =
         ( normalAttackDemage enemy self env, False )
 
 
+{-| The initial data for the StroryTrigger component
+-}
 attackRec : Self -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> ( Data, Bool, Bool )
 attackRec self env allEnemy position basedata =
     let
@@ -224,6 +248,8 @@ attackRec self env allEnemy position basedata =
     ( newData, isCounter, isAvoid )
 
 
+{-| The initial data for the StroryTrigger component
+-}
 findMin : Data -> Int
 findMin data =
     data
@@ -233,6 +259,8 @@ findMin data =
         |> Maybe.withDefault 100
 
 
+{-| The initial data for the StroryTrigger component
+-}
 handleAttack : Self -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleAttack self position env msg data basedata =
     let
@@ -271,6 +299,8 @@ handleAttack self position env msg data basedata =
     )
 
 
+{-| The initial data for the StroryTrigger component
+-}
 getSpecificMagicalAttack : Enemy -> Self -> Skill -> Int
 getSpecificMagicalAttack enemy self skill =
     let
@@ -309,6 +339,8 @@ getSpecificMagicalAttack enemy self skill =
     floor (toFloat skill.effect.hp * (1 + toFloat self.attributes.intelligence * 0.025) * toFloat (100 - eleResistance) / 100)
 
 
+{-| The initial data for the StroryTrigger component
+-}
 getEffect : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Enemy -> BaseData -> Enemy
 getEffect self skill env target basedata =
     let
@@ -338,6 +370,8 @@ getEffect self skill env target basedata =
         }
 
 
+{-| The initial data for the StroryTrigger component
+-}
 skillRec : Self -> Skill -> Messenger.Base.Env SceneCommonData UserData -> Data -> Int -> BaseData -> Data
 skillRec self skill env data position basedata =
     let
@@ -421,6 +455,8 @@ skillRec self skill env data position basedata =
             List.map (\t -> getEffect self skill env t basedata) newTargets
 
 
+{-| The initial data for the StroryTrigger component
+-}
 handleSkill : Self -> Skill -> Int -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleSkill self skill position env msg data basedata =
     let

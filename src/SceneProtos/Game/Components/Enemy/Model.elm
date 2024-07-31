@@ -17,6 +17,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Enemy.AttackRec2 exposing (handleAttack, handleSkill)
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, genDefaultEnemy)

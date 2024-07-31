@@ -8,11 +8,15 @@ module SceneProtos.Game.Components.Interface.Model exposing (component)
 
 import Canvas
 import Debug exposing (toString)
+import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
+import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
+import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
@@ -199,6 +203,27 @@ updaterec env msg data basedata =
 
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )
+
+        Defeated ->
+            ( ( data, basedata )
+            , [ Parent <|
+                    SOMMsg <|
+                        SOMLoadGC
+                            (genGC
+                                (InitOption
+                                    (genTransition
+                                        ( fadeOutBlack, Duration.seconds 2 )
+                                        ( fadeInBlack, Duration.seconds 2 )
+                                        Nothing
+                                    )
+                                    ( "After" ++ String.fromInt data.levelNum, Nothing )
+                                    True
+                                )
+                                Nothing
+                            )
+              ]
+            , env
+            )
 
         SwitchTurn _ ->
             let

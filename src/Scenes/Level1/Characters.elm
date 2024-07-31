@@ -12,28 +12,34 @@ import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
-wenderd : Int -> Self
-wenderd time =
+oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
+oneChar time pos str dex con int water fire air earth name skills =
     let
         baseAttributes =
-            { strength = 40
-            , dexterity = 25
-            , constitution = 35
-            , intelligence = 20
+            { strength = str
+            , dexterity = dex
+            , constitution = con
+            , intelligence = int
             }
 
         baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
+            { waterResistance = water
+            , fireResistance = fire
+            , airResistance = air
+            , earthResistance = earth
             }
     in
-    genSelf 1
+    genSelf pos
         time
-        "Wenderd"
+        name
         baseAttributes
         baseEleResistance
+        skills
+
+
+wenderd : Int -> Self
+wenderd time =
+    oneChar time 1 40 25 35 20 10 10 20 10 "Wenderd" <|
         [ arcaneBeam
         , airBlade
         ]
@@ -41,26 +47,7 @@ wenderd time =
 
 bruce : Int -> Self
 bruce time =
-    let
-        baseAttributes =
-            { strength = 25
-            , dexterity = 40
-            , constitution = 25
-            , intelligence = 30
-            }
-
-        baseEleResistance =
-            { waterResistance = 20
-            , fireResistance = 10
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 2
-        time
-        "Bruce"
-        baseAttributes
-        baseEleResistance
+    oneChar time 2 25 40 25 30 20 10 10 10 "Bruce" <|
         [ arcaneBeam
         , scatterShot
         ]
@@ -68,26 +55,7 @@ bruce time =
 
 bulingze : Int -> Self
 bulingze time =
-    let
-        baseAttributes =
-            { strength = 20
-            , dexterity = 30
-            , constitution = 25
-            , intelligence = 45
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 20
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 4
-        time
-        "Bulingze"
-        baseAttributes
-        baseEleResistance
+    oneChar time 4 20 30 25 45 10 20 10 10 "Bulingze" <|
         [ arcaneBeam
         , fireBall
         ]
@@ -95,26 +63,7 @@ bulingze time =
 
 bithif : Int -> Self
 bithif time =
-    let
-        baseAttributes =
-            { strength = 25
-            , dexterity = 30
-            , constitution = 30
-            , intelligence = 35
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    genSelf 5
-        time
-        "Bithif"
-        baseAttributes
-        baseEleResistance
+    oneChar time 5 25 30 30 35 10 10 20 10 "Bithif" <|
         [ arcaneBeam
         , compounding
         , { magicWater | cost = 1 }

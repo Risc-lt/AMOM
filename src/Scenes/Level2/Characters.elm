@@ -12,6 +12,19 @@ import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
+type alias Character =
+    { name : String
+    , x : Int
+    , y : Float
+    , position : Int
+    , hp : Int
+    , mp : Int
+    , attributes : Attribute
+    , extendValues : ExtendValue
+    , skills : List Skill
+    }
+
+
 oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
 oneChar time pos str dex con int water fire air earth name skills =
     let
@@ -35,6 +48,71 @@ oneChar time pos str dex con int water fire air earth name skills =
         baseAttributes
         baseEleResistance
         skills
+
+
+genChar : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Bool -> Character
+genChar position time name baseAttributes baseEleResistance skills flag =
+    { name = name
+    , x =
+        if flag then
+            if position <= 3 then
+                1100
+
+            else
+                1220
+
+        else if position <= 9 then
+            230
+
+        else
+            100
+    , y =
+        if flag then
+            toFloat (160 + 130 * (position - (position - 1) // 3 * 3 - 1))
+
+        else
+            toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
+    , position = position
+    , hp = genHp baseAttributes
+    , mp = genMp baseAttributes
+    , attributes = baseAttributes
+    , extendValues =
+        genExtendValues
+            baseAttributes
+            (time + position)
+            baseEleResistance.waterResistance
+            baseEleResistance.fireResistance
+            baseEleResistance.airResistance
+            baseEleResistance.earthResistance
+    , skills = skills
+    }
+
+
+convert : Character -> ( Self, Enemy )
+convert char =
+    ( { defaultSelf
+        | name = char.name
+        , x = toFloat char.x
+        , y = char.y
+        , position = char.position
+        , hp = char.hp
+        , mp = char.mp
+        , attributes = char.attributes
+        , extendValues = char.extendValues
+        , skills = char.skills
+      }
+    , { defaultEnemy
+        | name = char.name
+        , x = toFloat char.x
+        , y = char.y
+        , position = char.position
+        , hp = char.hp
+        , mp = char.mp
+        , attributes = char.attributes
+        , extendValues = char.extendValues
+        , skills = char.skills
+      }
+    )
 
 
 wenderd : Int -> Self
@@ -63,29 +141,22 @@ bithif time =
 
 genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self
 genSelf position time name baseAttributes baseEleResistance skills =
-    { defaultSelf
-        | name = name
-        , x =
-            if position <= 3 then
-                1100
+    let
+        ( self, _ ) =
+            convert
+                (genChar position time name baseAttributes baseEleResistance skills True)
+    in
+    self
 
-            else
-                1220
-        , y = toFloat (160 + 130 * (position - (position - 1) // 3 * 3 - 1))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
+
+genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
+genEnemy position time name baseAttributes baseEleResistance skills =
+    let
+        ( _, enemy ) =
+            convert
+                (genChar position time name baseAttributes baseEleResistance skills False)
+    in
+    enemy
 
 
 {-| Init data for selfs
@@ -150,33 +221,6 @@ concert time =
         , { magicWater | cost = 1 }
         , { restorationPotion | cost = 1 }
         ]
-
-
-genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
-genEnemy position time name baseAttributes baseEleResistance skills =
-    { defaultEnemy
-        | name = name
-        , x =
-            if position <= 9 then
-                230
-
-            else
-                100
-        , y = toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
 
 
 {-| Init data for selfs

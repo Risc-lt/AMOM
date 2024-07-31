@@ -227,12 +227,12 @@ defaultSelf =
     , position = 1
     , hp = 0
     , mp = 0
-    , energy = 0
+    , energy = 0 --
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
-    , buff = []
+    , buff = [] --
     , skills = []
-    , state = Waiting
-    , isRunning = False
-    , isAttacked = False
+    , state = Waiting --
+    , isRunning = False --
+    , isAttacked = False --
     }

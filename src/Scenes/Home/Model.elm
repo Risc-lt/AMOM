@@ -18,7 +18,7 @@ import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Render.Shape exposing (circle, rect)
-import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Render.Sprite exposing (renderSprite, renderSpriteWithRev)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithStyle)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
@@ -99,13 +99,33 @@ view : RawSceneView UserData Data
 view env data =
     let
         basicView =
+            let
+                ( x, y ) =
+                    env.globalData.mousePos
+
+                rightButton =
+                    if x > 1450 && x < 1550 && y > 880 && y < 980 then
+                        renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
+
+                    else
+                        renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+
+                leftButton =
+                    if x > 400 && x < 500 && y > 880 && y < 980 then
+                        renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
+
+                    else
+                        renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+            in
             [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
             , Canvas.shapes
                 [ fill (Color.rgba 0 0 0 0.7) ]
                 [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
+            , rightButton
             , Canvas.shapes
                 [ fill (Color.rgba 0 0 0 0.7) ]
                 [ circle env.globalData.internalData ( 450, 930 ) 50 ]
+            , leftButton
             ]
 
         sceneView =
@@ -133,7 +153,7 @@ view env data =
                 [ Canvas.shapes
                     [ fill (Color.rgba 0 0 0 0.7) ]
                     [ rect env.globalData.internalData ( 500, 850 ) ( 950, 150 ) ]
-                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 900 )
+                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 925 )
                 ]
     in
     Canvas.group []

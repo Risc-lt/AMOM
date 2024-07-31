@@ -51,6 +51,7 @@ allTexture =
          , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
          , ( "levelselect", "assets/character/background/levelselect.jpg" )
+         , ( "arrow", "assets/character/chartlet/arrow.png" )
          ]
             ++ chacaterTexture
             ++ bufferTexture

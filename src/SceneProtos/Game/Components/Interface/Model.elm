@@ -18,12 +18,12 @@ import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
-import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
-import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
+import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderStatus)
+import SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderAction)
+import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (State(..))
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import String exposing (startsWith)
 
 
 type alias Data =

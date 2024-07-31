@@ -292,5 +292,7 @@ The format is the same with `allTexture`.
 allAudio : Dict.Dict String String
 allAudio =
     Dict.fromList
-        [ ( "battle", "assets/audio/demo.ogg" )
+        [ ( "battle", "assets/audio/battle.ogg" )
+        , ( "eased", "assets/audio/eased.ogg" )
+        , ( "sad", "assets/audio/sad.ogg" )
         ]

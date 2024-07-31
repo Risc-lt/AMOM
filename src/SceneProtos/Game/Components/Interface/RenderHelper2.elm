@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Interface.RenderHelper2 exposing (..)
+module SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderAction)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
@@ -9,12 +9,74 @@ import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), Gamestate(..))
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), SpecialType(..))
 import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison)
 
 
+{-| Render the targets
+-}
+renderTargets : Bool -> Env cdata userdata -> List Self -> List Enemy -> List Renderable
+renderTargets flag env remainSelfs remainEnemies =
+    if flag then
+        List.map
+            (\x ->
+                renderTextWithColorCenter env.globalData.internalData
+                    60
+                    x.name
+                    "Comic Sans MS"
+                    Color.black
+                    ( toFloat (835 + (x.position - 1) // 3 * 390)
+                    , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
+                    )
+            )
+            remainSelfs
+
+    else
+        List.map
+            (\x ->
+                let
+                    ( mouseX, mouseY ) =
+                        env.globalData.mousePos
+
+                    amplify =
+                        if
+                            mouseX
+                                > toFloat (1225 - (x.position - 1) // 3 * 390)
+                                - 100
+                                && mouseX
+                                < toFloat (1225 - (x.position - 1) // 3 * 390)
+                                + 100
+                                && mouseY
+                                > toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
+                                * 133.3
+                                + 700
+                                && mouseY
+                                < toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
+                                * 133.3
+                                + 800
+                        then
+                            1.2
+
+                        else
+                            1.0
+                in
+                renderTextWithColorCenter env.globalData.internalData
+                    (60 * amplify)
+                    x.name
+                    "Comic Sans MS"
+                    Color.black
+                    ( toFloat (1225 - (x.position - 1) // 3 * 390)
+                    , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
+                    )
+            )
+            remainEnemies
+
+
+{-| Render the target selection
+-}
 renderTargetSelection : Env cdata userdata -> Data -> BaseData -> String -> Renderable
 renderTargetSelection env data basedata name =
     let
@@ -35,60 +97,8 @@ renderTargetSelection env data basedata name =
             List.filter (\x -> x.hp /= 0) <|
                 data.selfs
 
-        renderTargets =
-            if isAlly then
-                List.map
-                    (\x ->
-                        renderTextWithColorCenter env.globalData.internalData
-                            60
-                            x.name
-                            "Comic Sans MS"
-                            Color.black
-                            ( toFloat (835 + (x.position - 1) // 3 * 390)
-                            , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
-                            )
-                    )
-                    remainSelfs
-
-            else
-                List.map
-                    (\x ->
-                        let
-                            ( mouseX, mouseY ) =
-                                env.globalData.mousePos
-
-                            amplify =
-                                if
-                                    mouseX
-                                        > toFloat (1225 - (x.position - 1) // 3 * 390)
-                                        - 100
-                                        && mouseX
-                                        < toFloat (1225 - (x.position - 1) // 3 * 390)
-                                        + 100
-                                        && mouseY
-                                        > toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
-                                        * 133.3
-                                        + 700
-                                        && mouseY
-                                        < toFloat ((x.position - (x.position - 1) // 3 * 3) - 1)
-                                        * 133.3
-                                        + 800
-                                then
-                                    1.2
-
-                                else
-                                    1.0
-                        in
-                        renderTextWithColorCenter env.globalData.internalData
-                            (60 * amplify)
-                            x.name
-                            "Comic Sans MS"
-                            Color.black
-                            ( toFloat (1225 - (x.position - 1) // 3 * 390)
-                            , toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 746.65
-                            )
-                    )
-                    remainEnemies
+        targetView =
+            renderTargets isAlly env remainSelfs remainEnemies
     in
     Canvas.group []
         ([ renderTextWithColorCenter env.globalData.internalData 60 name "Comic Sans MS" Color.black ( 160, 820 )
@@ -108,10 +118,12 @@ renderTargetSelection env data basedata name =
          , renderTextWithColorCenter env.globalData.internalData 60 "Target" "Comic Sans MS" Color.black ( 480, 820 )
          , renderTextWithColorCenter env.globalData.internalData 60 "Selection" "Comic Sans MS" Color.black ( 480, 930 )
          ]
-            ++ renderTargets
+            ++ targetView
         )
 
 
+{-| Render the choose skill
+-}
 renderChooseSkill : Env cdata userdata -> Self -> String -> Gamestate -> Renderable
 renderChooseSkill env self name state =
     let
@@ -209,6 +221,8 @@ renderChooseSkill env self name state =
         )
 
 
+{-| Render the action
+-}
 renderAction : Env cdata userdata -> Data -> BaseData -> Renderable
 renderAction env data basedata =
     let

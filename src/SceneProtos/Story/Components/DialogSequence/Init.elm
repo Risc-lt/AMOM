@@ -1,4 +1,8 @@
-module SceneProtos.Story.Components.DialogSequence.Init exposing (..)
+module SceneProtos.Story.Components.DialogSequence.Init exposing
+    ( InitData
+    , Dialogue, DialogueState(..)
+    , defaultDialogue
+    )
 
 {-|
 
@@ -6,12 +10,14 @@ module SceneProtos.Story.Components.DialogSequence.Init exposing (..)
 # Init module
 
 @docs InitData
+@docs Dialogue, DialogueState
+@docs defaultDialogue
 
 -}
 
-{- The data sturcture for dialogues -}
 
-
+{-| The data sturcture for dialogues
+-}
 type DialogueState
     = IsSpeaking
     | Appear
@@ -19,6 +25,8 @@ type DialogueState
     | NoDialogue
 
 
+{-| The data structure for dialogues
+-}
 type alias Dialogue =
     { frameName : String
     , framePos : ( Float, Float )
@@ -41,6 +49,8 @@ type alias InitData =
     }
 
 
+{-| Default dialogue data
+-}
 defaultDialogue : Dialogue
 defaultDialogue =
     { frameName = "dialogue_frame"

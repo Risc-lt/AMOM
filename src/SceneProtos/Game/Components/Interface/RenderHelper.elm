@@ -19,7 +19,7 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseD
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
-import SceneProtos.Game.Components.Special.Library exposing (magicWater, poison)
+import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 

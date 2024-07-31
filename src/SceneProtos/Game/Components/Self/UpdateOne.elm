@@ -11,6 +11,7 @@ import SceneProtos.Game.Components.Self.AttackRec exposing (checkBuff)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Library2 exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 

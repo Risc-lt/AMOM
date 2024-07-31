@@ -9,6 +9,7 @@ import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
 wenderd : Int -> Self

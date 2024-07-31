@@ -7,7 +7,7 @@ module SceneProtos.Game.Components.Self.Model exposing (component)
 -}
 
 import Canvas exposing (empty)
-import Canvas.Settings exposing (fill, stroke)
+import Canvas.Settings exposing (stroke)
 import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
@@ -19,7 +19,7 @@ import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Enemy.Init exposing (defaultEnemy)
-import SceneProtos.Game.Components.Self.AttackRec exposing (findMin, getHurt, handleAttack, handleSkill)
+import SceneProtos.Game.Components.Self.AttackRec2 exposing (handleAttack, handleSkill)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Self.UpdateOne exposing (updateOne)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)

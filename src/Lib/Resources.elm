@@ -59,12 +59,7 @@ allTexture =
 
 chacaterTexture : List ( String, String )
 chacaterTexture =
-    [ ( "Wild Wolf", "assets/character/role/wolf.png" )
-    , ( "Bulingze", "assets/character/role/magic.png" )
-    , ( "Bruce", "assets/character/role/archer.png" )
-    , ( "Bithif", "assets/character/role/pharmacist.png" )
-    , ( "Wenderd", "assets/character/role/swordsman.png" )
-    , ( "head_bithif", "assets/character/role/role_1.jpg" )
+    [ ( "head_bithif", "assets/character/role/role_1.jpg" )
     , ( "head_bruce", "assets/character/role/role_4.jpg" )
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )

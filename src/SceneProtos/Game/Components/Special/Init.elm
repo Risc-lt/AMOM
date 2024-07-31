@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Special.Init exposing
     ( Skill
-    , Buff(..), Element(..), Range(..), SpecialType(..), defaultEffect, defaultSkill
+    , Buff(..), Element(..), Range(..), SpecialType(..)
+    , defaultEffect, defaultSkill
     )
 
 {-|
@@ -9,16 +10,22 @@ module SceneProtos.Game.Components.Special.Init exposing
 # Init module
 
 @docs Skill
+@docs Buff, Element, Range, SpecialType
+@docs defaultEffect, defaultSkill
 
 -}
 
 
+{-| The type of special skills
+-}
 type SpecialType
     = Magic
     | SpecialSkill
     | Item
 
 
+{-| The effect of the skill
+-}
 type alias Effect =
     { hp : Int
     , mp : Int
@@ -26,6 +33,8 @@ type alias Effect =
     }
 
 
+{-| The range of the skill
+-}
 type Range
     = One
     | Chain
@@ -38,6 +47,8 @@ type Range
     | AllEnemy
 
 
+{-| The type of the skill
+-}
 type Element
     = Water
     | Fire
@@ -46,6 +57,8 @@ type Element
     | None
 
 
+{-| The type of the buff
+-}
 type Buff
     = AttackUp Int
     | DefenceUp Int
@@ -58,6 +71,8 @@ type Buff
     | LoseHp
 
 
+{-| The data structure for the skill
+-}
 type alias Skill =
     { kind : SpecialType
     , name : String
@@ -70,6 +85,8 @@ type alias Skill =
     }
 
 
+{-| The default effect
+-}
 defaultEffect : Effect
 defaultEffect =
     { hp = 0
@@ -78,6 +95,8 @@ defaultEffect =
     }
 
 
+{-| The default skill
+-}
 defaultSkill : Skill
 defaultSkill =
     { kind = Magic

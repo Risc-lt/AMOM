@@ -18,12 +18,12 @@ import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
 import Messenger.Render.Shape exposing (circle, rect)
-import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Render.Sprite exposing (renderSprite, renderSpriteWithRev)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithStyle)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 import Scenes.Begin.Model exposing (scene)
-import Scenes.Home.Init exposing (Data, Direction(..), getNext, getX, initData)
+import Scenes.Home.Init exposing (Data, Direction(..), get, initData)
 import String exposing (right)
 
 
@@ -36,6 +36,10 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         MouseDown _ ( x, y ) ->
+            let
+                ( _, next ) =
+                    get data.curScene data.sceneQueue
+            in
             if x > 850 && x < 1060 && y > 430 && y < 580 then
                 ( data
                 , [ SOMLoadGC
@@ -46,7 +50,7 @@ update env msg data =
                                     ( fadeInBlack, Duration.seconds 2 )
                                     Nothing
                                 )
-                                ( getNext data.curScene data.sceneQueue, Nothing )
+                                ( next, Nothing )
                                 True
                             )
                             Nothing
@@ -75,14 +79,22 @@ update env msg data =
         Tick _ ->
             case data.direction of
                 Right ->
-                    if data.left >= getX (data.curScene + 1) data.sceneQueue - 720 then
+                    let
+                        ( pos, _ ) =
+                            get (data.curScene + 1) data.sceneQueue
+                    in
+                    if data.left >= pos - 720 then
                         ( { data | direction = Null, curScene = data.curScene + 1 }, [], env )
 
                     else
                         ( { data | left = data.left + 100 }, [], env )
 
                 Left ->
-                    if data.left <= getX (data.curScene - 1) data.sceneQueue - 720 then
+                    let
+                        ( pos, _ ) =
+                            get (data.curScene - 1) data.sceneQueue
+                    in
+                    if data.left <= pos - 720 then
                         ( { data | direction = Null, curScene = data.curScene - 1 }, [], env )
 
                     else
@@ -95,18 +107,46 @@ update env msg data =
             ( data, [], env )
 
 
+renderBasicView : RawSceneView UserData Data
+renderBasicView env data =
+    let
+        ( x, y ) =
+            env.globalData.mousePos
+
+        button =
+            if x > 1450 && x < 1550 && y > 880 && y < 980 then
+                [ renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
+                , renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+                ]
+
+            else if x > 400 && x < 500 && y > 880 && y < 980 then
+                [ renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
+                , renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+                ]
+
+            else
+                [ renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+                , renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+                ]
+    in
+    Canvas.group []
+        ([ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
+         , Canvas.shapes
+            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
+         , Canvas.shapes
+            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ circle env.globalData.internalData ( 450, 930 ) 50 ]
+         ]
+            ++ button
+        )
+
+
 view : RawSceneView UserData Data
 view env data =
     let
         basicView =
-            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
-            , Canvas.shapes
-                [ fill (Color.rgba 0 0 0 0.7) ]
-                [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
-            , Canvas.shapes
-                [ fill (Color.rgba 0 0 0 0.7) ]
-                [ circle env.globalData.internalData ( 450, 930 ) 50 ]
-            ]
+            renderBasicView env data
 
         sceneView =
             List.map
@@ -133,11 +173,11 @@ view env data =
                 [ Canvas.shapes
                     [ fill (Color.rgba 0 0 0 0.7) ]
                     [ rect env.globalData.internalData ( 500, 850 ) ( 950, 150 ) ]
-                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 900 )
+                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 925 )
                 ]
     in
     Canvas.group []
-        (basicView ++ sceneView ++ [ textView ])
+        ([ basicView, textView ] ++ sceneView)
 
 
 scenecon : MConcreteScene Data UserData SceneMsg

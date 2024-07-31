@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Self.Init exposing
     ( InitData
-    , Self, State(..), defaultSelf, emptyInitData
+    , Self, State(..)
+    , defaultSelf, emptyInitData
     )
 
 {-|
@@ -9,12 +10,15 @@ module SceneProtos.Game.Components.Self.Init exposing
 # Init module
 
 @docs InitData
+@docs Self, State
+@docs defaultSelf, emptyInitData
 
 -}
 
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Library2 exposing (..)
 import Time exposing (ZoneName(..))
 
 
@@ -223,12 +227,12 @@ defaultSelf =
     , position = 1
     , hp = 0
     , mp = 0
-    , energy = 0
+    , energy = 0 --
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
-    , buff = []
+    , buff = [] --
     , skills = []
-    , state = Waiting
-    , isRunning = False
-    , isAttacked = False
+    , state = Waiting --
+    , isRunning = False --
+    , isAttacked = False --
     }

@@ -1,4 +1,4 @@
-module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, getNext, getX, initData)
+module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 
 import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (UserEvent(..))
@@ -71,7 +71,7 @@ initData =
           , next = "After1"
           , text = "Chapter One: First Commision (After Battle)"
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_3"
           , x = 2520
           , y = 300
           , w = 500
@@ -89,7 +89,7 @@ initData =
           , next = "Level2"
           , text = "Chapter Two: Sinful Killing (Battle)"
           }
-        , { name = "dialogue_1"
+        , { name = "dialogue_3"
           , x = 3720
           , y = 300
           , w = 500
@@ -98,7 +98,7 @@ initData =
           , next = "After2"
           , text = "Chapter Two: Sinful Killing (After Battle)"
           }
-        , { name = "dialogue_3"
+        , { name = "dialogue_4"
           , x = 4320
           , y = 300
           , w = 500
@@ -116,7 +116,7 @@ initData =
           , next = "Level3"
           , text = "Chapter Three: Enemies from the North (Battle)"
           }
-        , { name = "dialogue_3"
+        , { name = "dialogue_4"
           , x = 5520
           , y = 300
           , w = 500
@@ -131,21 +131,11 @@ initData =
     }
 
 
-getX : Float -> List ScenePic -> Float
-getX id sceneQueue =
+get : Float -> List ScenePic -> ( Float, String )
+get id sceneQueue =
     case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of
         Just scenePic ->
-            scenePic.x
+            ( scenePic.x, scenePic.next )
 
         Nothing ->
-            0
-
-
-getNext : Float -> List ScenePic -> String
-getNext id sceneQueue =
-    case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of
-        Just scenePic ->
-            scenePic.next
-
-        Nothing ->
-            "Level1"
+            ( 0, "Level1" )

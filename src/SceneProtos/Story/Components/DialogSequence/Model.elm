@@ -6,19 +6,18 @@ module SceneProtos.Story.Components.DialogSequence.Model exposing (component)
 
 -}
 
-import Bitwise exposing (or)
 import Canvas
 import Canvas.Settings.Advanced exposing (alpha)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (GlobalData, UserEvent(..))
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
+import Messenger.Render.Text exposing (renderTextWithColorStyle)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
-import SceneProtos.Story.Components.DialogSequence.Init exposing (DialogueState(..), InitData, defaultDialogue)
+import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, DialogueState(..), InitData, defaultDialogue)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
@@ -40,6 +39,19 @@ init env initMsg =
             )
 
 
+filterDialogue : List Dialogue -> Dialogue -> Bool -> List Dialogue
+filterDialogue list curDia flag =
+    List.filter
+        (\dia ->
+            if flag then
+                dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+
+            else
+                dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
+        )
+        list
+
+
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env evnt data basedata =
     let
@@ -48,11 +60,7 @@ updateHelper env evnt data basedata =
 
         maybeNextDia =
             List.head <|
-                List.filter
-                    (\dia ->
-                        dia.id == ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                    )
-                    data.remainDiaList
+                filterDialogue data.remainDiaList curDia True
 
         ( nextDia, newBasedata, msg ) =
             case maybeNextDia of
@@ -64,15 +72,8 @@ updateHelper env evnt data basedata =
                     , { basedata | isPlaying = False }
                     , [ Other ( "Trigger", PlotDone 3 ) ]
                     )
-
-        remainingDialogues =
-            List.filter
-                (\dia ->
-                    dia.id /= ( Tuple.first curDia.id, Tuple.second curDia.id + 1 )
-                )
-                data.remainDiaList
     in
-    ( ( { data | curDialogue = nextDia, remainDiaList = remainingDialogues }, newBasedata )
+    ( ( { data | curDialogue = nextDia, remainDiaList = filterDialogue data.remainDiaList curDia False }, newBasedata )
     , msg
     , ( env, False )
     )

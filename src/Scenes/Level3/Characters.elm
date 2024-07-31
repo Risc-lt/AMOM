@@ -1,210 +1,95 @@
-module Scenes.Level3.Characters exposing (..)
+module Scenes.Level3.Characters exposing
+    ( enemyInitData
+    , selfInitData
+    )
 
 {-
    All character data
 -}
 
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.GenAttributes exposing (..)
-import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
+import SceneProtos.Game.Components.Self.Init exposing (Self)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Library2 exposing (..)
+import Scenes.Level3.CharacterBase exposing (bithif, bruce, bulingze, cavalry, convert, genChar, genSelf, wenderd)
 
 
-wenderd : Int -> Self
-wenderd time =
-    let
-        baseAttributes =
-            { strength = 56
-            , dexterity = 34
-            , constitution = 42
-            , intelligence = 28
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    genSelf 1
-        time
-        "Wenderd"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , airBlade
-        , doubleStrike
-        , { poison | cost = 1 }
-        ]
-
-
-bruce : Int -> Self
-bruce time =
-    let
-        baseAttributes =
-            { strength = 35
-            , dexterity = 55
-            , constitution = 30
-            , intelligence = 40
-            }
-
-        baseEleResistance =
-            { waterResistance = 20
-            , fireResistance = 10
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 2
-        time
-        "Bruce"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , scatterShot
-        , frostArrow
-        , frostImpact
-        , iceRing
-        , { poison | cost = 1 }
-        , { magicWater | cost = 1 }
-        ]
-
-
-bulingze : Int -> Self
-bulingze time =
-    let
-        baseAttributes =
-            { strength = 28
-            , dexterity = 35
-            , constitution = 32
-            , intelligence = 65
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 20
-            , airResistance = 10
-            , earthResistance = 10
-            }
-    in
-    genSelf 4
-        time
-        "Bulingze"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , fireBall
-        , inspirationOfFire
-        , blindness
-        , { poison | cost = 1 }
-        , { magicWater | cost = 1 }
-        ]
-
-
-bithif : Int -> Self
-bithif time =
-    let
-        baseAttributes =
-            { strength = 34
-            , dexterity = 40
-            , constitution = 36
-            , intelligence = 50
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    genSelf 6
-        time
-        "Bithif"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , compounding
-        , magicTransformation
-        , whirlwindAccelaration
-        , gale
-        , { magicWater | cost = 1 }
-        , { poison | cost = 1 }
-        , { restorationPotion | cost = 1 }
-        ]
-
-
-cavalry : Int -> Self
-cavalry time =
-    let
-        baseAttributes =
-            { strength = 40
-            , dexterity = 30
-            , constitution = 34
-            , intelligence = 56
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    genSelf 5
-        time
-        "Cavalry"
-        baseAttributes
-        baseEleResistance
-        [ arcaneBeam
-        , airBlade
-        , lightningSpell
-        , chainLightning
-        , blessingOfAir
-        , { restorationPotion | cost = 1 }
-        ]
-
-
-genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self
-genSelf position time name baseAttributes baseEleResistance skills =
-    { defaultSelf
-        | name = name
-        , x =
-            if position <= 3 then
-                1100
-
-            else
-                1220
-        , y = toFloat (160 + 130 * (position - (position - 1) // 3 * 3 - 1))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
-
-
-{-| Init data for selfs
+{-| Generate an enemy
 -}
-selfInitData : Int -> List Self
-selfInitData time =
+genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
+genEnemy position time name baseAttributes baseEleResistance skills =
+    let
+        ( _, enemy ) =
+            convert
+                (genChar position time name baseAttributes baseEleResistance skills False)
+    in
+    enemy
+
+
+oneEnemy : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Enemy
+oneEnemy time pos str dex con int water fire air earth name skills =
+    let
+        baseAttributes =
+            { strength = str
+            , dexterity = dex
+            , constitution = con
+            , intelligence = int
+            }
+
+        baseEleResistance =
+            { waterResistance = water
+            , fireResistance = fire
+            , airResistance = air
+            , earthResistance = earth
+            }
+    in
+    genEnemy pos
+        time
+        name
+        baseAttributes
+        baseEleResistance
+        skills
+
+
+swordsman : Int -> List Enemy
+swordsman time =
+    List.map
+        (\p ->
+            oneEnemy time p 35 30 35 40 10 10 20 10 "Swordsman" [ arcaneBeam, lightningSpell ]
+        )
+        (List.range 7 9)
+
+
+magician : Int -> List Enemy
+magician time =
+    List.map
+        (\p ->
+            oneEnemy time p 25 30 35 50 10 10 20 10 "Magician" [ arcaneBeam, lightningSpell, chainLightning ]
+        )
+        (List.range 10 11)
+
+
+therapist : Int -> List Enemy
+therapist time =
+    [ oneEnemy time 12 30 30 35 45 10 10 20 10 "Therapist" [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
+
+
+initData : Int -> ( List Self, List Enemy )
+initData time =
     let
         default =
             List.map
                 (\p ->
-                    genSelf p time "" defaultAttributes defaultEleResistance []
+                    ( genSelf p time "" defaultAttributes defaultEleResistance []
+                    , genEnemy (p + 6) time "" defaultAttributes defaultEleResistance []
+                    )
                 )
                 (List.range 1 6)
+
+        ( defaultSelfs, defaultEnemies ) =
+            List.unzip default
 
         selfs =
             [ wenderd time
@@ -213,138 +98,56 @@ selfInitData time =
             , bithif time
             , cavalry time
             ]
-    in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
-                )
-                selfs
-        )
-        default
-        ++ selfs
-
-
-swordsman : Int -> List Enemy
-swordsman time =
-    let
-        baseAttributes =
-            { strength = 35
-            , dexterity = 30
-            , constitution = 35
-            , intelligence = 40
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    List.map
-        (\p ->
-            genEnemy p time "Swordsman" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell ]
-        )
-        (List.range 7 9)
-
-
-magician : Int -> List Enemy
-magician time =
-    let
-        baseAttributes =
-            { strength = 25
-            , dexterity = 30
-            , constitution = 35
-            , intelligence = 50
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    List.map
-        (\p ->
-            genEnemy p time "Magician" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, chainLightning ]
-        )
-        (List.range 10 11)
-
-
-therapist : Int -> List Enemy
-therapist time =
-    let
-        baseAttributes =
-            { strength = 30
-            , dexterity = 30
-            , constitution = 35
-            , intelligence = 45
-            }
-
-        baseEleResistance =
-            { waterResistance = 10
-            , fireResistance = 10
-            , airResistance = 20
-            , earthResistance = 10
-            }
-    in
-    [ genEnemy 12 time "Therapist" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
-
-
-genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
-genEnemy position time name baseAttributes baseEleResistance skills =
-    { defaultEnemy
-        | name = name
-        , x =
-            if position <= 9 then
-                230
-
-            else
-                100
-        , y = toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
-
-
-{-| Init data for selfs
--}
-enemyInitData : Int -> List Enemy
-enemyInitData time =
-    let
-        default =
-            List.map
-                (\p ->
-                    genEnemy p time "" defaultAttributes defaultEleResistance []
-                )
-                (List.range 7 12)
 
         enemies =
             swordsman time
                 ++ magician time
                 ++ therapist time
-    in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
+
+        resSelfs =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        selfs
                 )
-                enemies
-        )
-        default
-        ++ enemies
+                defaultSelfs
+                ++ selfs
+
+        resEnemies =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        enemies
+                )
+                defaultEnemies
+                ++ enemies
+    in
+    ( resSelfs, resEnemies )
+
+
+{-| Init data for selfs
+-}
+selfInitData : Int -> List Self
+selfInitData time =
+    let
+        ( selfs, _ ) =
+            initData time
+    in
+    selfs
+
+
+{-| Init data for enemies
+-}
+enemyInitData : Int -> List Enemy
+enemyInitData time =
+    let
+        ( _, enemies ) =
+            initData time
+    in
+    enemies

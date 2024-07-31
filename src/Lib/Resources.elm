@@ -31,13 +31,6 @@ A list of all the textures.
 
 Add your textures here. Don't worry if your list is too long. You can split those resources according to their usage.
 
-Example:
-
-    Dict.fromList
-        [ ( "ball", "assets/img/ball.png" )
-        , ( "car", "assets/img/car.jpg" )
-        ]
-
 -}
 allTexture : Dict String String
 allTexture =
@@ -51,8 +44,10 @@ allTexture =
          , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
          , ( "levelselect", "assets/character/background/levelselect.jpg" )
+         , ( "arrow", "assets/character/chartlet/arrow.png" )
          ]
             ++ chacaterTexture
+            ++ chacaterSheetTexture
             ++ bufferTexture
         )
 
@@ -64,7 +59,14 @@ chacaterTexture =
     , ( "head_bulingze", "assets/character/role/role_2.jpg" )
     , ( "head_wenderd", "assets/character/role/role_3.jpg" )
     , ( "head_cavalry", "assets/character/role/role_5.jpg" )
-    , ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
+    , ( "head_magicorg", "assets/character/role/head_magicorg.jpg" )
+    , ( "head_concert", "assets/character/role/head_concert.jpg" )
+    ]
+
+
+chacaterSheetTexture : List ( String, String )
+chacaterSheetTexture =
+    [ ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
     , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
     , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
     , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
@@ -74,8 +76,6 @@ chacaterTexture =
     , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png" )
     , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png" )
     , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png" )
-    , ( "head_magicorg", "assets/character/role/head_magicorg.jpg" )
-    , ( "head_concert", "assets/character/role/head_concert.jpg" )
     ]
 
 
@@ -94,26 +94,6 @@ bufferTexture =
 
 
 {-| Add all your sprite sheets here.
-
-Example:
-
-    allSpriteSheets =
-        Dict.fromList
-            [ ( "spritesheet1"
-              , [ ( "sp1"
-                  , { realStartPoint = ( 0, 0 )
-                    , realSize = ( 100, 100 )
-                    }
-                  )
-                , ( "sp2"
-                  , { realStartPoint = ( 100, 0 )
-                    , realSize = ( 100, 100 )
-                    }
-                  )
-                ]
-              )
-            ]
-
 -}
 allSpriteSheets : SpriteSheet
 allSpriteSheets =
@@ -302,10 +282,6 @@ playerSize name =
 
         _ ->
             [ 4, 4 ]
-
-
-
---Dict.empty
 
 
 {-| All audio assets.

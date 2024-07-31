@@ -14,72 +14,64 @@ type alias Data =
     InitData
 
 
+detectDistance : Float -> Bool -> Float -> Float -> Float
+detectDistance target flag speed pos =
+    if flag then
+        if pos + speed > target then
+            target
+
+        else
+            pos + speed
+
+    else if pos - speed < target then
+        target
+
+    else
+        pos - speed
+
+
 changePosition : Float -> Float -> Character -> Character
 changePosition targetX targetY character =
     case character.direction of
         Right ->
-            if character.x + character.speed > targetX then
-                { character | x = targetX }
-
-            else
-                { character | x = character.x + character.speed }
+            { character | x = detectDistance targetX True character.speed character.x }
 
         Left ->
-            if character.x - character.speed < targetX then
-                { character | x = targetX }
-
-            else
-                { character | x = character.x - character.speed }
+            { character | x = detectDistance targetX False character.speed character.x }
 
         Down ->
-            if character.y + character.speed > targetY then
-                { character | y = targetY }
-
-            else
-                { character | y = character.y + character.speed }
+            { character | y = detectDistance targetY True character.speed character.y }
 
         Up ->
-            if character.y - character.speed < targetY then
-                { character | y = targetY }
+            { character | y = detectDistance targetY False character.speed character.y }
 
-            else
-                { character | y = character.y - character.speed }
+
+detectDirection : Float -> Float -> Movement -> Character -> ( Movement, Character )
+detectDirection targetX targetY movement character =
+    if targetX > character.x then
+        ( movement, { character | direction = Right } )
+
+    else if targetX < character.x then
+        ( movement, { character | direction = Left } )
+
+    else if targetY > character.y then
+        ( movement, { character | direction = Down } )
+
+    else if targetY < character.y then
+        ( movement, { character | direction = Up } )
+
+    else
+        ( movement, character )
 
 
 changeDirection : ( Movement, Character ) -> ( Movement, Character )
 changeDirection ( movement, character ) =
     case movement.movekind of
         Real ( targetX, targetY ) _ ->
-            if targetX > character.x then
-                ( movement, { character | direction = Right } )
-
-            else if targetX < character.x then
-                ( movement, { character | direction = Left } )
-
-            else if targetY > character.y then
-                ( movement, { character | direction = Down } )
-
-            else if targetY < character.y then
-                ( movement, { character | direction = Up } )
-
-            else
-                ( movement, character )
+            detectDirection targetX targetY movement character
 
         Follow ( targetX, targetY ) _ ->
-            if targetX > character.x then
-                ( movement, { character | direction = Right } )
-
-            else if targetX < character.x then
-                ( movement, { character | direction = Left } )
-
-            else if targetY > character.y then
-                ( movement, { character | direction = Down } )
-
-            else if targetY < character.y then
-                ( movement, { character | direction = Up } )
-
-            else
-                ( movement, character )
+            detectDirection targetX targetY movement character
 
         Fake direction ->
             ( movement, { character | direction = direction } )
@@ -125,6 +117,20 @@ checkDestination ( movement, character ) =
             ( movement, character )
 
 
+detectMove : Movement -> List ( Movement, Character ) -> Movement
+detectMove m newPlots =
+    case
+        List.head <|
+            List.filter (\n -> n.name == m.name) <|
+                List.map Tuple.first newPlots
+    of
+        Just movement ->
+            movement
+
+        _ ->
+            m
+
+
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env _ data basedata =
     let
@@ -149,16 +155,7 @@ updateHelper env _ data basedata =
         newMoves =
             List.map
                 (\m ->
-                    case
-                        List.head <|
-                            List.filter (\n -> n.name == m.name) <|
-                                List.map Tuple.first newPlots
-                    of
-                        Just movement ->
-                            movement
-
-                        _ ->
-                            m
+                    detectMove m newPlots
                 )
                 data.curMove
 

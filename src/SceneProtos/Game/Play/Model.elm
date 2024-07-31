@@ -122,33 +122,25 @@ updaterec env msg data =
 view : LayerView SceneCommonData UserData Data
 view env data =
     let
-        result =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
-            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
-            ]
-
-        basicView =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
-            , viewComponents env data.components
-            ]
-
         background =
             [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "battleframe"
             , renderSprite env.globalData.internalData [] ( 20, 20 ) ( 1400, 660 ) "background"
             ]
 
         outComeView =
-            if env.commonData.gameover then
-                Canvas.group
-                    []
-                    (basicView ++ result)
-
-            else
-                Canvas.group
-                    []
-                    (background ++ basicView)
+            Canvas.group
+                []
+                (background ++ [ viewComponents env data.components ])
     in
-    outComeView
+    if env.commonData.gameover then
+        Canvas.group []
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
+            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
+            , outComeView
+            ]
+
+    else
+        outComeView
 
 
 matcher : Matcher Data LayerTarget

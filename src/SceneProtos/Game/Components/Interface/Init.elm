@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Interface.Init exposing
     ( InitData
-    , defaultUI, emptyInitData
+    , defaultUI
+    , emptyInitData
     )
 
 {-|
@@ -9,6 +10,8 @@ module SceneProtos.Game.Components.Interface.Init exposing
 # Init module
 
 @docs InitData
+@docs defaultUI
+@docs emptyInitData
 
 -}
 
@@ -23,6 +26,7 @@ type alias InitData =
     , enemies : List Enemy
     , queue : List Int
     , curIndex : Int
+    , levelNum : Int
     }
 
 
@@ -34,6 +38,7 @@ emptyInitData selfInit enemyInit =
     , enemies = enemyInit
     , queue = []
     , curIndex = 0
+    , levelNum = 0
     }
 
 
@@ -45,4 +50,5 @@ defaultUI =
     , enemies = [ defaultEnemy ]
     , queue = []
     , curIndex = 0
+    , levelNum = 0
     }

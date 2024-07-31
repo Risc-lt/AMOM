@@ -1,6 +1,8 @@
 module SceneProtos.Game.Components.Enemy.Init exposing
     ( InitData
-    , Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy
+    , Enemy, State(..)
+    , defaultEnemy, emptyInitData
+    , genDefaultEnemy
     )
 
 {-|
@@ -9,6 +11,9 @@ module SceneProtos.Game.Components.Enemy.Init exposing
 # Init module
 
 @docs InitData
+@docs Enemy, State
+@docs defaultEnemy, emptyInitData
+@docs genDefaultEnemy
 
 -}
 
@@ -160,7 +165,8 @@ defaultEnemy =
     }
 
 
-{-| -}
+{-| Generate default enemy
+-}
 genDefaultEnemy : Int -> Int -> Enemy
 genDefaultEnemy time id =
     let

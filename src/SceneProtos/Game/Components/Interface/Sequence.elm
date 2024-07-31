@@ -1,4 +1,20 @@
-module SceneProtos.Game.Components.Interface.Sequence exposing (..)
+module SceneProtos.Game.Components.Interface.Sequence exposing
+    ( Charactor
+    , calculateApUp
+    , checkSide
+    , concatSelfEnemy
+    , convertToCharactor
+    , defaultChatactor
+    , findIndex
+    , getAt
+    , getFirstChar
+    , getQueue
+    , getSequence
+    , initUI
+    , nextChar
+    , renderQueue
+    , sortCharByQueue
+    )
 
 import Canvas
 import Canvas.Settings.Advanced exposing (imageSmoothing)
@@ -6,13 +22,15 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, Gamestate(..))
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData)
-import SceneProtos.Game.Components.Self.Init exposing (Self)
+import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
+{-| The Charactor type alias
+-}
 type alias Charactor =
     { name : String
     , position : Int
@@ -20,6 +38,8 @@ type alias Charactor =
     }
 
 
+{-| The defaultChatactor
+-}
 defaultChatactor : Charactor
 defaultChatactor =
     { name = ""
@@ -28,56 +48,45 @@ defaultChatactor =
     }
 
 
-convertSelfToCharactor : Self -> Charactor
-convertSelfToCharactor self =
-    let
-        apUp =
-            List.sum <|
-                List.map
-                    (\( b, _ ) ->
-                        case b of
-                            SpeedUp value ->
-                                value
+{-| The calculateApUp function
+-}
+calculateApUp : List ( Buff, Int ) -> Int
+calculateApUp buff =
+    List.sum <|
+        List.map
+            (\( b, _ ) ->
+                case b of
+                    SpeedUp value ->
+                        value
 
-                            SpeedDown value ->
-                                -value
+                    SpeedDown value ->
+                        -value
 
-                            _ ->
-                                0
-                    )
-                    self.buff
-    in
-    { name = self.name
-    , position = self.position
-    , ap = self.extendValues.actionPoints + apUp
-    }
+                    _ ->
+                        0
+            )
+            buff
 
 
-convertEnemyToCharactor : Enemy -> Charactor
-convertEnemyToCharactor enemy =
-    let
-        apUp =
-            List.sum <|
-                List.map
-                    (\( b, _ ) ->
-                        case b of
-                            SpeedUp value ->
-                                value
+{-| The convertToCharactor function
+-}
+convertToCharactor : Self -> Enemy -> Bool -> Charactor
+convertToCharactor self enemy flag =
+    if flag then
+        { name = self.name
+        , position = self.position
+        , ap = self.extendValues.actionPoints + calculateApUp self.buff
+        }
 
-                            SpeedDown value ->
-                                -value
-
-                            _ ->
-                                0
-                    )
-                    enemy.buff
-    in
-    { name = enemy.name
-    , position = enemy.position
-    , ap = enemy.extendValues.actionPoints + apUp
-    }
+    else
+        { name = enemy.name
+        , position = enemy.position
+        , ap = enemy.extendValues.actionPoints + calculateApUp enemy.buff
+        }
 
 
+{-| The getSequence function
+-}
 getSequence : List Charactor -> List Charactor
 getSequence data =
     data
@@ -85,6 +94,8 @@ getSequence data =
         |> List.reverse
 
 
+{-| The concatSelfEnemy function
+-}
 concatSelfEnemy : List Self -> List Enemy -> List Charactor
 concatSelfEnemy selfs enemies =
     let
@@ -95,13 +106,15 @@ concatSelfEnemy selfs enemies =
             List.filter (\x -> x.hp /= 0) enemies
     in
     List.map
-        (\x -> convertSelfToCharactor x)
+        (\x -> convertToCharactor x defaultEnemy True)
         aliveSelfs
         ++ List.map
-            (\x -> convertEnemyToCharactor x)
+            (\x -> convertToCharactor defaultSelf x False)
             aliveEnemies
 
 
+{-| The getQueue function
+-}
 getQueue : List Self -> List Enemy -> List Int
 getQueue selfs enemies =
     List.map
@@ -111,6 +124,8 @@ getQueue selfs enemies =
             concatSelfEnemy selfs enemies
 
 
+{-| The getFirstChar function
+-}
 getFirstChar : List Int -> Int
 getFirstChar queue =
     Maybe.withDefault 100 <|
@@ -118,10 +133,8 @@ getFirstChar queue =
             queue
 
 
-
--- Helper function to get the element at a specific index in the list
-
-
+{-| The getAt function
+-}
 getAt : Int -> List a -> Maybe a
 getAt index list =
     if index < 0 then
@@ -131,19 +144,15 @@ getAt index list =
         List.head (List.drop index list)
 
 
-
--- Helper function to find the index of an element in the list
-
-
+{-| The findIndex function
+-}
 findIndex : Int -> List Int -> Maybe Int
 findIndex target list =
     List.head (List.indexedMap Tuple.pair list |> List.filter (\( _, value ) -> value == target) |> List.map Tuple.first)
 
 
-
--- The nextChar function
-
-
+{-| The nextChar function
+-}
 nextChar : InitData -> BaseData -> ( Int, Int, Bool )
 nextChar initData basedata =
     let
@@ -176,6 +185,8 @@ nextChar initData basedata =
                 ( getFirstChar initData.queue, 0, True )
 
 
+{-| The sortCharByQueue function
+-}
 sortCharByQueue : List Charactor -> List Int -> List String
 sortCharByQueue data queue =
     List.map
@@ -192,6 +203,8 @@ sortCharByQueue data queue =
         queue
 
 
+{-| The renderQueue function
+-}
 renderQueue : Messenger.Base.Env SceneCommonData UserData -> InitData -> List Canvas.Renderable
 renderQueue env initData =
     let
@@ -216,6 +229,8 @@ renderQueue env initData =
             (List.range 0 (List.length sortedData - 1))
 
 
+{-| The checkSide function
+-}
 checkSide : Int -> ActionSide
 checkSide position =
     if 1 <= position && position <= 6 then
@@ -228,6 +243,8 @@ checkSide position =
         Undeclaced
 
 
+{-| The initUI function
+-}
 initUI : InitData -> BaseData -> ( InitData, BaseData )
 initUI data basedata =
     let

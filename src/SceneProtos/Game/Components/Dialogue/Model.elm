@@ -10,11 +10,11 @@ import Canvas
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (GlobalData, UserEvent(..))
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
+import Messenger.Render.Text exposing (renderTextWithColorStyle)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, defaultDialogue, emptyInitData)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))

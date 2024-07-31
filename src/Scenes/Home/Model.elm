@@ -95,38 +95,44 @@ update env msg data =
             ( data, [], env )
 
 
+renderBasicView : RawSceneView UserData Data
+renderBasicView env data =
+    let
+        ( x, y ) =
+            env.globalData.mousePos
+
+        rightButton =
+            if x > 1450 && x < 1550 && y > 880 && y < 980 then
+                renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
+
+            else
+                renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
+
+        leftButton =
+            if x > 400 && x < 500 && y > 880 && y < 980 then
+                renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
+
+            else
+                renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
+    in
+    Canvas.group []
+        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
+        , Canvas.shapes
+            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
+        , rightButton
+        , Canvas.shapes
+            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ circle env.globalData.internalData ( 450, 930 ) 50 ]
+        , leftButton
+        ]
+
+
 view : RawSceneView UserData Data
 view env data =
     let
         basicView =
-            let
-                ( x, y ) =
-                    env.globalData.mousePos
-
-                rightButton =
-                    if x > 1450 && x < 1550 && y > 880 && y < 980 then
-                        renderSprite env.globalData.internalData [] ( 1446, 875 ) ( 120, 120 ) "arrow"
-
-                    else
-                        renderSprite env.globalData.internalData [] ( 1453, 883 ) ( 100, 100 ) "arrow"
-
-                leftButton =
-                    if x > 400 && x < 500 && y > 880 && y < 980 then
-                        renderSpriteWithRev True env.globalData.internalData [] ( 390, 875 ) ( 120, 120 ) "arrow"
-
-                    else
-                        renderSpriteWithRev True env.globalData.internalData [] ( 398, 883 ) ( 100, 100 ) "arrow"
-            in
-            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
-            , Canvas.shapes
-                [ fill (Color.rgba 0 0 0 0.7) ]
-                [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
-            , rightButton
-            , Canvas.shapes
-                [ fill (Color.rgba 0 0 0 0.7) ]
-                [ circle env.globalData.internalData ( 450, 930 ) 50 ]
-            , leftButton
-            ]
+            renderBasicView env data
 
         sceneView =
             List.map
@@ -157,7 +163,7 @@ view env data =
                 ]
     in
     Canvas.group []
-        (basicView ++ sceneView ++ [ textView ])
+        ([ basicView, textView ] ++ sceneView)
 
 
 scenecon : MConcreteScene Data UserData SceneMsg

@@ -13,10 +13,12 @@ import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
-import SceneProtos.Story.Components.Sommsg.Init exposing (InitData, defaultInitData)
+import SceneProtos.Story.Components.Sommsg.Init exposing (InitData, defaultMusic)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import Messenger.Audio.Base exposing (AudioTarget(..))
+import Messenger.Audio.Base exposing (AudioOption(..))
+import Duration exposing (Duration)
 
 
 type alias Data =
@@ -30,12 +32,43 @@ init env initMsg =
             ( initData, initBaseData )
 
         _ ->
-            ( { music = defaultInitData, isPlaying = False }, initBaseData )
+            ( { music = [ defaultMusic ], isPlaying = False }, initBaseData )
 
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    ( ( data, basedata ), [], ( env, False ) )
+    if data.isPlaying == True then
+        case evnt of
+            Tick _ ->
+                let
+                    ( name, length, id ) =
+                        Maybe.withDefault defaultMusic <|
+                            List.head <|
+                                data.music
+
+                    newMusic =
+                        List.filter (\( _, _, i ) -> i /= id) data.music
+
+                    commonSetting =
+                        { rate = 1
+                        , start = Duration.seconds 0
+                        }
+
+                    loopSetting =
+                        { loopStart = Duration.seconds 0
+                        , loopEnd = Duration.seconds length
+                        }
+
+                    newMsg =
+                        [ Parent <| SOMMsg <| SOMPlayAudio 0 name (ALoop (Just commonSetting) (Just loopSetting)) ]
+                in
+                ( ( { data | music = newMusic, isPlaying = True }, basedata ), newMsg, ( env, False ) )
+
+            _ ->
+                ( ( data, basedata ), [], ( env, False ) )
+
+    else
+        ( ( data, basedata ), [], ( env, False ) )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
@@ -44,7 +77,7 @@ updaterec env msg data basedata =
         BeginPlot id ->
             let
                 newMusic =
-                    List.any (\( _, i ) -> i == id) data.music
+                    List.any (\( _, _, i ) -> i == id) data.music
 
                 newMsg =
                     if newMusic then
@@ -53,7 +86,7 @@ updaterec env msg data basedata =
                     else
                         [ Parent <| SOMMsg <| SOMStopAudio AllAudio ]
             in
-            ( ( data, basedata ), newMsg, env )
+            ( ( { data | isPlaying = False }, basedata ), newMsg, env )
 
         _ ->
             ( ( data, basedata ), [], env )

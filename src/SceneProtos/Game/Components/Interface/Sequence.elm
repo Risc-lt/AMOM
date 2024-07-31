@@ -6,9 +6,9 @@ import Lib.UserData exposing (UserData)
 import Messenger.Base
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, Gamestate(..))
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData)
-import SceneProtos.Game.Components.Self.Init exposing (Self)
+import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
@@ -46,28 +46,19 @@ calculateApUp buff =
             buff
 
 
-convertSelfToCharactor : Self -> Charactor
-convertSelfToCharactor self =
-    let
-        apUp =
-            calculateApUp self.buff
-    in
-    { name = self.name
-    , position = self.position
-    , ap = self.extendValues.actionPoints + apUp
-    }
+convertToCharactor : Self -> Enemy -> Bool -> Charactor
+convertToCharactor self enemy flag =
+    if flag then
+        { name = self.name
+        , position = self.position
+        , ap = self.extendValues.actionPoints + calculateApUp self.buff
+        }
 
-
-convertEnemyToCharactor : Enemy -> Charactor
-convertEnemyToCharactor enemy =
-    let
-        apUp =
-            calculateApUp enemy.buff
-    in
-    { name = enemy.name
-    , position = enemy.position
-    , ap = enemy.extendValues.actionPoints + apUp
-    }
+    else
+        { name = enemy.name
+        , position = enemy.position
+        , ap = enemy.extendValues.actionPoints + calculateApUp enemy.buff
+        }
 
 
 getSequence : List Charactor -> List Charactor
@@ -87,10 +78,10 @@ concatSelfEnemy selfs enemies =
             List.filter (\x -> x.hp /= 0) enemies
     in
     List.map
-        (\x -> convertSelfToCharactor x)
+        (\x -> convertToCharactor x defaultEnemy True)
         aliveSelfs
         ++ List.map
-            (\x -> convertEnemyToCharactor x)
+            (\x -> convertToCharactor defaultSelf x False)
             aliveEnemies
 
 

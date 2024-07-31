@@ -151,21 +151,28 @@ chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 chooseAction env evnt data basedata =
     let
         hasMagic =
-            if (List.length <| List.filter (\s -> s.kind == Magic) data.skills) /= 0 then
+            if (List.length <| List.filter (\s -> s.kind == Magic && s.cost <= data.mp) data.skills) /= 0 then
                 [ EnemyAttack, ChooseMagic ]
 
             else
                 [ EnemyAttack ]
 
         hasSpeSkill =
-            if (List.length <| List.filter (\s -> s.kind == SpecialSkill) data.skills) /= 0 then
+            if (List.length <| List.filter (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data.skills) /= 0 then
                 ChooseSpeSkill :: hasMagic
 
             else
                 hasMagic
 
         hasItem =
-            if (List.length <| List.filter (\s -> s.kind == Item) data.skills) /= 0 then
+            if
+                (List.length <| List.filter (\s -> s.kind == Item) data.skills)
+                    /= 0
+                    && data.hp
+                    < data.extendValues.basicStatus.maxHp
+                    && data.mp
+                    < data.extendValues.basicStatus.maxMp
+            then
                 ChooseItem :: hasSpeSkill
 
             else
@@ -276,7 +283,14 @@ handleSpecial skill env evnt data basedata =
                     0
 
         newState =
-            if skill.range == Ally && List.member newPosition basedata.enemyNum then
+            if
+                skill.range
+                    == Ally
+                    && List.member newPosition basedata.enemyNum
+                    || skill.range
+                    /= Ally
+                    && List.member position basedata.selfNum
+            then
                 PlayerTurn
 
             else
@@ -337,8 +351,8 @@ handleSpecial skill env evnt data basedata =
             else
                 data
     in
-    ( ( newData, { basedata | curEnemy = position, state = newState } )
-    , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
+    ( ( newData, { basedata | curSelf = position, state = newState } )
+    , skillMsg
     , ( env, False )
     )
 

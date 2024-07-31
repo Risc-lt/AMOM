@@ -1,4 +1,4 @@
-module Scenes.Level1.Characters exposing (..)
+module Scenes.Level3.Characters exposing (..)
 
 {-
    All character data
@@ -15,10 +15,10 @@ wenderd : Int -> Self
 wenderd time =
     let
         baseAttributes =
-            { strength = 40
-            , dexterity = 25
-            , constitution = 35
-            , intelligence = 20
+            { strength = 56
+            , dexterity = 34
+            , constitution = 42
+            , intelligence = 28
             }
 
         baseEleResistance =
@@ -35,6 +35,8 @@ wenderd time =
         baseEleResistance
         [ arcaneBeam
         , airBlade
+        , doubleStrike
+        , { poison | cost = 1 }
         ]
 
 
@@ -42,10 +44,10 @@ bruce : Int -> Self
 bruce time =
     let
         baseAttributes =
-            { strength = 25
-            , dexterity = 40
-            , constitution = 25
-            , intelligence = 30
+            { strength = 35
+            , dexterity = 55
+            , constitution = 30
+            , intelligence = 40
             }
 
         baseEleResistance =
@@ -62,6 +64,11 @@ bruce time =
         baseEleResistance
         [ arcaneBeam
         , scatterShot
+        , frostArrow
+        , frostImpact
+        , iceRing
+        , { poison | cost = 1 }
+        , { magicWater | cost = 1 }
         ]
 
 
@@ -69,10 +76,10 @@ bulingze : Int -> Self
 bulingze time =
     let
         baseAttributes =
-            { strength = 20
-            , dexterity = 30
-            , constitution = 25
-            , intelligence = 45
+            { strength = 28
+            , dexterity = 35
+            , constitution = 32
+            , intelligence = 65
             }
 
         baseEleResistance =
@@ -89,6 +96,10 @@ bulingze time =
         baseEleResistance
         [ arcaneBeam
         , fireBall
+        , inspirationOfFire
+        , blindness
+        , { poison | cost = 1 }
+        , { magicWater | cost = 1 }
         ]
 
 
@@ -96,10 +107,43 @@ bithif : Int -> Self
 bithif time =
     let
         baseAttributes =
-            { strength = 25
+            { strength = 34
+            , dexterity = 40
+            , constitution = 36
+            , intelligence = 50
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    genSelf 6
+        time
+        "Bithif"
+        baseAttributes
+        baseEleResistance
+        [ arcaneBeam
+        , compounding
+        , magicTransformation
+        , whirlwindAccelaration
+        , gale
+        , { magicWater | cost = 1 }
+        , { poison | cost = 1 }
+        , { restorationPotion | cost = 1 }
+        ]
+
+
+cavalry : Int -> Self
+cavalry time =
+    let
+        baseAttributes =
+            { strength = 40
             , dexterity = 30
-            , constitution = 30
-            , intelligence = 35
+            , constitution = 34
+            , intelligence = 56
             }
 
         baseEleResistance =
@@ -111,13 +155,15 @@ bithif time =
     in
     genSelf 5
         time
-        "Bithif"
+        "Cavalry"
         baseAttributes
         baseEleResistance
         [ arcaneBeam
-        , compounding
-        , { magicWater | cost = 1 }
-        , { poison | cost = 1 }
+        , airBlade
+        , lightningSpell
+        , chainLightning
+        , blessingOfAir
+        , { restorationPotion | cost = 1 }
         ]
 
 
@@ -165,6 +211,7 @@ selfInitData time =
             , bruce time
             , bulingze time
             , bithif time
+            , cavalry time
             ]
     in
     List.filter
@@ -179,28 +226,72 @@ selfInitData time =
         ++ selfs
 
 
-wolves : Int -> List Enemy
-wolves time =
+swordsman : Int -> List Enemy
+swordsman time =
     let
         baseAttributes =
             { strength = 35
-            , dexterity = 40
-            , constitution = 25
-            , intelligence = 10
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 40
             }
 
         baseEleResistance =
             { waterResistance = 10
-            , fireResistance = 8
-            , airResistance = 15
-            , earthResistance = 15
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
             }
     in
     List.map
         (\p ->
-            genEnemy p time "Wild Wolf" baseAttributes baseEleResistance []
+            genEnemy p time "Swordsman" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell ]
         )
-        (List.range 7 12)
+        (List.range 7 9)
+
+
+magician : Int -> List Enemy
+magician time =
+    let
+        baseAttributes =
+            { strength = 25
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 50
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    List.map
+        (\p ->
+            genEnemy p time "Magician" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, chainLightning ]
+        )
+        (List.range 10 11)
+
+
+therapist : Int -> List Enemy
+therapist time =
+    let
+        baseAttributes =
+            { strength = 30
+            , dexterity = 30
+            , constitution = 35
+            , intelligence = 45
+            }
+
+        baseEleResistance =
+            { waterResistance = 10
+            , fireResistance = 10
+            , airResistance = 20
+            , earthResistance = 10
+            }
+    in
+    [ genEnemy 12 time "Therapist" baseAttributes baseEleResistance [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
 
 
 genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
@@ -243,7 +334,9 @@ enemyInitData time =
                 (List.range 7 12)
 
         enemies =
-            wolves time
+            swordsman time
+                ++ magician time
+                ++ therapist time
     in
     List.filter
         (\d ->

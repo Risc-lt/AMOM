@@ -21,8 +21,92 @@ import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 {-| The initial data for the StroryTrigger component
 -}
-handleMove : List Self -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleMove list env evnt data basedata =
+moveX : Data -> BaseData -> Bool -> Float -> Float
+moveX data basedata longRange returnX =
+    if
+        basedata.state
+            == PlayerAttack True
+            || basedata.state
+            == PlayerAttack False
+            && not longRange
+    then
+        if data.x > 670 then
+            data.x - 5
+
+        else
+            670
+
+    else if
+        basedata.state
+            == PlayerReturn True
+            || basedata.state
+            == PlayerReturn False
+            || basedata.state
+            == Counter
+    then
+        if data.x < returnX then
+            data.x + 5
+
+        else
+            returnX
+
+    else
+        data.x
+
+
+{-| Update the basedata
+-}
+getNewBaseData : BaseData -> Float -> Float -> Bool -> BaseData
+getNewBaseData basedata newX returnX longRange =
+    if basedata.state == PlayerReturn False && newX >= returnX then
+        { basedata | state = EnemyTurn }
+
+    else if basedata.state == PlayerReturn True && newX >= returnX then
+        { basedata | state = PlayerAttack False }
+
+    else if basedata.state == Counter && newX >= returnX then
+        { basedata | state = EnemyAttack }
+
+    else if basedata.state == PlayerAttack False && (newX <= 670 || longRange) then
+        { basedata | state = PlayerReturn False }
+
+    else if basedata.state == PlayerAttack True && (newX <= 670 || longRange) then
+        { basedata | state = PlayerReturn True }
+
+    else
+        basedata
+
+
+getMsg : Data -> BaseData -> Float -> Float -> Bool -> List (Msg String ComponentMsg sommsg)
+getMsg data basedata newX returnX longRange =
+    let
+        turnMsg =
+            if basedata.state == Counter && newX >= returnX then
+                [ Other ( "Enemy", Action StartCounter ) ]
+
+            else if basedata.state == PlayerReturn False && newX >= returnX then
+                [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
+
+            else
+                []
+
+        attackMsg =
+            if
+                (basedata.state == PlayerAttack True || basedata.state == PlayerAttack False)
+                    && (newX <= 670 || longRange)
+            then
+                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
+
+            else
+                []
+    in
+    attackMsg ++ turnMsg
+
+
+{-| The initial data for the StroryTrigger component
+-}
+handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+handleMove env evnt data basedata =
     let
         returnX =
             if data.position <= 3 then
@@ -35,35 +119,7 @@ handleMove list env evnt data basedata =
             data.name == "Bruce"
 
         newX =
-            if
-                basedata.state
-                    == PlayerAttack True
-                    || basedata.state
-                    == PlayerAttack False
-                    && not longRange
-            then
-                if data.x > 670 then
-                    data.x - 5
-
-                else
-                    670
-
-            else if
-                basedata.state
-                    == PlayerReturn True
-                    || basedata.state
-                    == PlayerReturn False
-                    || basedata.state
-                    == Counter
-            then
-                if data.x < returnX then
-                    data.x + 5
-
-                else
-                    returnX
-
-            else
-                data.x
+            moveX data basedata longRange returnX
 
         runFlag =
             if longRange && basedata.state == TargetSelection Attack then
@@ -91,45 +147,12 @@ handleMove list env evnt data basedata =
                 data
 
         newBaseData =
-            if basedata.state == PlayerReturn False && newX >= returnX then
-                { basedata | state = EnemyTurn }
+            getNewBaseData basedata newX returnX longRange
 
-            else if basedata.state == PlayerReturn True && newX >= returnX then
-                { basedata | state = PlayerAttack False }
-
-            else if basedata.state == Counter && newX >= returnX then
-                { basedata | state = EnemyAttack }
-
-            else if basedata.state == PlayerAttack False && (newX <= 670 || longRange) then
-                { basedata | state = PlayerReturn False }
-
-            else if basedata.state == PlayerAttack True && (newX <= 670 || longRange) then
-                { basedata | state = PlayerReturn True }
-
-            else
-                basedata
-
-        turnMsg =
-            if basedata.state == Counter && newX >= returnX then
-                [ Other ( "Enemy", Action StartCounter ) ]
-
-            else if basedata.state == PlayerReturn False && newX >= returnX then
-                [ Other ( "Interface", SwitchTurn 0 ), Other ( "StoryTrigger", SwitchTurn 0 ) ]
-
-            else
-                []
-
-        attackMsg =
-            if
-                (basedata.state == PlayerAttack True || basedata.state == PlayerAttack False)
-                    && (newX <= 670 || longRange)
-            then
-                [ Other ( "Enemy", Action (PlayerNormal data basedata.curEnemy) ) ]
-
-            else
-                []
+        newMsg =
+            getMsg data basedata newX returnX longRange
     in
-    ( ( { newData | x = newX, isRunning = runFlag }, newBaseData ), attackMsg ++ turnMsg, ( env, False ) )
+    ( ( { newData | x = newX, isRunning = runFlag }, newBaseData ), newMsg, ( env, False ) )
 
 
 {-| The initial data for the StroryTrigger component
@@ -151,7 +174,7 @@ updateOne list env evnt data basedata =
                 )
 
             else
-                handleMove list env evnt data basedata
+                handleMove env evnt data basedata
 
         KeyDown key ->
             if basedata.state == GameBegin then

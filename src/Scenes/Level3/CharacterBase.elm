@@ -104,7 +104,7 @@ bithif time =
             , earthResistance = 10
             }
     in
-    genSelf 6
+    genSelf 5
         time
         "Bithif"
         baseAttributes

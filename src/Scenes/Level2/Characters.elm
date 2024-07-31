@@ -255,7 +255,7 @@ selfInitData time =
     selfs
 
 
-{-| Init data for selfs
+{-| Init data for enemies
 -}
 enemyInitData : Int -> List Enemy
 enemyInitData time =

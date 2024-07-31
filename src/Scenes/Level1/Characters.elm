@@ -12,6 +12,19 @@ import SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
+type alias Character =
+    { name : String
+    , x : Int
+    , y : Float
+    , position : Int
+    , hp : Int
+    , mp : Int
+    , attributes : Attribute
+    , extendValues : ExtendValue
+    , skills : List Skill
+    }
+
+
 oneChar : Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> String -> List Skill -> Self
 oneChar time pos str dex con int water fire air earth name skills =
     let
@@ -35,6 +48,71 @@ oneChar time pos str dex con int water fire air earth name skills =
         baseAttributes
         baseEleResistance
         skills
+
+
+genChar : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Bool -> Character
+genChar position time name baseAttributes baseEleResistance skills flag =
+    { name = name
+    , x =
+        if flag then
+            if position <= 3 then
+                1100
+
+            else
+                1220
+
+        else if position <= 9 then
+            230
+
+        else
+            100
+    , y =
+        if flag then
+            toFloat (160 + 130 * (position - (position - 1) // 3 * 3 - 1))
+
+        else
+            toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
+    , position = position
+    , hp = genHp baseAttributes
+    , mp = genMp baseAttributes
+    , attributes = baseAttributes
+    , extendValues =
+        genExtendValues
+            baseAttributes
+            (time + position)
+            baseEleResistance.waterResistance
+            baseEleResistance.fireResistance
+            baseEleResistance.airResistance
+            baseEleResistance.earthResistance
+    , skills = skills
+    }
+
+
+convert : Character -> ( Self, Enemy )
+convert char =
+    ( { defaultSelf
+        | name = char.name
+        , x = toFloat char.x
+        , y = char.y
+        , position = char.position
+        , hp = char.hp
+        , mp = char.mp
+        , attributes = char.attributes
+        , extendValues = char.extendValues
+        , skills = char.skills
+      }
+    , { defaultEnemy
+        | name = char.name
+        , x = toFloat char.x
+        , y = char.y
+        , position = char.position
+        , hp = char.hp
+        , mp = char.mp
+        , attributes = char.attributes
+        , extendValues = char.extendValues
+        , skills = char.skills
+      }
+    )
 
 
 wenderd : Int -> Self
@@ -73,60 +151,22 @@ bithif time =
 
 genSelf : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Self
 genSelf position time name baseAttributes baseEleResistance skills =
-    { defaultSelf
-        | name = name
-        , x =
-            if position <= 3 then
-                1100
-
-            else
-                1220
-        , y = toFloat (160 + 130 * (position - (position - 1) // 3 * 3 - 1))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
-
-
-{-| Init data for selfs
--}
-selfInitData : Int -> List Self
-selfInitData time =
     let
-        default =
-            List.map
-                (\p ->
-                    genSelf p time "" defaultAttributes defaultEleResistance []
-                )
-                (List.range 1 6)
-
-        selfs =
-            [ wenderd time
-            , bruce time
-            , bulingze time
-            , bithif time
-            ]
+        ( self, _ ) =
+            convert
+                (genChar position time name baseAttributes baseEleResistance skills True)
     in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
-                )
-                selfs
-        )
-        default
-        ++ selfs
+    self
+
+
+genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
+genEnemy position time name baseAttributes baseEleResistance skills =
+    let
+        ( _, enemy ) =
+            convert
+                (genChar position time name baseAttributes baseEleResistance skills False)
+    in
+    enemy
 
 
 wolves : Int -> List Enemy
@@ -153,55 +193,75 @@ wolves time =
         (List.range 7 12)
 
 
-genEnemy : Int -> Int -> String -> Attribute -> EleResistance -> List Skill -> Enemy
-genEnemy position time name baseAttributes baseEleResistance skills =
-    { defaultEnemy
-        | name = name
-        , x =
-            if position <= 9 then
-                230
-
-            else
-                100
-        , y = toFloat (160 + 130 * (position - (position - 7) // 3 * 3 - 7))
-        , position = position
-        , hp = genHp baseAttributes
-        , mp = genMp baseAttributes
-        , attributes = baseAttributes
-        , extendValues =
-            genExtendValues
-                baseAttributes
-                (time + position)
-                baseEleResistance.waterResistance
-                baseEleResistance.fireResistance
-                baseEleResistance.airResistance
-                baseEleResistance.earthResistance
-        , skills = skills
-    }
-
-
-{-| Init data for selfs
--}
-enemyInitData : Int -> List Enemy
-enemyInitData time =
+initData : Int -> ( List Self, List Enemy )
+initData time =
     let
         default =
             List.map
                 (\p ->
-                    genEnemy p time "" defaultAttributes defaultEleResistance []
+                    ( genSelf p time "" defaultAttributes defaultEleResistance []
+                    , genEnemy (p + 6) time "" defaultAttributes defaultEleResistance []
+                    )
                 )
-                (List.range 7 12)
+                (List.range 1 6)
+
+        ( defaultSelfs, defaultEnemies ) =
+            List.unzip default
+
+        selfs =
+            [ wenderd time
+            , bruce time
+            , bulingze time
+            , bithif time
+            ]
 
         enemies =
             wolves time
-    in
-    List.filter
-        (\d ->
-            List.all
-                (\s ->
-                    s.position /= d.position
+
+        resSelfs =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        selfs
                 )
-                enemies
-        )
-        default
-        ++ enemies
+                defaultSelfs
+                ++ selfs
+
+        resEnemies =
+            List.filter
+                (\d ->
+                    List.all
+                        (\s ->
+                            s.position /= d.position
+                        )
+                        enemies
+                )
+                defaultEnemies
+                ++ enemies
+    in
+    ( resSelfs, resEnemies )
+
+
+{-| Init data for selfs
+-}
+selfInitData : Int -> List Self
+selfInitData time =
+    let
+        ( selfs, _ ) =
+            initData time
+    in
+    selfs
+
+
+{-| Init data for enemies
+-}
+enemyInitData : Int -> List Enemy
+enemyInitData time =
+    let
+        ( _, enemies ) =
+            initData time
+    in
+    enemies

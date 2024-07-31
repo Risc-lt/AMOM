@@ -4,6 +4,7 @@ module Scenes.After2.Dialogues exposing (..)
    All dialogue data
 -}
 
+import Json.Decode exposing (list)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 
 
@@ -239,27 +240,17 @@ genDialogue speaker content id =
 
 dialogueInitData : InitData
 dialogueInitData =
+    let
+        list1 =
+            [ amaze, affirm, groan, surprise, complain ]
+
+        list2 =
+            [ ask, silence1, confused, hungry, prevent, apologize, comfort, collapse ]
+
+        list3 =
+            [ sad, persuade, hesitate, repeat, astounded, silence2, end ]
+    in
     { curDialogue = defaultDialogue
     , remainDiaList =
-        [ amaze
-        , affirm
-        , groan
-        , surprise
-        , complain
-        , ask
-        , silence1
-        , confused
-        , hungry
-        , prevent
-        , apologize
-        , comfort
-        , collapse
-        , sad
-        , persuade
-        , hesitate
-        , repeat
-        , astounded
-        , silence2
-        , end
-        ]
+        list1 ++ list2 ++ list3
     }

@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Interface.Init exposing
     ( InitData
-    , defaultUI, emptyInitData
+    , defaultUI
+    , emptyInitData
     )
 
 {-|
@@ -9,6 +10,8 @@ module SceneProtos.Game.Components.Interface.Init exposing
 # Init module
 
 @docs InitData
+@docs defaultUI
+@docs emptyInitData
 
 -}
 

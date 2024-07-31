@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.StoryTrigger.Init exposing
     ( InitData
-    , TriggerConditions(..), defaultTrigger
+    , TriggerConditions(..)
+    , defaultTrigger
     )
 
 {-|
@@ -9,6 +10,8 @@ module SceneProtos.Game.Components.StoryTrigger.Init exposing
 # Init module
 
 @docs InitData
+@docs TriggerConditions
+@docs defaultTrigger
 
 -}
 

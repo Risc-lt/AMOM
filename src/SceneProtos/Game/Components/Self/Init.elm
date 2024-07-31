@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Self.Init exposing
     ( InitData
-    , Self, State(..), defaultSelf, emptyInitData
+    , Self, State(..)
+    , defaultSelf, emptyInitData
     )
 
 {-|
@@ -9,6 +10,8 @@ module SceneProtos.Game.Components.Self.Init exposing
 # Init module
 
 @docs InitData
+@docs Self, State
+@docs defaultSelf, emptyInitData
 
 -}
 

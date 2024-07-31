@@ -1,4 +1,21 @@
-module SceneProtos.Game.Components.Dialogue.Init exposing (..)
+module SceneProtos.Game.Components.Dialogue.Init exposing
+    ( Dialogue
+    , InitData
+    , defaultDialogue
+    , emptyInitData
+    )
+
+{-|
+
+
+# Init module
+
+@docs InitData: The data used to initialize the scene.
+@docs Dialogue: The data used to initialize the dialogue.
+@docs emptyInitData: Empty init data for dialogue.
+@docs defaultDialogue: Default dialogue.
+
+-}
 
 
 type alias InitData =

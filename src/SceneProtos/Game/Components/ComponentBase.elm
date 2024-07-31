@@ -32,6 +32,11 @@ import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 @docs GamState: Record of whose turn it is
 @docs BaseData: Component base data
 @docs initBaseData: Initial base data
+@docs ActionType: Type of action
+@docs ActionSide: Side of action
+@docs ActionMsg: Action message
+@docs StatusMsg: Status message
+@docs InitMsg: Initialization message
 
 -}
 type InitMsg

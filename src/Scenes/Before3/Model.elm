@@ -18,8 +18,8 @@ import SceneProtos.Story.Components.Background.Model as Background
 import SceneProtos.Story.Components.CharSequence.Model as Character
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
-import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Components.Sommsg.Model as Sommsg
+import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
 import Scenes.Before3.Background exposing (backgroundInitData)

@@ -7,18 +7,17 @@ module SceneProtos.Story.Components.Sommsg.Model exposing (..)
 -}
 
 import Canvas
+import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioOption(..), AudioTarget(..))
 import Messenger.Base exposing (GlobalData, UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.Components.Sommsg.Init exposing (InitData, defaultMusic)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
-import Messenger.Audio.Base exposing (AudioTarget(..))
-import Messenger.Audio.Base exposing (AudioOption(..))
-import Duration exposing (Duration)
 
 
 type alias Data =

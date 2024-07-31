@@ -1,6 +1,7 @@
-module SceneProtos.Story.Components.Sommsg.Init exposing 
+module SceneProtos.Story.Components.Sommsg.Init exposing
     ( InitData
-    , defaultMusic)
+    , defaultMusic
+    )
 
 {-|
 
@@ -10,6 +11,7 @@ module SceneProtos.Story.Components.Sommsg.Init exposing
 @docs InitData
 
 -}
+
 import Messenger.GeneralModel exposing (MsgBase(..))
 
 
@@ -17,7 +19,6 @@ type alias InitData =
     { music : List ( String, Float, Int )
     , isPlaying : Bool
     }
-    
 
 
 defaultMusic : ( String, Float, Int )

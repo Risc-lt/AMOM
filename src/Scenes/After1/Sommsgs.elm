@@ -6,6 +6,7 @@ module Scenes.After1.Sommsgs exposing (..)
 
 import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
 
+
 sommsgInitData : InitData
 sommsgInitData =
     { music = [ ( "eased", 24, 1 ) ]

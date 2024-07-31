@@ -6,11 +6,12 @@ module Scenes.Before2.Sommsgs exposing (..)
 
 import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
 
+
 sommsgInitData : InitData
 sommsgInitData =
-    { music = 
-      [ ( "eased", 24, 1 ) 
-      , ( "battle", 24, 8 ) 
-      ]
+    { music =
+        [ ( "eased", 24, 1 )
+        , ( "battle", 24, 8 )
+        ]
     , isPlaying = False
     }

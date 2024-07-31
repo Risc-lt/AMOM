@@ -6,6 +6,7 @@ module Scenes.Before1.Sommsgs exposing (..)
 
 import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
 
+
 sommsgInitData : InitData
 sommsgInitData =
     { music = [ ( "battle", 16, 1 ) ]

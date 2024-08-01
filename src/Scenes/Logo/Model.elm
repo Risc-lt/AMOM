@@ -68,7 +68,7 @@ view env data =
         [ Canvas.shapes
             [ fill (Color.rgba 0 0 0 1) ]
             [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
-        , renderSprite env.globalData.internalData [] ( 450, 150 ) ( 1000, 800 ) "logo"
+        , renderSprite env.globalData.internalData [] ( 560, 140 ) ( 800, 800 ) "logo"
         ]
 
 

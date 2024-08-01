@@ -214,7 +214,7 @@ view env data =
                 [ Canvas.shapes
                     [ fill (Color.rgba 0 0 0 0.7) ]
                     [ rect env.globalData.internalData ( 500, 850 ) ( 950, 150 ) ]
-                , renderTextWithColorCenter env.globalData.internalData 40 content "Comic Sans MS" Color.white ( 970, 925 )
+                , renderTextWithColorCenter env.globalData.internalData 32 content "Comic Sans MS" Color.white ( 970, 925 )
                 ]
     in
     Canvas.group []

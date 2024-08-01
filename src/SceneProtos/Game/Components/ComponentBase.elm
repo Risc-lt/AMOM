@@ -1,15 +1,13 @@
-module SceneProtos.Game.Components.ComponentBase exposing
-    ( ActionMsg(..)
-    , ActionSide(..)
-    , ActionType(..)
-    , BaseData
-    , ComponentMsg(..)
-    , ComponentTarget
-    , Gamestate(..)
-    , InitMsg(..)
-    , StatusMsg(..)
-    , initBaseData
-    )
+module SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), ActionType(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+
+{-|
+
+
+# Component base
+
+@docs ActionMsg, ActionSide, ActionType, BaseData, ComponentMsg, ComponentTarget, Gamestate, InitMsg, StatusMsg, initBaseData
+
+-}
 
 import Json.Decode exposing (string)
 import SceneProtos.Game.Components.Dialogue.Init as DialogueMsg
@@ -22,22 +20,7 @@ import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 
 
-{-|
-
-
-# Component base
-
-@docs ComponentMsg: Component message
-@docs ComponentTarget: Component target
-@docs GamState: Record of whose turn it is
-@docs BaseData: Component base data
-@docs initBaseData: Initial base data
-@docs ActionType: Type of action
-@docs ActionSide: Side of action
-@docs ActionMsg: Action message
-@docs StatusMsg: Status message
-@docs InitMsg: Initialization message
-
+{-| Init message for component
 -}
 type InitMsg
     = EnemyInit (List Enemy)
@@ -47,6 +30,8 @@ type InitMsg
     | TriggerInit (List ( TriggerConditions, Int ))
 
 
+{-| Status message for component
+-}
 type StatusMsg
     = ChangeSelfs (List Self)
     | ChangeEnemies (List Enemy)
@@ -54,11 +39,15 @@ type StatusMsg
     | ChangeState Gamestate
 
 
+{-| Action type for component
+-}
 type ActionType
     = Attack
     | Skills Skill
 
 
+{-| Action message for component
+-}
 type ActionMsg
     = PlayerNormal Self Int
     | EnemyNormal Enemy Int
@@ -67,6 +56,8 @@ type ActionMsg
     | EnemySkill Enemy Skill Int
 
 
+{-| Component message for component
+-}
 type ComponentMsg
     = Init InitMsg
     | Action ActionMsg
@@ -85,10 +76,14 @@ type ComponentMsg
     | NullComponentMsg
 
 
+{-| Component target for component
+-}
 type alias ComponentTarget =
     String
 
 
+{-| Game state for component
+-}
 type Gamestate
     = GameBegin
     | PlayerTurn
@@ -105,12 +100,16 @@ type Gamestate
     | Counter
 
 
+{-| Action side for component
+-}
 type ActionSide
     = PlayerSide
     | EnemySide
     | Undeclaced
 
 
+{-| Base data for component
+-}
 type alias BaseData =
     { state : Gamestate
     , enemyNum : List Int
@@ -123,6 +122,8 @@ type alias BaseData =
     }
 
 
+{-| Initial base data for component
+-}
 initBaseData : BaseData
 initBaseData =
     { state = GameBegin

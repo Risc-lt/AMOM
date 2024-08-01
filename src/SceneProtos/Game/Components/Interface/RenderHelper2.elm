@@ -173,25 +173,25 @@ renderSkillView env skills =
         (List.map
             (\x ->
                 renderTextWithColorStyle env.globalData.internalData
-                    40
+                    35
                     (Tuple.second x)
                     "Comic Sans MS"
                     Color.black
                     ""
                     ( 660
-                    , toFloat (Tuple.first x * 50 + 728)
+                    , toFloat (Tuple.first x * 50 + 730)
                     )
             )
          <|
             List.indexedMap Tuple.pair (skill.name :: skill.content)
         )
             ++ [ renderTextWithColorCenter env.globalData.internalData
-                    40
+                    35
                     (toString <| skill.cost)
                     "Comic Sans MS"
                     Color.black
                     ( 1380
-                    , toFloat 748
+                    , toFloat 750
                     )
                ]
 

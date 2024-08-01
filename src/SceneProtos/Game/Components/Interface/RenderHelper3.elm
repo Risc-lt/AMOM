@@ -1,27 +1,25 @@
 module SceneProtos.Game.Components.Interface.RenderHelper3 exposing (..)
 
-
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Color
 import Debug exposing (toString)
+import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (Env, UserEvent(..))
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
+import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseData, ComponentMsg(..), Gamestate(..))
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
-import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
+import SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
+import SceneProtos.Game.Components.Interface.RenderHelper2 exposing (..)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Self.UpdateOne exposing (checkIndex)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Item exposing (..)
-import SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
-import SceneProtos.Game.Components.Interface.RenderHelper2 exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import Lib.UserData exposing (UserData)
-import Messenger.Render.Sprite exposing (renderSprite)
-import Canvas.Settings.Advanced exposing (imageSmoothing)
 
 
 renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable

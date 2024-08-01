@@ -109,3 +109,4 @@ assets/character/buff/Retard.png filter=lfs diff=lfs merge=lfs -text
 assets/character/buff/Precision.png filter=lfs diff=lfs merge=lfs -text
 assets/character/buff/Bloodthirsty.png filter=lfs diff=lfs merge=lfs -text
 assets/character/buff/Seal.png filter=lfs diff=lfs merge=lfs -text
+assets/character/background/Team[[:space:]]logo.jpg filter=lfs diff=lfs merge=lfs -text

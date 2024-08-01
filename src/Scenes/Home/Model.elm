@@ -7,7 +7,7 @@ module Scenes.Home.Model exposing (scene)
 -}
 
 import Canvas
-import Canvas.Settings exposing (fill)
+import Canvas.Settings exposing (fill, stroke)
 import Color exposing (Color)
 import Duration
 import Lib.Base exposing (SceneMsg)
@@ -151,8 +151,10 @@ renderBasicView env data =
                 ]
     in
     Canvas.group []
-        ([ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
-         , Canvas.shapes
+        -- ([ Canvas.shapes
+        --     [ fill (Color.rgba 0 0 0 0.7) ]
+        --     [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1060 ) ]
+        ([ Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]
             [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
          , Canvas.shapes
@@ -173,10 +175,20 @@ view env data =
             List.map
                 (\scenePic ->
                     if scenePic.id == data.curScene then
-                        renderSprite env.globalData.internalData [] ( scenePic.x - data.left - 50, scenePic.y - 50 ) ( scenePic.w + 100, scenePic.h + 100 ) scenePic.name
+                        Canvas.group []
+                            [ renderSprite env.globalData.internalData [] ( scenePic.x - data.left - 50, scenePic.y - 50 ) ( scenePic.w + 100, scenePic.h + 100 ) scenePic.name
+                            , Canvas.shapes
+                                [ stroke Color.black ]
+                                [ rect env.globalData.internalData ( scenePic.x - data.left - 50, scenePic.y - 50 ) ( scenePic.w + 100, scenePic.h + 100 ) ]
+                            ]
 
                     else
-                        renderSprite env.globalData.internalData [] ( scenePic.x - data.left, scenePic.y ) ( scenePic.w, scenePic.h ) scenePic.name
+                        Canvas.group []
+                            [ renderSprite env.globalData.internalData [] ( scenePic.x - data.left, scenePic.y ) ( scenePic.w, scenePic.h ) scenePic.name
+                            , Canvas.shapes
+                                [ stroke Color.black ]
+                                [ rect env.globalData.internalData ( scenePic.x - data.left, scenePic.y ) ( scenePic.w, scenePic.h ) ]
+                            ]
                 )
                 data.sceneQueue
 

@@ -11,8 +11,8 @@ This module contains the characters data for the Before1 scene.
 
 -}
 
-import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultMovement)
-import Scenes.Before1.Characters2 exposing (characters)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), InitData, MoveKind(..), Movement, Posture(..))
+import Scenes.Before1.Characters2 exposing (characters, genMove)
 
 
 begin : List Movement
@@ -277,17 +277,6 @@ wolfRight =
     , genMove "Wild Wolf5" Battle wolfMove 13
     , genMove "Wild Wolf6" Battle wolfMove 13
     ]
-
-
-genMove : String -> Posture -> MoveKind -> Int -> Movement
-genMove name posture movekind id =
-    { defaultMovement
-        | name = name
-        , posture = posture
-        , movekind = movekind
-        , id = id
-        , isMoving = False
-    }
 
 
 {-| Characters: Init data

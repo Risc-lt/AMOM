@@ -30,6 +30,9 @@
         },
         "Instruction": {
             "layers": []
+        },
+        "Logo": {
+            "layers": []
         }
     },
     "sceneprotos": {

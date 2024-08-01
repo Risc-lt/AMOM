@@ -27,6 +27,7 @@ import Scenes.Home.Model as Home
 import Scenes.Level1.Model as Level1
 import Scenes.Level2.Model as Level2
 import Scenes.Level3.Model as Level3
+import Scenes.Logo.Model as Logo
 
 
 {-| All Scenes
@@ -49,4 +50,5 @@ allScenes =
         , ( "After4", After4.scene )
         , ( "Begin", Begin.scene )
         , ( "Home", Home.scene )
+        , ( "Logo", Logo.scene )
         ]

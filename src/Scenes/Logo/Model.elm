@@ -1,4 +1,4 @@
-module Scenes.Begin.Model exposing (scene)
+module Scenes.Logo.Model exposing (scene)
 
 {-| Scene configuration module
 
@@ -33,7 +33,7 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         Tick _ ->
-            if env.globalData.globalStartFrame >= 400 then
+            if env.globalData.globalStartFrame == 120 then
                 ( data
                 , [ SOMLoadGC
                         (genGC
@@ -43,7 +43,7 @@ update env msg data =
                                     ( fadeInBlack, Duration.seconds 1 )
                                     Nothing
                                 )
-                                ( "Home", Nothing )
+                                ( "Begin", Nothing )
                                 True
                             )
                             Nothing

@@ -278,13 +278,16 @@ playerSize : String -> List Int
 playerSize name =
     case name of
         "BruceSheet" ->
-            [ 4, 5 ]
+            [ 6, 5 ]
 
         "Wild WolfSheet" ->
             [ 2, 3 ]
 
+        "ConcertSheet" ->
+            [ 2, 4 ]
+
         _ ->
-            [ 4, 4 ]
+            [ 5, 4 ]
 
 
 {-| All audio assets.

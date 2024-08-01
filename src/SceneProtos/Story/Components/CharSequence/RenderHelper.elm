@@ -1,17 +1,13 @@
 module SceneProtos.Story.Components.CharSequence.RenderHelper exposing (..)
 
-
-import SceneProtos.Story.Components.CharSequence.Init exposing (Character)
-import SceneProtos.Story.Components.ComponentBase exposing (BaseData)
-import Messenger.Base
-import SceneProtos.Story.SceneBase exposing (SceneCommonData)
-import Lib.UserData exposing (UserData)
 import Canvas
-import Messenger.Render.Sprite exposing (renderSprite)
 import Canvas.Settings.Advanced exposing (imageSmoothing)
-import SceneProtos.Story.Components.CharSequence.Init exposing (Posture(..))
-import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..))
-import Messenger.Render.Sprite exposing (renderSpriteWithRev)
+import Lib.UserData exposing (UserData)
+import Messenger.Base
+import Messenger.Render.Sprite exposing (renderSprite, renderSpriteWithRev)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), Posture(..))
+import SceneProtos.Story.Components.ComponentBase exposing (BaseData)
+import SceneProtos.Story.SceneBase exposing (SceneCommonData)
 
 
 checkReverse : Character -> Bool
@@ -37,7 +33,7 @@ renderChar char name act env =
             ( 140, 140 )
             (name ++ "Fall")
 
-    else 
+    else
         let
             row =
                 case char.direction of
@@ -64,6 +60,7 @@ renderChar char name act env =
             ( char.x, char.y )
             ( 140, 140 )
             (name ++ "Sheet." ++ row ++ "/" ++ act)
+
 
 {-| the helper function of view
 -}

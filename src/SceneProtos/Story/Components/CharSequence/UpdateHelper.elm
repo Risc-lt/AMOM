@@ -168,7 +168,7 @@ updateHelper env _ data basedata =
                                 newPlots
                     of
                         Just ( movement, character ) ->
-                            case movement.movekind of 
+                            case movement.movekind of
                                 Follow ( _, _ ) _ ->
                                     { character | direction = c.direction }
 

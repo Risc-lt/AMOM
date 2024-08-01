@@ -97,6 +97,9 @@ update env msg data =
                 else
                     ( data, [], env )
 
+            KeyDown key ->
+                handleKeyDown key env msg data
+
             Tick _ ->
                 case data.direction of
                     Right ->

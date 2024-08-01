@@ -21,7 +21,7 @@ import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
-import SceneProtos.Game.Components.Special.Magic exposing (chainLightning, lightningSpell)
+import SceneProtos.Game.Components.Special.Magic exposing (arcaneBeam, cure, whirlwindAccelaration, chainLightning, lightningSpell)
 
 
 {-| Character state

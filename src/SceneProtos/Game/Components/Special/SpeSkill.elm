@@ -137,7 +137,7 @@ magicTransformation : Skill
 magicTransformation =
     { kind = SpecialSkill
     , name = "Magic Transformation"
-    , effect = { defaultEffect | mp = 16 }
+    , effect = { defaultEffect | mp = -16 }
     , buff = []
     , range = Ally
     , element = None

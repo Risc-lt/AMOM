@@ -1,9 +1,15 @@
-module Scenes.After4.Dialogues exposing
-    ( affirm
-    , confused
-    , dialogueInitData
-    , silence
-    )
+module Scenes.After4.Dialogues exposing (affirm, confused, dialogueInitData, silence)
+
+{-|
+
+
+# Dialogues module
+
+This module is used to generate the dialogues for the scene.
+
+@docs affirm, confused, dialogueInitData, silence
+
+-}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 

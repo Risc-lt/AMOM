@@ -1,9 +1,15 @@
-module Scenes.After4.Characters exposing
-    ( charInitData
-    , characters
-    , genCharacter
-    , genMove
-    )
+module Scenes.After4.Characters exposing (characters, genCharacter, genMove, charInitData)
+
+{-|
+
+
+# Characters module
+
+This module is used to generate the characters for the scene.
+
+@docs characters, genCharacter, genMove, charInitData
+
+-}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 

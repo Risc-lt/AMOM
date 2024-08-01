@@ -1,9 +1,15 @@
-module Scenes.Before1.Background exposing
-    ( backgroundInitData
-    , followLeft
-    , followRight
-    , wolfRight
-    )
+module Scenes.Before1.Background exposing (backgroundInitData, followLeft, followRight, wolfRight)
+
+{-|
+
+
+# Background module
+
+This module is used to generate the background for the scene.
+
+@docs backgroundInitData, followLeft, followRight, wolfRight
+
+-}
 
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
 

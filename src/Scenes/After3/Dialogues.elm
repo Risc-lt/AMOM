@@ -1,8 +1,13 @@
-module Scenes.After3.Dialogues exposing
-    ( dialogueInitData
-    , interrupt
-    , remind
-    )
+module Scenes.After3.Dialogues exposing (remind, interrupt, dialogueInitData)
+
+{-|
+
+
+# Dialogue module
+
+@docs remind, interrupt, dialogueInitData
+
+-}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 

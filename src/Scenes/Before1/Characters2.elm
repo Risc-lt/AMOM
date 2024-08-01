@@ -7,7 +7,7 @@ module Scenes.Before1.Characters2 exposing (characters)
 
 This module contains all character data for Before1 scene
 
-@docs characters
+@docs characters, genCharacter
 
 -}
 

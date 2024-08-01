@@ -156,7 +156,7 @@ handleCheckTrigger data basedata triggers =
 
         gameOverMsg =
             if List.member True isOver then
-                [ Other ( "Self", Defeated ) ]
+                [ Other ( "Self", Defeated False ) ]
 
             else
                 []
@@ -203,7 +203,15 @@ updaterec env msg data basedata =
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )
 
-        Defeated ->
+        Defeated flag ->
+            let
+                nextScene =
+                    if flag then
+                        "After" ++ String.fromInt data.levelNum
+
+                    else
+                        "Level" ++ String.fromInt data.levelNum
+            in
             ( ( data, basedata )
             , [ Parent <|
                     SOMMsg <|
@@ -215,7 +223,7 @@ updaterec env msg data basedata =
                                         ( fadeInBlack, Duration.seconds 2 )
                                         Nothing
                                     )
-                                    ( "After" ++ String.fromInt data.levelNum, Nothing )
+                                    ( nextScene, Nothing )
                                     True
                                 )
                                 Nothing

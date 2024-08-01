@@ -32,10 +32,10 @@ judgeHelper enemy self =
             List.length (unroll enemy).baseData.selfNum
     in
     if realEnemyNum <= 0 then
-        [ ( "Enemy", Defeated ), ( "Interface", Defeated ) ]
+        [ ( "Enemy", Defeated True ), ( "Interface", Defeated True ) ]
 
     else if realSelfNum <= 0 then
-        [ ( "Self", Defeated ) ]
+        [ ( "Self", Defeated False ) ]
 
     else
         []

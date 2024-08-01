@@ -79,7 +79,7 @@ type ComponentMsg
     | BeginDialogue Int
     | CloseDialogue
     | CheckIsTriggered (List ( TriggerConditions, Int ))
-    | Defeated
+    | Defeated Bool
     | AddChar
     | PutBuff Buff Int
     | NullComponentMsg

@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Special.Item exposing (energyWater, restorationPotion, poison, magicWater)
+module SceneProtos.Game.Components.Special.Item exposing (magicWater, energyWater, poison, restorationPotion)
 
 {-|
 
@@ -26,7 +26,7 @@ restorationPotion =
     , element = None
     , cost = 0
     , lasting = 0
-    , content = 
+    , content =
         [ "Use on an ally."
         , "80 health points restoration"
         , "opposite for the cemetary races"
@@ -46,7 +46,7 @@ magicWater =
     , element = None
     , cost = 0
     , lasting = 0
-    , content = 
+    , content =
         [ "Use on an ally."
         , "20 magic points restoration"
         ]
@@ -65,7 +65,7 @@ poison =
     , element = None
     , cost = 0
     , lasting = 0
-    , content = 
+    , content =
         [ "Use on an ally."
         , "80 damage"
         , "opposite for the cemetary races"
@@ -85,7 +85,7 @@ energyWater =
     , element = None
     , cost = 0
     , lasting = 0
-    , content = 
+    , content =
         [ "Use on an ally."
         , "100 energy restoration"
         ]

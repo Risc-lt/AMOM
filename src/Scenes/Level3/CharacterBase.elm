@@ -15,9 +15,9 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.GenAttributes exposing (Attribute, EleResistance, ExtendValue, genExtendValues, genHp, genMp)
 import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
-import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
-import SceneProtos.Game.Components.Special.Magic exposing (..)
 import SceneProtos.Game.Components.Special.Item exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (..)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
 
 
 {-| Character data
@@ -105,7 +105,7 @@ bithif time =
             , earthResistance = 10
             }
     in
-    genSelf 5
+    genSelf 6
         time
         "Bithif"
         baseAttributes

@@ -1,5 +1,4 @@
-module SceneProtos.Game.Components.Special.Magic exposing 
-    (arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, lightningSpell, mudSwamp, stoneSkin)
+module SceneProtos.Game.Components.Special.Magic exposing (arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, lightningSpell, mudSwamp, stoneSkin)
 
 {-|
 
@@ -27,7 +26,7 @@ arcaneBeam =
     , element = None
     , cost = 5
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack one enemy."
         , "Element depends on the user."
         , "20 damage"
@@ -47,7 +46,7 @@ frostImpact =
     , element = Water
     , cost = 11
     , lasting = 1
-    , content = 
+    , content =
         [ "Attack one enemy."
         , "water"
         , "28 damage"
@@ -68,7 +67,7 @@ iceRing =
     , element = Water
     , cost = 16
     , lasting = 1
-    , content = 
+    , content =
         [ "Use on one enemy."
         , "water"
         , "'Seal' for one turn"
@@ -106,7 +105,7 @@ fireBall =
     , element = Fire
     , cost = 13
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack all enemies in a region."
         , "fire"
         , "42 damage"
@@ -126,7 +125,7 @@ inspirationOfFire =
     , element = Fire
     , cost = 9
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on an ally."
         , "fire"
         , "'Brave' for two turns"
@@ -146,7 +145,7 @@ blindness =
     , element = Fire
     , cost = 18
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on one enemy."
         , "fire"
         , "'Seal' for two turns"
@@ -166,7 +165,7 @@ whirlwindAccelaration =
     , element = Air
     , cost = 3
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on an ally."
         , "air"
         , "'Acceleration' for one turn"
@@ -218,7 +217,7 @@ lightningSpell =
     , element = Air
     , cost = 11
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack one enemy."
         , "air"
         , "32 damage"
@@ -238,7 +237,7 @@ chainLightning =
     , element = Air
     , cost = 16
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack one enemy and the nearby enemies."
         , "air"
         , "29 damage"
@@ -258,7 +257,7 @@ blessingOfAir =
     , element = Air
     , cost = 8
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on an ally."
         , "air"
         , "'Concentration' for one turn"

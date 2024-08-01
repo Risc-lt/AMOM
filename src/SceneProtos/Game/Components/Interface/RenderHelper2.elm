@@ -12,7 +12,8 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseD
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
+import SceneProtos.Game.Components.Self.UpdateOne exposing (checkIndex)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.Item exposing (..)
 
 
@@ -128,42 +129,71 @@ renderTargetSelection env data basedata name =
 -}
 renderSkillView : Env cdata userdata -> List ( Int, Skill ) -> List Renderable
 renderSkillView env skills =
-    List.map
-        (\x ->
-            let
-                ( mouseX, mouseY ) =
-                    env.globalData.mousePos
+    let
+        ( mouseX, mouseY ) =
+            env.globalData.mousePos
 
-                amplify =
-                    if mouseX > 640 && mouseX < 900 && mouseY > toFloat (Tuple.first x * 88 + 728) && mouseY < toFloat (Tuple.first x * 88 + 816) then
-                        1.2
+        index =
+            checkIndex mouseX mouseY
 
-                    else
-                        1.0
-            in
-            renderTextWithColorStyle env.globalData.internalData
-                (40 * amplify)
-                (.name <| Tuple.second x)
-                "Comic Sans MS"
-                Color.black
-                ""
-                ( 660
-                , toFloat (Tuple.first x * 88 + 728)
-                )
-        )
-        skills
-        ++ List.map
+        skill =
+            Tuple.second <|
+                Maybe.withDefault ( 0, defaultSkill ) <|
+                    List.head <|
+                        List.filter (\( i, _ ) -> i == index - 1) skills
+    in
+    if skill.name == "" then
+        List.map
             (\x ->
-                renderTextWithColorCenter env.globalData.internalData
+                renderTextWithColorStyle env.globalData.internalData
                     40
-                    (toString <| .cost <| Tuple.second x)
+                    (.name <| Tuple.second x)
                     "Comic Sans MS"
                     Color.black
-                    ( 1380
-                    , toFloat (Tuple.first x * 88 + 748)
+                    ""
+                    ( 660
+                    , toFloat (Tuple.first x * 88 + 728)
                     )
             )
             skills
+            ++ List.map
+                (\x ->
+                    renderTextWithColorCenter env.globalData.internalData
+                        40
+                        (toString <| .cost <| Tuple.second x)
+                        "Comic Sans MS"
+                        Color.black
+                        ( 1380
+                        , toFloat (Tuple.first x * 88 + 748)
+                        )
+                )
+                skills
+
+    else
+        (List.map
+            (\x ->
+                renderTextWithColorStyle env.globalData.internalData
+                    40
+                    (Tuple.second x)
+                    "Comic Sans MS"
+                    Color.black
+                    ""
+                    ( 660
+                    , toFloat (Tuple.first x * 50 + 728)
+                    )
+            )
+         <|
+            List.indexedMap Tuple.pair (skill.name :: skill.content)
+        )
+            ++ [ renderTextWithColorCenter env.globalData.internalData
+                    40
+                    (toString <| skill.cost)
+                    "Comic Sans MS"
+                    Color.black
+                    ( 1380
+                    , toFloat 748
+                    )
+               ]
 
 
 {-| Render the choose skill

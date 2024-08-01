@@ -1,5 +1,6 @@
 module SceneProtos.Game.Components.Special.SpeSkill exposing
-    ( getNewBuff, scatterShot, frostArrow, airBlade, doubleStrike, compounding, magicTransformation, gale, fieryThrust
+    ( getNewBuff
+    , scatterShot, frostArrow, airBlade, doubleStrike, compounding, magicTransformation, gale, fieryThrust
     )
 
 {-| #SpeSkill module
@@ -42,7 +43,7 @@ scatterShot =
     , element = None
     , cost = 100
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack all front enemies."
         , "no elelment"
         , "40 damage"
@@ -62,7 +63,7 @@ frostArrow =
     , element = Water
     , cost = 100
     , lasting = 1
-    , content = 
+    , content =
         [ "Attack one enemy."
         , "water"
         , "30 damage"
@@ -83,7 +84,7 @@ airBlade =
     , element = None
     , cost = 100
     , lasting = 0
-    , content = 
+    , content =
         [ "Attack one enemy."
         , "no element"
         , "80 damage"
@@ -103,7 +104,7 @@ doubleStrike =
     , element = None
     , cost = 100
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on oneself."
         , "no element"
         , "'Bloodthirsty' for two turns"
@@ -123,7 +124,7 @@ compounding =
     , element = None
     , cost = 100
     , lasting = 0
-    , content = 
+    , content =
         [ "Compound a bottle of potion."
         , "no element"
         ]
@@ -142,7 +143,7 @@ magicTransformation =
     , element = None
     , cost = 100
     , lasting = 0
-    , content = 
+    , content =
         [ "Use on an ally."
         , "no element"
         , "16 magic points restoration"
@@ -162,7 +163,7 @@ gale =
     , element = Air
     , cost = 100
     , lasting = 2
-    , content = 
+    , content =
         [ "Use on all front enemies."
         , "air"
         , "'Retard' for two turns"

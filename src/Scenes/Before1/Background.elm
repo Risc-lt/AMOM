@@ -14,12 +14,12 @@ followRight =
 
 followLeft : Camera
 followLeft =
-    genCamera 0 -300 8 10
+    genCamera 0 -300 8 11
 
 
 wolfRight : Camera
 wolfRight =
-    genCamera -639 -300 8 12
+    genCamera -639 -300 8 13
 
 
 genCamera : Float -> Float -> Float -> Int -> Camera

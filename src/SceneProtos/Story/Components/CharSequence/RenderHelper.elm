@@ -38,20 +38,20 @@ renderChar char name act env =
             row =
                 case char.direction of
                     Up ->
-                        "5"
+                        "4"
 
                     Down ->
-                        "4"
+                        "3"
 
                     _ ->
                         if char.isMoving == False then
-                            "1"
+                            "0"
 
                         else if char.posture == Normal then
-                            "3"
+                            "2"
 
                         else
-                            "2"
+                            "1"
         in
         renderSpriteWithRev
             (checkReverse char)

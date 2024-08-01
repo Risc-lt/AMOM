@@ -175,11 +175,16 @@ updateHelper env _ data basedata =
                 (\c ->
                     case
                         List.head <|
-                            List.filter (\n -> n.name == c.name) <|
-                                List.map Tuple.second newPlots
+                            List.filter (\( _, n ) -> n.name == c.name) <|
+                                newPlots
                     of
-                        Just character ->
-                            character
+                        Just ( movement, character ) ->
+                            case movement.movekind of
+                                Follow ( _, _ ) _ ->
+                                    { character | direction = c.direction }
+
+                                _ ->
+                                    character
 
                         _ ->
                             c

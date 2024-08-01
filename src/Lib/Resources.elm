@@ -66,16 +66,19 @@ chacaterTexture =
 
 chacaterSheetTexture : List ( String, String )
 chacaterSheetTexture =
-    [ ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.jpg" )
-    , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.jpg" )
-    , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.jpg" )
-    , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.jpg" )
-    , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild WolfSheet.jpg" )
+    [ ( "BulingzeSheet", "assets/character/sprite_sheet/BulingzeSheet.png" )
+    , ( "BruceSheet", "assets/character/sprite_sheet/BruceSheet.png" )
+    , ( "BithifSheet", "assets/character/sprite_sheet/BithifSheet.png" )
+    , ( "WenderdSheet", "assets/character/sprite_sheet/WenderdSheet.png" )
+    , ( "Wild WolfSheet", "assets/character/sprite_sheet/Wild_WolfSheet.jpg" )
     , ( "SwordsmanSheet", "assets/character/sprite_sheet/SwordsmanSheet.png" )
     , ( "MagicianSheet", "assets/character/sprite_sheet/MagicianSheet.png" )
     , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png" )
     , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png" )
     , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png" )
+    , ( "ConcertFall", "assets/character/sprite_sheet/ConcertFall.png" )
+    , ( "WenderdFall", "assets/character/sprite_sheet/WenderdFall.png" )
+    , ( "Wild WolfFall", "assets/character/sprite_sheet/Wild_WolfFall.png" )
     ]
 
 
@@ -275,13 +278,16 @@ playerSize : String -> List Int
 playerSize name =
     case name of
         "BruceSheet" ->
-            [ 4, 5 ]
+            [ 4, 4, 4, 4, 4, 5 ]
 
         "Wild WolfSheet" ->
             [ 2, 3 ]
 
-        _ ->
+        "ConcertSheet" ->
             [ 4, 4 ]
+
+        _ ->
+            [ 4, 4, 4, 4, 4 ]
 
 
 {-| All audio assets.
@@ -292,5 +298,7 @@ The format is the same with `allTexture`.
 allAudio : Dict.Dict String String
 allAudio =
     Dict.fromList
-        [ ( "battle", "assets/audio/demo.ogg" )
+        [ ( "battle", "assets/audio/battle.ogg" )
+        , ( "eased", "assets/audio/eased.ogg" )
+        , ( "sad", "assets/audio/sad.ogg" )
         ]

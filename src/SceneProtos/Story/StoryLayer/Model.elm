@@ -14,6 +14,7 @@ import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioTarget(..))
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
@@ -75,7 +76,7 @@ handleComponentMsg env compmsg data =
                             ""
 
                 color =
-                    if nextScene == "After3" then
+                    if nextScene == "After4" then
                         Color.white
 
                     else
@@ -103,24 +104,27 @@ updateBasic env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    --if not env.commonData.gameover then
-    let
-        ( data1, lmsg1, ( env1, block1 ) ) =
-            updateBasic env evt data
+    if env.globalData.sceneStartFrame == 0 then
+        ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
 
-        ( comps1, cmsgs1, ( env2, block2 ) ) =
-            updateComponentsWithBlock env1 evt block1 data1.components
+    else
+        let
+            ( data1, lmsg1, ( env1, block1 ) ) =
+                updateBasic env evt data
 
-        ( data2, ( lmsg2, tocmsg ), env3 ) =
-            ( { data1 | components = comps1 }, ( [], [] ), env2 )
+            ( comps1, cmsgs1, ( env2, block2 ) ) =
+                updateComponentsWithBlock env1 evt block1 data1.components
 
-        ( comps2, cmsgs2, env4 ) =
-            updateComponentsWithTarget env3 tocmsg data2.components
+            ( data2, ( lmsg2, tocmsg ), env3 ) =
+                ( { data1 | components = comps1 }, ( [], [] ), env2 )
 
-        ( data3, lmsgs3, env5 ) =
-            handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
-    in
-    ( data3, lmsgs3, ( env5, block2 ) )
+            ( comps2, cmsgs2, env4 ) =
+                updateComponentsWithTarget env3 tocmsg data2.components
+
+            ( data3, lmsgs3, env5 ) =
+                handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
+        in
+        ( data3, lmsgs3, ( env5, block2 ) )
 
 
 

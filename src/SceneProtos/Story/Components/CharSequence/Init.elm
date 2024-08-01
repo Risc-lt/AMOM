@@ -30,6 +30,7 @@ type Direction
 type Posture
     = Normal
     | Battle
+    | Fall
 
 
 {-| The data structure for characters

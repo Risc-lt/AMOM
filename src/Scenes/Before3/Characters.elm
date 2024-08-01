@@ -124,7 +124,7 @@ turn =
             None Left
 
         cavalryMove =
-            None Right
+            None Left
     in
     [ genMove "Wenderd" Normal wenderdMove 4
     , genMove "Bulingze" Normal bulingzeMove 4

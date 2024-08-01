@@ -63,7 +63,7 @@ prepare =
             , "Be careful everyone, prepare to fight!"
             ]
     in
-    genDialogue "head_wenderd" content ( 13, 1 )
+    genDialogue "head_wenderd" content ( 14, 1 )
 
 
 {-| Generate a dialogue

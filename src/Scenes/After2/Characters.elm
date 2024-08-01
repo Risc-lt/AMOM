@@ -18,11 +18,11 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 -}
 characters : List Character
 characters =
-    [ genCharacter "Wenderd" Battle Right 1150 390
-    , genCharacter "Bulingze" Battle Right 1270 550
-    , genCharacter "Bruce" Battle Right 1400 350
-    , genCharacter "Bithif" Battle Right 1400 490
-    , genCharacter "Concert" Normal Left 890 480
+    [ genCharacter "Wenderd" Battle Left 1150 390
+    , genCharacter "Bulingze" Battle Left 1270 550
+    , genCharacter "Bruce" Battle Left 1400 350
+    , genCharacter "Bithif" Battle Left 1400 490
+    , genCharacter "Concert" Fall Right 890 480
     ]
 
 
@@ -50,37 +50,58 @@ checkConcert =
     [ genMove "Wenderd" Normal move 2 ]
 
 
-{-| The movements of the characters
--}
+turnLeft1 : List Movement
+turnLeft1 =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Wenderd" Normal move 3 ]
+
+
 prevent : List Movement
 prevent =
     let
         move =
             Real ( 1130, 480 ) 8
     in
-    [ genMove "Bulingze" Battle move 4 ]
+    [ genMove "Bulingze" Battle move 5 ]
 
 
-{-| The movements of the characters to turn right
--}
+turnLeft2 : List Movement
+turnLeft2 =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Bulingze" Battle move 6 ]
+
+
+fall : List Movement
+fall =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Wenderd" Fall move 7 ]
+
+
 turnRight : List Movement
 turnRight =
     let
         move =
             None Right
     in
-    [ genMove "Bulingze" Battle move 6 ]
+    [ genMove "Bulingze" Battle move 9 ]
 
 
-{-| The movements of the characters to turn left
--}
-turnLeft : List Movement
-turnLeft =
+turnLeft3 : List Movement
+turnLeft3 =
     let
         move =
             None Left
     in
-    [ genMove "Bulingze" Battle move 8 ]
+    [ genMove "Bulingze" Battle move 11 ]
 
 
 {-| Generate a movement
@@ -104,5 +125,10 @@ charInitData =
     , curMove = []
     , remainMove =
         checkConcert
+            ++ turnLeft1
             ++ prevent
+            ++ turnLeft2
+            ++ fall
+            ++ turnRight
+            ++ turnLeft3
     }

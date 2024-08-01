@@ -54,8 +54,8 @@ renderTargets flag env remainSelfs remainEnemies =
         List.map
             (\x ->
                 renderOne
-                    (toFloat (1225 - (x.position - 1) // 3 * 390) - 100)
-                    (toFloat (1225 - (x.position - 1) // 3 * 390) + 100)
+                    (toFloat (835 + (x.position - 1) // 3 * 390) + 100)
+                    (toFloat (835 + (x.position - 1) // 3 * 390) - 100)
                     (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 700)
                     (toFloat ((x.position - (x.position - 1) // 3 * 3) - 1) * 133.3 + 800)
                     env

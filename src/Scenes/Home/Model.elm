@@ -12,7 +12,7 @@ import Color exposing (Color)
 import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Audio.Base exposing (AudioOption(..))
+import Messenger.Audio.Base exposing (AudioOption(..), AudioTarget(..))
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
@@ -34,77 +34,98 @@ init env msg =
 
 update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
-    case msg of
-        MouseDown _ ( x, y ) ->
-            let
-                ( _, next ) =
-                    get data.curScene data.sceneQueue
-            in
-            if x > 850 && x < 1060 && y > 430 && y < 580 then
-                ( data
-                , [ SOMLoadGC
-                        (genGC
-                            (InitOption
-                                (genTransition
-                                    ( fadeOutBlack, Duration.seconds 2 )
-                                    ( fadeInBlack, Duration.seconds 2 )
-                                    Nothing
+    if env.globalData.sceneStartFrame == 0 then
+        ( data, [ SOMStopAudio AllAudio ], env )
+
+    else if env.globalData.sceneStartFrame == 1 then
+        let
+            commonSetting =
+                { rate = 1
+                , start = Duration.seconds 0
+                }
+
+            loopSetting =
+                { loopStart = Duration.seconds 0
+                , loopEnd = Duration.seconds 24
+                }
+
+            newMsg =
+                [ SOMPlayAudio 0 "eased" (ALoop (Just commonSetting) (Just loopSetting)) ]
+        in
+        ( data, newMsg, env )
+
+    else
+        case msg of
+            MouseDown _ ( x, y ) ->
+                let
+                    ( _, next ) =
+                        get data.curScene data.sceneQueue
+                in
+                if x > 850 && x < 1060 && y > 430 && y < 580 then
+                    ( data
+                    , [ SOMLoadGC
+                            (genGC
+                                (InitOption
+                                    (genTransition
+                                        ( fadeOutBlack, Duration.seconds 2 )
+                                        ( fadeInBlack, Duration.seconds 2 )
+                                        Nothing
+                                    )
+                                    ( next, Nothing )
+                                    True
                                 )
-                                ( next, Nothing )
-                                True
+                                Nothing
                             )
-                            Nothing
-                        )
-                  ]
-                , env
-                )
+                      ]
+                    , env
+                    )
 
-            else if x > 1450 && x < 1550 && y > 880 && y < 980 then
-                if data.curScene < 9 then
-                    ( { data | direction = Right }, [], env )
+                else if x > 1450 && x < 1550 && y > 880 && y < 980 then
+                    if data.curScene < 9 then
+                        ( { data | direction = Right }, [], env )
+
+                    else
+                        ( data, [], env )
+
+                else if x > 400 && x < 500 && y > 880 && y < 980 then
+                    if data.curScene > 1 then
+                        ( { data | direction = Left }, [], env )
+
+                    else
+                        ( data, [], env )
 
                 else
                     ( data, [], env )
 
-            else if x > 400 && x < 500 && y > 880 && y < 980 then
-                if data.curScene > 1 then
-                    ( { data | direction = Left }, [], env )
+            Tick _ ->
+                case data.direction of
+                    Right ->
+                        let
+                            ( pos, _ ) =
+                                get (data.curScene + 1) data.sceneQueue
+                        in
+                        if data.left >= pos - 720 then
+                            ( { data | direction = Null, curScene = data.curScene + 1 }, [], env )
 
-                else
-                    ( data, [], env )
+                        else
+                            ( { data | left = data.left + 100 }, [], env )
 
-            else
+                    Left ->
+                        let
+                            ( pos, _ ) =
+                                get (data.curScene - 1) data.sceneQueue
+                        in
+                        if data.left <= pos - 720 then
+                            ( { data | direction = Null, curScene = data.curScene - 1 }, [], env )
+
+                        else
+                            ( { data | left = data.left - 100 }, [], env )
+
+                    Null ->
+                        ( data, [], env )
+
+            _ ->
                 ( data, [], env )
-
-        Tick _ ->
-            case data.direction of
-                Right ->
-                    let
-                        ( pos, _ ) =
-                            get (data.curScene + 1) data.sceneQueue
-                    in
-                    if data.left >= pos - 720 then
-                        ( { data | direction = Null, curScene = data.curScene + 1 }, [], env )
-
-                    else
-                        ( { data | left = data.left + 100 }, [], env )
-
-                Left ->
-                    let
-                        ( pos, _ ) =
-                            get (data.curScene - 1) data.sceneQueue
-                    in
-                    if data.left <= pos - 720 then
-                        ( { data | direction = Null, curScene = data.curScene - 1 }, [], env )
-
-                    else
-                        ( { data | left = data.left - 100 }, [], env )
-
-                Null ->
-                    ( data, [], env )
-
-        _ ->
-            ( data, [], env )
 
 
 renderBasicView : RawSceneView UserData Data

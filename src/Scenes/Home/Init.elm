@@ -72,7 +72,7 @@ initData =
           , next = "After1"
           , text = "Chapter One: First Commision (After Battle)"
           }
-        , { name = "dialogue_3"
+        , { name = "dialogue_1"
           , x = 2520
           , y = 300
           , w = 500
@@ -90,7 +90,7 @@ initData =
           , next = "Level2"
           , text = "Chapter Two: Sinful Killing (Battle)"
           }
-        , { name = "dialogue_3"
+        , { name = "dialogue_1"
           , x = 3720
           , y = 300
           , w = 500
@@ -99,7 +99,7 @@ initData =
           , next = "After2"
           , text = "Chapter Two: Sinful Killing (After Battle)"
           }
-        , { name = "dialogue_4"
+        , { name = "dialogue_3"
           , x = 4320
           , y = 300
           , w = 500

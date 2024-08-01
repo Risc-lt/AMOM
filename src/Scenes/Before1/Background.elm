@@ -25,14 +25,14 @@ followRight =
 -}
 followLeft : Camera
 followLeft =
-    genCamera 0 -300 8 10
+    genCamera 0 -300 8 11
 
 
 {-| Camera: Wolf right
 -}
 wolfRight : Camera
 wolfRight =
-    genCamera -639 -300 8 12
+    genCamera -639 -300 8 13
 
 
 {-| Generate a camera

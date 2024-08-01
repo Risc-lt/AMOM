@@ -182,6 +182,20 @@ throughStone5 =
     ]
 
 
+turnLeft : List Movement
+turnLeft =
+    let
+        wenderdMove =
+            None Left
+
+        bruceMove =
+            None Left
+    in
+    [ genMove "Wenderd" Battle wenderdMove 10
+    , genMove "Bruce" Battle bruceMove 10
+    ]
+
+
 followLeft : List Movement
 followLeft =
     let
@@ -197,10 +211,10 @@ followLeft =
         bithifMove =
             Follow ( 2059, 490 ) 8
     in
-    [ genMove "Wenderd" Battle wenderdMove 10
-    , genMove "Bulingze" Battle bulingzeMove 10
-    , genMove "Bruce" Battle bruceMove 10
-    , genMove "Bithif" Battle bithifMove 10
+    [ genMove "Wenderd" Battle wenderdMove 11
+    , genMove "Bulingze" Battle bulingzeMove 11
+    , genMove "Bruce" Battle bruceMove 11
+    , genMove "Bithif" Battle bithifMove 11
     ]
 
 
@@ -225,12 +239,12 @@ wolfAppear =
         move6 =
             Real ( 430, 350 ) 8
     in
-    [ genMove "Wild Wolf1" Battle move1 11
-    , genMove "Wild Wolf2" Battle move2 11
-    , genMove "Wild Wolf3" Battle move3 11
-    , genMove "Wild Wolf4" Battle move4 11
-    , genMove "Wild Wolf5" Battle move5 11
-    , genMove "Wild Wolf6" Battle move6 11
+    [ genMove "Wild Wolf1" Battle move1 12
+    , genMove "Wild Wolf2" Battle move2 12
+    , genMove "Wild Wolf3" Battle move3 12
+    , genMove "Wild Wolf4" Battle move4 12
+    , genMove "Wild Wolf5" Battle move5 12
+    , genMove "Wild Wolf6" Battle move6 12
     ]
 
 
@@ -252,16 +266,16 @@ wolfRight =
         bithifMove =
             Follow ( 1420, 490 ) 8
     in
-    [ genMove "Wenderd" Battle wenderdMove 12
-    , genMove "Bulingze" Battle bulingzeMove 12
-    , genMove "Bruce" Battle bruceMove 12
-    , genMove "Bithif" Battle bithifMove 12
-    , genMove "Wild Wolf1" Battle wolfMove 12
-    , genMove "Wild Wolf2" Battle wolfMove 12
-    , genMove "Wild Wolf3" Battle wolfMove 12
-    , genMove "Wild Wolf4" Battle wolfMove 12
-    , genMove "Wild Wolf5" Battle wolfMove 12
-    , genMove "Wild Wolf6" Battle wolfMove 12
+    [ genMove "Wenderd" Battle wenderdMove 13
+    , genMove "Bulingze" Battle bulingzeMove 13
+    , genMove "Bruce" Battle bruceMove 13
+    , genMove "Bithif" Battle bithifMove 13
+    , genMove "Wild Wolf1" Battle wolfMove 13
+    , genMove "Wild Wolf2" Battle wolfMove 13
+    , genMove "Wild Wolf3" Battle wolfMove 13
+    , genMove "Wild Wolf4" Battle wolfMove 13
+    , genMove "Wild Wolf5" Battle wolfMove 13
+    , genMove "Wild Wolf6" Battle wolfMove 13
     ]
 
 
@@ -291,6 +305,7 @@ charInitData =
             ++ throughStone3
             ++ throughStone4
             ++ throughStone5
+            ++ turnLeft
             ++ followLeft
             ++ wolfAppear
             ++ wolfRight

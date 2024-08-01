@@ -101,7 +101,7 @@ ask =
             , "Is he dead now?"
             ]
     in
-    genDialogue "head_bulingze" content ( 3, 1 )
+    genDialogue "head_bulingze" content ( 4, 1 )
 
 
 {-| Dialogue: Silence
@@ -114,7 +114,7 @@ silence1 =
             , "..."
             ]
     in
-    genDialogue "head_wenderd" content ( 3, 2 )
+    genDialogue "head_wenderd" content ( 4, 2 )
 
 
 {-| Dialogue: Confused
@@ -127,7 +127,7 @@ confused =
             , "Wenderd?"
             ]
     in
-    genDialogue "head_bulingze" content ( 3, 3 )
+    genDialogue "head_bulingze" content ( 4, 3 )
 
 
 {-| Dialogue: Hungry
@@ -140,7 +140,7 @@ hungry =
             , "Blood... Smells good..."
             ]
     in
-    genDialogue "head_wenderd" content ( 3, 4 )
+    genDialogue "head_wenderd" content ( 4, 4 )
 
 
 {-| Dialogue: Prevent
@@ -153,7 +153,7 @@ prevent =
             , "Don't! Wenderd!"
             ]
     in
-    genDialogue "head_bruce" content ( 3, 5 )
+    genDialogue "head_bruce" content ( 4, 5 )
 
 
 {-| Dialogue: Apologize
@@ -166,7 +166,7 @@ apologize =
             , "Sorry..."
             ]
     in
-    genDialogue "head_bruce" content ( 5, 1 )
+    genDialogue "head_bruce" content ( 8, 1 )
 
 
 {-| Dialogue: Comfort
@@ -179,7 +179,7 @@ comfort =
             , "It's not your fault, Bruce."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 1 )
+    genDialogue "head_bulingze" content ( 10, 1 )
 
 
 {-| Dialogue: Collapse
@@ -192,7 +192,7 @@ collapse =
             , "So is it ours?"
             ]
     in
-    genDialogue "head_bithif" content ( 7, 2 )
+    genDialogue "head_bithif" content ( 10, 2 )
 
 
 {-| Dialogue: Persuade
@@ -205,7 +205,7 @@ persuade =
             , "...Don't talk about that. Let's go back."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 3 )
+    genDialogue "head_bulingze" content ( 10, 3 )
 
 
 {-| Dialogue: Hesitate
@@ -218,7 +218,7 @@ hesitate =
             , "...We need his head."
             ]
     in
-    genDialogue "head_bruce" content ( 7, 4 )
+    genDialogue "head_bruce" content ( 10, 4 )
 
 
 {-| Dialogue: Repeat
@@ -231,7 +231,7 @@ repeat =
             , "We need his head to prove our work."
             ]
     in
-    genDialogue "head_bruce" content ( 7, 5 )
+    genDialogue "head_bruce" content ( 10, 5 )
 
 
 {-| Dialogue: Astounded
@@ -244,7 +244,7 @@ astounded =
             , "Bruce..."
             ]
     in
-    genDialogue "head_bithif" content ( 7, 6 )
+    genDialogue "head_bithif" content ( 10, 6 )
 
 
 {-| Dialogue: Silence
@@ -257,7 +257,7 @@ silence2 =
             , "..."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 7 )
+    genDialogue "head_bulingze" content ( 10, 7 )
 
 
 {-| Dialogue: End
@@ -270,7 +270,7 @@ end =
             , "Okay, let's get this over with quickly."
             ]
     in
-    genDialogue "head_bulingze" content ( 9, 1 )
+    genDialogue "head_bulingze" content ( 12, 1 )
 
 
 {-| Generate a dialogue

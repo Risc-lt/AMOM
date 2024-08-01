@@ -22,12 +22,14 @@ import SceneProtos.Story.Components.Background.Model as Background
 import SceneProtos.Story.Components.CharSequence.Model as Character
 import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 import SceneProtos.Story.Components.DialogSequence.Model as Dialogue
+import SceneProtos.Story.Components.Sommsg.Model as Sommsg
 import SceneProtos.Story.Components.Trigger.Model as Trigger
 import SceneProtos.Story.Init exposing (InitData)
 import SceneProtos.Story.Model exposing (genScene)
 import Scenes.Before1.Background exposing (backgroundInitData)
 import Scenes.Before1.Characters exposing (charInitData)
 import Scenes.Before1.Dialogues exposing (dialogueInitData)
+import Scenes.Before1.Sommsgs exposing (sommsgInitData)
 
 
 type alias Data =
@@ -50,12 +52,16 @@ initData env msg =
 
         dialogueInit =
             dialogueInitData
+
+        sommsgInit =
+            sommsgInitData
     in
     { objects =
         [ Background.component (BackgroundInit <| backgroundInit)
         , Character.component (CharInit <| charInit)
         , Dialogue.component (DialogueInit <| dialogueInit)
-        , Trigger.component (TriggerInit <| 14)
+        , Sommsg.component (SommsgInit <| sommsgInit)
+        , Trigger.component (TriggerInit <| 15)
         ]
     , level = "Before1"
     }

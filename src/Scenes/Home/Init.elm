@@ -15,6 +15,8 @@ import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction)
 
 
+{-| Structure of the data
+-}
 type alias Data =
     { curScene : Float
     , sceneQueue : List ScenePic
@@ -23,12 +25,16 @@ type alias Data =
     }
 
 
+{-| Structure of the direction
+-}
 type Direction
     = Left
     | Right
     | Null
 
 
+{-| Structure of the scene picture
+-}
 type alias ScenePic =
     { name : String
     , x : Float
@@ -41,6 +47,8 @@ type alias ScenePic =
     }
 
 
+{-| Initial data
+-}
 initData : Data
 initData =
     { curScene = 1
@@ -132,6 +140,8 @@ initData =
     }
 
 
+{-| Get the scene picture
+-}
 get : Float -> List ScenePic -> ( Float, String )
 get id sceneQueue =
     case List.head (List.filter (\scenePic -> scenePic.id == id) sceneQueue) of

@@ -152,7 +152,7 @@ renderBasicView env data =
     in
     Canvas.group []
         ([ Canvas.shapes
-            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ fill (Color.rgba 255 255 0 0.1) ]
             [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1060 ) ]
          , Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]

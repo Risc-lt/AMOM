@@ -58,6 +58,11 @@ restorationPotion =
     , element = None
     , cost = 0
     , lasting = 0
+    , content = 
+        [ "Use on an ally."
+        , "80 health points restoration"
+        , "opposite for the cemetary races"
+        ]
     }
 
 
@@ -73,6 +78,10 @@ magicWater =
     , element = None
     , cost = 0
     , lasting = 0
+    , content = 
+        [ "Use on an ally."
+        , "20 magic points restoration"
+        ]
     }
 
 
@@ -88,6 +97,11 @@ poison =
     , element = None
     , cost = 0
     , lasting = 0
+    , content = 
+        [ "Use on an ally."
+        , "80 damage"
+        , "opposite for the cemetary races"
+        ]
     }
 
 
@@ -103,6 +117,10 @@ energyWater =
     , element = None
     , cost = 0
     , lasting = 0
+    , content = 
+        [ "Use on an ally."
+        , "100 energy restoration"
+        ]
     }
 
 
@@ -118,6 +136,11 @@ lightningSpell =
     , element = Air
     , cost = 11
     , lasting = 0
+    , content = 
+        [ "Attack one enemy."
+        , "air"
+        , "32 damage"
+        ]
     }
 
 
@@ -133,6 +156,11 @@ chainLightning =
     , element = Air
     , cost = 16
     , lasting = 0
+    , content = 
+        [ "Attack one enemy and the nearby enemies."
+        , "air"
+        , "29 damage"
+        ]
     }
 
 
@@ -148,4 +176,10 @@ blessingOfAir =
     , element = Air
     , cost = 8
     , lasting = 2
+    , content = 
+        [ "Use on an ally."
+        , "air"
+        , "'Concentration' for one turn"
+        , "'Precision' for one turn"
+        ]
     }

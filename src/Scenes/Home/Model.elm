@@ -151,10 +151,10 @@ renderBasicView env data =
                 ]
     in
     Canvas.group []
-        -- ([ Canvas.shapes
-        --     [ fill (Color.rgba 0 0 0 0.7) ]
-        --     [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1060 ) ]
         ([ Canvas.shapes
+            [ fill (Color.rgba 0 0 0 0.7) ]
+            [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1060 ) ]
+         , Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]
             [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
          , Canvas.shapes

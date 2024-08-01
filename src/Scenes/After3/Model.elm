@@ -5,6 +5,10 @@ module Scenes.After3.Model exposing (..)
 
 # Level configuration module
 
+This module contains the configuration for the level.
+
+@docs scene
+
 -}
 
 import Canvas

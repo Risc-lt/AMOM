@@ -1,7 +1,14 @@
-module Scenes.After2.Dialogues exposing (..)
+module Scenes.After2.Dialogues exposing (amaze, affirm, groan, surprise, complain, sad, ask, silence1, confused, hungry, prevent, apologize, comfort, collapse, persuade, hesitate, repeat, astounded, silence2, end, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Dialogue module
+
+This module contains the dialogues for the scene.
+
+@docs amaze, affirm, groan, surprise, complain, sad, ask, silence1, confused, hungry, prevent, apologize, comfort, collapse, persuade, hesitate, repeat, astounded, silence2, end, dialogueInitData
+
 -}
 
 import Json.Decode exposing (list)

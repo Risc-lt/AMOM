@@ -1,12 +1,15 @@
-module Scenes.After3.Characters exposing (..)
-
-{-
-   All charater data
--}
+module Scenes.After3.Characters exposing
+    ( charInitData
+    , characters
+    , genCharacter
+    , genMove
+    )
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 
 
+{-| Characters
+-}
 characters : List Character
 characters =
     [ genCharacter "Wenderd" Battle Right 830 320
@@ -23,6 +26,8 @@ characters =
     ]
 
 
+{-| Generate a character
+-}
 genCharacter : String -> Posture -> Direction -> Float -> Float -> Character
 genCharacter name posture direction x y =
     { defaultCharacter
@@ -34,6 +39,8 @@ genCharacter name posture direction x y =
     }
 
 
+{-| Generate a movement
+-}
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -45,6 +52,8 @@ genMove name posture movekind id =
     }
 
 
+{-| Characters: Init data
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

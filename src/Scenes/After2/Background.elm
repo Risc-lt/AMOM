@@ -1,12 +1,13 @@
-module Scenes.After2.Background exposing (..)
-
-{-
-   background data
--}
+module Scenes.After2.Background exposing
+    ( backgroundInitData
+    , genCamera
+    )
 
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
 
 
+{-| Generate a camera
+-}
 genCamera : Float -> Float -> Float -> Int -> Camera
 genCamera targetX targetY speed id =
     { defaultCamera
@@ -18,6 +19,8 @@ genCamera targetX targetY speed id =
     }
 
 
+{-| Background: Init data
+-}
 backgroundInitData : InitData
 backgroundInitData =
     { background =

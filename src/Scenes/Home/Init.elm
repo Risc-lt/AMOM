@@ -1,11 +1,5 @@
 module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 
-import Messenger.Audio.Base exposing (AudioOption(..))
-import Messenger.Base exposing (UserEvent(..))
-import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
-import SceneProtos.Story.Components.CharSequence.Init exposing (Direction)
-
-
 {-|
 
 
@@ -14,6 +8,13 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Direction)
 @docs InitData
 
 -}
+
+import Messenger.Audio.Base exposing (AudioOption(..))
+import Messenger.Base exposing (UserEvent(..))
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
+import SceneProtos.Story.Components.CharSequence.Init exposing (Direction)
+
+
 type alias Data =
     { curScene : Float
     , sceneQueue : List ScenePic

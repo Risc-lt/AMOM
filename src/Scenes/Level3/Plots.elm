@@ -1,7 +1,14 @@
-module Scenes.Level3.Plots exposing (..)
+module Scenes.Level3.Plots exposing (triggerInitData, dialogueInitData)
 
-{-
-   All plot data
+{-|
+
+
+# Plots module
+
+This module contains the plot data for the Level3 scene.
+
+@docs triggerInitData, dialogueInitData
+
 -}
 
 import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..), Gamestate(..))
@@ -124,6 +131,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
@@ -160,6 +169,8 @@ dieTrigger =
     ( DieTrigger, 101 )
 
 
+{-| The initial data for the triggers
+-}
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ askTrigger

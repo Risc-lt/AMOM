@@ -1,10 +1,14 @@
-module Scenes.Level3.Characters exposing
-    ( enemyInitData
-    , selfInitData
-    )
+module Scenes.Level3.Characters exposing (enemyInitData, selfInitData)
 
-{-
-   All character data
+{-|
+
+
+# Characters module
+
+This module contains the character data for the Level3 scene.
+
+@docs enemyInitData, selfInitData
+
 -}
 
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)

@@ -1,12 +1,21 @@
-module Scenes.Before1.Dialogues exposing (..)
+module Scenes.Before1.Dialogues exposing (alert, reply, find, prepare, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Before1 Dialogues module
+
+This module contains all dialogue data for Before1 scene
+
+@docs alert, reply, find, prepare, dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 
 
+{-| Dialogue: Alert
+-}
 alert : Dialogue
 alert =
     let
@@ -18,6 +27,8 @@ alert =
     genDialogue "head_wenderd" content ( 9, 1 )
 
 
+{-| Dialogue: Reply
+-}
 reply : Dialogue
 reply =
     let
@@ -29,6 +40,8 @@ reply =
     genDialogue "head_bulingze" content ( 9, 2 )
 
 
+{-| Dialogue: Find
+-}
 find : Dialogue
 find =
     let
@@ -40,6 +53,8 @@ find =
     genDialogue "head_bruce" content ( 9, 3 )
 
 
+{-| Dialogue: Prepare
+-}
 prepare : Dialogue
 prepare =
     let
@@ -51,6 +66,8 @@ prepare =
     genDialogue "head_wenderd" content ( 14, 1 )
 
 
+{-| Generate a dialogue
+-}
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -60,6 +77,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

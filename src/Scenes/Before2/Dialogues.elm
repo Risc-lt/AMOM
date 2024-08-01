@@ -1,7 +1,14 @@
-module Scenes.Before2.Dialogues exposing (..)
+module Scenes.Before2.Dialogues exposing (dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Before2 Dialogues module
+
+This module contains all dialogue data for Before2 scene
+
+@docs dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
@@ -118,6 +125,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

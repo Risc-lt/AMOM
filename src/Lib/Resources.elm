@@ -29,8 +29,6 @@ resources =
 
 A list of all the textures.
 
-Add your textures here. Don't worry if your list is too long. You can split those resources according to their usage.
-
 -}
 allTexture : Dict String String
 allTexture =
@@ -61,6 +59,9 @@ chacaterTexture =
     , ( "head_cavalry", "assets/character/role/role_5.jpg" )
     , ( "head_magicorg", "assets/character/role/head_magicorg.jpg" )
     , ( "head_concert", "assets/character/role/head_concert.jpg" )
+    , ( "ConcertFall", "assets/character/sprite_sheet/ConcertFall.png" )
+    , ( "WenderdFall", "assets/character/sprite_sheet/WenderdFall.png" )
+    , ( "Wild WolfFall", "assets/character/sprite_sheet/Wild_WolfFall.png" )
     ]
 
 
@@ -76,9 +77,6 @@ chacaterSheetTexture =
     , ( "TherapistSheet", "assets/character/sprite_sheet/TherapistSheet.png" )
     , ( "CavalrySheet", "assets/character/sprite_sheet/CavalrySheet.png" )
     , ( "ConcertSheet", "assets/character/sprite_sheet/ConcertSheet.png" )
-    , ( "ConcertFall", "assets/character/sprite_sheet/ConcertFall.png" )
-    , ( "WenderdFall", "assets/character/sprite_sheet/WenderdFall.png" )
-    , ( "Wild WolfFall", "assets/character/sprite_sheet/Wild_WolfFall.png" )
     ]
 
 
@@ -291,9 +289,6 @@ playerSize name =
 
 
 {-| All audio assets.
-
-The format is the same with `allTexture`.
-
 -}
 allAudio : Dict.Dict String String
 allAudio =

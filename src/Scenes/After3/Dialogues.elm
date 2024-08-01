@@ -1,12 +1,19 @@
-module Scenes.After3.Dialogues exposing (..)
+module Scenes.After3.Dialogues exposing (remind, interrupt, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Dialogue module
+
+@docs remind, interrupt, dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 
 
+{-| Dialogue: Remind
+-}
 remind : Dialogue
 remind =
     let
@@ -18,6 +25,8 @@ remind =
     genDialogue "head_cavalry" content ( 1, 1 )
 
 
+{-| Dialogue: Interrupt
+-}
 interrupt : Dialogue
 interrupt =
     let
@@ -29,6 +38,8 @@ interrupt =
     genDialogue "head_magicorg" content ( 1, 2 )
 
 
+{-| Generate a dialogue
+-}
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -38,6 +49,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

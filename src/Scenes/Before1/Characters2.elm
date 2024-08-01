@@ -1,6 +1,17 @@
-module Scenes.Before1.Characters2 exposing (characters)
+module Scenes.Before1.Characters2 exposing (characters, genMove)
 
-import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), MoveKind(..), Posture(..), defaultCharacter)
+{-|
+
+
+# Before1 Characters2 module
+
+This module contains all character data for Before1 scene
+
+@docs characters, genMove
+
+-}
+
+import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 
 
 {-| All character data
@@ -30,4 +41,17 @@ genCharacter name posture direction x y =
         , direction = direction
         , x = x
         , y = y
+    }
+
+
+{-| Generate a movement
+-}
+genMove : String -> Posture -> MoveKind -> Int -> Movement
+genMove name posture movekind id =
+    { defaultMovement
+        | name = name
+        , posture = posture
+        , movekind = movekind
+        , id = id
+        , isMoving = False
     }

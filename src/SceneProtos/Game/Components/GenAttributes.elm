@@ -1,28 +1,12 @@
-module SceneProtos.Game.Components.GenAttributes exposing
-    ( Attribute
-    , BasicStatus
-    , EleResistance
-    , ExtendValue
-    , RatioValues
-    , defaultAttributes
-    , defaultBasicStatus
-    , defaultEleResistance
-    , defaultExtendValues
-    , defaultRatioValues
-    , genActionPoints
-    , genAvoidRate
-    , genBasicStatus
-    , genCounterRate
-    , genCriticalHitRate
-    , genEleResistence
-    , genExtendValues
-    , genHp
-    , genMagicalHitRate
-    , genMp
-    , genNormalHitRate
-    , genRatioValues
-    , genSpecificResistance
-    )
+module SceneProtos.Game.Components.GenAttributes exposing (Attribute, BasicStatus, EleResistance, ExtendValue, RatioValues, defaultAttributes, defaultBasicStatus, defaultEleResistance, defaultExtendValues, defaultRatioValues, genActionPoints, genAvoidRate, genBasicStatus, genCounterRate, genCriticalHitRate, genEleResistence, genExtendValues, genHp, genMagicalHitRate, genMp, genNormalHitRate, genRatioValues, genSpecificResistance)
+
+{-| #GenAttributes module
+
+This module is used to generate the attributes of the characters.
+
+@docs Attribute, BasicStatus, EleResistance, ExtendValue, RatioValues, defaultAttributes, defaultBasicStatus, defaultEleResistance, defaultExtendValues, defaultRatioValues, genActionPoints, genAvoidRate, genBasicStatus, genCounterRate, genCriticalHitRate, genEleResistence, genExtendValues, genHp, genMagicalHitRate, genMp, genNormalHitRate, genRatioValues, genSpecificResistance
+
+-}
 
 import SceneProtos.Game.Components.GenRandom exposing (..)
 

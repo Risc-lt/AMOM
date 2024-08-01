@@ -1,9 +1,13 @@
-module Scenes.Level2.Model exposing (..)
+module Scenes.Level2.Model exposing (scene)
 
 {-|
 
 
 # Level configuration module
+
+This module contains all level configuration data for Level2 scene
+
+@docs scene
 
 -}
 

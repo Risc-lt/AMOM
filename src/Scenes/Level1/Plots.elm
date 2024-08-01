@@ -1,7 +1,14 @@
-module Scenes.Level1.Plots exposing (..)
+module Scenes.Level1.Plots exposing (dialogueInitData, triggerInitData)
 
-{-
-   All plot data
+{-|
+
+
+# Dialogue module
+
+This module contains all dialogue data for Level1 scene
+
+@docs dialogueInitData, triggerInitData
+
 -}
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
@@ -100,6 +107,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
@@ -129,6 +138,8 @@ attackTrigger =
     ( FrameTrigger 6, 3 )
 
 
+{-| Trigger: Init data
+-}
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ startTrigger

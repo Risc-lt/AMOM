@@ -3,6 +3,18 @@ module SceneProtos.Game.Components.GenRandom exposing
     , genRandomNum
     )
 
+{-|
+
+
+# GenRandom module
+
+This module is used to generate random numbers for the game.
+
+@docs checkRate: Check the rate
+@docs genRandomNum: Generate a random number
+
+-}
+
 import Random
 
 

@@ -1,11 +1,15 @@
-module Scenes.Before3.Characters2 exposing
-    ( arrange1
-    , arrange2
-    , arrange3
-    , arrange4
-    , arrange5
-    , arrange6
-    )
+module Scenes.Before3.Characters2 exposing (arrange1, arrange2, arrange3, arrange4, arrange5, arrange6)
+
+{-|
+
+
+# Before3 Characters2 module
+
+This module contains all character data for Before3 scene
+
+@docs arrange1, arrange2, arrange3, arrange4, arrange5, arrange6
+
+-}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), MoveKind(..), Movement, Posture(..), defaultMovement)
 

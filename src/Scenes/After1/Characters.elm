@@ -1,12 +1,24 @@
-module Scenes.After1.Characters exposing (..)
+module Scenes.After1.Characters exposing
+    ( begin, checkWolf, turn
+    , charInitData
+    )
 
-{-
-   All charater data
+{-|
+
+
+# Characters module
+
+This module is used to generate the characters for the scene.
+
+@docs characters, begin, checkWolf, turn
+
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 
 
+{-| All character data
+-}
 characters : List Character
 characters =
     [ genCharacter "Wenderd" Battle Left 1150 390
@@ -22,6 +34,8 @@ characters =
     ]
 
 
+{-| Generate a character
+-}
 genCharacter : String -> Posture -> Direction -> Float -> Float -> Character
 genCharacter name posture direction x y =
     { defaultCharacter
@@ -33,6 +47,8 @@ genCharacter name posture direction x y =
     }
 
 
+{-| Movement: Begin
+-}
 begin : List Movement
 begin =
     let
@@ -46,6 +62,8 @@ begin =
     ]
 
 
+{-| Movement: Check Wolf
+-}
 checkWolf : List Movement
 checkWolf =
     let
@@ -55,6 +73,8 @@ checkWolf =
     [ genMove "Wenderd" Normal move 3 ]
 
 
+{-| Movement: Turn
+-}
 turn : List Movement
 turn =
     let
@@ -64,6 +84,8 @@ turn =
     [ genMove "Wenderd" Normal move 4 ]
 
 
+{-| Generate a movement
+-}
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -75,6 +97,8 @@ genMove name posture movekind id =
     }
 
 
+{-| The initial data for the characters
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

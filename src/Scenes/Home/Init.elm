@@ -1,19 +1,20 @@
 module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 
+{-|
+
+
+# Init module
+
+@docs Data, Direction, ScenePic, get, initData
+
+-}
+
 import Messenger.Audio.Base exposing (AudioOption(..))
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction)
 
 
-{-|
-
-
-# Init module
-
-@docs InitData
-
--}
 type alias Data =
     { curScene : Float
     , sceneQueue : List ScenePic

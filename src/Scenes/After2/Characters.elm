@@ -1,12 +1,21 @@
-module Scenes.After2.Characters exposing (..)
+module Scenes.After2.Characters exposing (charInitData)
 
-{-
-   All charater data
+{-|
+
+
+# Characters module
+
+This module is used to generate the characters for the scene.
+
+@docs charInitData
+
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 
 
+{-| The characters in the scene
+-}
 characters : List Character
 characters =
     [ genCharacter "Wenderd" Battle Left 1150 390
@@ -17,6 +26,8 @@ characters =
     ]
 
 
+{-| Generate a character
+-}
 genCharacter : String -> Posture -> Direction -> Float -> Float -> Character
 genCharacter name posture direction x y =
     { defaultCharacter
@@ -28,6 +39,8 @@ genCharacter name posture direction x y =
     }
 
 
+{-| The movements of the characters
+-}
 checkConcert : List Movement
 checkConcert =
     let
@@ -37,6 +50,8 @@ checkConcert =
     [ genMove "Wenderd" Normal move 2 ]
 
 
+{-| The movements of the characters
+-}
 turnLeft1 : List Movement
 turnLeft1 =
     let
@@ -46,6 +61,8 @@ turnLeft1 =
     [ genMove "Wenderd" Normal move 3 ]
 
 
+{-| The movements of the characters
+-}
 prevent : List Movement
 prevent =
     let
@@ -55,6 +72,8 @@ prevent =
     [ genMove "Bulingze" Battle move 5 ]
 
 
+{-| The movements of the characters
+-}
 turnLeft2 : List Movement
 turnLeft2 =
     let
@@ -64,6 +83,8 @@ turnLeft2 =
     [ genMove "Bulingze" Battle move 6 ]
 
 
+{-| The movements of the characters
+-}
 fall : List Movement
 fall =
     let
@@ -91,6 +112,8 @@ turnLeft3 =
     [ genMove "Bulingze" Battle move 11 ]
 
 
+{-| Generate a movement
+-}
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -102,6 +125,8 @@ genMove name posture movekind id =
     }
 
 
+{-| The initial data for the characters
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

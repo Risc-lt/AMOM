@@ -1,7 +1,11 @@
-module Scenes.Before2.Background exposing (..)
+module Scenes.Before2.Background exposing (backgroundInitData)
 
-{-
-   background data
+{-| #Background module
+
+This module contains the background data for the Before2 scene.
+
+@docs backgroundInitData
+
 -}
 
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
@@ -28,6 +32,8 @@ genCamera targetX targetY speed id =
     }
 
 
+{-| The initial data for the background
+-}
 backgroundInitData : InitData
 backgroundInitData =
     { background =

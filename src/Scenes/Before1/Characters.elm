@@ -1,11 +1,16 @@
-module Scenes.Before1.Characters exposing (..)
+module Scenes.Before1.Characters exposing (charInitData)
 
-{-
-   All charater data
+{-|
+
+
+# Before1 Characters module
+
+@docs charInitData
+
 -}
 
-import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultMovement)
-import Scenes.Before1.Characters2 exposing (characters)
+import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), InitData, MoveKind(..), Movement, Posture(..))
+import Scenes.Before1.Characters2 exposing (characters, genMove)
 
 
 begin : List Movement
@@ -272,17 +277,8 @@ wolfRight =
     ]
 
 
-genMove : String -> Posture -> MoveKind -> Int -> Movement
-genMove name posture movekind id =
-    { defaultMovement
-        | name = name
-        , posture = posture
-        , movekind = movekind
-        , id = id
-        , isMoving = False
-    }
-
-
+{-| Characters: Init data
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

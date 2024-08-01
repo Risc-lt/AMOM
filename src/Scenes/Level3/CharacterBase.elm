@@ -1,15 +1,15 @@
-module Scenes.Level3.CharacterBase exposing
-    ( Character
-    , bithif
-    , bruce
-    , bulingze
-    , cavalry
-    , convert
-    , genChar
-    , genSelf
-    , oneChar
-    , wenderd
-    )
+module Scenes.Level3.CharacterBase exposing (Character, bithif, bruce, bulingze, cavalry, convert, genChar, genSelf, oneChar, wenderd)
+
+{-|
+
+
+# Character base module
+
+This module contains all character data for Level3 scene
+
+@docs Character, bithif, bruce, bulingze, cavalry, convert, genChar, genSelf, oneChar, wenderd
+
+-}
 
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.GenAttributes exposing (Attribute, EleResistance, ExtendValue, genExtendValues, genHp, genMp)

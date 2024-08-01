@@ -1,17 +1,14 @@
-module SceneProtos.Game.Components.Special.Library2 exposing
-    ( blessingOfAir
-    , chainLightning
-    , energyWater
-    , lightningSpell
-    , magicWater
-    , mudSwamp
-    , poison
-    , restorationPotion
-    , stoneSkin
-    )
+module SceneProtos.Game.Components.Special.Library2 exposing (blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin)
 
-{-
-   Skill library 2
+{-|
+
+
+# Library2 module
+
+This module contains the special skills for the game.
+
+@docs blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin
+
 -}
 
 import SceneProtos.Game.Components.Special.Init exposing (..)

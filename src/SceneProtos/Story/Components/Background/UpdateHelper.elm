@@ -1,4 +1,15 @@
-module SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
+module SceneProtos.Story.Components.Background.UpdateHelper exposing (updateHelper)
+
+{-|
+
+
+# Background Update Helper
+
+This module is used to update the background component.
+
+@docs updateHelper
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

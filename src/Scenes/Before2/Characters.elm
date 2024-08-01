@@ -1,7 +1,14 @@
 module Scenes.Before2.Characters exposing (charInitData)
 
-{-
-   All charater data
+{-|
+
+
+# Before2 Characters module
+
+This module contains all character data for Before2 scene
+
+@docs charInitData
+
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
@@ -213,6 +220,8 @@ genMove name posture movekind id =
     }
 
 
+{-| Characters: Init data
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

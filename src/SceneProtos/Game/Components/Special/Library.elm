@@ -1,25 +1,15 @@
 module SceneProtos.Game.Components.Special.Library exposing
-    ( airBlade
-    , arcaneBeam
-    , blindness
-    , compounding
-    , cure
-    , doubleStrike
-    , fieryThrust
-    , fireBall
-    , frostArrow
-    , frostImpact
-    , gale
-    , getNewBuff
-    , iceRing
-    , inspirationOfFire
-    , magicTransformation
-    , scatterShot
-    , whirlwindAccelaration
+    ( getNewBuff
+    , scatterShot, frostArrow, airBlade, doubleStrike, compounding, magicTransformation, gale, fieryThrust, arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration
     )
 
-{-
-   Skill library
+{-| #Library module
+
+This module contains the special skills for the game.
+
+@docs getNewBuff
+@docs scatterShot, frostArrow, airBlade, doubleStrike, compounding, magicTransformation, gale, fieryThrust, arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration
+
 -}
 
 import SceneProtos.Game.Components.Special.Init exposing (..)

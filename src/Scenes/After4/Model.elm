@@ -1,9 +1,13 @@
-module Scenes.After4.Model exposing (..)
+module Scenes.After4.Model exposing (scene)
 
 {-|
 
 
 # Level configuration module
+
+This module is used to generate the level configuration for the scene.
+
+@docs scene
 
 -}
 

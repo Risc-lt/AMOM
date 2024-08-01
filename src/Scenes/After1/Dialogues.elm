@@ -1,12 +1,21 @@
-module Scenes.After1.Dialogues exposing (..)
+module Scenes.After1.Dialogues exposing (agree, checkWolf, cheer, dialogueInitData, end, explain, fear, plaint, recall, refuse, remind, sad, silence)
 
-{-
-   All dialogue data
+{-|
+
+
+# Dialogues module
+
+This module is used to generate the dialogues for the scene.
+
+@docs agree, checkWolf, cheer, dialogueInitData, end, explain, fear, plaint, recall, refuse, remind, sad, silence
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 
 
+{-| Dialogue: Cheer
+-}
 cheer : Dialogue
 cheer =
     let
@@ -18,6 +27,8 @@ cheer =
     genDialogue "head_wenderd" content ( 2, 1 )
 
 
+{-| Dialogue: Plaint
+-}
 plaint : Dialogue
 plaint =
     let
@@ -29,6 +40,8 @@ plaint =
     genDialogue "head_bithif" content ( 2, 2 )
 
 
+{-| Dialogue: Fear
+-}
 fear : Dialogue
 fear =
     let
@@ -41,6 +54,8 @@ fear =
     genDialogue "head_wenderd" content ( 5, 1 )
 
 
+{-| Dialogue: Agree
+-}
 agree : Dialogue
 agree =
     let
@@ -53,6 +68,8 @@ agree =
     genDialogue "head_bruce" content ( 5, 2 )
 
 
+{-| Dialogue: Check the wolf
+-}
 checkWolf : Dialogue
 checkWolf =
     let
@@ -64,6 +81,8 @@ checkWolf =
     genDialogue "head_wenderd" content ( 5, 3 )
 
 
+{-| Dialogue: Remind
+-}
 remind : Dialogue
 remind =
     let
@@ -76,6 +95,8 @@ remind =
     genDialogue "head_bulingze" content ( 5, 4 )
 
 
+{-| Dialogue: Explain
+-}
 explain : Dialogue
 explain =
     let
@@ -88,6 +109,8 @@ explain =
     genDialogue "head_wenderd" content ( 5, 5 )
 
 
+{-| Dialogue: Silence
+-}
 silence : Dialogue
 silence =
     let
@@ -99,6 +122,8 @@ silence =
     genDialogue "head_wenderd" content ( 5, 6 )
 
 
+{-| Dialogue: Recall
+-}
 recall : Dialogue
 recall =
     let
@@ -111,6 +136,8 @@ recall =
     genDialogue "head_wenderd" content ( 5, 7 )
 
 
+{-| Dialogue: Sad
+-}
 sad : Dialogue
 sad =
     let
@@ -122,6 +149,8 @@ sad =
     genDialogue "head_bithif" content ( 5, 8 )
 
 
+{-| Dialogue: Refuse
+-}
 refuse : Dialogue
 refuse =
     let
@@ -133,6 +162,8 @@ refuse =
     genDialogue "head_bruce" content ( 5, 9 )
 
 
+{-| Dialogue: End
+-}
 end : Dialogue
 end =
     let
@@ -144,6 +175,8 @@ end =
     genDialogue "head_wenderd" content ( 5, 10 )
 
 
+{-| Generate a dialogue
+-}
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -153,6 +186,8 @@ genDialogue speaker content id =
     }
 
 
+{-| The initial data for the dialogues
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

@@ -1,4 +1,4 @@
-module Scenes.Begin.Model exposing (..)
+module Scenes.Begin.Model exposing (scene)
 
 {-| Scene configuration module
 

@@ -1,7 +1,14 @@
-module Scenes.Level2.Plots exposing (..)
+module Scenes.Level2.Plots exposing (triggerInitData, dialogueInitData)
 
-{-
-   All plot data
+{-|
+
+
+# Level2 Plots module
+
+This module contains all plot data for Level2 scene
+
+@docs triggerInitData, dialogueInitData
+
 -}
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)
@@ -202,6 +209,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     let
@@ -232,6 +241,8 @@ badTrigger =
     ( FrameTrigger 15, 3 )
 
 
+{-| The initial data for the triggers
+-}
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ amazeTrigger

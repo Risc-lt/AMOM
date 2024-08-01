@@ -1,5 +1,16 @@
 module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 
+{-|
+
+
+# Character Sequence Update Helper module
+
+This module is used to update the character sequence component.
+
+@docs updateHelper
+
+-}
+
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))

@@ -1,8 +1,13 @@
-module SceneProtos.Game.Components.GenRandom exposing (..)
+module SceneProtos.Game.Components.GenRandom exposing
+    ( checkRate
+    , genRandomNum
+    )
 
 import Random
 
 
+{-| Check the rate
+-}
 checkRate : Int -> Int -> Bool
 checkRate time rate =
     let
@@ -16,6 +21,8 @@ checkRate time rate =
         False
 
 
+{-| Generate a random number
+-}
 genRandomNum : Int -> Int -> Int -> Int
 genRandomNum lowerBound upperBound time =
     let

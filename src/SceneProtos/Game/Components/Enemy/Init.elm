@@ -21,6 +21,7 @@ import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Library2 exposing (..)
 
 
 {-| Character state

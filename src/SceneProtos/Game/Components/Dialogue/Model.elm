@@ -162,10 +162,13 @@ view env data basedata =
                         contentToView textWithIndex env data
                     )
                     (List.indexedMap Tuple.pair data.curDialogue.content)
+
+            ( x, y ) =
+                data.curDialogue.speakerPos
         in
         ( Canvas.group []
             ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 426 ) data.curDialogue.speaker
+             , renderSprite env.globalData.internalData [] ( x + 20, y - 70 ) ( 420, 426 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Trigger.Init exposing (..)
+module SceneProtos.Story.Components.Trigger.Init exposing (InitData)
 
 {-|
 
@@ -10,6 +10,8 @@ module SceneProtos.Story.Components.Trigger.Init exposing (..)
 -}
 
 
+{-| The data used to initialize the component of trigger
+-}
 type alias InitData =
     { id : Int
     , curPlot : List Int

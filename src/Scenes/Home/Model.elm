@@ -256,6 +256,7 @@ view env data =
             [ rect env.globalData.internalData ( 100, 100 ) ( 150, 20 ) ]
          , Canvas.shapes [ fill Color.green ]
             [ rect env.globalData.internalData ( 100, 100 ) ( 150 * env.globalData.volume, 20 ) ]
+         , renderSprite env.globalData.internalData [] ( 38, 69 ) ( 100, 100 ) "volume"
          ]
             ++ sceneView
         )

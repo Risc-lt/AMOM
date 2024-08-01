@@ -91,6 +91,7 @@ bufferTexture =
     , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.png" )
     , ( "Seal", "assets/character/buff/Seal.png" )
     , ( "Bleed", "assets/character/buff/Bleed.png" )
+    , ( "volume", "assets/character/chartlet/volume.png" )
     ]
 
 

@@ -23,6 +23,18 @@ type alias Data =
     InitData
 
 
+{-| render an attribute
+-}
+renderOneAttribute : Float -> Int -> String -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderOneAttribute y val valType env =
+    Canvas.group []
+        [ renderTextWithColorCenter env.globalData.internalData 20 (valType ++ ":") "Comic Sans MS" Color.black ( 1710, y + 65 )
+        , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Comic Sans MS" Color.black ( 1810, y + 65 )
+        ]
+
+
+{-| render a bar
+-}
 renderOneBar : Float -> Int -> Int -> String -> Color.Color -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderOneBar y val upperBound valType color env =
     Canvas.group []
@@ -37,6 +49,8 @@ renderOneBar y val upperBound valType color env =
         ]
 
 
+{-| render all buffs
+-}
 renderBuff : List ( Buff, Int ) -> Messenger.Base.Env SceneCommonData UserData -> Float -> Float -> Canvas.Renderable
 renderBuff buffs env x y =
     let
@@ -83,6 +97,8 @@ renderBuff buffs env x y =
     Canvas.group [] buffViews
 
 
+{-| render the position prompt
+-}
 renderChangePosition : Env cdata userdata -> Data -> BaseData -> Renderable
 renderChangePosition env data basedata =
     let
@@ -114,6 +130,8 @@ renderChangePosition env data basedata =
         ]
 
 
+{-| render the actions
+-}
 renderPlayerTurn : Env cdata userdata -> String -> Renderable
 renderPlayerTurn env name =
     let

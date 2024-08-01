@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Interface.RenderHelper3 exposing (..)
+module SceneProtos.Game.Components.Interface.RenderHelper3 exposing (renderAction, renderStatus)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
@@ -22,6 +22,23 @@ import SceneProtos.Game.Components.Special.Item exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
+{-| check the mouse position
+-}
+checkMouse : Float -> Messenger.Base.Env SceneCommonData UserData -> Bool
+checkMouse y env =
+    let
+        ( mouseX, mouseY ) =
+            env.globalData.mousePos
+    in
+    if 1630 < mouseX && mouseX < 1870 && y + 15 < mouseY && mouseY < y + 100 then
+        True
+
+    else
+        False
+
+
+{-| render status
+-}
 renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderStatus self env =
     let
@@ -50,14 +67,26 @@ renderStatus self env =
                 Color.black
     in
     if self.name /= "" then
-        Canvas.group []
-            [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( 1470, y ) ( 160, 160 ) (self.name ++ "Sheet.0/1")
-            , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
-            , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
-            , renderOneBar (y + 40) self.energy 300 "En" Color.green env
-            , renderBuff self.buff env 1675 (toFloat y + 120)
-            , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
-            ]
+        if checkMouse (y + 20) env then
+            Canvas.group []
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( 1470, y ) ( 160, 160 ) (self.name ++ "Sheet.0/1")
+                , renderOneAttribute y self.attributes.strength "Strength" env
+                , renderOneAttribute (y + 20) self.attributes.dexterity "Dexterity" env
+                , renderOneAttribute (y + 40) self.attributes.constitution "Constitution" env
+                , renderOneAttribute (y + 60) self.attributes.intelligence "Intelligence" env
+                , renderBuff self.buff env 1675 (toFloat y + 120)
+                , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
+                ]
+
+        else
+            Canvas.group []
+                [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( 1470, y ) ( 160, 160 ) (self.name ++ "Sheet.0/1")
+                , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
+                , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
+                , renderOneBar (y + 40) self.energy 300 "En" Color.green env
+                , renderBuff self.buff env 1675 (toFloat y + 120)
+                , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
+                ]
 
     else
         empty

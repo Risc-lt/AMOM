@@ -39,18 +39,27 @@ Store all the scenes with their name here.
 allScenes : AllScenes UserData SceneMsg
 allScenes =
     Dict.fromList
-        [ ( "Before1", Before1.scene )
-        , ( "Level1", Level1.scene )
-        , ( "After1", After1.scene )
-        , ( "Before2", Before2.scene )
-        , ( "Level2", Level2.scene )
-        , ( "After2", After2.scene )
-        , ( "Before3", Before3.scene )
-        , ( "Level3", Level3.scene )
-        , ( "After3", After3.scene )
-        , ( "After4", After4.scene )
-        , ( "Begin", Begin.scene )
-        , ( "Home", Home.scene )
-        , ( "Logo", Logo.scene )
-        , ( "End", End.scene )
-        ]
+        ([ ( "Before1", Before1.scene )
+         , ( "Level1", Level1.scene )
+         , ( "After1", After1.scene )
+         , ( "Before2", Before2.scene )
+         , ( "Level2", Level2.scene )
+         , ( "After2", After2.scene )
+         , ( "Before3", Before3.scene )
+         , ( "Level3", Level3.scene )
+         , ( "After3", After3.scene )
+         , ( "After4", After4.scene )
+         ]
+            ++ individualScenes
+        )
+
+
+{-| Individual scenes
+-}
+individualScenes : List ( String, Messenger.Scene.Scene.SceneStorage UserData SceneMsg )
+individualScenes =
+    [ ( "Logo", Logo.scene )
+    , ( "Begin", Begin.scene )
+    , ( "Home", Home.scene )
+    , ( "End", End.scene )
+    ]

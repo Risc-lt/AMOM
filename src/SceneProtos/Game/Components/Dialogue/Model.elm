@@ -60,7 +60,7 @@ update env evnt data basedata =
                             _ ->
                                 if curDia.id == ( 103, 1 ) then
                                     ( { curDia | isSpeaking = False }
-                                    , [ Other ( "Enemy", Defeated True ) ]
+                                    , [ Other ( "Enemy", Defeated True ), Other ( "Interface", Defeated True ) ]
                                     )
 
                                 else

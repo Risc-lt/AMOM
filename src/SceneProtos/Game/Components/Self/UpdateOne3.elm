@@ -14,8 +14,8 @@ import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Self.UpdateOne exposing (Data, handleKeyDown)
 import SceneProtos.Game.Components.Self.UpdateOne2 exposing (handleMouseDown)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), SpecialType(..))
-import SceneProtos.Game.Components.Special.Library exposing (..)
-import SceneProtos.Game.Components.Special.Library2 exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (..)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 

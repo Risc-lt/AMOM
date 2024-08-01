@@ -1,7 +1,4 @@
-module Scenes.After1.Characters exposing
-    ( begin, checkWolf, turn
-    , charInitData
-    )
+module Scenes.After1.Characters exposing (charInitData, begin, checkWolf, turn)
 
 {-|
 
@@ -10,7 +7,7 @@ module Scenes.After1.Characters exposing
 
 This module is used to generate the characters for the scene.
 
-@docs characters, begin, checkWolf, turn
+@docs charInitData, begin, checkWolf, turn
 
 -}
 

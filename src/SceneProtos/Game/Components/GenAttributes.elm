@@ -122,11 +122,15 @@ genCriticalHitRate =
     10
 
 
+{-| Generate the counter rate of the character
+-}
 genCounterRate : Attribute -> Int
 genCounterRate attributes =
     (attributes.dexterity + attributes.intelligence) // 4
 
 
+{-| Generate the ratio values of the character
+-}
 genRatioValues : Attribute -> RatioValues
 genRatioValues attributes =
     { avoidRate = genAvoidRate attributes

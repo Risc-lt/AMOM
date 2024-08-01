@@ -199,6 +199,11 @@ arcaneBeam =
     , element = None
     , cost = 5
     , lasting = 0
+    , content = 
+        [ "Attack one enemy."
+        , "Element depends on the user."
+        , "20 damage"
+        ]
     }
 
 
@@ -214,6 +219,12 @@ frostImpact =
     , element = Water
     , cost = 11
     , lasting = 1
+    , content = 
+        [ "Attack one enemy."
+        , "water"
+        , "28 damage"
+        , "'Retard' for one turn"
+        ]
     }
 
 
@@ -229,6 +240,13 @@ iceRing =
     , element = Water
     , cost = 16
     , lasting = 1
+    , content = 
+        [ "Use on one enemy."
+        , "water"
+        , "'Seal' for one turn"
+        , "Attack the other enemies in the same region."
+        , "22 damage"
+        ]
     }
 
 
@@ -244,6 +262,7 @@ cure =
     , element = Water
     , cost = 12
     , lasting = 0
+    , content = []
     }
 
 
@@ -259,6 +278,11 @@ fireBall =
     , element = Fire
     , cost = 13
     , lasting = 0
+    , content = 
+        [ "Attack all enemies in a region."
+        , "fire"
+        , "42 damage"
+        ]
     }
 
 
@@ -274,6 +298,11 @@ inspirationOfFire =
     , element = Fire
     , cost = 9
     , lasting = 2
+    , content = 
+        [ "Use on an ally."
+        , "fire"
+        , "'Brave' for two turns"
+        ]
     }
 
 
@@ -289,6 +318,11 @@ blindness =
     , element = Fire
     , cost = 18
     , lasting = 2
+    , content = 
+        [ "Use on one enemy."
+        , "fire"
+        , "'Seal' for two turns"
+        ]
     }
 
 
@@ -304,4 +338,9 @@ whirlwindAccelaration =
     , element = Air
     , cost = 3
     , lasting = 2
+    , content = 
+        [ "Use on an ally."
+        , "air"
+        , "'Acceleration' for one turn"
+        ]
     }

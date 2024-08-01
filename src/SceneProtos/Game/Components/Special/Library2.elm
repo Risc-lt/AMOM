@@ -26,6 +26,7 @@ mudSwamp =
     , element = Earth
     , cost = 10
     , lasting = 3
+    , content = []
     }
 
 
@@ -41,6 +42,7 @@ stoneSkin =
     , element = Earth
     , cost = 7
     , lasting = 3
+    , content = []
     }
 
 

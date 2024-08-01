@@ -5,8 +5,6 @@ module Scenes.Before1.Characters exposing (charInitData)
 
 # Before1 Characters module
 
-This module contains the characters data for the Before1 scene.
-
 @docs charInitData
 
 -}

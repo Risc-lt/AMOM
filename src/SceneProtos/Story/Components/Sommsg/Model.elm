@@ -77,7 +77,7 @@ updaterec env msg data basedata =
         BeginPlot id ->
             let
                 newMusic =
-                    List.any (\( _, _, i ) -> i == id) <| Debug.log "test" data.music
+                    List.any (\( _, _, i ) -> i == id) data.music
 
                 newMsg =
                     if newMusic then
@@ -87,7 +87,7 @@ updaterec env msg data basedata =
                         []
             in
             if newMusic then
-                ( ( { data | isPlaying = False }, basedata ), Debug.log "result" newMsg, env )
+                ( ( { data | isPlaying = False }, basedata ), newMsg, env )
 
             else
                 ( ( data, basedata ), [], env )

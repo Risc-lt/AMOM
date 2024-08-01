@@ -1,7 +1,15 @@
-module Scenes.After2.Background exposing
-    ( backgroundInitData
-    , genCamera
-    )
+module Scenes.After2.Background exposing (backgroundInitData, genCamera)
+
+{-|
+
+
+# Background module
+
+This module is used to generate the background for the scene.
+
+@docs backgroundInitData, genCamera
+
+-}
 
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)
 

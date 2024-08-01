@@ -5,16 +5,15 @@ module Scenes.After2.Dialogues exposing (amaze, affirm, groan, surprise, complai
 
 # Dialogue module
 
-This module contains the dialogues for the scene.
-
 @docs amaze, affirm, groan, surprise, complain, sad, ask, silence1, confused, hungry, prevent, apologize, comfort, collapse, persuade, hesitate, repeat, astounded, silence2, end, dialogueInitData
 
 -}
 
-import Json.Decode exposing (list)
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 
 
+{-| Dialogue: Amaze
+-}
 amaze : Dialogue
 amaze =
     let
@@ -26,6 +25,8 @@ amaze =
     genDialogue "head_bithif" content ( 1, 1 )
 
 
+{-| Dialogue: Affirm
+-}
 affirm : Dialogue
 affirm =
     let
@@ -37,6 +38,8 @@ affirm =
     genDialogue "head_bulingze" content ( 1, 2 )
 
 
+{-| Dialogue: Groan
+-}
 groan : Dialogue
 groan =
     let
@@ -48,6 +51,8 @@ groan =
     genDialogue "head_concert" content ( 1, 3 )
 
 
+{-| Dialogue: Surprise
+-}
 surprise : Dialogue
 surprise =
     let
@@ -59,6 +64,8 @@ surprise =
     genDialogue "head_wenderd" content ( 1, 4 )
 
 
+{-| Dialogue: Complain
+-}
 complain : Dialogue
 complain =
     let
@@ -71,6 +78,8 @@ complain =
     genDialogue "head_concert" content ( 1, 5 )
 
 
+{-| Dialogue: Sad
+-}
 sad : Dialogue
 sad =
     let
@@ -82,6 +91,8 @@ sad =
     genDialogue "head_bithif" content ( 1, 6 )
 
 
+{-| Dialogue: Ask
+-}
 ask : Dialogue
 ask =
     let
@@ -93,6 +104,8 @@ ask =
     genDialogue "head_bulingze" content ( 3, 1 )
 
 
+{-| Dialogue: Silence
+-}
 silence1 : Dialogue
 silence1 =
     let
@@ -104,6 +117,8 @@ silence1 =
     genDialogue "head_wenderd" content ( 3, 2 )
 
 
+{-| Dialogue: Confused
+-}
 confused : Dialogue
 confused =
     let
@@ -115,6 +130,8 @@ confused =
     genDialogue "head_bulingze" content ( 3, 3 )
 
 
+{-| Dialogue: Hungry
+-}
 hungry : Dialogue
 hungry =
     let
@@ -126,6 +143,8 @@ hungry =
     genDialogue "head_wenderd" content ( 3, 4 )
 
 
+{-| Dialogue: Prevent
+-}
 prevent : Dialogue
 prevent =
     let
@@ -137,6 +156,8 @@ prevent =
     genDialogue "head_bruce" content ( 3, 5 )
 
 
+{-| Dialogue: Apologize
+-}
 apologize : Dialogue
 apologize =
     let
@@ -148,6 +169,8 @@ apologize =
     genDialogue "head_bruce" content ( 5, 1 )
 
 
+{-| Dialogue: Comfort
+-}
 comfort : Dialogue
 comfort =
     let
@@ -159,6 +182,8 @@ comfort =
     genDialogue "head_bulingze" content ( 7, 1 )
 
 
+{-| Dialogue: Collapse
+-}
 collapse : Dialogue
 collapse =
     let
@@ -170,6 +195,8 @@ collapse =
     genDialogue "head_bithif" content ( 7, 2 )
 
 
+{-| Dialogue: Persuade
+-}
 persuade : Dialogue
 persuade =
     let
@@ -181,6 +208,8 @@ persuade =
     genDialogue "head_bulingze" content ( 7, 3 )
 
 
+{-| Dialogue: Hesitate
+-}
 hesitate : Dialogue
 hesitate =
     let
@@ -192,6 +221,8 @@ hesitate =
     genDialogue "head_bruce" content ( 7, 4 )
 
 
+{-| Dialogue: Repeat
+-}
 repeat : Dialogue
 repeat =
     let
@@ -203,6 +234,8 @@ repeat =
     genDialogue "head_bruce" content ( 7, 5 )
 
 
+{-| Dialogue: Astounded
+-}
 astounded : Dialogue
 astounded =
     let
@@ -214,6 +247,8 @@ astounded =
     genDialogue "head_bithif" content ( 7, 6 )
 
 
+{-| Dialogue: Silence
+-}
 silence2 : Dialogue
 silence2 =
     let
@@ -225,6 +260,8 @@ silence2 =
     genDialogue "head_bulingze" content ( 7, 7 )
 
 
+{-| Dialogue: End
+-}
 end : Dialogue
 end =
     let
@@ -236,6 +273,8 @@ end =
     genDialogue "head_bulingze" content ( 9, 1 )
 
 
+{-| Generate a dialogue
+-}
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue
 genDialogue speaker content id =
     { defaultDialogue
@@ -245,19 +284,15 @@ genDialogue speaker content id =
     }
 
 
+{-| The initial data for the dialogues
+-}
 dialogueInitData : InitData
 dialogueInitData =
     let
         list1 =
-            [ amaze, affirm, groan, surprise, complain ]
+            [ amaze, affirm, groan, surprise, complain, ask, silence1, confused, hungry ]
 
         list2 =
-            [ ask, silence1, confused, hungry, prevent, apologize, comfort, collapse ]
-
-        list3 =
-            [ sad, persuade, hesitate, repeat, astounded, silence2, end ]
+            [ prevent, apologize, comfort, collapse, sad, persuade, hesitate, repeat, astounded, silence2, end ]
     in
-    { curDialogue = defaultDialogue
-    , remainDiaList =
-        list1 ++ list2 ++ list3
-    }
+    { curDialogue = defaultDialogue, remainDiaList = list1 ++ list2 }

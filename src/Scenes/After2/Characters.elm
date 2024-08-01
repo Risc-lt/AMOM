@@ -1,11 +1,15 @@
-module Scenes.After2.Characters exposing
-    ( charInitData
-    , characters
-    , checkConcert
-    , prevent
-    , turnLeft
-    , turnRight
-    )
+module Scenes.After2.Characters exposing (charInitData, characters, checkConcert, prevent, turnLeft, turnRight)
+
+{-|
+
+
+# Characters module
+
+This module is used to generate the characters for the scene.
+
+@docs charInitData, characters, checkConcert, prevent, turnLeft, turnRight
+
+-}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 

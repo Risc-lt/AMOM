@@ -1,18 +1,15 @@
-module Scenes.After1.Dialogues exposing
-    ( agree
-    , checkWolf
-    , cheer
-    , dialogueInitData
-    , end
-    , explain
-    , fear
-    , plaint
-    , recall
-    , refuse
-    , remind
-    , sad
-    , silence
-    )
+module Scenes.After1.Dialogues exposing (agree, checkWolf, cheer, dialogueInitData, end, explain, fear, plaint, recall, refuse, remind, sad, silence)
+
+{-|
+
+
+# Dialogues module
+
+This module is used to generate the dialogues for the scene.
+
+@docs agree, checkWolf, cheer, dialogueInitData, end, explain, fear, plaint, recall, refuse, remind, sad, silence
+
+-}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)
 

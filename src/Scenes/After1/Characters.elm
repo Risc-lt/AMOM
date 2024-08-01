@@ -1,4 +1,18 @@
-module Scenes.After1.Characters exposing (begin, charInitData, checkWolf, turn)
+module Scenes.After1.Characters exposing
+    ( begin, checkWolf, turn
+    , charInitData
+    )
+
+{-|
+
+
+# Characters module
+
+This module is used to generate the characters for the scene.
+
+@docs characters, begin, checkWolf, turn
+
+-}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)
 

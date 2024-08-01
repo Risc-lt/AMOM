@@ -18,6 +18,8 @@ import SceneProtos.Story.Components.CharSequence.Init as Character exposing (Cha
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 
 
+{-| Component message
+-}
 type ComponentMsg
     = BeginPlot Int
     | DialogueInit Dialogue.InitData

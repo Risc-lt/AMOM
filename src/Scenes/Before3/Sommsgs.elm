@@ -11,7 +11,7 @@ sommsgInitData : InitData
 sommsgInitData =
     { music =
         [ ( "eased", 24, 0 )
-        , ( "battle", 24, 7 )
+        , ( "battle", 16, 7 )
         ]
     , isPlaying = False
     }

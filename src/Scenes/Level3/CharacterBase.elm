@@ -124,7 +124,7 @@ bithif time =
 -}
 cavalry : Int -> Self
 cavalry time =
-    oneChar time 6 40 30 34 56 10 10 20 10 "Cavalry" <|
+    oneChar time 5 40 30 34 56 10 10 20 10 "Cavalry" <|
         [ arcaneBeam, airBlade, lightningSpell, chainLightning, blessingOfAir, { restorationPotion | cost = 1 } ]
 
 

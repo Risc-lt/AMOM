@@ -14,6 +14,7 @@ import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioTarget(..))
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
@@ -26,7 +27,6 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
-import Messenger.Audio.Base exposing (AudioTarget(..))
 
 
 type alias Data =
@@ -104,7 +104,7 @@ updateBasic env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    if env.globalData.sceneStartFrame == 1 then
+    if env.globalData.sceneStartFrame == 0 then
         ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
 
     else

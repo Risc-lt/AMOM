@@ -77,17 +77,17 @@ updaterec env msg data basedata =
         BeginPlot id ->
             let
                 newMusic =
-                    List.any (\( _, _, i ) -> i == id) data.music
+                    List.any (\( _, _, i ) -> i == id) <| Debug.log "test" data.music
 
                 newMsg =
                     if newMusic then
-                        []
+                        [ Parent <| SOMMsg <| SOMStopAudio AllAudio ]
 
                     else
-                        [ Parent <| SOMMsg <| SOMStopAudio AllAudio ]
+                        []
             in
             if newMusic then
-                ( ( { data | isPlaying = False }, basedata ), newMsg, env )
+                ( ( { data | isPlaying = False }, basedata ), Debug.log "result" newMsg, env )
 
             else
                 ( ( data, basedata ), [], env )

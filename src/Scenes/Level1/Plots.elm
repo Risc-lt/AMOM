@@ -1,7 +1,4 @@
-module Scenes.Level1.Plots exposing
-    ( start, preparation, skill, normalAttack, genDialogue, dialogueInitData
-    , triggerInitData
-    )
+module Scenes.Level1.Plots exposing (dialogueInitData, triggerInitData)
 
 {-|
 
@@ -10,7 +7,7 @@ module Scenes.Level1.Plots exposing
 
 This module contains all dialogue data for Level1 scene
 
-@docs start, preparation, guidence, skill, item, normalAttack, genDialogue, dialogueInitData
+@docs dialogueInitData, triggerInitData
 
 -}
 
@@ -110,6 +107,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
@@ -139,6 +138,8 @@ attackTrigger =
     ( FrameTrigger 6, 3 )
 
 
+{-| Trigger: Init data
+-}
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ startTrigger

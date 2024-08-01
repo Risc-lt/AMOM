@@ -1,4 +1,4 @@
-module Scenes.Level3.Plots exposing (ask, threaten, silence, decline, remind, complain, prepare, panic, success, dialogueInitData, askTrigger, complainTrigger, successTrigger, dieTrigger, triggerInitData)
+module Scenes.Level3.Plots exposing (triggerInitData, dialogueInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.Level3.Plots exposing (ask, threaten, silence, decline, remind, co
 
 This module contains the plot data for the Level3 scene.
 
-@docs ask, threaten, silence, decline, remind, complain, prepare, panic, success, dialogueInitData, askTrigger, complainTrigger, successTrigger, dieTrigger, triggerInitData
+@docs triggerInitData, dialogueInitData
 
 -}
 
@@ -131,6 +131,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : { curDialogue : Dialogue, remainDiaList : List Dialogue }
 dialogueInitData =
     { curDialogue = defaultDialogue
@@ -167,6 +169,8 @@ dieTrigger =
     ( DieTrigger, 101 )
 
 
+{-| The initial data for the triggers
+-}
 triggerInitData : List ( TriggerConditions, Int )
 triggerInitData =
     [ askTrigger

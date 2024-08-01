@@ -1,4 +1,4 @@
-module Scenes.Level2.Model exposing (..)
+module Scenes.Level2.Model exposing (scene)
 
 {-|
 

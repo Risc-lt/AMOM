@@ -251,6 +251,8 @@ genMove name posture movekind id =
     }
 
 
+{-| Characters: Init data
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

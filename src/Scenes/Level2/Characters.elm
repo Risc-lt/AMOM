@@ -1,4 +1,4 @@
-module Scenes.Level2.Characters exposing (initData, selfInitData, enemyInitData)
+module Scenes.Level2.Characters exposing (selfInitData, enemyInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.Level2.Characters exposing (initData, selfInitData, enemyInitData)
 
 This module contains all character data for Level2 scene
 
-@docs initData, selfInitData, enemyInitData
+@docs selfInitData, enemyInitData
 
 -}
 

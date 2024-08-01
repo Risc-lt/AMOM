@@ -1,4 +1,4 @@
-module Scenes.Before2.Dialogues exposing (feel, ask, decline, remind, charge, see, guess, care, dialogueInitData)
+module Scenes.Before2.Dialogues exposing (dialogueInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.Before2.Dialogues exposing (feel, ask, decline, remind, charge, se
 
 This module contains all dialogue data for Before2 scene
 
-@docs feel, ask, agree, decline, remind, charge, see, guess, care, dialogueInitData
+@docs dialogueInitData
 
 -}
 
@@ -125,6 +125,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

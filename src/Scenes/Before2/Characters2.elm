@@ -12,6 +12,8 @@ module Scenes.Before2.Characters2 exposing (charge5, charge6, charge7, charge8, 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), MoveKind(..), Movement, Posture(..), defaultMovement)
 
 
+{-| Generate a movement
+-}
 genMove : String -> Posture -> MoveKind -> Int -> Movement
 genMove name posture movekind id =
     { defaultMovement
@@ -23,6 +25,8 @@ genMove name posture movekind id =
     }
 
 
+{-| Movement: Charge 5
+-}
 charge5 : List Movement
 charge5 =
     let
@@ -45,6 +49,8 @@ charge5 =
     ]
 
 
+{-| Movement: Charge 6
+-}
 charge6 : List Movement
 charge6 =
     let
@@ -67,6 +73,8 @@ charge6 =
     ]
 
 
+{-| Movement: Charge 7
+-}
 charge7 : List Movement
 charge7 =
     let
@@ -93,6 +101,8 @@ charge7 =
     ]
 
 
+{-| Movement: Charge 8
+-}
 charge8 : List Movement
 charge8 =
     let
@@ -110,6 +120,8 @@ charge8 =
     ]
 
 
+{-| Movement: Charge 9
+-}
 charge9 : List Movement
 charge9 =
     let

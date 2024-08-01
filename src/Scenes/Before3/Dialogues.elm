@@ -1,4 +1,4 @@
-module Scenes.Before3.Dialogues exposing (discribe, thank, ask, explain, interrupt, query, decline, complain, confused, remind, genDialogue, dialogueInitData)
+module Scenes.Before3.Dialogues exposing (dialogueInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.Before3.Dialogues exposing (discribe, thank, ask, explain, interru
 
 This module contains all dialogue data for Before3 scene
 
-@docs discribe, thank, ask, explain, interrupt, query, decline, complain, confused, remind, genDialogue, dialogueInitData
+@docs dialogueInitData
 
 -}
 
@@ -141,6 +141,8 @@ genDialogue speaker content id =
     }
 
 
+{-| Dialogue: Init data
+-}
 dialogueInitData : InitData
 dialogueInitData =
     { curDialogue = defaultDialogue

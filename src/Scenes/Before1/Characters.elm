@@ -1,4 +1,4 @@
-module Scenes.Before1.Characters exposing (charInitData, genMove, begin, followRight, bySelfRight, throughStone1, throughStone2, throughStone3, throughStone4, throughStone5, followLeft, wolfAppear, wolfRight)
+module Scenes.Before1.Characters exposing (charInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.Before1.Characters exposing (charInitData, genMove, begin, followR
 
 This module contains the characters data for the Before1 scene.
 
-@docs characters, charInitData, genCharacter, genMove, begin, followRight, bySelfRight, throughStone1, throughStone2, throughStone3, throughStone4, throughStone5, followLeft, wolfAppear, wolfRight, genMove, charInitData, InitData
+@docs charInitData
 
 -}
 
@@ -276,6 +276,8 @@ genMove name posture movekind id =
     }
 
 
+{-| Characters: Init data
+-}
 charInitData : InitData
 charInitData =
     { characters = characters

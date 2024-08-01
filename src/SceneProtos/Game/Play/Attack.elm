@@ -35,7 +35,7 @@ judgeHelper enemy self =
         [ ( "Enemy", Defeated True ), ( "Interface", Defeated True ) ]
 
     else if realSelfNum <= 0 then
-        [ ( "Self", Defeated False ) ]
+        [ ( "Self", Defeated False ), ( "Interface", Defeated False ) ]
 
     else
         []

@@ -156,7 +156,7 @@ handleCheckTrigger data basedata triggers =
 
         gameOverMsg =
             if List.member True isOver then
-                [ Other ( "Self", Defeated False ) ]
+                [ Other ( "Self", Defeated False ), Other ( "Interface", Defeated False ) ]
 
             else
                 []

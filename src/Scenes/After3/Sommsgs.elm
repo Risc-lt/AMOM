@@ -1,7 +1,7 @@
-module Scenes.After2.Sommsgs exposing (..)
+module Scenes.After3.Sommsgs exposing (..)
 
 {-
-   All music data
+   All dialogue data
 -}
 
 import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
@@ -9,6 +9,6 @@ import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
 
 sommsgInitData : InitData
 sommsgInitData =
-    { music = [ ( "sad", 22, 0 ) ]
+    { music = []
     , isPlaying = False
     }

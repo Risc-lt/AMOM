@@ -48,6 +48,7 @@ update env evnt data basedata =
                 , [ Other ( "Background", BeginPlot (data.id + 1) )
                   , Other ( "Character", BeginPlot (data.id + 1) )
                   , Other ( "Dialogue", BeginPlot (data.id + 1) )
+                  , Other ( "Sommsg", BeginPlot (data.id + 1) )
                   ]
                 , ( env, False )
                 )

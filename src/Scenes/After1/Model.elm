@@ -57,7 +57,7 @@ initData env msg =
         , Character.component (CharInit <| charInit)
         , Dialogue.component (DialogueInit <| dialogueInit)
         , Sommsg.component (SommsgInit <| sommsgInit)
-        , Trigger.component (TriggerInit <| 5)
+        , Trigger.component (TriggerInit <| 6)
         ]
     , level = "After1"
     }

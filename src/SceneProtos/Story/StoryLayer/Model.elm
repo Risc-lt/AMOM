@@ -26,6 +26,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
+import Messenger.Audio.Base exposing (AudioTarget(..))
 
 
 type alias Data =
@@ -103,24 +104,27 @@ updateBasic env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    --if not env.commonData.gameover then
-    let
-        ( data1, lmsg1, ( env1, block1 ) ) =
-            updateBasic env evt data
+    if env.globalData.sceneStartFrame == 1 then
+        ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
 
-        ( comps1, cmsgs1, ( env2, block2 ) ) =
-            updateComponentsWithBlock env1 evt block1 data1.components
+    else
+        let
+            ( data1, lmsg1, ( env1, block1 ) ) =
+                updateBasic env evt data
 
-        ( data2, ( lmsg2, tocmsg ), env3 ) =
-            ( { data1 | components = comps1 }, ( [], [] ), env2 )
+            ( comps1, cmsgs1, ( env2, block2 ) ) =
+                updateComponentsWithBlock env1 evt block1 data1.components
 
-        ( comps2, cmsgs2, env4 ) =
-            updateComponentsWithTarget env3 tocmsg data2.components
+            ( data2, ( lmsg2, tocmsg ), env3 ) =
+                ( { data1 | components = comps1 }, ( [], [] ), env2 )
 
-        ( data3, lmsgs3, env5 ) =
-            handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
-    in
-    ( data3, lmsgs3, ( env5, block2 ) )
+            ( comps2, cmsgs2, env4 ) =
+                updateComponentsWithTarget env3 tocmsg data2.components
+
+            ( data3, lmsgs3, env5 ) =
+                handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
+        in
+        ( data3, lmsgs3, ( env5, block2 ) )
 
 
 

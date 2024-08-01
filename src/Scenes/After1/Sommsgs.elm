@@ -9,6 +9,6 @@ import SceneProtos.Story.Components.Sommsg.Init exposing (InitData)
 
 sommsgInitData : InitData
 sommsgInitData =
-    { music = [ ( "eased", 24, 1 ) ]
+    { music = [ ( "sad", 22, 0 ) ]
     , isPlaying = False
     }

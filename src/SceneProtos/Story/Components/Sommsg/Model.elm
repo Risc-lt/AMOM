@@ -36,14 +36,15 @@ init env initMsg =
 
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
-    if data.isPlaying == True then
+    if data.isPlaying == False then
         case evnt of
             Tick _ ->
                 let
                     ( name, length, id ) =
                         Maybe.withDefault defaultMusic <|
                             List.head <|
-                                data.music
+                                List.sortBy (\( _, _, i ) -> i) <|
+                                    data.music
 
                     newMusic =
                         List.filter (\( _, _, i ) -> i /= id) data.music
@@ -85,7 +86,11 @@ updaterec env msg data basedata =
                     else
                         [ Parent <| SOMMsg <| SOMStopAudio AllAudio ]
             in
-            ( ( { data | isPlaying = False }, basedata ), newMsg, env )
+            if newMusic then
+                ( ( { data | isPlaying = False }, basedata ), newMsg, env )
+
+            else
+                ( ( data, basedata ), [], env )
 
         _ ->
             ( ( data, basedata ), [], env )

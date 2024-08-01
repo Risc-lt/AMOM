@@ -52,11 +52,14 @@ initData env msg =
 
         selfInit =
             selfInitData <| time
+
+        uiInit =
+            UIMsg.emptyInitData selfInit enemyInit
     in
     { objects =
         [ Enemy.component (Init <| EnemyInit <| enemyInit)
         , Self.component (Init <| SelfInit <| selfInit)
-        , UI.component (Init <| UIInit <| UIMsg.emptyInitData selfInit enemyInit)
+        , UI.component (Init <| UIInit <| { uiInit | levelNum = 3 })
         , Dia.component (Init <| InitDialogueMsg <| dialogueInitData)
         , STri.component (Init <| TriggerInit <| triggerInitData)
         ]

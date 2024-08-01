@@ -11,6 +11,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Canvas.Settings.Advanced exposing (imageSmoothing)
 import SceneProtos.Story.Components.CharSequence.Init exposing (Posture(..))
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..))
+import Messenger.Render.Sprite exposing (renderSpriteWithRev)
 
 
 checkReverse : Character -> Bool
@@ -36,26 +37,36 @@ renderChar char name act env =
             ( 140, 140 )
             (name ++ "Fall")
 
-    else
-        if char.isMoving then
-            renderSprite
-                env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
-                ( 140, 140 )
-                (name ++ "Sheet.1/" ++ act)
+    else 
+        let
+            row =
+                case char.direction of
+                    Up ->
+                        "5"
 
-        else
-            Canvas.group []
-                [ renderSprite
-                    env.globalData.internalData
-                    [ imageSmoothing False ]
-                    ( char.x, char.y )
-                    ( 140, 140 )
-                    (name ++ "Sheet.0/" ++ act)
-                ]
+                    Down ->
+                        "4"
 
+                    _ ->
+                        if char.isMoving == False then
+                            "1"
 
+                        else if char.posture == Normal then
+                            "3"
+
+                        else
+                            "2"
+        in
+        renderSpriteWithRev
+            (checkReverse char)
+            env.globalData.internalData
+            [ imageSmoothing False ]
+            ( char.x, char.y )
+            ( 140, 140 )
+            (name ++ "Sheet." ++ row ++ "/" ++ act)
+
+{-| the helper function of view
+-}
 renderHelper : Character -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderHelper char basedata env =
     let

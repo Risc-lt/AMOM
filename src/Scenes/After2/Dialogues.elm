@@ -138,7 +138,7 @@ apologize =
             , "Sorry..."
             ]
     in
-    genDialogue "head_bruce" content ( 5, 1 )
+    genDialogue "head_bruce" content ( 6, 1 )
 
 
 comfort : Dialogue
@@ -149,7 +149,7 @@ comfort =
             , "It's not your fault, Bruce."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 1 )
+    genDialogue "head_bulingze" content ( 8, 1 )
 
 
 collapse : Dialogue
@@ -160,7 +160,7 @@ collapse =
             , "So is it ours?"
             ]
     in
-    genDialogue "head_bithif" content ( 7, 2 )
+    genDialogue "head_bithif" content ( 8, 2 )
 
 
 persuade : Dialogue
@@ -171,7 +171,7 @@ persuade =
             , "...Don't talk about that. Let's go back."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 3 )
+    genDialogue "head_bulingze" content ( 8, 3 )
 
 
 hesitate : Dialogue
@@ -182,7 +182,7 @@ hesitate =
             , "...We need his head."
             ]
     in
-    genDialogue "head_bruce" content ( 7, 4 )
+    genDialogue "head_bruce" content ( 8, 4 )
 
 
 repeat : Dialogue
@@ -193,7 +193,7 @@ repeat =
             , "We need his head to prove our work."
             ]
     in
-    genDialogue "head_bruce" content ( 7, 5 )
+    genDialogue "head_bruce" content ( 8, 5 )
 
 
 astounded : Dialogue
@@ -204,7 +204,7 @@ astounded =
             , "Bruce..."
             ]
     in
-    genDialogue "head_bithif" content ( 7, 6 )
+    genDialogue "head_bithif" content ( 8, 6 )
 
 
 silence2 : Dialogue
@@ -215,7 +215,7 @@ silence2 =
             , "..."
             ]
     in
-    genDialogue "head_bulingze" content ( 7, 7 )
+    genDialogue "head_bulingze" content ( 8, 7 )
 
 
 end : Dialogue
@@ -226,7 +226,7 @@ end =
             , "Okay, let's get this over with quickly."
             ]
     in
-    genDialogue "head_bulingze" content ( 9, 1 )
+    genDialogue "head_bulingze" content ( 10, 1 )
 
 
 genDialogue : String -> List String -> ( Int, Int ) -> Dialogue

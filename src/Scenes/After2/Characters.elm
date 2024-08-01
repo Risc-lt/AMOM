@@ -9,11 +9,11 @@ import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direc
 
 characters : List Character
 characters =
-    [ genCharacter "Wenderd" Battle Right 1150 390
-    , genCharacter "Bulingze" Battle Right 1270 550
-    , genCharacter "Bruce" Battle Right 1400 350
-    , genCharacter "Bithif" Battle Right 1400 490
-    , genCharacter "Concert" Normal Left 890 480
+    [ genCharacter "Wenderd" Battle Left 1150 390
+    , genCharacter "Bulingze" Battle Left 1270 550
+    , genCharacter "Bruce" Battle Left 1400 350
+    , genCharacter "Bithif" Battle Left 1400 490
+    , genCharacter "Concert" Fall Right 890 480
     ]
 
 
@@ -46,13 +46,22 @@ prevent =
     [ genMove "Bulingze" Battle move 4 ]
 
 
+fall : List Movement
+fall =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Wenderd" Fall move 5 ]
+
+
 turnRight : List Movement
 turnRight =
     let
         move =
             None Right
     in
-    [ genMove "Bulingze" Battle move 6 ]
+    [ genMove "Bulingze" Battle move 7 ]
 
 
 turnLeft : List Movement
@@ -61,7 +70,7 @@ turnLeft =
         move =
             None Left
     in
-    [ genMove "Bulingze" Battle move 8 ]
+    [ genMove "Bulingze" Battle move 9 ]
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement

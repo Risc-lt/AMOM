@@ -43,6 +43,11 @@ scatterShot =
     , element = None
     , cost = 100
     , lasting = 0
+    , content = 
+        [ "Attack all front enemies."
+        , "no elelment"
+        , "40 damage"
+        ]
     }
 
 
@@ -58,6 +63,12 @@ frostArrow =
     , element = Water
     , cost = 100
     , lasting = 1
+    , content = 
+        [ "Attack one enemy."
+        , "water"
+        , "30 damage"
+        , "'Seal' for one turn"
+        ]
     }
 
 
@@ -73,6 +84,11 @@ airBlade =
     , element = None
     , cost = 100
     , lasting = 0
+    , content = 
+        [ "Attack one enemy."
+        , "no element"
+        , "80 damage"
+        ]
     }
 
 
@@ -88,6 +104,11 @@ doubleStrike =
     , element = None
     , cost = 100
     , lasting = 2
+    , content = 
+        [ "Use on oneself."
+        , "no element"
+        , "'Bloodthirsty' for two turns"
+        ]
     }
 
 
@@ -103,6 +124,10 @@ compounding =
     , element = None
     , cost = 100
     , lasting = 0
+    , content = 
+        [ "Compound a bottle of potion."
+        , "no element"
+        ]
     }
 
 
@@ -118,6 +143,11 @@ magicTransformation =
     , element = None
     , cost = 100
     , lasting = 0
+    , content = 
+        [ "Use on an ally."
+        , "no element"
+        , "16 magic points restoration"
+        ]
     }
 
 
@@ -133,6 +163,11 @@ gale =
     , element = Air
     , cost = 100
     , lasting = 2
+    , content = 
+        [ "Use on all front enemies."
+        , "air"
+        , "'Retard' for two turns"
+        ]
     }
 
 
@@ -148,6 +183,7 @@ fieryThrust =
     , element = Fire
     , cost = 200
     , lasting = 2
+    , content = []
     }
 
 

@@ -116,16 +116,25 @@ All notable changes to this project are documented in this file.
 
   Added
 
-- [feature 1] 
-  Removed
+- [feature 1] Complete machenisms in story scenes like moving camera and triggering plots.
 
-- [feature 1] 
-  Changed
+- [feature 2] Add different dialogues and movements into the stories.
 
-- [feature 1] 
-  Fixed
+- [feature 3] Design the arguments and items for charaters in different levels.
 
-- [bug 1] 
+- [feature 4] Design the special triggers in different levels.
+
+- [feature 5] Add beginning scene to start the game and modify settings.
+
+- [feature 6] Add home page to display and select different levels.
+
+- [feature 7] Visual feedback of scrolling pictures between levels.
+
+- [feature 8] Add background pictures for battle field, control field and right column.
+
+- [feature 9] Add dynamic user interface feedback like zooming out when mouse is on.
+
+- [feature 10] Complete machanisms of skill animations within the battles.
 
 #[Final] -- {2024.8.6} 
 

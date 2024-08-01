@@ -41,8 +41,8 @@ allTexture =
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
          , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
-         , ( "levelselect", "assets/character/background/levelselect.jpg" )
          , ( "arrow", "assets/character/chartlet/arrow.png" )
+         , ( "logo", "assets/character/background/Team logo.jpg" )
          ]
             ++ chacaterTexture
             ++ chacaterSheetTexture

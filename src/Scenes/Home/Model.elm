@@ -7,7 +7,7 @@ module Scenes.Home.Model exposing (scene)
 -}
 
 import Canvas
-import Canvas.Settings exposing (fill)
+import Canvas.Settings exposing (fill, stroke)
 import Color exposing (Color)
 import Duration
 import Lib.Base exposing (SceneMsg)
@@ -23,7 +23,7 @@ import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWith
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 import Scenes.Begin.Model exposing (scene)
-import Scenes.Home.Init exposing (Data, Direction(..), get, initData)
+import Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 import String exposing (right)
 
 
@@ -151,7 +151,9 @@ renderBasicView env data =
                 ]
     in
     Canvas.group []
-        ([ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "levelselect"
+        ([ Canvas.shapes
+            [ fill (Color.rgba 255 255 0 0.1) ]
+            [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1060 ) ]
          , Canvas.shapes
             [ fill (Color.rgba 0 0 0 0.7) ]
             [ circle env.globalData.internalData ( 1500, 930 ) 50 ]
@@ -161,6 +163,24 @@ renderBasicView env data =
          ]
             ++ button
         )
+
+
+renderOnepic : Bool -> ScenePic -> RawSceneView UserData Data
+renderOnepic flag scenePic env data =
+    let
+        ( ( x, y ), ( w, h ) ) =
+            if flag then
+                ( ( scenePic.x - data.left - 50, scenePic.y - 50 ), ( scenePic.w + 100, scenePic.h + 100 ) )
+
+            else
+                ( ( scenePic.x - data.left, scenePic.y ), ( scenePic.w, scenePic.h ) )
+    in
+    Canvas.group []
+        [ renderSprite env.globalData.internalData [] ( x, y ) ( w, h ) scenePic.name
+        , Canvas.shapes
+            [ stroke Color.black ]
+            [ rect env.globalData.internalData ( x, y ) ( w, h ) ]
+        ]
 
 
 view : RawSceneView UserData Data
@@ -173,10 +193,10 @@ view env data =
             List.map
                 (\scenePic ->
                     if scenePic.id == data.curScene then
-                        renderSprite env.globalData.internalData [] ( scenePic.x - data.left - 50, scenePic.y - 50 ) ( scenePic.w + 100, scenePic.h + 100 ) scenePic.name
+                        renderOnepic True scenePic env data
 
                     else
-                        renderSprite env.globalData.internalData [] ( scenePic.x - data.left, scenePic.y ) ( scenePic.w, scenePic.h ) scenePic.name
+                        renderOnepic False scenePic env data
                 )
                 data.sceneQueue
 

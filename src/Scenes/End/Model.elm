@@ -1,4 +1,4 @@
-module Scenes.Begin.Model exposing (scene)
+module Scenes.End.Model exposing (scene)
 
 {-| Scene configuration module
 
@@ -7,6 +7,8 @@ module Scenes.Begin.Model exposing (scene)
 -}
 
 import Canvas
+import Canvas.Settings exposing (fill)
+import Color
 import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -15,7 +17,9 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
+import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
 
@@ -32,8 +36,8 @@ init env msg =
 update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
-        Tick _ ->
-            if env.globalData.globalStartFrame >= 400 then
+        KeyDown key ->
+            if key == 27 then
                 ( data
                 , [ SOMLoadGC
                         (genGC
@@ -62,7 +66,13 @@ update env msg data =
 view : RawSceneView UserData Data
 view env data =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
+        [ Canvas.shapes
+            [ fill (Color.rgba 255 255 0 0.1) ]
+            [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
+        , renderTextWithColorCenter env.globalData.internalData 60 "Thank you" "Comic Sans MS" Color.black ( 1580, 420 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "for" "Comic Sans MS" Color.black ( 1580, 520 )
+        , renderTextWithColorCenter env.globalData.internalData 60 "playing our game!" "Comic Sans MS" Color.black ( 1580, 620 )
+        , renderSprite env.globalData.internalData [] ( 200, 150 ) ( 1000, 800 ) "logo"
         ]
 
 

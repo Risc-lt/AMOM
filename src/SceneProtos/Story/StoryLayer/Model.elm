@@ -73,7 +73,7 @@ handleComponentMsg env compmsg data =
                             "After4"
 
                         _ ->
-                            ""
+                            "End"
 
                 color =
                     if nextScene == "After4" then

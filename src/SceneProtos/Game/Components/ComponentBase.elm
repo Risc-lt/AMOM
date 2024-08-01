@@ -32,6 +32,11 @@ import SceneProtos.Story.Components.ComponentBase exposing (ComponentMsg(..))
 @docs GamState: Record of whose turn it is
 @docs BaseData: Component base data
 @docs initBaseData: Initial base data
+@docs ActionType: Type of action
+@docs ActionSide: Side of action
+@docs ActionMsg: Action message
+@docs StatusMsg: Status message
+@docs InitMsg: Initialization message
 
 -}
 type InitMsg
@@ -74,7 +79,7 @@ type ComponentMsg
     | BeginDialogue Int
     | CloseDialogue
     | CheckIsTriggered (List ( TriggerConditions, Int ))
-    | Defeated
+    | Defeated Bool
     | AddChar
     | PutBuff Buff Int
     | NullComponentMsg
@@ -114,6 +119,7 @@ type alias BaseData =
     , curEnemy : Int
     , side : ActionSide
     , isStopped : Bool
+    , timestamp : Int
     }
 
 
@@ -121,9 +127,10 @@ initBaseData : BaseData
 initBaseData =
     { state = GameBegin
     , enemyNum = [ 7, 8, 9, 10, 11, 12 ]
-    , selfNum = [ 1, 2, 4, 5 ]
+    , selfNum = [ 1, 2, 3, 4, 5, 6 ]
     , curSelf = 0
     , curEnemy = 0
     , side = PlayerSide
     , isStopped = False
+    , timestamp = 1
     }

@@ -7,6 +7,7 @@ module SceneProtos.Story.Components.CharSequence.Model exposing (component)
 -}
 
 import Canvas
+import Canvas.Settings.Advanced exposing (imageSmoothing)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
@@ -14,6 +15,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, InitData, MoveKind(..), Movement, defaultCharacter, defaultMovement)
+import SceneProtos.Story.Components.CharSequence.RenderHelper exposing (renderHelper)
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
@@ -81,10 +83,13 @@ updaterec env msg data basedata =
                                         Real _ speed ->
                                             { c | posture = movement.posture, speed = speed, isMoving = True }
 
+                                        Follow _ speed ->
+                                            { c | posture = movement.posture, speed = speed, isMoving = False }
+
                                         Fake _ ->
                                             { c | posture = movement.posture, isMoving = True }
 
-                                        None ->
+                                        None _ ->
                                             { c | posture = movement.posture, isMoving = False }
 
                                 _ ->
@@ -100,7 +105,7 @@ updaterec env msg data basedata =
                     }
                   , { basedata | isPlaying = True }
                   )
-                , []
+                , [ Other ( "Trigger", BeginPlot 2 ) ]
                 , env
                 )
 
@@ -153,7 +158,7 @@ view env data basedata =
     ( Canvas.group [] <|
         List.map
             (\c ->
-                renderSprite env.globalData.internalData [] ( c.x, c.y ) ( 100, 0 ) c.name
+                renderHelper c basedata env
             )
             data.characters
     , 2

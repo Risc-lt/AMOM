@@ -3,16 +3,37 @@
     "template_repo": "https://github.com/linsyking/messenger-templates",
     "assets": {
         "character": [
-            "assets/character/background"
-            , "assets/character/chartlet"
-            , "assets/character/role"
-            , "assets/character/sprite_sheet"
-            , "assets/character/buff"
+            "assets/character/background",
+            "assets/character/chartlet",
+            "assets/character/role",
+            "assets/character/sprite_sheet",
+            "assets/character/buff"
         ],
         "audio": []
     },
     "scenes": {
-        "Level1": []
+        "Before1": [],
+        "Level1": [],
+        "After1": [],
+        "Before2": [],
+        "Level2": [],
+        "After2": [],
+        "Before3": [],
+        "Level3": [],
+        "After3": [],
+        "After4": [],
+        "Begin": {
+            "layers": []
+        },
+        "Home": {
+            "layers": []
+        },
+        "Logo": {
+            "layers": []
+        },
+        "End": {
+            "layers": []
+        }
     },
     "sceneprotos": {
         "Game": {
@@ -37,7 +58,8 @@
                     "Background",
                     "CharSequence",
                     "DialogSequence",
-                    "Trigger"
+                    "Trigger",
+                    "Sommsg"
                 ]
             },
             "layers": [

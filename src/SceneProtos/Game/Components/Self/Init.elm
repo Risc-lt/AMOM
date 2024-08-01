@@ -1,6 +1,7 @@
 module SceneProtos.Game.Components.Self.Init exposing
     ( InitData
-    , Self, State(..), defaultSelf, emptyInitData
+    , Self, State(..)
+    , defaultSelf, emptyInitData
     )
 
 {-|
@@ -9,12 +10,16 @@ module SceneProtos.Game.Components.Self.Init exposing
 # Init module
 
 @docs InitData
+@docs Self, State
+@docs defaultSelf, emptyInitData
 
 -}
 
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
-import SceneProtos.Game.Components.Special.Library exposing (..)
+import SceneProtos.Game.Components.Special.Item exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (..)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
 import Time exposing (ZoneName(..))
 
 
@@ -41,6 +46,8 @@ type alias Self =
     , skills : List Skill
     , buff : List ( Buff, Int )
     , state : State
+    , isRunning : Bool
+    , isAttacked : Bool
     }
 
 
@@ -98,6 +105,8 @@ emptyInitData time =
             , arcaneBeam
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bruce"
       , x = 1100
@@ -121,6 +130,8 @@ emptyInitData time =
             , arcaneBeam
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1100
@@ -134,6 +145,8 @@ emptyInitData time =
       , buff = []
       , skills = []
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bulingze"
       , x = 1220
@@ -157,6 +170,8 @@ emptyInitData time =
             , fireBall
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = "Bithif"
       , x = 1220
@@ -182,6 +197,8 @@ emptyInitData time =
             , { magicWater | cost = 1 }
             ]
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     , { name = ""
       , x = 1220
@@ -195,6 +212,8 @@ emptyInitData time =
       , buff = []
       , skills = []
       , state = Waiting
+      , isRunning = False
+      , isAttacked = False
       }
     ]
 
@@ -209,10 +228,12 @@ defaultSelf =
     , position = 1
     , hp = 0
     , mp = 0
-    , energy = 0
+    , energy = 0 --
     , attributes = defaultAttributes
     , extendValues = defaultExtendValues
-    , buff = []
+    , buff = [] --
     , skills = []
-    , state = Waiting
+    , state = Waiting --
+    , isRunning = False --
+    , isAttacked = False --
     }

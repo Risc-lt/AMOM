@@ -10,11 +10,11 @@ import Canvas
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
-import Messenger.Base exposing (GlobalData, UserEvent(..))
+import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
-import Messenger.Render.Text exposing (renderTextWithColorCenter, renderTextWithColorStyle)
+import Messenger.Render.Text exposing (renderTextWithColorStyle)
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Dialogue.Init exposing (InitData, defaultDialogue, emptyInitData)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..))
@@ -58,9 +58,15 @@ update env evnt data basedata =
                                 ( { dia | isSpeaking = True }, [] )
 
                             _ ->
-                                ( { curDia | isSpeaking = False }
-                                , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
-                                )
+                                if curDia.id == ( 103, 1 ) then
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Enemy", Defeated True ), Other ( "Interface", Defeated True ) ]
+                                    )
+
+                                else
+                                    ( { curDia | isSpeaking = False }
+                                    , [ Other ( "Self", CloseDialogue ), Other ( "Enemy", CloseDialogue ) ]
+                                    )
 
                     remainingDialogues =
                         List.filter
@@ -92,12 +98,12 @@ updaterec env msg data basedata =
                             List.filter (\dia -> dia.id == ( id, 1 )) data.remainDiaList
 
                 otherMsg =
-                    case nextDialogue.id of
-                        ( 101, _ ) ->
+                    case id of
+                        101 ->
                             [ Other ( "Enemy", AddChar ) ]
 
-                        ( 102, _ ) ->
-                            [ Other ( "Enemy", PutBuff (AttackUp 10) 10 ) ]
+                        102 ->
+                            [ Other ( "Self", PutBuff NoAction 100 ) ]
 
                         _ ->
                             []
@@ -105,18 +111,22 @@ updaterec env msg data basedata =
                 remainingDialogues =
                     List.filter (\dia -> dia.id /= ( id, 1 )) data.remainDiaList
             in
-            ( ( { data
-                    | curDialogue = { nextDialogue | isSpeaking = True }
-                    , remainDiaList = remainingDialogues
-                }
-              , basedata
-              )
-            , [ Other ( "Self", BeginDialogue id )
-              , Other ( "Enemy", BeginDialogue id )
-              ]
-                ++ otherMsg
-            , env
-            )
+            if nextDialogue.speaker == "" then
+                ( ( data, basedata ), otherMsg, env )
+
+            else
+                ( ( { data
+                        | curDialogue = { nextDialogue | isSpeaking = True }
+                        , remainDiaList = remainingDialogues
+                    }
+                  , basedata
+                  )
+                , [ Other ( "Self", BeginDialogue id )
+                  , Other ( "Enemy", BeginDialogue id )
+                  ]
+                    ++ otherMsg
+                , env
+                )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -152,10 +162,13 @@ view env data basedata =
                         contentToView textWithIndex env data
                     )
                     (List.indexedMap Tuple.pair data.curDialogue.content)
+
+            ( x, y ) =
+                data.curDialogue.speakerPos
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] data.curDialogue.speakerPos ( 420, 426 ) data.curDialogue.speaker
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1430, 385 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] ( x, y ) ( 333, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

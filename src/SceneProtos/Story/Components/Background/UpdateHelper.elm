@@ -1,4 +1,15 @@
-module SceneProtos.Story.Components.Background.UpdateHelper exposing (..)
+module SceneProtos.Story.Components.Background.UpdateHelper exposing (updateHelper)
+
+{-|
+
+
+# Background Update Helper
+
+This module is used to update the background component.
+
+@docs updateHelper
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -77,7 +88,7 @@ updateHelper env _ data basedata =
 
         newMsg =
             if newState then
-                [ Other ( "Character", EndMove ) ]
+                [ Other ( "Character", EndMove ), Other ( "Trigger", PlotDone 1 ) ]
 
             else
                 []

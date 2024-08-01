@@ -8,6 +8,7 @@ module SceneProtos.Game.Components.Enemy.Model exposing (component)
 
 import Canvas
 import Canvas.Settings exposing (fill)
+import Canvas.Settings.Advanced exposing (imageSmoothing, rotate, transform)
 import Color
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -16,12 +17,14 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
-import SceneProtos.Game.Components.Enemy.AttackRec exposing (findMin, handleAttack, handleSkill)
-import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, emptyInitData, genDefaultEnemy)
-import SceneProtos.Game.Components.Enemy.UpdateOne exposing (getTarget, updateOne)
+import SceneProtos.Game.Components.Enemy.AttackRec2 exposing (handleAttack, handleSkill)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..), defaultEnemy, genDefaultEnemy)
+import SceneProtos.Game.Components.Enemy.UpdateOne2 exposing (updateOne)
 import SceneProtos.Game.Components.Self.Init exposing (defaultSelf)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
+import Time exposing (posixToMillis)
 
 
 type alias Data =
@@ -32,7 +35,17 @@ init : ComponentInit SceneCommonData UserData ComponentMsg Data BaseData
 init env initMsg =
     case initMsg of
         Init (EnemyInit initData) ->
-            ( initData, initBaseData )
+            let
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) initData
+                        )
+                        initBaseData.enemyNum
+            in
+            ( initData, { initBaseData | enemyNum = newNum } )
 
         _ ->
             ( [], initBaseData )
@@ -64,28 +77,63 @@ update env evnt data basedata =
             newData =
                 List.map
                     (\x ->
-                        if x.position == basedata.curEnemy then
-                            newEnemy
+                        let
+                            updatedEnemy =
+                                if x.position == basedata.curEnemy then
+                                    newEnemy
 
-                        else
-                            x
+                                else
+                                    x
+
+                            updatedHurt =
+                                if updatedEnemy.curHurt /= "" then
+                                    let
+                                        remainNum =
+                                            posixToMillis env.globalData.currentTimeStamp - basedata.timestamp
+
+                                        newName =
+                                            if remainNum >= 100 then
+                                                ""
+
+                                            else
+                                                updatedEnemy.curHurt
+                                    in
+                                    { updatedEnemy | curHurt = newName }
+
+                                else
+                                    updatedEnemy
+                        in
+                        updatedHurt
                     )
                     data
         in
         ( ( newData, newBasedata ), Other ( "Interface", ChangeStatus (ChangeEnemies newData) ) :: msg, ( newEnv, flag ) )
 
 
+addCurHurt : Data -> Int -> Data
+addCurHurt data position =
+    List.map
+        (\x ->
+            if x.position == position then
+                { x | curHurt = "Hurted" }
+
+            else
+                x
+        )
+        data
+
+
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         Action (PlayerNormal self position) ->
-            handleAttack self position env msg data basedata
+            handleAttack self position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action StartCounter ->
             ( ( data, { basedata | state = EnemyAttack } ), [], env )
 
         Action (PlayerSkill self skill position) ->
-            handleSkill self skill position env msg data basedata
+            handleSkill self skill position env msg (addCurHurt data position) { basedata | timestamp = posixToMillis env.globalData.currentTimeStamp }
 
         Action (EnemySkill enemy skill position) ->
             handleSkill
@@ -120,8 +168,16 @@ updaterec env msg data basedata =
             ( ( newData, basedata ), [], env )
 
         ChangeStatus (ChangeState state) ->
+            let
+                newNum =
+                    if basedata.state == GameBegin then
+                        [ Other ( "Self", CharDie basedata.enemyNum ) ]
+
+                    else
+                        []
+            in
             if state == PlayerTurn then
-                ( ( data, { basedata | state = state, side = PlayerSide } ), [], env )
+                ( ( data, { basedata | state = state, side = PlayerSide } ), newNum, env )
 
             else
                 ( ( data, { basedata | state = state } ), [], env )
@@ -131,10 +187,7 @@ updaterec env msg data basedata =
 
         SwitchTurn pos ->
             if List.any (\e -> e.position == pos && e.hp /= 0) data then
-                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos, side = EnemySide } )
-                , []
-                , env
-                )
+                ( ( data, { basedata | state = EnemyTurn, curEnemy = pos, side = EnemySide } ), [], env )
 
             else
                 ( ( data, basedata )
@@ -148,7 +201,7 @@ updaterec env msg data basedata =
         NewRound ->
             ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
-        Defeated ->
+        Defeated _ ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver ], env )
 
         BeginDialogue _ ->
@@ -160,21 +213,20 @@ updaterec env msg data basedata =
         AddChar ->
             let
                 emptySlot =
-                    Maybe.withDefault -1 <|
-                        List.head <|
-                            List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
+                    List.filter (\x -> List.filter (\y -> y.position == x) data == []) [ 7, 8, 9, 10, 11, 12 ]
 
                 newEnemy =
-                    genDefaultEnemy emptySlot
+                    List.map
+                        (genDefaultEnemy <| Time.posixToMillis env.globalData.currentTimeStamp)
+                        emptySlot
 
-                newData =
-                    newEnemy :: data
+                newNum =
+                    List.map (\e -> e.position) (newEnemy ++ data)
             in
-            ( ( newData, { basedata | curEnemy = basedata.curEnemy + 1 } ), [], env )
-
-        PutBuff buff num ->
-            -- Add buff to all enemies
-            ( ( List.map (\x -> { x | buff = x.buff ++ [ ( buff, num ) ] }) data, basedata ), [], env )
+            ( ( newEnemy ++ data, { basedata | curEnemy = basedata.curEnemy + 1, enemyNum = newNum } )
+            , [ Other ( "Self", CharDie newNum ) ]
+            , env
+            )
 
         _ ->
             ( ( data, basedata ), [], env )
@@ -182,18 +234,33 @@ updaterec env msg data basedata =
 
 renderEnemy : Enemy -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderEnemy enemy env =
+    let
+        currentAct x =
+            String.fromInt (modBy (300 * x) env.globalData.sceneStartTime // 300)
+
+        enemyView =
+            if enemy.curHurt /= "" then
+                Canvas.group []
+                    [ renderSprite env.globalData.internalData [ [ rotate (-30 * pi / 180) ] |> transform ] ( enemy.x - 30, enemy.y + 20 ) ( 100, 100 ) (enemy.name ++ "Sheet.1/1") ]
+
+            else if enemy.isRunning then
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.1/" ++ currentAct 3)
+
+            else
+                renderSprite env.globalData.internalData [ imageSmoothing False ] ( enemy.x, enemy.y ) ( 100, 100 ) (enemy.name ++ "Sheet.0/" ++ currentAct 2)
+    in
     if enemy.hp == 0 then
         Canvas.empty
 
     else
         Canvas.group []
-            [ renderSprite env.globalData.internalData [] ( enemy.x, enemy.y ) ( 100, 100 ) enemy.name
-            , Canvas.shapes
+            [ Canvas.shapes
                 [ fill Color.red ]
                 [ rect env.globalData.internalData
                     ( enemy.x, enemy.y )
                     ( 100 * toFloat enemy.hp / toFloat enemy.extendValues.basicStatus.maxHp, 5 )
                 ]
+            , enemyView
             ]
 
 
@@ -205,10 +272,7 @@ view env data basedata =
                 (\x -> renderEnemy x env)
                 data
     in
-    ( Canvas.group []
-        basicView
-    , 1
-    )
+    ( Canvas.group [] basicView, 1 )
 
 
 matcher : ComponentMatcher Data BaseData ComponentTarget

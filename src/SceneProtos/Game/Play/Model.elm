@@ -11,8 +11,10 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 import Canvas exposing (lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)
 import Color
+import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioOption(..), AudioTarget(..))
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
@@ -21,6 +23,7 @@ import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
 import SceneProtos.Game.Components.Dialogue.Init as DiaMsg
 import SceneProtos.Game.Components.Dialogue.Model as Dia
@@ -91,7 +94,27 @@ attackDistributor env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    if not env.commonData.gameover then
+    if env.globalData.sceneStartFrame == 0 then
+        ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
+
+    else if env.globalData.sceneStartFrame == 1 then
+        let
+            commonSetting =
+                { rate = 1
+                , start = Duration.seconds 0
+                }
+
+            loopSetting =
+                { loopStart = Duration.seconds 0
+                , loopEnd = Duration.seconds 16
+                }
+
+            newMsg =
+                [ Parent <| SOMMsg <| SOMPlayAudio 0 "battle" (ALoop (Just commonSetting) (Just loopSetting)) ]
+        in
+        ( data, newMsg, ( env, False ) )
+
+    else if not env.commonData.gameover then
         let
             ( data1, lmsg1, ( env1, block1 ) ) =
                 updateBasic env evt data
@@ -122,39 +145,25 @@ updaterec env msg data =
 view : LayerView SceneCommonData UserData Data
 view env data =
     let
-        result =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
-            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
-            ]
-
-        basicView =
-            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.04) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
-            , Canvas.shapes [ stroke Color.black ]
-                [ rect env.globalData.internalData ( 0, 0 ) ( 1919, 1080 )
-                , path (posToReal env.globalData.internalData ( 0, 680 ))
-                    [ lineTo (posToReal env.globalData.internalData ( 1420, 680 ))
-                    , moveTo (posToReal env.globalData.internalData ( 1420, 0 ))
-                    , lineTo (posToReal env.globalData.internalData ( 1420, 1080 ))
-                    ]
-                ]
-            , viewComponents env data.components
-            , renderTextWithColorCenter env.globalData.internalData 30 "Click characters to arrange position" "Arial" Color.black ( 1680, 930 )
-            , renderTextWithColorCenter env.globalData.internalData 30 "Press Enter to start battle" "Arial" Color.black ( 1680, 980 )
-            , renderTextWithColorCenter env.globalData.internalData 30 "Attacks are possible to miss" "Arial" Color.black ( 1680, 1030 )
+        background =
+            [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "battleframe"
+            , renderSprite env.globalData.internalData [] ( 20, 20 ) ( 1400, 660 ) "background"
             ]
 
         outComeView =
-            if env.commonData.gameover then
-                Canvas.group
-                    []
-                    (basicView ++ result)
-
-            else
-                Canvas.group
-                    []
-                    basicView
+            Canvas.group
+                []
+                (background ++ [ viewComponents env data.components ])
     in
-    outComeView
+    if env.commonData.gameover then
+        Canvas.group []
+            [ Canvas.shapes [ fill (Color.rgba 0 0 0 0.7) ] [ rect env.globalData.internalData ( 0, 0 ) ( 1420, 680 ) ]
+            , renderTextWithColorCenter env.globalData.internalData 100 "GameOver" "Arial" Color.red ( 720, 340 )
+            , outComeView
+            ]
+
+    else
+        outComeView
 
 
 matcher : Matcher Data LayerTarget

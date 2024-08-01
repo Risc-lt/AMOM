@@ -1,8 +1,25 @@
-module SceneProtos.Game.Components.GenRandom exposing (..)
+module SceneProtos.Game.Components.GenRandom exposing
+    ( checkRate
+    , genRandomNum
+    )
+
+{-|
+
+
+# GenRandom module
+
+This module is used to generate random numbers for the game.
+
+@docs checkRate: Check the rate
+@docs genRandomNum: Generate a random number
+
+-}
 
 import Random
 
 
+{-| Check the rate
+-}
 checkRate : Int -> Int -> Bool
 checkRate time rate =
     let
@@ -16,6 +33,8 @@ checkRate time rate =
         False
 
 
+{-| Generate a random number
+-}
 genRandomNum : Int -> Int -> Int -> Int
 genRandomNum lowerBound upperBound time =
     let

@@ -1,4 +1,12 @@
-module SceneProtos.Game.Components.Enemy.UpdateOne exposing (..)
+module SceneProtos.Game.Components.Enemy.UpdateOne exposing
+    ( Data
+    , attackPlayer
+    , checkStorage
+    , chooseAction
+    , chooseSpecial
+    , getTarget
+    , handleMove
+    )
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -10,15 +18,19 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionMsg(..), Action
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, State(..))
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
-import SceneProtos.Game.Components.Special.Library exposing (getNewBuff)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (getNewBuff)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import Time
 
 
+{-| The initial data for the StroryTrigger component
+-}
 type alias Data =
     Enemy
 
 
+{-| The initial data for the StroryTrigger component
+-}
 checkStorage : Data -> Data
 checkStorage data =
     let
@@ -46,6 +58,8 @@ checkStorage data =
     { energyCheck | skills = itemCheck }
 
 
+{-| The initial data for the StroryTrigger component
+-}
 getTarget : BaseData -> Env cdata userdata -> Skill -> Int
 getTarget basedata env skill =
     let
@@ -74,11 +88,15 @@ getTarget basedata env skill =
                     basedata.selfNum
 
 
+{-| The initial data for the StroryTrigger component
+-}
 attackPlayer : Data -> BaseData -> List (MMsg ComponentTarget ComponentMsg SceneMsg UserData)
 attackPlayer data basedata =
     [ Other ( "Self", Action (EnemyNormal data basedata.curSelf) ) ]
 
 
+{-| The initial data for the StroryTrigger component
+-}
 handleMove : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 handleMove env evnt data basedata =
     let
@@ -147,29 +165,36 @@ handleMove env evnt data basedata =
     ( ( { newData | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
+checkMgSsAndIt : (Skill -> Bool) -> Data -> Bool
+checkMgSsAndIt func data =
+    (List.length <| List.filter func data.skills) /= 0
+
+
+{-| The initial data for the StroryTrigger component
+-}
 chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 chooseAction env evnt data basedata =
     let
-        hasMagic =
-            if (List.length <| List.filter (\s -> s.kind == Magic) data.skills) /= 0 then
-                [ EnemyAttack, ChooseMagic ]
+        hasItem =
+            if checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp) data then
+                if checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data then
+                    if
+                        checkMgSsAndIt (\s -> s.kind == Item) data
+                            && data.hp
+                            < data.extendValues.basicStatus.maxHp
+                            && data.mp
+                            < data.extendValues.basicStatus.maxMp
+                    then
+                        [ ChooseItem, ChooseSpeSkill, EnemyAttack, ChooseMagic ]
+
+                    else
+                        [ ChooseSpeSkill, EnemyAttack, ChooseMagic ]
+
+                else
+                    [ EnemyAttack, ChooseMagic ]
 
             else
                 [ EnemyAttack ]
-
-        hasSpeSkill =
-            if (List.length <| List.filter (\s -> s.kind == SpecialSkill) data.skills) /= 0 then
-                ChooseSpeSkill :: hasMagic
-
-            else
-                hasMagic
-
-        hasItem =
-            if (List.length <| List.filter (\s -> s.kind == Item) data.skills) /= 0 then
-                ChooseItem :: hasSpeSkill
-
-            else
-                hasSpeSkill
 
         index =
             Time.posixToMillis env.globalData.currentTimeStamp
@@ -190,6 +215,8 @@ chooseAction env evnt data basedata =
     ( ( data, newBasedata ), [], ( env, False ) )
 
 
+{-| The initial data for the StroryTrigger component
+-}
 chooseSpecial : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 chooseSpecial env evnt data basedata =
     let
@@ -244,154 +271,3 @@ chooseSpecial env evnt data basedata =
 
     else
         ( ( data, basedata ), [], ( env, False ) )
-
-
-handleSpecial : Skill -> ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleSpecial skill env evnt data basedata =
-    let
-        position =
-            getTarget basedata env skill
-
-        newPosition =
-            case position of
-                4 ->
-                    7
-
-                5 ->
-                    8
-
-                6 ->
-                    9
-
-                1 ->
-                    10
-
-                2 ->
-                    11
-
-                3 ->
-                    12
-
-                _ ->
-                    0
-
-        newState =
-            if skill.range == Ally && List.member newPosition basedata.enemyNum then
-                PlayerTurn
-
-            else
-                basedata.state
-
-        skillMsg =
-            if basedata.state /= newState then
-                if skill.range == Ally then
-                    [ Other ( "Enemy", Action (EnemySkill data skill newPosition) ) ]
-
-                else
-                    [ Other ( "Self", Action (EnemySkill data skill position) ) ]
-
-            else
-                []
-
-        newItem =
-            if skill.kind == Item then
-                List.map
-                    (\s ->
-                        if s.name == skill.name then
-                            { s | cost = s.cost - 1 }
-
-                        else
-                            s
-                    )
-                    data.skills
-
-            else
-                data.skills
-
-        newData =
-            if basedata.state /= newState then
-                if skill.kind == SpecialSkill then
-                    checkStorage <|
-                        { data
-                            | energy = data.energy - skill.cost
-                            , buff = getNewBuff data.buff
-                            , state = Rest
-                        }
-
-                else if skill.kind == Magic then
-                    checkStorage <|
-                        { data
-                            | mp = data.mp - skill.cost
-                            , buff = getNewBuff data.buff
-                            , state = Rest
-                        }
-
-                else
-                    checkStorage <|
-                        { data
-                            | skills = newItem
-                            , buff = getNewBuff data.buff
-                            , state = Rest
-                        }
-
-            else
-                data
-    in
-    ( ( newData, { basedata | curEnemy = position, state = newState } )
-    , skillMsg ++ [ Other ( "Interface", ChangeStatus (ChangeState newState) ) ]
-    , ( env, False )
-    )
-
-
-handleTurn : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-handleTurn env evnt data basedata =
-    case basedata.state of
-        EnemyTurn ->
-            chooseAction env evnt data basedata
-
-        EnemyAttack ->
-            handleMove env evnt data basedata
-
-        EnemyReturn ->
-            handleMove env evnt data basedata
-
-        Counter ->
-            handleMove env evnt data basedata
-
-        ChooseSpeSkill ->
-            chooseSpecial env evnt data basedata
-
-        ChooseMagic ->
-            chooseSpecial env evnt data basedata
-
-        ChooseItem ->
-            chooseSpecial env evnt data basedata
-
-        TargetSelection (Skills skill) ->
-            handleSpecial skill env evnt data basedata
-
-        _ ->
-            ( ( data, basedata ), [], ( env, False ) )
-
-
-updateOne : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
-updateOne env evnt data basedata =
-    case evnt of
-        Tick _ ->
-            if data.state == Rest && basedata.side == EnemySide then
-                ( ( data, { basedata | state = PlayerTurn } )
-                , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
-                , ( env, False )
-                )
-
-            else if List.any (\( b, _ ) -> b == NoAction) data.buff then
-                ( ( { data | buff = getNewBuff data.buff, state = Rest }, { basedata | state = PlayerTurn } )
-                , [ Other ( "Interface", SwitchTurn 1 ), Other ( "StoryTrigger", SwitchTurn 1 ) ]
-                , ( env, False )
-                )
-
-            else
-                handleTurn env evnt data basedata
-
-        _ ->
-            ( ( data, basedata ), [], ( env, False ) )

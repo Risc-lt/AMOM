@@ -6,24 +6,26 @@ module SceneProtos.Game.Components.Interface.Model exposing (component)
 
 -}
 
-import Array exposing (get)
 import Canvas
-import Current exposing (Current)
 import Debug exposing (toString)
+import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, ComponentStorage, ComponentUpdate, ComponentUpdateRec, ComponentView, ConcreteUserComponent, genComponent)
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))
-import Messenger.Scene.Scene exposing (SceneOutputMsg)
+import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
+import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
+import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
-import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderAction, renderStatus)
-import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getFirstChar, getQueue, initUI, nextChar, renderQueue)
-import SceneProtos.Game.Components.Self.Init exposing (State(..))
-import SceneProtos.Game.Components.StoryTrigger.Init exposing (HealthStatus(..), TriggerConditions(..))
+import SceneProtos.Game.Components.Interface.RenderHelper3 exposing (renderAction, renderStatus)
+import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getQueue, initUI, nextChar, renderQueue)
+import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
+import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
-import String exposing (startsWith)
 
 
 type alias Data =
@@ -37,8 +39,17 @@ init env initMsg =
             let
                 ( firstdata, firstBaseData ) =
                     initUI initData initBaseData
+
+                newNum =
+                    List.filter
+                        (\n ->
+                            List.member n <|
+                                List.map (\s -> s.position) <|
+                                    List.filter (\s -> s.hp /= 0) firstdata.enemies
+                        )
+                        firstBaseData.enemyNum
             in
-            ( firstdata, firstBaseData )
+            ( firstdata, { firstBaseData | enemyNum = newNum } )
 
         _ ->
             ( defaultUI, initBaseData )
@@ -47,8 +58,12 @@ init env initMsg =
 update : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 update env evnt data basedata =
     case evnt of
-        Tick _ ->
-            ( ( data, basedata ), [], ( env, False ) )
+        KeyDown key ->
+            if key == 27 then
+                ( ( data, basedata ), [ Parent (SOMMsg (SOMChangeScene Nothing "Home")) ], ( env, False ) )
+
+            else
+                ( ( data, basedata ), [], ( env, False ) )
 
         _ ->
             ( ( data, basedata ), [], ( env, False ) )
@@ -96,97 +111,125 @@ sendMsg data basedata =
             ( basedata.state, [] )
 
 
-checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> Int
+checkOneTrigger : ( TriggerConditions, Int ) -> Data -> BaseData -> ( Int, Bool )
 checkOneTrigger ( trigger, id ) data basedata =
     case trigger of
         FrameTrigger num ->
             if num <= 0 then
-                id
+                ( id, False )
 
             else
-                -1
-
-        HpTrigger status side ->
-            let
-                hpCheck =
-                    if status == Half then
-                        \x -> x.hp <= x.extendValues.basicStatus.maxHp
-
-                    else
-                        \x -> x.hp <= 0
-            in
-            if side == "Enemy" && List.any hpCheck data.enemies then
-                id
-
-            else if side == "Self" && List.any hpCheck data.selfs then
-                id
-
-            else
-                -1
+                ( -1, False )
 
         StateTrigger state ->
             if toString basedata.state == state then
-                id
+                ( id, False )
 
             else
-                -1
+                ( -1, False )
+
+        DieTrigger ->
+            if List.any (\s -> s.hp /= 0 && s.name == "Cavalry") data.selfs then
+                if List.length data.enemies /= 6 then
+                    ( id, False )
+
+                else
+                    ( -1, False )
+
+            else
+                ( id, True )
 
 
 handleCheckTrigger : Data -> BaseData -> List ( TriggerConditions, Int ) -> List (Msg String ComponentMsg (SceneOutputMsg SceneMsg UserData))
 handleCheckTrigger data basedata triggers =
     let
-        maybeTrigger =
-            List.filter (\x -> x /= -1) <|
-                List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
+        ( maybeTrigger, isOver ) =
+            List.unzip <|
+                List.filter (\( x, _ ) -> x /= -1) <|
+                    List.map (\trigger -> checkOneTrigger trigger data basedata) triggers
 
-        msg =
+        successMsg =
             List.map (\x -> Other ( "Dialogue", BeginDialogue x )) maybeTrigger
 
         deleteTriggerMsg =
             List.map (\x -> Other ( "StoryTrigger", BeginDialogue x )) maybeTrigger
+
+        gameOverMsg =
+            if List.member True isOver then
+                [ Other ( "Self", Defeated False ), Other ( "Interface", Defeated False ) ]
+
+            else
+                []
     in
-    msg ++ deleteTriggerMsg
+    successMsg ++ deleteTriggerMsg ++ gameOverMsg
+
+
+changeStatus : Bool -> List Self -> List Enemy -> ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
+changeStatus flag selfs enemies env msg data basedata =
+    let
+        newQueue =
+            if flag then
+                getQueue selfs data.enemies
+
+            else
+                getQueue data.selfs enemies
+
+        numDifference =
+            if List.length newQueue < List.length data.queue then
+                List.length newQueue - List.length data.queue - 1
+
+            else
+                0
+
+        newData =
+            if flag then
+                { data | selfs = selfs, queue = newQueue, curIndex = data.curIndex - numDifference }
+
+            else
+                { data | enemies = enemies, queue = newQueue, curIndex = data.curIndex - numDifference }
+    in
+    ( ( newData, basedata ), [], env )
 
 
 updaterec : ComponentUpdateRec SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updaterec env msg data basedata =
     case msg of
         ChangeStatus (ChangeSelfs list) ->
-            let
-                newQueue =
-                    getQueue list data.enemies
-
-                numDifference =
-                    if List.length newQueue < List.length data.queue then
-                        List.length newQueue - List.length data.queue - 1
-
-                    else
-                        0
-            in
-            ( ( { data | selfs = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
-            , []
-            , env
-            )
+            changeStatus True list data.enemies env msg data basedata
 
         ChangeStatus (ChangeEnemies list) ->
-            let
-                newQueue =
-                    getQueue data.selfs list
-
-                numDifference =
-                    if List.length newQueue < List.length data.queue then
-                        List.length newQueue - List.length data.queue - 1
-
-                    else
-                        0
-            in
-            ( ( { data | enemies = list, queue = newQueue, curIndex = data.curIndex - numDifference }, basedata )
-            , []
-            , env
-            )
+            changeStatus False data.selfs list env msg data basedata
 
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )
+
+        Defeated flag ->
+            let
+                nextScene =
+                    if flag then
+                        "After" ++ String.fromInt data.levelNum
+
+                    else
+                        "Level" ++ String.fromInt data.levelNum
+            in
+            ( ( data, basedata )
+            , [ Parent <|
+                    SOMMsg <|
+                        SOMLoadGC <|
+                            genGC
+                                (InitOption
+                                    (genTransition
+                                        ( fadeOutBlack, Duration.seconds 2 )
+                                        ( fadeInBlack, Duration.seconds 2 )
+                                        Nothing
+                                    )
+                                    ( nextScene, Nothing )
+                                    True
+                                )
+                                Nothing
+              ]
+            , env
+            )
 
         SwitchTurn _ ->
             let

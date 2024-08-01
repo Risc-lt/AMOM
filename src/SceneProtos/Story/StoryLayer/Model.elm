@@ -9,15 +9,22 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 -}
 
 import Canvas
+import Color
+import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.Resources exposing (resources)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioTarget(..))
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
+import Messenger.GlobalComponents.Transition.Model exposing (genSequentialTransitionSOM)
+import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
+import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeIn, fadeInBlack, fadeOut, fadeOutBlack)
 import Messenger.Layer.Layer exposing (ConcreteLayer, Handler, LayerInit, LayerStorage, LayerUpdate, LayerUpdateRec, LayerView, genLayer, handleComponentMsgs)
 import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Sprite exposing (renderSprite)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget)
 import SceneProtos.Story.SceneBase exposing (..)
 
@@ -43,6 +50,49 @@ handleComponentMsg env compmsg data =
         SOMMsg som ->
             ( data, [ Parent <| SOMMsg som ], env )
 
+        OtherMsg Over ->
+            let
+                nextScene =
+                    case env.globalData.currentScene of
+                        "Before1" ->
+                            "Level1"
+
+                        "Before2" ->
+                            "Level2"
+
+                        "Before3" ->
+                            "Level3"
+
+                        "After1" ->
+                            "Before2"
+
+                        "After2" ->
+                            "Before3"
+
+                        "After3" ->
+                            "After4"
+
+                        _ ->
+                            "End"
+
+                color =
+                    if nextScene == "After4" then
+                        Color.white
+
+                    else
+                        Color.black
+            in
+            ( data
+            , [ Parent <|
+                    SOMMsg <|
+                        genSequentialTransitionSOM
+                            ( fadeOut color, Duration.seconds 1.5 )
+                            ( fadeIn color, Duration.seconds 1.5 )
+                            ( nextScene, Nothing )
+              ]
+            , env
+            )
+
         _ ->
             ( data, [], env )
 
@@ -54,24 +104,27 @@ updateBasic env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    --if not env.commonData.gameover then
-    let
-        ( data1, lmsg1, ( env1, block1 ) ) =
-            updateBasic env evt data
+    if env.globalData.sceneStartFrame == 0 then
+        ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
 
-        ( comps1, cmsgs1, ( env2, block2 ) ) =
-            updateComponentsWithBlock env1 evt block1 data1.components
+    else
+        let
+            ( data1, lmsg1, ( env1, block1 ) ) =
+                updateBasic env evt data
 
-        ( data2, ( lmsg2, tocmsg ), env3 ) =
-            ( { data1 | components = comps1 }, ( [], [] ), env2 )
+            ( comps1, cmsgs1, ( env2, block2 ) ) =
+                updateComponentsWithBlock env1 evt block1 data1.components
 
-        ( comps2, cmsgs2, env4 ) =
-            updateComponentsWithTarget env3 tocmsg data2.components
+            ( data2, ( lmsg2, tocmsg ), env3 ) =
+                ( { data1 | components = comps1 }, ( [], [] ), env2 )
 
-        ( data3, lmsgs3, env5 ) =
-            handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
-    in
-    ( data3, lmsgs3, ( env5, block2 ) )
+            ( comps2, cmsgs2, env4 ) =
+                updateComponentsWithTarget env3 tocmsg data2.components
+
+            ( data3, lmsgs3, env5 ) =
+                handleComponentMsgs env4 (cmsgs2 ++ cmsgs1) { data2 | components = comps2 } (lmsg1 ++ lmsg2) handleComponentMsg
+        in
+        ( data3, lmsgs3, ( env5, block2 ) )
 
 
 
@@ -88,8 +141,7 @@ view : LayerView SceneCommonData UserData Data
 view env data =
     Canvas.group
         []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "dialogue_3"
-        , viewComponents env data.components
+        [ viewComponents env data.components
         ]
 
 

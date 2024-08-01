@@ -1,14 +1,7 @@
 module SceneProtos.Story.Components.ComponentBase exposing
-    ( BaseData
-    , ComponentMsg(..)
-    , ComponentTarget
+    ( ComponentMsg(..), ComponentTarget, BaseData
     , initBaseData
     )
-
-import SceneProtos.Story.Components.Background.Init as Background
-import SceneProtos.Story.Components.CharSequence.Init as Character exposing (Character)
-import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
-
 
 {-|
 
@@ -16,15 +9,28 @@ import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
 # Component base
 
 @docs ComponentMsg, ComponentTarget, BaseData
+@docs initBaseData
 
+-}
+
+import SceneProtos.Story.Components.Background.Init as Background
+import SceneProtos.Story.Components.CharSequence.Init as Character
+import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
+import SceneProtos.Story.Components.Sommsg.Init as Sommsg
+
+
+{-| Component message
 -}
 type ComponentMsg
     = BeginPlot Int
     | DialogueInit Dialogue.InitData
     | CharInit Character.InitData
     | BackgroundInit Background.InitData
-    | TriggerInit
+    | SommsgInit Sommsg.InitData
+    | TriggerInit Int
     | EndMove
+    | PlotDone Int
+    | Over
     | NullComponentMsg
 
 
@@ -42,6 +48,8 @@ type alias BaseData =
     }
 
 
+{-| Initial base data
+-}
 initBaseData : BaseData
 initBaseData =
     { curId = 0

@@ -1,6 +1,7 @@
 module SceneProtos.Story.Components.Background.Init exposing
     ( InitData
-    , Background, Camera, defaultBackground, defaultCamera
+    , Background, Camera
+    , defaultBackground, defaultCamera
     )
 
 {-|
@@ -9,12 +10,14 @@ module SceneProtos.Story.Components.Background.Init exposing
 # Init module
 
 @docs InitData
+@docs Background, Camera
+@docs defaultBackground, defaultCamera
 
 -}
 
-{- The data structure for the background -}
 
-
+{-| The data structure for the background
+-}
 type alias Background =
     { backFigure : String
     , x : Float
@@ -24,10 +27,8 @@ type alias Background =
     }
 
 
-
-{- The data structure for background movement -}
-
-
+{-| The data structure for background movement
+-}
 type alias Camera =
     { targetX : Float
     , targetY : Float
@@ -46,6 +47,8 @@ type alias InitData =
     }
 
 
+{-| Default background data
+-}
 defaultBackground : Background
 defaultBackground =
     { backFigure = ""
@@ -56,6 +59,8 @@ defaultBackground =
     }
 
 
+{-| Default camera data
+-}
 defaultCamera : Camera
 defaultCamera =
     { targetX = 0

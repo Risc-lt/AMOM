@@ -1,4 +1,22 @@
-module SceneProtos.Game.Components.Special.Library exposing (..)
+module SceneProtos.Game.Components.Special.Library exposing
+    ( airBlade
+    , arcaneBeam
+    , blindness
+    , compounding
+    , cure
+    , doubleStrike
+    , fieryThrust
+    , fireBall
+    , frostArrow
+    , frostImpact
+    , gale
+    , getNewBuff
+    , iceRing
+    , inspirationOfFire
+    , magicTransformation
+    , scatterShot
+    , whirlwindAccelaration
+    )
 
 {-
    Skill library
@@ -7,6 +25,8 @@ module SceneProtos.Game.Components.Special.Library exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (..)
 
 
+{-| Get new buff
+-}
 getNewBuff : List ( Buff, Int ) -> List ( Buff, Int )
 getNewBuff buff =
     List.filter
@@ -21,6 +41,8 @@ getNewBuff buff =
             buff
 
 
+{-| Skill: Scatter Shot
+-}
 scatterShot : Skill
 scatterShot =
     { kind = SpecialSkill
@@ -34,6 +56,8 @@ scatterShot =
     }
 
 
+{-| Skill: Frost Arrow
+-}
 frostArrow : Skill
 frostArrow =
     { kind = SpecialSkill
@@ -47,6 +71,8 @@ frostArrow =
     }
 
 
+{-| Skill: Air Blade
+-}
 airBlade : Skill
 airBlade =
     { kind = SpecialSkill
@@ -60,6 +86,8 @@ airBlade =
     }
 
 
+{-| Skill: Double Strike
+-}
 doubleStrike : Skill
 doubleStrike =
     { kind = SpecialSkill
@@ -73,6 +101,8 @@ doubleStrike =
     }
 
 
+{-| Skill: Compounding
+-}
 compounding : Skill
 compounding =
     { kind = SpecialSkill
@@ -86,6 +116,8 @@ compounding =
     }
 
 
+{-| Skill: Magic Transformation
+-}
 magicTransformation : Skill
 magicTransformation =
     { kind = SpecialSkill
@@ -99,6 +131,8 @@ magicTransformation =
     }
 
 
+{-| Skill: Gale
+-}
 gale : Skill
 gale =
     { kind = SpecialSkill
@@ -112,6 +146,8 @@ gale =
     }
 
 
+{-| Skill: Fiery Thrust
+-}
 fieryThrust : Skill
 fieryThrust =
     { kind = SpecialSkill
@@ -125,6 +161,8 @@ fieryThrust =
     }
 
 
+{-| Skill: Arcane Beam
+-}
 arcaneBeam : Skill
 arcaneBeam =
     { kind = Magic
@@ -138,6 +176,8 @@ arcaneBeam =
     }
 
 
+{-| Skill: Inspiration of Fire
+-}
 frostImpact : Skill
 frostImpact =
     { kind = Magic
@@ -151,6 +191,8 @@ frostImpact =
     }
 
 
+{-| Skill: Ice Ring
+-}
 iceRing : Skill
 iceRing =
     { kind = Magic
@@ -164,6 +206,8 @@ iceRing =
     }
 
 
+{-| Skill: Cure
+-}
 cure : Skill
 cure =
     { kind = Magic
@@ -177,6 +221,8 @@ cure =
     }
 
 
+{-| Skill: Fire Ball
+-}
 fireBall : Skill
 fireBall =
     { kind = Magic
@@ -190,6 +236,8 @@ fireBall =
     }
 
 
+{-| Skill: Inspiration of Fire
+-}
 inspirationOfFire : Skill
 inspirationOfFire =
     { kind = Magic
@@ -203,6 +251,8 @@ inspirationOfFire =
     }
 
 
+{-| Skill: Blindness
+-}
 blindness : Skill
 blindness =
     { kind = Magic
@@ -216,6 +266,8 @@ blindness =
     }
 
 
+{-| Skill: Whirlwind Acceleration
+-}
 whirlwindAccelaration : Skill
 whirlwindAccelaration =
     { kind = Magic
@@ -225,44 +277,5 @@ whirlwindAccelaration =
     , range = Ally
     , element = Air
     , cost = 3
-    , lasting = 2
-    }
-
-
-lightningSpell : Skill
-lightningSpell =
-    { kind = Magic
-    , name = "Lightning Spell"
-    , effect = { defaultEffect | hp = 32 }
-    , buff = []
-    , range = One
-    , element = Air
-    , cost = 11
-    , lasting = 0
-    }
-
-
-chainLightning : Skill
-chainLightning =
-    { kind = Magic
-    , name = "Chain Lighting"
-    , effect = { defaultEffect | hp = 29 }
-    , buff = []
-    , range = Chain
-    , element = Air
-    , cost = 16
-    , lasting = 0
-    }
-
-
-blessingOfAir : Skill
-blessingOfAir =
-    { kind = Magic
-    , name = "Blessing of Air"
-    , effect = defaultEffect
-    , buff = [ HitRateUp 10, CriticalRateUp 60 ]
-    , range = Ally
-    , element = Air
-    , cost = 8
     , lasting = 2
     }

@@ -15,8 +15,8 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.GenAttributes exposing (Attribute, EleResistance, ExtendValue, genExtendValues, genHp, genMp)
 import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
-import SceneProtos.Game.Components.Special.Library exposing (airBlade, arcaneBeam, blessingOfAir, blindness, chainLightning, compounding, doubleStrike, fireBall, frostArrow, frostImpact, gale, iceRing, inspirationOfFire, lightningSpell, magicTransformation, scatterShot, whirlwindAccelaration)
-import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison, restorationPotion)
+import SceneProtos.Game.Components.Special.Library exposing (airBlade, arcaneBeam, blindness, compounding, doubleStrike, fireBall, frostArrow, frostImpact, gale, iceRing, inspirationOfFire, magicTransformation, scatterShot, whirlwindAccelaration)
+import SceneProtos.Game.Components.Special.Library2 exposing (blessingOfAir, chainLightning, lightningSpell, magicWater, poison, restorationPotion)
 
 
 {-| Character data
@@ -104,7 +104,7 @@ bithif time =
             , earthResistance = 10
             }
     in
-    genSelf 6
+    genSelf 5
         time
         "Bithif"
         baseAttributes

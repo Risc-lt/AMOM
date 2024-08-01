@@ -1,6 +1,7 @@
 module SceneProtos.Story.Components.CharSequence.Init exposing
     ( InitData
-    , Character, Direction(..), MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement
+    , Character, Direction(..), MoveKind(..), Movement, Posture(..)
+    , defaultCharacter, defaultMovement
     )
 
 {-|
@@ -9,10 +10,14 @@ module SceneProtos.Story.Components.CharSequence.Init exposing
 # Init module
 
 @docs InitData
+@docs Character, Direction, MoveKind, Movement, Posture
+@docs defaultCharacter, defaultMovement
 
 -}
 
 
+{-| Direction of the character
+-}
 type Direction
     = Right
     | Left
@@ -20,16 +25,16 @@ type Direction
     | Down
 
 
+{-| Posture of the character
+-}
 type Posture
     = Normal
     | Battle
     | Fall
 
 
-
-{- The data structure for characters -}
-
-
+{-| The data structure for characters
+-}
 type alias Character =
     { name : String
     , direction : Direction
@@ -41,6 +46,8 @@ type alias Character =
     }
 
 
+{-| The data structure for movement kind
+-}
 type MoveKind
     = Real ( Float, Float ) Float
     | Follow ( Float, Float ) Float
@@ -48,10 +55,8 @@ type MoveKind
     | None Direction
 
 
-
-{- The data structure for movement -}
-
-
+{-| The data structure for movement
+-}
 type alias Movement =
     { name : String
     , posture : Posture
@@ -70,6 +75,8 @@ type alias InitData =
     }
 
 
+{-| Default character data
+-}
 defaultCharacter : Character
 defaultCharacter =
     { name = ""
@@ -82,6 +89,8 @@ defaultCharacter =
     }
 
 
+{-| Default movement data
+-}
 defaultMovement : Movement
 defaultMovement =
     { name = ""

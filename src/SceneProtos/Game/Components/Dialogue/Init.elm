@@ -1,8 +1,8 @@
 module SceneProtos.Game.Components.Dialogue.Init exposing
-    ( Dialogue
-    , InitData
-    , defaultDialogue
+    ( InitData
+    , Dialogue
     , emptyInitData
+    , defaultDialogue
     )
 
 {-|
@@ -10,20 +10,24 @@ module SceneProtos.Game.Components.Dialogue.Init exposing
 
 # Init module
 
-@docs InitData: The data used to initialize the scene.
-@docs Dialogue: The data used to initialize the dialogue.
-@docs emptyInitData: Empty init data for dialogue.
-@docs defaultDialogue: Default dialogue.
+@docs InitData
+@docs Dialogue
+@docs emptyInitData
+@docs defaultDialogue
 
 -}
 
 
+{-| Init data for the dialogue
+-}
 type alias InitData =
     { curDialogue : Dialogue
     , remainDiaList : List Dialogue
     }
 
 
+{-| Core data structure for the dialogue
+-}
 type alias Dialogue =
     { frameName : String
     , framePos : ( Float, Float )
@@ -37,6 +41,8 @@ type alias Dialogue =
     }
 
 
+{-| Default init data for the dialogue
+-}
 emptyInitData : InitData
 emptyInitData =
     { curDialogue =
@@ -65,6 +71,8 @@ emptyInitData =
     }
 
 
+{-| Default dialogue
+-}
 defaultDialogue : Dialogue
 defaultDialogue =
     { frameName = "dialogue_frame"

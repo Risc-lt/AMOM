@@ -1,4 +1,4 @@
-module Scenes.After2.Characters exposing (charInitData, characters, checkConcert, prevent, turnLeft, turnRight)
+module Scenes.After2.Characters exposing (charInitData)
 
 {-|
 
@@ -7,7 +7,7 @@ module Scenes.After2.Characters exposing (charInitData, characters, checkConcert
 
 This module is used to generate the characters for the scene.
 
-@docs charInitData, characters, checkConcert, prevent, turnLeft, turnRight
+@docs charInitData
 
 -}
 
@@ -50,6 +50,8 @@ checkConcert =
     [ genMove "Wenderd" Normal move 2 ]
 
 
+{-| The movements of the characters
+-}
 turnLeft1 : List Movement
 turnLeft1 =
     let
@@ -59,6 +61,8 @@ turnLeft1 =
     [ genMove "Wenderd" Normal move 3 ]
 
 
+{-| The movements of the characters
+-}
 prevent : List Movement
 prevent =
     let
@@ -68,6 +72,8 @@ prevent =
     [ genMove "Bulingze" Battle move 5 ]
 
 
+{-| The movements of the characters
+-}
 turnLeft2 : List Movement
 turnLeft2 =
     let
@@ -77,6 +83,8 @@ turnLeft2 =
     [ genMove "Bulingze" Battle move 6 ]
 
 
+{-| The movements of the characters
+-}
 fall : List Movement
 fall =
     let

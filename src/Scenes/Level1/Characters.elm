@@ -15,8 +15,8 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy, defaultEnemy)
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Self.Init exposing (Self, defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
-import SceneProtos.Game.Components.Special.Library exposing (..)
-import SceneProtos.Game.Components.Special.Library2 exposing (..)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (..)
 
 
 type alias Character =

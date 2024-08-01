@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Special.Library2 exposing (blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin)
+module SceneProtos.Game.Components.Special.Magic exposing (blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin)
 
 {-|
 

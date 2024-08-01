@@ -13,7 +13,7 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
-import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison)
+import SceneProtos.Game.Components.Special.Magic exposing (magicWater, poison)
 
 
 {-| Check if the mouse is on the target

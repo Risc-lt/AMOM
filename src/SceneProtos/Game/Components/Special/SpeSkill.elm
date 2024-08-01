@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Special.Library exposing
+module SceneProtos.Game.Components.Special.SpeSkill exposing
     ( getNewBuff
     , scatterShot, frostArrow, airBlade, doubleStrike, compounding, magicTransformation, gale, fieryThrust, arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration
     )

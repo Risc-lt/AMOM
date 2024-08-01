@@ -20,8 +20,8 @@ module SceneProtos.Game.Components.Enemy.Init exposing
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.GenRandom exposing (genRandomNum)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
-import SceneProtos.Game.Components.Special.Library exposing (..)
-import SceneProtos.Game.Components.Special.Library2 exposing (chainLightning, lightningSpell)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (chainLightning, lightningSpell)
 
 
 {-| Character state

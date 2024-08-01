@@ -15,8 +15,8 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Self.Init exposing (Self)
 import SceneProtos.Game.Components.Special.Init exposing (Skill)
-import SceneProtos.Game.Components.Special.Library exposing (..)
-import SceneProtos.Game.Components.Special.Library2 exposing (..)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
+import SceneProtos.Game.Components.Special.Magic exposing (..)
 import Scenes.Level3.CharacterBase exposing (bithif, bruce, bulingze, cavalry, convert, genChar, genSelf, wenderd)
 
 

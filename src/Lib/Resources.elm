@@ -26,9 +26,6 @@ resources =
 
 
 {-| allTexture
-
-A list of all the textures.
-
 -}
 allTexture : Dict String String
 allTexture =

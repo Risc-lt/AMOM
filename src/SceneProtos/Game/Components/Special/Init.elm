@@ -82,6 +82,7 @@ type alias Skill =
     , element : Element
     , cost : Int
     , lasting : Int
+    , content : List String
     }
 
 
@@ -107,4 +108,5 @@ defaultSkill =
     , element = None
     , cost = 0
     , lasting = 0
+    , content = []
     }

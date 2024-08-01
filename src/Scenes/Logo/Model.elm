@@ -1,4 +1,4 @@
-module Scenes.Begin.Model exposing (scene)
+module Scenes.Logo.Model exposing (scene)
 
 {-| Scene configuration module
 
@@ -7,6 +7,8 @@ module Scenes.Begin.Model exposing (scene)
 -}
 
 import Canvas
+import Canvas.Settings exposing (fill)
+import Color
 import Duration
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -15,6 +17,7 @@ import Messenger.Base exposing (UserEvent(..))
 import Messenger.GlobalComponents.Transition.Model exposing (InitOption, genGC)
 import Messenger.GlobalComponents.Transition.Transitions.Base exposing (genTransition)
 import Messenger.GlobalComponents.Transition.Transitions.Fade exposing (fadeInBlack, fadeOutBlack)
+import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Scene.RawScene exposing (RawSceneInit, RawSceneUpdate, RawSceneView, genRawScene)
 import Messenger.Scene.Scene exposing (MConcreteScene, SceneOutputMsg(..), SceneStorage)
@@ -33,7 +36,7 @@ update : RawSceneUpdate Data UserData SceneMsg
 update env msg data =
     case msg of
         Tick _ ->
-            if env.globalData.globalStartFrame >= 400 then
+            if env.globalData.globalStartFrame == 120 then
                 ( data
                 , [ SOMLoadGC
                         (genGC
@@ -43,7 +46,7 @@ update env msg data =
                                     ( fadeInBlack, Duration.seconds 1 )
                                     Nothing
                                 )
-                                ( "Home", Nothing )
+                                ( "Begin", Nothing )
                                 True
                             )
                             Nothing
@@ -62,7 +65,10 @@ update env msg data =
 view : RawSceneView UserData Data
 view env data =
     Canvas.group []
-        [ renderSprite env.globalData.internalData [] ( 0, 0 ) ( 1920, 1080 ) "begin"
+        [ Canvas.shapes
+            [ fill (Color.rgba 0 0 0 1) ]
+            [ rect env.globalData.internalData ( 0, 0 ) ( 1920, 1080 ) ]
+        , renderSprite env.globalData.internalData [] ( 560, 140 ) ( 800, 800 ) "logo"
         ]
 
 

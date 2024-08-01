@@ -17,7 +17,7 @@ import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.GenRandom exposing (..)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Element(..), Range(..), SpecialType(..))
-import SceneProtos.Game.Components.Special.Library exposing (getNewBuff)
+import SceneProtos.Game.Components.Special.SpeSkill exposing (getNewBuff)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 import Time
 

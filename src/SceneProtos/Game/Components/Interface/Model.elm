@@ -21,8 +21,7 @@ import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (ActionSide(..), BaseData, ComponentMsg(..), ComponentTarget, Gamestate(..), InitMsg(..), StatusMsg(..), initBaseData)
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.Init exposing (InitData, defaultUI)
-import SceneProtos.Game.Components.Interface.RenderHelper exposing (renderStatus)
-import SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderAction)
+import SceneProtos.Game.Components.Interface.RenderHelper3 exposing (renderAction, renderStatus)
 import SceneProtos.Game.Components.Interface.Sequence exposing (checkSide, getQueue, initUI, nextChar, renderQueue)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.StoryTrigger.Init exposing (TriggerConditions(..))
@@ -157,7 +156,7 @@ handleCheckTrigger data basedata triggers =
 
         gameOverMsg =
             if List.member True isOver then
-                [ Other ( "Self", Defeated ) ]
+                [ Other ( "Self", Defeated False ), Other ( "Interface", Defeated False ) ]
 
             else
                 []
@@ -204,23 +203,30 @@ updaterec env msg data basedata =
         ChangeStatus (ChangeState state) ->
             ( ( data, { basedata | state = state } ), [], env )
 
-        Defeated ->
+        Defeated flag ->
+            let
+                nextScene =
+                    if flag then
+                        "After" ++ String.fromInt data.levelNum
+
+                    else
+                        "Level" ++ String.fromInt data.levelNum
+            in
             ( ( data, basedata )
             , [ Parent <|
                     SOMMsg <|
-                        SOMLoadGC
-                            (genGC
+                        SOMLoadGC <|
+                            genGC
                                 (InitOption
                                     (genTransition
                                         ( fadeOutBlack, Duration.seconds 2 )
                                         ( fadeInBlack, Duration.seconds 2 )
                                         Nothing
                                     )
-                                    ( "After" ++ String.fromInt data.levelNum, Nothing )
+                                    ( nextScene, Nothing )
                                     True
                                 )
                                 Nothing
-                            )
               ]
             , env
             )

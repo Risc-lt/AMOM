@@ -23,6 +23,18 @@ type alias Data =
     InitData
 
 
+{-| render an attribute
+-}
+renderOneAttribute : Float -> Int -> String -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderOneAttribute y val valType env =
+    Canvas.group []
+        [ renderTextWithColorCenter env.globalData.internalData 20 (valType ++ ":") "Comic Sans MS" Color.black ( 1710, y + 65 )
+        , renderTextWithColorCenter env.globalData.internalData 20 (toString <| val) "Comic Sans MS" Color.black ( 1810, y + 65 )
+        ]
+
+
+{-| render a bar
+-}
 renderOneBar : Float -> Int -> Int -> String -> Color.Color -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
 renderOneBar y val upperBound valType color env =
     Canvas.group []
@@ -37,6 +49,8 @@ renderOneBar y val upperBound valType color env =
         ]
 
 
+{-| render all buffs
+-}
 renderBuff : List ( Buff, Int ) -> Messenger.Base.Env SceneCommonData UserData -> Float -> Float -> Canvas.Renderable
 renderBuff buffs env x y =
     let
@@ -83,47 +97,8 @@ renderBuff buffs env x y =
     Canvas.group [] buffViews
 
 
-renderStatus : Self -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderStatus self env =
-    let
-        y =
-            case self.name of
-                "Wenderd" ->
-                    40
-
-                "Bruce" ->
-                    250
-
-                "Bulingze" ->
-                    460
-
-                "Bithif" ->
-                    670
-
-                _ ->
-                    880
-
-        color =
-            if self.hp == 0 then
-                Color.red
-
-            else
-                Color.black
-    in
-    if self.name /= "" then
-        Canvas.group []
-            [ renderSprite env.globalData.internalData [ imageSmoothing False ] ( 1470, y ) ( 160, 160 ) (self.name ++ "Sheet.0/1")
-            , renderOneBar y self.hp self.extendValues.basicStatus.maxHp "HP" Color.red env
-            , renderOneBar (y + 20) self.mp self.extendValues.basicStatus.maxMp "MP" Color.blue env
-            , renderOneBar (y + 40) self.energy 300 "En" Color.green env
-            , renderBuff self.buff env 1675 (toFloat y + 120)
-            , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
-            ]
-
-    else
-        empty
-
-
+{-| render the position prompt
+-}
 renderChangePosition : Env cdata userdata -> Data -> BaseData -> Renderable
 renderChangePosition env data basedata =
     let
@@ -155,6 +130,8 @@ renderChangePosition env data basedata =
         ]
 
 
+{-| render the actions
+-}
 renderPlayerTurn : Env cdata userdata -> String -> Renderable
 renderPlayerTurn env name =
     let

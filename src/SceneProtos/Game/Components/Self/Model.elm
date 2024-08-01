@@ -210,7 +210,7 @@ updaterec env msg data basedata =
         NewRound ->
             ( ( List.map (\d -> { d | state = Waiting }) data, basedata ), [], env )
 
-        Defeated ->
+        Defeated _ ->
             ( ( data, basedata ), [ Parent <| OtherMsg <| GameOver, Other ( "Interface", ChangeStatus (ChangeSelfs data) ) ], env )
 
         BeginDialogue _ ->

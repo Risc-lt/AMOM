@@ -60,7 +60,7 @@ update env evnt data basedata =
                             _ ->
                                 if curDia.id == ( 103, 1 ) then
                                     ( { curDia | isSpeaking = False }
-                                    , [ Other ( "Enemy", Defeated ) ]
+                                    , [ Other ( "Enemy", Defeated True ), Other ( "Interface", Defeated True ) ]
                                     )
 
                                 else
@@ -167,8 +167,8 @@ view env data basedata =
                 data.curDialogue.speakerPos
         in
         ( Canvas.group []
-            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1420, 591 ) data.curDialogue.frameName
-             , renderSprite env.globalData.internalData [] ( x + 20, y - 70 ) ( 420, 426 ) data.curDialogue.speaker
+            ([ renderSprite env.globalData.internalData [] data.curDialogue.framePos ( 1430, 385 ) data.curDialogue.frameName
+             , renderSprite env.globalData.internalData [] ( x, y ) ( 333, 0 ) data.curDialogue.speaker
              ]
                 ++ renderableTexts
             )

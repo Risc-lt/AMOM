@@ -26,9 +26,6 @@ resources =
 
 
 {-| allTexture
-
-A list of all the textures.
-
 -}
 allTexture : Dict String String
 allTexture =
@@ -41,8 +38,8 @@ allTexture =
          , ( "dialogue_3", "assets/character/background/dialogue_3.jpg" )
          , ( "dialogue_4", "assets/character/background/dialogue_4.jpg" )
          , ( "begin", "assets/character/background/Start.jpg" )
-         , ( "levelselect", "assets/character/background/levelselect.jpg" )
          , ( "arrow", "assets/character/chartlet/arrow.png" )
+         , ( "logo", "assets/character/background/Team logo.jpg" )
          ]
             ++ chacaterTexture
             ++ chacaterSheetTexture
@@ -91,6 +88,7 @@ bufferTexture =
     , ( "Bloodthirsty", "assets/character/buff/Bloodthirsty.png" )
     , ( "Seal", "assets/character/buff/Seal.png" )
     , ( "Bleed", "assets/character/buff/Bleed.png" )
+    , ( "volume", "assets/character/chartlet/volume.png" )
     ]
 
 

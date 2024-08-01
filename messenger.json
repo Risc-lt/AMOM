@@ -28,7 +28,10 @@
         "Home": {
             "layers": []
         },
-        "Instruction": {
+        "Logo": {
+            "layers": []
+        },
+        "End": {
             "layers": []
         }
     },

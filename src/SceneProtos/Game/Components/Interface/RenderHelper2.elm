@@ -1,4 +1,4 @@
-module SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderAction)
+module SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderChooseSkill, renderTargetSelection)
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
@@ -12,8 +12,9 @@ import SceneProtos.Game.Components.ComponentBase exposing (ActionType(..), BaseD
 import SceneProtos.Game.Components.Enemy.Init exposing (Enemy)
 import SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderChangePosition, renderPlayerTurn)
 import SceneProtos.Game.Components.Self.Init exposing (Self, State(..), defaultSelf)
-import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..))
-import SceneProtos.Game.Components.Special.Library2 exposing (magicWater, poison)
+import SceneProtos.Game.Components.Self.UpdateOne exposing (checkIndex)
+import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
+import SceneProtos.Game.Components.Special.Item exposing (..)
 
 
 {-| Check if the mouse is on the target
@@ -128,42 +129,71 @@ renderTargetSelection env data basedata name =
 -}
 renderSkillView : Env cdata userdata -> List ( Int, Skill ) -> List Renderable
 renderSkillView env skills =
-    List.map
-        (\x ->
-            let
-                ( mouseX, mouseY ) =
-                    env.globalData.mousePos
+    let
+        ( mouseX, mouseY ) =
+            env.globalData.mousePos
 
-                amplify =
-                    if mouseX > 640 && mouseX < 900 && mouseY > toFloat (Tuple.first x * 88 + 728) && mouseY < toFloat (Tuple.first x * 88 + 816) then
-                        1.2
+        index =
+            checkIndex mouseX mouseY
 
-                    else
-                        1.0
-            in
-            renderTextWithColorStyle env.globalData.internalData
-                (40 * amplify)
-                (.name <| Tuple.second x)
-                "Comic Sans MS"
-                Color.black
-                ""
-                ( 660
-                , toFloat (Tuple.first x * 88 + 728)
-                )
-        )
-        skills
-        ++ List.map
+        skill =
+            Tuple.second <|
+                Maybe.withDefault ( 0, defaultSkill ) <|
+                    List.head <|
+                        List.filter (\( i, _ ) -> i == index - 1) skills
+    in
+    if skill.name == "" then
+        List.map
             (\x ->
-                renderTextWithColorCenter env.globalData.internalData
+                renderTextWithColorStyle env.globalData.internalData
                     40
-                    (toString <| .cost <| Tuple.second x)
+                    (.name <| Tuple.second x)
                     "Comic Sans MS"
                     Color.black
-                    ( 1380
-                    , toFloat (Tuple.first x * 88 + 748)
+                    ""
+                    ( 660
+                    , toFloat (Tuple.first x * 88 + 728)
                     )
             )
             skills
+            ++ List.map
+                (\x ->
+                    renderTextWithColorCenter env.globalData.internalData
+                        40
+                        (toString <| .cost <| Tuple.second x)
+                        "Comic Sans MS"
+                        Color.black
+                        ( 1380
+                        , toFloat (Tuple.first x * 88 + 748)
+                        )
+                )
+                skills
+
+    else
+        (List.map
+            (\x ->
+                renderTextWithColorStyle env.globalData.internalData
+                    35
+                    (Tuple.second x)
+                    "Comic Sans MS"
+                    Color.black
+                    ""
+                    ( 660
+                    , toFloat (Tuple.first x * 50 + 730)
+                    )
+            )
+         <|
+            List.indexedMap Tuple.pair (skill.name :: skill.content)
+        )
+            ++ [ renderTextWithColorCenter env.globalData.internalData
+                    35
+                    (toString <| skill.cost)
+                    "Comic Sans MS"
+                    Color.black
+                    ( 1380
+                    , toFloat 750
+                    )
+               ]
 
 
 {-| Render the choose skill
@@ -228,58 +258,3 @@ renderChooseSkill env self name state =
          ]
             ++ skillView
         )
-
-
-{-| Render the action
--}
-renderAction : Env cdata userdata -> Data -> BaseData -> Renderable
-renderAction env data basedata =
-    let
-        self =
-            if basedata.curSelf <= 6 then
-                Maybe.withDefault { defaultSelf | position = 0 } <|
-                    List.head <|
-                        List.filter (\x -> x.position == basedata.curSelf && x.hp /= 0) data.selfs
-
-            else
-                defaultSelf
-
-        name =
-            if self.name /= "" then
-                self.name ++ "'s"
-
-            else
-                ""
-
-        actionBar =
-            case basedata.state of
-                GameBegin ->
-                    renderChangePosition env data basedata
-
-                PlayerTurn ->
-                    renderPlayerTurn env name
-
-                TargetSelection _ ->
-                    renderTargetSelection env data basedata name
-
-                ChooseSpeSkill ->
-                    renderChooseSkill env self name basedata.state
-
-                ChooseMagic ->
-                    renderChooseSkill env self name basedata.state
-
-                ChooseItem ->
-                    renderChooseSkill env self name basedata.state
-
-                Compounding ->
-                    renderChooseSkill env self name basedata.state
-
-                _ ->
-                    empty
-    in
-    Canvas.group []
-        [ Canvas.shapes
-            [ stroke Color.black ]
-            [ path (posToReal env.globalData.internalData ( 320, 715 )) [ lineTo (posToReal env.globalData.internalData ( 320, 1060 )) ] ]
-        , actionBar
-        ]

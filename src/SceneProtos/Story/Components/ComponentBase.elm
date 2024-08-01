@@ -48,6 +48,8 @@ type alias BaseData =
     }
 
 
+{-| Initial base data
+-}
 initBaseData : BaseData
 initBaseData =
     { curId = 0

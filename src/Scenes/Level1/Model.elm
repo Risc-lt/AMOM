@@ -5,6 +5,10 @@ module Scenes.Level1.Model exposing (scene)
 
 # Level configuration module
 
+This module contains all level configuration data for Level1 scene
+
+@docs scene
+
 -}
 
 import Lib.Base exposing (SceneMsg)

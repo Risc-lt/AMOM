@@ -5,7 +5,7 @@ module Scenes.Home.Init exposing (Data, Direction(..), ScenePic, get, initData)
 
 # Init module
 
-@docs InitData
+@docs Data, Direction, ScenePic, get, initData
 
 -}
 

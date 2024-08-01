@@ -1,7 +1,17 @@
-module Scenes.Level1.Plots exposing (..)
+module Scenes.Level1.Plots exposing
+    ( start, preparation, skill, normalAttack, genDialogue, dialogueInitData
+    , triggerInitData
+    )
 
-{-
-   All plot data
+{-|
+
+
+# Dialogue module
+
+This module contains all dialogue data for Level1 scene
+
+@docs start, preparation, guidence, skill, item, normalAttack, genDialogue, dialogueInitData
+
 -}
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)

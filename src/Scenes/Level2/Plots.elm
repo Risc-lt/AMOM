@@ -1,7 +1,14 @@
-module Scenes.Level2.Plots exposing (..)
+module Scenes.Level2.Plots exposing (amaze, appreciate, plaint, weak, confused1, bad, worry, confused2, understand, guess, surprise, silence, provoke, counter, abuse, scorn, dialogueInitData, amazeTrigger, weakTrigger, badTrigger, triggerInitData)
 
-{-
-   All plot data
+{-|
+
+
+# Level2 Plots module
+
+This module contains all plot data for Level2 scene
+
+@docs amaze, appreciate, plaint, weak, confused1, bad, worry, confused2, understand, guess, surprise, silence, provoke, counter, abuse, scorn, dialogueInitData, amazeTrigger, weakTrigger, badTrigger, triggerInitData
+
 -}
 
 import SceneProtos.Game.Components.Dialogue.Init exposing (Dialogue, defaultDialogue)

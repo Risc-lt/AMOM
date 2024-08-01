@@ -5,6 +5,10 @@ module Scenes.Level2.Model exposing (..)
 
 # Level configuration module
 
+This module contains all level configuration data for Level2 scene
+
+@docs scene
+
 -}
 
 import Canvas

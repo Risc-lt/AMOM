@@ -1,7 +1,14 @@
-module Scenes.Level3.Plots exposing (..)
+module Scenes.Level3.Plots exposing (ask, threaten, silence, decline, remind, complain, prepare, panic, success, dialogueInitData, askTrigger, complainTrigger, successTrigger, dieTrigger, triggerInitData)
 
-{-
-   All plot data
+{-|
+
+
+# Plots module
+
+This module contains the plot data for the Level3 scene.
+
+@docs ask, threaten, silence, decline, remind, complain, prepare, panic, success, dialogueInitData, askTrigger, complainTrigger, successTrigger, dieTrigger, triggerInitData
+
 -}
 
 import SceneProtos.Game.Components.ComponentBase exposing (ComponentMsg(..), Gamestate(..))

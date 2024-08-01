@@ -1,7 +1,14 @@
 module Scenes.Before3.Characters exposing (charInitData)
 
-{-
-   All charater data
+{-|
+
+
+# Before3 Characters module
+
+This module contains all character data for Before3 scene
+
+@docs charInitData
+
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultCharacter, defaultMovement)

@@ -1,7 +1,14 @@
-module Scenes.Before2.Dialogues exposing (..)
+module Scenes.Before2.Dialogues exposing (feel, ask, decline, remind, charge, see, guess, care, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Before2 Dialogues module
+
+This module contains all dialogue data for Before2 scene
+
+@docs feel, ask, agree, decline, remind, charge, see, guess, care, dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)

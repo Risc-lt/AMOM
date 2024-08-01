@@ -1,7 +1,11 @@
-module Scenes.Before3.Background exposing (..)
+module Scenes.Before3.Background exposing (backgroundInitData)
 
-{-
-   background data
+{-| #Background module
+
+This module contains the background data for the Before3 scene.
+
+@docs backgroundInitData
+
 -}
 
 import SceneProtos.Story.Components.Background.Init exposing (Camera, InitData, defaultCamera)

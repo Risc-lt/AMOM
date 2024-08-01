@@ -1,7 +1,14 @@
-module Scenes.Before1.Characters exposing (..)
+module Scenes.Before1.Characters exposing (charInitData, genMove, begin, followRight, bySelfRight, throughStone1, throughStone2, throughStone3, throughStone4, throughStone5, followLeft, wolfAppear, wolfRight)
 
-{-
-   All charater data
+{-|
+
+
+# Before1 Characters module
+
+This module contains the characters data for the Before1 scene.
+
+@docs characters, charInitData, genCharacter, genMove, begin, followRight, bySelfRight, throughStone1, throughStone2, throughStone3, throughStone4, throughStone5, followLeft, wolfAppear, wolfRight, genMove, charInitData, InitData
+
 -}
 
 import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..), InitData, MoveKind(..), Movement, Posture(..), defaultMovement)

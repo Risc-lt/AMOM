@@ -1,7 +1,14 @@
-module Scenes.Before1.Dialogues exposing (..)
+module Scenes.Before1.Dialogues exposing (alert, reply, find, prepare, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Before1 Dialogues module
+
+This module contains all dialogue data for Before1 scene
+
+@docs alert, reply, find, prepare, dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)

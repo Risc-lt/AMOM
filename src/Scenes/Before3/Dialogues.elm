@@ -1,7 +1,14 @@
-module Scenes.Before3.Dialogues exposing (..)
+module Scenes.Before3.Dialogues exposing (discribe, thank, ask, explain, interrupt, query, decline, complain, confused, remind, genDialogue, dialogueInitData)
 
-{-
-   All dialogue data
+{-|
+
+
+# Before3 Dialogues module
+
+This module contains all dialogue data for Before3 scene
+
+@docs discribe, thank, ask, explain, interrupt, query, decline, complain, confused, remind, genDialogue, dialogueInitData
+
 -}
 
 import SceneProtos.Story.Components.DialogSequence.Init exposing (Dialogue, InitData, defaultDialogue)

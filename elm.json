@@ -13,7 +13,7 @@
             "elm/time": "1.0.0",
             "ianmackenzie/elm-units": "2.10.0",
             "linsyking/elm-canvas": "4.4.0",
-            "linsyking/messenger-core": "14.0.1",
+            "linsyking/messenger-core": "14.0.2",
             "linsyking/messenger-extra": "3.3.0"
         },
         "indirect": {

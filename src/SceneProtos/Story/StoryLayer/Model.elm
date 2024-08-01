@@ -76,7 +76,7 @@ handleComponentMsg env compmsg data =
                             ""
 
                 color =
-                    if nextScene == "After3" then
+                    if nextScene == "After4" then
                         Color.white
 
                     else

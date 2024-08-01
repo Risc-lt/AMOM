@@ -97,6 +97,9 @@ update env msg data =
                 else
                     ( data, [], env )
 
+            KeyDown key ->
+                handleKeyDown key env msg data
+
             Tick _ ->
                 case data.direction of
                     Right ->
@@ -126,6 +129,19 @@ update env msg data =
 
             _ ->
                 ( data, [], env )
+
+
+handleKeyDown : Int -> RawSceneUpdate Data UserData SceneMsg
+handleKeyDown key env msg data =
+    case key of
+        37 ->
+            ( data, [ SOMSetVolume (env.globalData.volume - 0.1) ], env )
+
+        39 ->
+            ( data, [ SOMSetVolume (env.globalData.volume + 0.1) ], env )
+
+        _ ->
+            ( data, [], env )
 
 
 renderBasicView : RawSceneView UserData Data

@@ -55,7 +55,8 @@
                     "Background",
                     "CharSequence",
                     "DialogSequence",
-                    "Trigger"
+                    "Trigger",
+                    "Sommsg"
                 ]
             },
             "layers": [

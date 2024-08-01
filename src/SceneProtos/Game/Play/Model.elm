@@ -11,8 +11,10 @@ Set the Data Type, Init logic, Update logic, View logic and Matcher logic here.
 import Canvas exposing (lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)
 import Color
+import Duration exposing (Duration)
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
+import Messenger.Audio.Base exposing (AudioOption(..), AudioTarget(..))
 import Messenger.Component.Component exposing (AbstractComponent, updateComponents, updateComponentsWithBlock, updateComponentsWithTarget, viewComponents)
 import Messenger.Coordinate.Coordinates exposing (posToReal)
 import Messenger.GeneralModel exposing (Matcher, Msg(..), MsgBase(..))
@@ -21,6 +23,7 @@ import Messenger.Layer.LayerExtra exposing (BasicUpdater, Distributor)
 import Messenger.Render.Shape exposing (rect)
 import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
+import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
 import SceneProtos.Game.Components.Dialogue.Init as DiaMsg
 import SceneProtos.Game.Components.Dialogue.Model as Dia
@@ -91,7 +94,27 @@ attackDistributor env evt data =
 
 update : LayerUpdate SceneCommonData UserData LayerTarget (LayerMsg SceneMsg) SceneMsg Data
 update env evt data =
-    if not env.commonData.gameover then
+    if env.globalData.sceneStartFrame == 0 then
+        ( data, [ Parent <| SOMMsg <| SOMStopAudio AllAudio ], ( env, False ) )
+
+    else if env.globalData.sceneStartFrame == 1 then
+        let
+            commonSetting =
+                { rate = 1
+                , start = Duration.seconds 0
+                }
+
+            loopSetting =
+                { loopStart = Duration.seconds 0
+                , loopEnd = Duration.seconds 16
+                }
+
+            newMsg =
+                [ Parent <| SOMMsg <| SOMPlayAudio 0 "battle" (ALoop (Just commonSetting) (Just loopSetting)) ]
+        in
+        ( data, newMsg, ( env, False ) )
+
+    else if not env.commonData.gameover then
         let
             ( data1, lmsg1, ( env1, block1 ) ) =
                 updateBasic env evt data

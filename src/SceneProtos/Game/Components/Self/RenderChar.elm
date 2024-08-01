@@ -41,12 +41,21 @@ renderChar char env =
                 (char.name ++ "Sheet.1/2")
 
         else if char.isRunning then
-            renderSprite
-                env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
-                ( 100, 100 )
-                (char.name ++ "Sheet.1/" ++ currentAct 4)
+            if char.name == "Bruce" then
+                renderSprite
+                    env.globalData.internalData
+                    [ imageSmoothing False ]
+                    ( char.x, char.y )
+                    ( 100, 100 )
+                    (char.name ++ "Sheet.5/" ++ currentAct 4)
+
+            else
+                renderSprite
+                    env.globalData.internalData
+                    [ imageSmoothing False ]
+                    ( char.x, char.y )
+                    ( 100, 100 )
+                    (char.name ++ "Sheet.1/" ++ currentAct 4)
 
         else
             Canvas.group []

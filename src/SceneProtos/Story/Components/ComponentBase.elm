@@ -8,6 +8,7 @@ module SceneProtos.Story.Components.ComponentBase exposing
 import SceneProtos.Story.Components.Background.Init as Background
 import SceneProtos.Story.Components.CharSequence.Init as Character exposing (Character)
 import SceneProtos.Story.Components.DialogSequence.Init as Dialogue
+import SceneProtos.Story.Components.Sommsg.Init as Sommsg
 
 
 {-|
@@ -23,6 +24,7 @@ type ComponentMsg
     | DialogueInit Dialogue.InitData
     | CharInit Character.InitData
     | BackgroundInit Background.InitData
+    | SommsgInit Sommsg.InitData
     | TriggerInit Int
     | EndMove
     | PlotDone Int

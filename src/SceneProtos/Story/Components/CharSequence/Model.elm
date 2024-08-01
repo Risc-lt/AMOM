@@ -15,6 +15,7 @@ import Messenger.Component.Component exposing (ComponentInit, ComponentMatcher, 
 import Messenger.GeneralModel exposing (Msg(..))
 import Messenger.Render.Sprite exposing (renderSprite)
 import SceneProtos.Story.Components.CharSequence.Init exposing (Character, InitData, MoveKind(..), Movement, defaultCharacter, defaultMovement)
+import SceneProtos.Story.Components.CharSequence.RenderHelper exposing (renderHelper)
 import SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, initBaseData)
 import SceneProtos.Story.SceneBase exposing (SceneCommonData)
@@ -152,71 +153,12 @@ updaterec env msg data basedata =
             ( ( data, basedata ), [], env )
 
 
-renderChar : Character -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderChar char basedata env =
-    let
-        gd =
-            env.globalData
-
-        stillRate =
-            400
-
-        moveRate =
-            floor (1000 / char.speed)
-
-        name =
-            if
-                List.any (\n -> String.endsWith n char.name)
-                    [ "1", "2", "3", "4", "5", "6" ]
-            then
-                String.dropRight 1 char.name
-
-            else
-                char.name
-
-        x =
-            if name == "Wild Wolf" then
-                if char.isMoving then
-                    3
-
-                else
-                    2
-
-            else
-                4
-
-        currentAct =
-            if char.isMoving then
-                String.fromInt (modBy (moveRate * x) gd.sceneStartTime // moveRate)
-
-            else
-                String.fromInt (modBy (stillRate * x) gd.sceneStartTime // stillRate)
-    in
-    if char.isMoving then
-        renderSprite
-            env.globalData.internalData
-            [ imageSmoothing False ]
-            ( char.x, char.y )
-            ( 140, 140 )
-            (name ++ "Sheet.1/" ++ currentAct)
-
-    else
-        Canvas.group []
-            [ renderSprite
-                env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
-                ( 140, 140 )
-                (name ++ "Sheet.0/" ++ currentAct)
-            ]
-
-
 view : ComponentView SceneCommonData UserData Data BaseData
 view env data basedata =
     ( Canvas.group [] <|
         List.map
             (\c ->
-                renderChar c basedata env
+                renderHelper c basedata env
             )
             data.characters
     , 2

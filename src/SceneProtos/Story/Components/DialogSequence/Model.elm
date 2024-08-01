@@ -111,15 +111,15 @@ update env evnt data basedata =
                 newDia =
                     case curDia.state of
                         Appear ->
-                            if curDia.alpha + 0.04 < 1 then
-                                { curDia | alpha = curDia.alpha + 0.04 }
+                            if curDia.alpha + 0.025 < 1 then
+                                { curDia | alpha = curDia.alpha + 0.025 }
 
                             else
                                 { curDia | alpha = 1, state = IsSpeaking }
 
                         Disappear ->
-                            if curDia.alpha - 0.04 > 0 then
-                                { curDia | alpha = curDia.alpha - 0.04 }
+                            if curDia.alpha - 0.025 > 0 then
+                                { curDia | alpha = curDia.alpha - 0.025 }
 
                             else
                                 { curDia | alpha = 0, state = NoDialogue }

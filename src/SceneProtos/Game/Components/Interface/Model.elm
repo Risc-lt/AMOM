@@ -215,8 +215,8 @@ updaterec env msg data basedata =
             ( ( data, basedata )
             , [ Parent <|
                     SOMMsg <|
-                        SOMLoadGC
-                            (genGC
+                        SOMLoadGC <|
+                            genGC
                                 (InitOption
                                     (genTransition
                                         ( fadeOutBlack, Duration.seconds 2 )
@@ -227,7 +227,6 @@ updaterec env msg data basedata =
                                     True
                                 )
                                 Nothing
-                            )
               ]
             , env
             )

@@ -23,6 +23,7 @@ import Scenes.Before1.Model as Before1
 import Scenes.Before2.Model as Before2
 import Scenes.Before3.Model as Before3
 import Scenes.Begin.Model as Begin
+import Scenes.End.Model as End
 import Scenes.Home.Model as Home
 import Scenes.Level1.Model as Level1
 import Scenes.Level2.Model as Level2
@@ -51,4 +52,5 @@ allScenes =
         , ( "Begin", Begin.scene )
         , ( "Home", Home.scene )
         , ( "Logo", Logo.scene )
+        , ( "End", End.scene )
         ]

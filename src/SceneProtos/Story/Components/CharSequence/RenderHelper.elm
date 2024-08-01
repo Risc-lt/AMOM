@@ -10,10 +10,54 @@ import Canvas
 import Messenger.Render.Sprite exposing (renderSprite)
 import Canvas.Settings.Advanced exposing (imageSmoothing)
 import SceneProtos.Story.Components.CharSequence.Init exposing (Posture(..))
+import SceneProtos.Story.Components.CharSequence.Init exposing (Direction(..))
 
 
-renderChar : Character -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
-renderChar char basedata env =
+checkReverse : Character -> Bool
+checkReverse char =
+    let
+        isRight =
+            char.direction == Right
+    in
+    if List.member char.name [ "Bruce", "Wenderd", "Cavalry", "Bulingze", "Bithif" ] then
+        isRight
+
+    else
+        not isRight
+
+
+renderChar : Character -> String -> String -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderChar char name act env =
+    if char.posture == Fall then
+        renderSprite
+            env.globalData.internalData
+            [ imageSmoothing False ]
+            ( char.x, char.y )
+            ( 140, 140 )
+            (name ++ "Fall")
+
+    else
+        if char.isMoving then
+            renderSprite
+                env.globalData.internalData
+                [ imageSmoothing False ]
+                ( char.x, char.y )
+                ( 140, 140 )
+                (name ++ "Sheet.1/" ++ act)
+
+        else
+            Canvas.group []
+                [ renderSprite
+                    env.globalData.internalData
+                    [ imageSmoothing False ]
+                    ( char.x, char.y )
+                    ( 140, 140 )
+                    (name ++ "Sheet.0/" ++ act)
+                ]
+
+
+renderHelper : Character -> BaseData -> Messenger.Base.Env SceneCommonData UserData -> Canvas.Renderable
+renderHelper char basedata env =
     let
         gd =
             env.globalData
@@ -52,29 +96,4 @@ renderChar char basedata env =
             else
                 String.fromInt (modBy (stillRate * x) gd.sceneStartTime // stillRate)
     in
-    if char.posture == Fall then
-        renderSprite
-            env.globalData.internalData
-            [ imageSmoothing False ]
-            ( char.x, char.y )
-            ( 140, 140 )
-            (name ++ "Fall")
-
-    else
-        if char.isMoving then
-            renderSprite
-                env.globalData.internalData
-                [ imageSmoothing False ]
-                ( char.x, char.y )
-                ( 140, 140 )
-                (name ++ "Sheet.1/" ++ currentAct)
-
-        else
-            Canvas.group []
-                [ renderSprite
-                    env.globalData.internalData
-                    [ imageSmoothing False ]
-                    ( char.x, char.y )
-                    ( 140, 140 )
-                    (name ++ "Sheet.0/" ++ currentAct)
-                ]
+    renderChar char name currentAct env

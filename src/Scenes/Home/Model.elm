@@ -131,6 +131,35 @@ update env msg data =
                 ( data, [], env )
 
 
+handleKeyDown : Int -> RawSceneUpdate Data UserData SceneMsg
+handleKeyDown key env msg data =
+    case key of
+        37 ->
+            let
+                volume =
+                    if env.globalData.volume - 0.1 < 0 then
+                        0
+
+                    else
+                        env.globalData.volume - 0.1
+            in
+            ( data, [ SOMSetVolume volume ], env )
+
+        39 ->
+            let
+                volume =
+                    if env.globalData.volume + 0.1 > 1 then
+                        1
+
+                    else
+                        env.globalData.volume + 0.1
+            in
+            ( data, [ SOMSetVolume volume ], env )
+
+        _ ->
+            ( data, [], env )
+
+
 renderBasicView : RawSceneView UserData Data
 renderBasicView env data =
     let
@@ -221,7 +250,15 @@ view env data =
                 ]
     in
     Canvas.group []
-        ([ basicView, textView ] ++ sceneView)
+        ([ basicView
+         , textView
+         , Canvas.shapes [ stroke Color.black ]
+            [ rect env.globalData.internalData ( 100, 100 ) ( 150, 20 ) ]
+         , Canvas.shapes [ fill Color.green ]
+            [ rect env.globalData.internalData ( 100, 100 ) ( 150 * env.globalData.volume, 20 ) ]
+         ]
+            ++ sceneView
+        )
 
 
 scenecon : MConcreteScene Data UserData SceneMsg

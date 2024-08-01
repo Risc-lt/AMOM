@@ -17,6 +17,7 @@ import SceneProtos.Game.Components.Self.Init exposing (Self, State(..))
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), Skill, SpecialType(..), defaultSkill)
 import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
 import SceneProtos.Game.Components.Special.Magic exposing (..)
+import SceneProtos.Game.Components.Special.Item exposing (..)
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 

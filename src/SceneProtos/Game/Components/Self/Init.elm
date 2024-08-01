@@ -19,6 +19,7 @@ import SceneProtos.Game.Components.GenAttributes exposing (..)
 import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Skill)
 import SceneProtos.Game.Components.Special.SpeSkill exposing (..)
 import SceneProtos.Game.Components.Special.Magic exposing (..)
+import SceneProtos.Game.Components.Special.Item exposing (..)
 import Time exposing (ZoneName(..))
 
 

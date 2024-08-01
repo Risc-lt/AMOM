@@ -1,5 +1,5 @@
 module SceneProtos.Game.Components.Special.Magic exposing 
-    (arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin)
+    (arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, lightningSpell, mudSwamp, stoneSkin)
 
 {-|
 
@@ -8,7 +8,7 @@ module SceneProtos.Game.Components.Special.Magic exposing
 
 This module contains the magics for the game.
 
-@docs arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, energyWater, lightningSpell, magicWater, mudSwamp, poison, restorationPotion, stoneSkin
+@docs arcaneBeam, frostImpact, iceRing, cure, fireBall, inspirationOfFire, blindness, whirlwindAccelaration, blessingOfAir, chainLightning, lightningSpell, mudSwamp, stoneSkin
 
 -}
 
@@ -203,84 +203,6 @@ stoneSkin =
     , cost = 7
     , lasting = 3
     , content = []
-    }
-
-
-{-| Skill: Restoration Potion
--}
-restorationPotion : Skill
-restorationPotion =
-    { kind = Item
-    , name = "Restoration Potion"
-    , effect = { defaultEffect | hp = -80 }
-    , buff = []
-    , range = Ally
-    , element = None
-    , cost = 0
-    , lasting = 0
-    , content = 
-        [ "Use on an ally."
-        , "80 health points restoration"
-        , "opposite for the cemetary races"
-        ]
-    }
-
-
-{-| Skill: Magic Water
--}
-magicWater : Skill
-magicWater =
-    { kind = Item
-    , name = "Magic Water"
-    , effect = { defaultEffect | mp = -20 }
-    , buff = []
-    , range = Ally
-    , element = None
-    , cost = 0
-    , lasting = 0
-    , content = 
-        [ "Use on an ally."
-        , "20 magic points restoration"
-        ]
-    }
-
-
-{-| Skill: Poison
--}
-poison : Skill
-poison =
-    { kind = Item
-    , name = "Poison"
-    , effect = { defaultEffect | hp = 80 }
-    , buff = []
-    , range = Ally
-    , element = None
-    , cost = 0
-    , lasting = 0
-    , content = 
-        [ "Use on an ally."
-        , "80 damage"
-        , "opposite for the cemetary races"
-        ]
-    }
-
-
-{-| Skill: Energy Water
--}
-energyWater : Skill
-energyWater =
-    { kind = Item
-    , name = "Energy Water"
-    , effect = { defaultEffect | energy = -100 }
-    , buff = []
-    , range = Ally
-    , element = None
-    , cost = 0
-    , lasting = 0
-    , content = 
-        [ "Use on an ally."
-        , "100 energy restoration"
-        ]
     }
 
 

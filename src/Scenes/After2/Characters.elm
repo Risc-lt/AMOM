@@ -37,13 +37,31 @@ checkConcert =
     [ genMove "Wenderd" Normal move 2 ]
 
 
+turnLeft1 : List Movement
+turnLeft1 =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Wenderd" Normal move 3 ]
+
+
 prevent : List Movement
 prevent =
     let
         move =
             Real ( 1130, 480 ) 8
     in
-    [ genMove "Bulingze" Battle move 4 ]
+    [ genMove "Bulingze" Battle move 5 ]
+
+
+turnLeft2 : List Movement
+turnLeft2 =
+    let
+        move =
+            None Left
+    in
+    [ genMove "Bulingze" Battle move 6 ]
 
 
 fall : List Movement
@@ -52,7 +70,7 @@ fall =
         move =
             None Left
     in
-    [ genMove "Wenderd" Fall move 5 ]
+    [ genMove "Wenderd" Fall move 7 ]
 
 
 turnRight : List Movement
@@ -61,16 +79,16 @@ turnRight =
         move =
             None Right
     in
-    [ genMove "Bulingze" Battle move 7 ]
+    [ genMove "Bulingze" Battle move 9 ]
 
 
-turnLeft : List Movement
-turnLeft =
+turnLeft3 : List Movement
+turnLeft3 =
     let
         move =
             None Left
     in
-    [ genMove "Bulingze" Battle move 9 ]
+    [ genMove "Bulingze" Battle move 11 ]
 
 
 genMove : String -> Posture -> MoveKind -> Int -> Movement
@@ -90,5 +108,10 @@ charInitData =
     , curMove = []
     , remainMove =
         checkConcert
+            ++ turnLeft1
             ++ prevent
+            ++ turnLeft2
+            ++ fall
+            ++ turnRight
+            ++ turnLeft3
     }

@@ -23,6 +23,7 @@ type Direction
 type Posture
     = Normal
     | Battle
+    | Fall
 
 
 

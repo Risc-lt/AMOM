@@ -14,6 +14,8 @@ import Messenger.Component.Component exposing (AbstractComponent)
 import SceneProtos.Story.Components.ComponentBase exposing (BaseData, ComponentMsg, ComponentTarget)
 
 
+{-| Init data for story layer
+-}
 type alias InitData cdata scenemsg =
     { components : List (AbstractComponent cdata UserData ComponentTarget ComponentMsg BaseData scenemsg)
     }

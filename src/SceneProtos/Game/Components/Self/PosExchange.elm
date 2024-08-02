@@ -1,7 +1,15 @@
-module SceneProtos.Game.Components.Self.PosExchange exposing
-    ( posExchange
-    , selection
-    )
+module SceneProtos.Game.Components.Self.PosExchange exposing (posExchange, selection)
+
+{-|
+
+
+# PosExchange module
+
+This module is responsible for handling the position exchange of the components in the game.
+
+@docs posExchange, selection
+
+-}
 
 import Messenger.Base exposing (UserEvent(..))
 import Messenger.GeneralModel exposing (Msg(..), MsgBase(..))

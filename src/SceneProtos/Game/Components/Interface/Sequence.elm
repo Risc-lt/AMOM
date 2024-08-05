@@ -179,7 +179,7 @@ nextChar initData basedata =
                 ( getFirstChar initData.queue, 0, True )
 
             else if initData.curIndex < List.length initData.queue then
-                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1, initData.curIndex, False )
+                ( getAt initData.curIndex initData.queue |> Maybe.withDefault -1 |> Debug.log "result", initData.curIndex, False )
 
             else
                 ( getFirstChar initData.queue, 0, True )

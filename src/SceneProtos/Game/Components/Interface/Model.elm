@@ -174,19 +174,19 @@ changeStatus flag selfs enemies env msg data basedata =
             else
                 getQueue data.selfs enemies
 
-        numDifference =
-            if List.length newQueue < List.length data.queue then
-                List.length newQueue - List.length data.queue - 1
+        numIndex =
+            if data.curIndex /= 0 then
+                data.curIndex - 1
 
             else
                 0
 
         newData =
             if flag then
-                { data | selfs = selfs, queue = newQueue, curIndex = data.curIndex - numDifference }
+                { data | selfs = selfs, queue = newQueue, curIndex = numIndex }
 
             else
-                { data | enemies = enemies, queue = newQueue, curIndex = data.curIndex - numDifference }
+                { data | enemies = enemies, queue = newQueue, curIndex = numIndex }
     in
     ( ( newData, basedata ), [], env )
 

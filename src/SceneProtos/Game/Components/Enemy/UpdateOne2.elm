@@ -25,34 +25,11 @@ handleSpecial skill env evnt data basedata =
         position =
             getTarget basedata env skill
 
-        newPosition =
-            case position of
-                4 ->
-                    7
-
-                5 ->
-                    8
-
-                6 ->
-                    9
-
-                1 ->
-                    10
-
-                2 ->
-                    11
-
-                3 ->
-                    12
-
-                _ ->
-                    0
-
         newState =
             if
                 skill.range
                     == Ally
-                    && List.member newPosition basedata.enemyNum
+                    && List.member position basedata.enemyNum
                     || skill.range
                     /= Ally
                     && List.member position basedata.selfNum
@@ -65,7 +42,7 @@ handleSpecial skill env evnt data basedata =
         skillMsg =
             if basedata.state /= newState then
                 if skill.range == Ally then
-                    [ Other ( "Enemy", Action (EnemySkill data skill newPosition) ) ]
+                    [ Other ( "Enemy", Action (EnemySkill data skill position) ) ]
 
                 else
                     [ Other ( "Self", Action (EnemySkill data skill position) ) ]

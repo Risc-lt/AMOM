@@ -141,6 +141,7 @@ dialogueInitData =
         , threaten
         , silence
         , decline
+        , remind
         , complain
         , prepare
         , panic

@@ -61,7 +61,7 @@ swordsman : Int -> List Enemy
 swordsman time =
     List.map
         (\p ->
-            oneEnemy time p 35 30 35 40 10 10 20 10 "Swordsman" [ arcaneBeam, lightningSpell ]
+            oneEnemy time p 40 30 35 40 10 10 20 10 "Swordsman" [ arcaneBeam, lightningSpell ]
         )
         (List.range 7 9)
 
@@ -70,14 +70,14 @@ magician : Int -> List Enemy
 magician time =
     List.map
         (\p ->
-            oneEnemy time p 25 30 35 50 10 10 20 10 "Magician" [ arcaneBeam, lightningSpell, chainLightning ]
+            oneEnemy time p 25 30 35 55 10 10 20 10 "Magician" [ arcaneBeam, lightningSpell, chainLightning ]
         )
         (List.range 10 11)
 
 
 therapist : Int -> List Enemy
 therapist time =
-    [ oneEnemy time 12 30 30 35 45 10 10 20 10 "Therapist" [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
+    [ oneEnemy time 12 32 32 36 46 10 10 20 10 "Therapist" [ arcaneBeam, lightningSpell, whirlwindAccelaration, cure ] ]
 
 
 initData : Int -> ( List Self, List Enemy )

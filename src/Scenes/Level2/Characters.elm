@@ -132,7 +132,7 @@ wenderd time =
 bruce : Int -> Self
 bruce time =
     oneChar time 2 30 46 28 36 20 10 10 10 "Bruce" <|
-        [ arcaneBeam, scatterShot, frostArrow, frostImpact, { poison | cost = 1 } ]
+        [ arcaneBeam, scatterShot, frostArrow, frostImpact ]
 
 
 bulingze : Int -> Self
@@ -171,16 +171,16 @@ concert : Int -> Enemy
 concert time =
     let
         baseAttributes =
-            { strength = 60
+            { strength = 65
             , dexterity = 45
-            , constitution = 50
-            , intelligence = 65
+            , constitution = 55
+            , intelligence = 70
             }
 
         baseEleResistance =
             { waterResistance = 20
             , fireResistance = 30
-            , airResistance = 20
+            , airResistance = 10
             , earthResistance = 30
             }
     in

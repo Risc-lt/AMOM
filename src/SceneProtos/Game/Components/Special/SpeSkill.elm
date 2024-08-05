@@ -45,7 +45,7 @@ scatterShot =
     , lasting = 0
     , content =
         [ "Attack all front enemies."
-        , "no elelment"
+        , "no element"
         , "40 damage"
         ]
     }
@@ -177,7 +177,7 @@ fieryThrust : Skill
 fieryThrust =
     { kind = SpecialSkill
     , name = "Fiery Thrust"
-    , effect = defaultEffect
+    , effect = { defaultEffect | hp = 80 }
     , buff = [ LoseHp ]
     , range = PenetrateOne
     , element = Fire

@@ -2,7 +2,7 @@ module SceneProtos.Game.Model exposing (genScene)
 
 {-| Scene configuration module
 
-@docs scene
+@docs genScene
 
 -}
 

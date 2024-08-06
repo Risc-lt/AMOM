@@ -1,14 +1,11 @@
-module SceneProtos.Game.Components.Self.UpdateOne3 exposing
-    ( updateOne
-    , handleMove
-    )
+module SceneProtos.Game.Components.Self.UpdateOne3 exposing (updateOne, handleMove)
 
 {-|
 
 
 # UpdateOne3 module
 
-@docs updateOne, handleBack
+@docs updateOne, handleMove
 
 -}
 

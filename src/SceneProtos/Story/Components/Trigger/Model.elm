@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Trigger.Model exposing (..)
+module SceneProtos.Story.Components.Trigger.Model exposing (component)
 
 {-| Component model
 

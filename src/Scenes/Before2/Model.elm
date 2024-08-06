@@ -5,6 +5,8 @@ module Scenes.Before2.Model exposing (scene)
 
 # Level configuration module
 
+@docs scene
+
 -}
 
 import Canvas

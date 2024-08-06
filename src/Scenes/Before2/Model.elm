@@ -1,4 +1,4 @@
-module Scenes.Before2.Model exposing (..)
+module Scenes.Before2.Model exposing (scene)
 
 {-|
 

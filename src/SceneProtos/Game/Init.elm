@@ -1,4 +1,4 @@
-module SceneProtos.Game.Init exposing (..)
+module SceneProtos.Game.Init exposing (InitData)
 
 {-|
 

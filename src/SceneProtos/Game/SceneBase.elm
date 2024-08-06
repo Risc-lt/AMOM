@@ -20,14 +20,20 @@ Basic data for the scene.
 import SceneProtos.Game.Play.Init as PlayInit
 
 
+{-| Layer target type
+-}
 type alias LayerTarget =
     String
 
 
+{-| Common data
+-}
 type alias SceneCommonData =
     { gameover : Bool }
 
 
+{-| General message for layers
+-}
 type LayerMsg scenemsg
     = PlayInitData (PlayInit.InitData SceneCommonData scenemsg)
     | NullLayerMsg

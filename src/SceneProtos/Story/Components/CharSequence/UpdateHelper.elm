@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
+module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (updateHelper, checkDestination)
 
 {-|
 
@@ -7,7 +7,7 @@ module SceneProtos.Story.Components.CharSequence.UpdateHelper exposing (..)
 
 This module is used to update the character sequence component.
 
-@docs updateHelper
+@docs updateHelper, checkDestination
 
 -}
 
@@ -104,6 +104,8 @@ handleMove ( movement, character ) =
             ( movement, character )
 
 
+{-| Check the destination of the character
+-}
 checkDestination : ( Movement, Character ) -> ( Movement, Character )
 checkDestination ( movement, character ) =
     case movement.movekind of
@@ -142,6 +144,8 @@ detectMove m newPlots =
             m
 
 
+{-| Update the character sequence component
+-}
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env _ data basedata =
     let

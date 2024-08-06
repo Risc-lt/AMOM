@@ -1,5 +1,14 @@
 module SceneProtos.Game.Components.Interface.RenderHelper3 exposing (renderAction, renderStatus)
 
+{-|
+
+
+# RenderHelper3 module
+
+@docs renderAction, renderStatus
+
+-}
+
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
 import Canvas.Settings.Advanced exposing (imageSmoothing)

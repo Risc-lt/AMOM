@@ -1,20 +1,15 @@
-module SceneProtos.Game.Components.Interface.Sequence exposing
-    ( Charactor
-    , calculateApUp
-    , checkSide
-    , concatSelfEnemy
-    , convertToCharactor
-    , defaultChatactor
-    , findIndex
-    , getAt
-    , getFirstChar
-    , getQueue
-    , getSequence
-    , initUI
-    , nextChar
-    , renderQueue
-    , sortCharByQueue
-    )
+module SceneProtos.Game.Components.Interface.Sequence exposing (Charactor, calculateApUp, checkSide, concatSelfEnemy, convertToCharactor, defaultChatactor, findIndex, getAt, getFirstChar, getQueue, getSequence, initUI, nextChar, renderQueue, sortCharByQueue)
+
+{-|
+
+
+# Sequence module
+
+This module is used to generate the sequence of the characters in the game.
+
+@docs Charactor, calculateApUp, checkSide, concatSelfEnemy, convertToCharactor, defaultChatactor, findIndex, getAt, getFirstChar, getQueue, getSequence, initUI, nextChar, renderQueue, sortCharByQueue
+
+-}
 
 import Canvas
 import Canvas.Settings.Advanced exposing (imageSmoothing)

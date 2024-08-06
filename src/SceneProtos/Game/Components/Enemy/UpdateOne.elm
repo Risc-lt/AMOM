@@ -1,12 +1,13 @@
-module SceneProtos.Game.Components.Enemy.UpdateOne exposing
-    ( Data
-    , attackPlayer
-    , checkStorage
-    , chooseAction
-    , chooseSpecial
-    , getTarget
-    , handleMove
-    )
+module SceneProtos.Game.Components.Enemy.UpdateOne exposing (Data, attackPlayer, checkStorage, chooseAction, chooseSpecial, getTarget, handleMove)
+
+{-|
+
+
+# UpdateOne module
+
+@docs Data, attackPlayer, checkStorage, chooseAction, chooseSpecial, getTarget, handleMove
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

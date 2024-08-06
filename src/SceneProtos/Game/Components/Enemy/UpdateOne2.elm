@@ -1,8 +1,13 @@
-module SceneProtos.Game.Components.Enemy.UpdateOne2 exposing
-    ( handleSpecial
-    , handleTurn
-    , updateOne
-    )
+module SceneProtos.Game.Components.Enemy.UpdateOne2 exposing (handleSpecial, handleTurn, updateOne)
+
+{-|
+
+
+# UpdateOne module
+
+@docs handleSpecial, handleTurn, updateOne
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

@@ -1,5 +1,14 @@
 module SceneProtos.Game.Components.Interface.RenderHelper2 exposing (renderChooseSkill, renderTargetSelection)
 
+{-|
+
+
+# RenderHelper2 module
+
+@docs renderChooseSkill, renderTargetSelection
+
+-}
+
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
 import Color

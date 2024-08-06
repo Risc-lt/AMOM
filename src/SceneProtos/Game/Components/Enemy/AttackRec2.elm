@@ -1,10 +1,15 @@
-module SceneProtos.Game.Components.Enemy.AttackRec2 exposing
-    ( getEffect
-    , getSpecificMagicalAttack
-    , handleAttack
-    , handleSkill
-    , skillRec
-    )
+module SceneProtos.Game.Components.Enemy.AttackRec2 exposing (getEffect, getSpecificMagicalAttack, handleAttack, handleSkill, skillRec)
+
+{-|
+
+
+# AttackRec2 module
+
+This module contains the functions that are used to handle the attack and skill of the enemy.
+
+@docs getEffect, getSpecificMagicalAttack, handleAttack, handleSkill, skillRec
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

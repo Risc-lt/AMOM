@@ -1,4 +1,4 @@
-module SceneProtos.Story.Components.Sommsg.Model exposing (..)
+module SceneProtos.Story.Components.Sommsg.Model exposing (component)
 
 {-| Component model
 

@@ -172,9 +172,13 @@ handleMove env evnt data basedata =
     ( ( { newData | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
-checkMgSsAndIt : (Skill -> Bool) -> Data -> Bool
-checkMgSsAndIt func data =
-    (List.length <| List.filter func data.skills) /= 0
+checkMgSsAndIt : (Skill -> Bool) -> Data -> List Gamestate -> Gamestate -> List Gamestate
+checkMgSsAndIt func data origin new =
+    if (List.length <| List.filter func data.skills) /= 0 then
+        new :: origin
+
+    else
+        origin
 
 
 {-| The initial data for the StroryTrigger component
@@ -183,22 +187,21 @@ chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentT
 chooseAction env evnt data basedata =
     let
         hasMagic =
-            if checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp) data then
-                [ EnemyAttack, ChooseMagic ]
-
-            else
+            checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp)
+                data
                 [ EnemyAttack ]
+                ChooseMagic
 
         hasSpeSkill =
-            if checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data then
-                ChooseSpeSkill :: hasMagic
-
-            else
+            checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy)
+                data
                 hasMagic
+                ChooseSpeSkill
 
         hasItem =
             if
-                checkMgSsAndIt (\s -> s.kind == Item) data
+                (List.length <| List.filter (\s -> s.kind == Item) data.skills)
+                    /= 0
                     && data.hp
                     < data.extendValues.basicStatus.maxHp
                     && data.mp

@@ -1,4 +1,13 @@
-module SceneProtos.Story.Components.CharSequence.RenderHelper exposing (..)
+module SceneProtos.Story.Components.CharSequence.RenderHelper exposing (renderHelper)
+
+{-|
+
+
+# RenderHelper module
+
+@docs renderHelper
+
+-}
 
 import Canvas
 import Canvas.Settings.Advanced exposing (imageSmoothing)

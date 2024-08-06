@@ -1,7 +1,13 @@
-module SceneProtos.Game.Components.Self.UpdateOne2 exposing
-    ( handleMouseDown
-    , handleTargetSelection
-    )
+module SceneProtos.Game.Components.Self.UpdateOne2 exposing (handleMouseDown, handleTargetSelection)
+
+{-|
+
+
+# UpdateOne2 module
+
+@docs handleMouseDown, handleTargetSelection
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

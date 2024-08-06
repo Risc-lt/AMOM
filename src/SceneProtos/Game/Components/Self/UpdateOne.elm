@@ -1,11 +1,15 @@
-module SceneProtos.Game.Components.Self.UpdateOne exposing
-    ( Data
-    , checkIndex
-    , checkStorage
-    , handleChooseSkill
-    , handleCompounding
-    , handleKeyDown
-    )
+module SceneProtos.Game.Components.Self.UpdateOne exposing (Data, checkIndex, checkStorage, handleChooseSkill, handleCompounding, handleKeyDown)
+
+{-|
+
+
+# UpdateOne module
+
+This module contains the functions that update the data of the Self component.
+
+@docs Data, checkIndex, checkStorage, handleChooseSkill, handleCompounding, handleKeyDown
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

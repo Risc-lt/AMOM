@@ -1,7 +1,16 @@
 module SceneProtos.Game.Components.Self.UpdateOne3 exposing
-    ( handleMove
-    , updateOne
+    ( updateOne
+    , handleMove
     )
+
+{-|
+
+
+# UpdateOne3 module
+
+@docs updateOne, handleBack
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

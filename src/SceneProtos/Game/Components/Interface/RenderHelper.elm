@@ -28,6 +28,8 @@ import SceneProtos.Game.Components.Special.Init exposing (Buff(..), Range(..), S
 import SceneProtos.Game.SceneBase exposing (SceneCommonData)
 
 
+{-| The data type
+-}
 type alias Data =
     InitData
 

@@ -70,6 +70,8 @@ checkDestination camera background =
         camera
 
 
+{-| Update the background component.
+-}
 updateHelper : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 updateHelper env _ data basedata =
     let

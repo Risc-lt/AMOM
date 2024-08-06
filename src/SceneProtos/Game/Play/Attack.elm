@@ -23,6 +23,8 @@ type alias GameComponent =
     AbstractComponent SceneCommonData UserData ComponentTarget ComponentMsg BaseData SceneMsg
 
 
+{-| Judge the attack of the game.
+-}
 judgeAttack : List GameComponent -> List ( ComponentTarget, ComponentMsg )
 judgeAttack xs =
     case xs of

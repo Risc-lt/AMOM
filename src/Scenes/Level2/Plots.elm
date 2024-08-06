@@ -150,7 +150,7 @@ silence =
             , "..."
             ]
     in
-    genDialogue "head_bruce" content ( 3, 7 )
+    genDialogue "head_bithif" content ( 3, 7 )
 
 
 provoke : Dialogue

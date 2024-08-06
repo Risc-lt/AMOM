@@ -1,13 +1,15 @@
-module SceneProtos.Game.Components.Self.AttackRec exposing
-    ( Data
-    , attackRec
-    , checkBuff
-    , checkStatus
-    , findMin
-    , getHurt
-    , getSpecificNormalAttack
-    , normalAttackDemage
-    )
+module SceneProtos.Game.Components.Self.AttackRec exposing (Data, checkBuff, checkStatus, findMin, getHurt, getSpecificNormalAttack, normalAttackDemage, attackRec)
+
+{-|
+
+
+# Self AttackRec module
+
+This module is responsible for handling the attack record of the self component.
+
+@docs Data, checkBuff, checkStatus, findMin, getHurt, getSpecificNormalAttack, normalAttackDemage, attackRec
+
+-}
 
 import Lib.UserData exposing (UserData)
 import Messenger.Base exposing (UserEvent(..))

@@ -140,13 +140,16 @@ All notable changes to this project are documented in this file.
 
   Added
 
-- [feature 1] 
-  Removed
+- [feature 1] Modify comments to generate docs.
 
-- [feature 1] 
-  Changed
-
-- [feature 1] 
   Fixed
 
-- [bug 1] 
+- [bug 1] Buff views overlap with other views.
+
+- [bug 2] Wrong sequences when buff changes the characters' basic values
+
+- [bug 3] Wrong icon in the dialogue.
+
+- [bug 4] No return after attacking.
+
+- [bug 5] Incorrect description of special skills.

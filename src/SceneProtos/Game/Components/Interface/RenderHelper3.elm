@@ -1,5 +1,14 @@
 module SceneProtos.Game.Components.Interface.RenderHelper3 exposing (renderAction, renderStatus)
 
+{-|
+
+
+# RenderHelper3 module
+
+@docs renderAction, renderStatus
+
+-}
+
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (stroke)
 import Canvas.Settings.Advanced exposing (imageSmoothing)
@@ -74,7 +83,7 @@ renderStatus self env =
                 , renderOneAttribute (y + 20) self.attributes.dexterity "Dexterity" env
                 , renderOneAttribute (y + 40) self.attributes.constitution "Constitution" env
                 , renderOneAttribute (y + 60) self.attributes.intelligence "Intelligence" env
-                , renderBuff self.buff env 1675 (toFloat y + 120)
+                , renderBuff self.buff env 1675 (toFloat y + 140)
                 , renderTextWithColorStyle env.globalData.internalData 20 self.name "Comic Sans MS" color "" ( 1675, y + 27.5 )
                 ]
 

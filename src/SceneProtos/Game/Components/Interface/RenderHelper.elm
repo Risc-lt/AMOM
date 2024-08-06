@@ -1,4 +1,13 @@
-module SceneProtos.Game.Components.Interface.RenderHelper exposing (..)
+module SceneProtos.Game.Components.Interface.RenderHelper exposing (Data, renderOneAttribute, renderOneBar, renderBuff, renderChangePosition, renderPlayerTurn)
+
+{-|
+
+
+# RenderHelper module
+
+@docs Data, renderOneAttribute, renderOneBar, renderBuff, renderChangePosition, renderPlayerTurn
+
+-}
 
 import Canvas exposing (Renderable, empty, lineTo, moveTo, path)
 import Canvas.Settings exposing (fill, stroke)

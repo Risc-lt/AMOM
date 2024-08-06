@@ -4,9 +4,6 @@ module SceneProtos.Game.SceneBase exposing
     , SceneCommonData
     )
 
-import SceneProtos.Game.Play.Init as PlayInit
-
-
 {-|
 
 
@@ -19,6 +16,10 @@ Basic data for the scene.
 @docs LayerMsg: General message for layers
 
 -}
+
+import SceneProtos.Game.Play.Init as PlayInit
+
+
 type alias LayerTarget =
     String
 

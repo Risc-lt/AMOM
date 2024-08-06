@@ -1,12 +1,15 @@
-module SceneProtos.Game.Components.Enemy.AttackRec exposing
-    ( Data
-    , attackRec
-    , checkStatus
-    , findMin
-    , getHurt
-    , getSpecificNormalAttack
-    , normalAttackDemage
-    )
+module SceneProtos.Game.Components.Enemy.AttackRec exposing (Data, attackRec, checkStatus, findMin, getHurt, getSpecificNormalAttack, normalAttackDemage)
+
+{-|
+
+
+# AttackRec module
+
+This module contains the logic for the enemy attack record.
+
+@docs Data, attackRec, checkStatus, findMin, getHurt, getSpecificNormalAttack, normalAttackDemage
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)

@@ -25,18 +25,7 @@ import Messenger.Render.Sprite exposing (renderSprite)
 import Messenger.Render.Text exposing (renderTextWithColorCenter)
 import Messenger.Scene.Scene exposing (SceneOutputMsg(..))
 import SceneProtos.Game.Components.ComponentBase exposing (BaseData, ComponentMsg(..), ComponentTarget, InitMsg(..))
-import SceneProtos.Game.Components.Dialogue.Init as DiaMsg
-import SceneProtos.Game.Components.Dialogue.Model as Dia
-import SceneProtos.Game.Components.Enemy.Init as EneMsg
-import SceneProtos.Game.Components.Enemy.Model as Enemy
-import SceneProtos.Game.Components.Interface.Init as UIMsg
-import SceneProtos.Game.Components.Interface.Model as UI
-import SceneProtos.Game.Components.Self.Init as SelfMsg
-import SceneProtos.Game.Components.Self.Model as Self
-import SceneProtos.Game.Components.StoryTrigger.Init as STriInit
-import SceneProtos.Game.Components.StoryTrigger.Model as STri
 import SceneProtos.Game.Play.Attack exposing (judgeAttack)
-import SceneProtos.Game.Play.Init exposing (InitData)
 import SceneProtos.Game.SceneBase exposing (..)
 import Time
 

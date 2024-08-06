@@ -1,5 +1,16 @@
 module SceneProtos.Game.Play.Attack exposing (judgeAttack)
 
+{-|
+
+
+# Attack module
+
+This module is used to judge the attack of the game.
+
+@docs judgeAttack
+
+-}
+
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
 import Messenger.Component.Component exposing (AbstractComponent)

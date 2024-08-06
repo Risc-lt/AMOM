@@ -1,12 +1,13 @@
-module SceneProtos.Game.Components.Enemy.UpdateOne exposing
-    ( Data
-    , attackPlayer
-    , checkStorage
-    , chooseAction
-    , chooseSpecial
-    , getTarget
-    , handleMove
-    )
+module SceneProtos.Game.Components.Enemy.UpdateOne exposing (Data, attackPlayer, checkStorage, chooseAction, chooseSpecial, getTarget, handleMove)
+
+{-|
+
+
+# UpdateOne module
+
+@docs Data, attackPlayer, checkStorage, chooseAction, chooseSpecial, getTarget, handleMove
+
+-}
 
 import Lib.Base exposing (SceneMsg)
 import Lib.UserData exposing (UserData)
@@ -63,19 +64,26 @@ checkStorage data =
 getTarget : BaseData -> Env cdata userdata -> Skill -> Int
 getTarget basedata env skill =
     let
+        targets =
+            if skill.range == Ally then
+                basedata.enemyNum
+
+            else
+                basedata.selfNum
+
         front =
-            List.filter (\x -> x <= 3) basedata.selfNum
+            List.filter (\x -> x <= 3) targets
 
         upperbound =
             if skill.name == "" then
                 if List.length front == 0 then
-                    List.length basedata.selfNum
+                    List.length targets
 
                 else
                     List.length front
 
             else
-                List.length basedata.selfNum
+                List.length targets
 
         index =
             genRandomNum 1 upperbound <|
@@ -85,7 +93,7 @@ getTarget basedata env skill =
         List.head <|
             List.drop (index - 1) <|
                 List.sort <|
-                    basedata.selfNum
+                    targets
 
 
 {-| The initial data for the StroryTrigger component
@@ -165,9 +173,13 @@ handleMove env evnt data basedata =
     ( ( { newData | x = newX }, newBaseData ), msg, ( env, False ) )
 
 
-checkMgSsAndIt : (Skill -> Bool) -> Data -> Bool
-checkMgSsAndIt func data =
-    (List.length <| List.filter func data.skills) /= 0
+checkMgSsAndIt : (Skill -> Bool) -> Data -> List Gamestate -> Gamestate -> List Gamestate
+checkMgSsAndIt func data origin new =
+    if (List.length <| List.filter func data.skills) /= 0 then
+        new :: origin
+
+    else
+        origin
 
 
 {-| The initial data for the StroryTrigger component
@@ -175,26 +187,31 @@ checkMgSsAndIt func data =
 chooseAction : ComponentUpdate SceneCommonData Data UserData SceneMsg ComponentTarget ComponentMsg BaseData
 chooseAction env evnt data basedata =
     let
+        hasMagic =
+            checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp)
+                data
+                [ EnemyAttack ]
+                ChooseMagic
+
+        hasSpeSkill =
+            checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy)
+                data
+                hasMagic
+                ChooseSpeSkill
+
         hasItem =
-            if checkMgSsAndIt (\s -> s.kind == Magic && s.cost <= data.mp) data then
-                if checkMgSsAndIt (\s -> s.kind == SpecialSkill && s.cost <= data.energy) data then
-                    if
-                        checkMgSsAndIt (\s -> s.kind == Item) data
-                            && data.hp
-                            < data.extendValues.basicStatus.maxHp
-                            && data.mp
-                            < data.extendValues.basicStatus.maxMp
-                    then
-                        [ ChooseItem, ChooseSpeSkill, EnemyAttack, ChooseMagic ]
-
-                    else
-                        [ ChooseSpeSkill, EnemyAttack, ChooseMagic ]
-
-                else
-                    [ EnemyAttack, ChooseMagic ]
+            if
+                (List.length <| List.filter (\s -> s.kind == Item) data.skills)
+                    /= 0
+                    && data.hp
+                    < data.extendValues.basicStatus.maxHp
+                    && data.mp
+                    < data.extendValues.basicStatus.maxMp
+            then
+                ChooseItem :: hasSpeSkill
 
             else
-                [ EnemyAttack ]
+                hasSpeSkill
 
         index =
             Time.posixToMillis env.globalData.currentTimeStamp
@@ -203,7 +220,7 @@ chooseAction env evnt data basedata =
         newState =
             List.drop (index - 1) hasItem
                 |> List.head
-                |> Maybe.withDefault GameBegin
+                |> Maybe.withDefault EnemyTurn
 
         newBasedata =
             if newState == EnemyAttack then
@@ -232,7 +249,7 @@ chooseSpecial env evnt data basedata =
 
         skills =
             List.sortBy .cost <|
-                List.filter (\s -> s.kind == kind) <|
+                List.filter (\s -> s.kind == kind && s.cost <= storage) <|
                     data.skills
 
         index =

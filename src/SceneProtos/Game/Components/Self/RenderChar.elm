@@ -1,7 +1,13 @@
-module SceneProtos.Game.Components.Self.RenderChar exposing
-    ( renderChar
-    , renderRegion
-    )
+module SceneProtos.Game.Components.Self.RenderChar exposing (renderChar, renderRegion)
+
+{-|
+
+
+# RenderChar module
+
+@docs renderChar, renderRegion
+
+-}
 
 import Canvas exposing (empty)
 import Canvas.Settings exposing (stroke)

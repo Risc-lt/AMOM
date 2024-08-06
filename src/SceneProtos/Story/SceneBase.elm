@@ -20,6 +20,8 @@ Basic data for the scene.
 import SceneProtos.Story.StoryLayer.Init as StoryLayerInit
 
 
+{-| The target of the layer
+-}
 type alias LayerTarget =
     String
 
